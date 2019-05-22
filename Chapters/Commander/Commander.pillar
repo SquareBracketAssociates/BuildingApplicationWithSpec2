@@ -409,12 +409,12 @@ we can also create groups. This is also in this method that we will specify tool
 
 [[[
 CmContactBookPresenter class >> 
-	buildCommandsGroupWith: presenterInstance 
+	buildCommandsGroupWith: presenter 
 	forRoot: rootCommandGroup
 	
 	rootCommandGroup 
-		register: (CmAddContactCommand2 forSpec context: presenterInstance);
-		register: (CmRemoveContactCommand2 forSpec context: presenterInstance)
+		register: (CmAddContactCommand2 forSpec context: presenter);
+		register: (CmRemoveContactCommand2 forSpec context: presenter)
 ]]]
 
 We have now to attach the root of the command tree to the table. 
@@ -520,17 +520,18 @@ CmContactBookPresenter class >>
 	<extensionCommands>
 	
 	aCmCommandsGroup / 'Context Menu'
-		register: ((CmCommandGroup named: 'Extra') asSpecGroup
-						basicDescription: 'Extra commands to help during development.';
-						register: ((CmInspectCommand forSpec context: [ presenter selectedContact ]) 
-											basicName: 'Inspect contact';
-											basicDescription: 'Open an inspector on the selected contact.';
-											yourself);
-						register: ((CmInspectCommand forSpec context: [ presenter contactBook ])
-											basicName: 'Inspect contact book';
-											basicDescription: 'Open an inspector on the contact book.';
-											yourself);
-						yourself)
+		register: 
+			((CmCommandGroup named: 'Extra') asSpecGroup
+				basicDescription: 'Extra commands to help during development.';
+				register: ((CmInspectCommand forSpec context: [ presenter selectedContact ]) 
+								basicName: 'Inspect contact';
+								basicDescription: 'Open an inspector on the selected contact.';
+								yourself);
+				register: ((CmInspectCommand forSpec context: [ presenter contactBook ])
+								basicName: 'Inspect contact book';
+								basicDescription: 'Open an inspector on the contact book.';
+								yourself);
+		yourself)
 ]]]
 
 !!! Toolbar
