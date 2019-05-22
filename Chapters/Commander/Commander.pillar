@@ -1,16 +1,69 @@
-!!Edition and Templates
+!!Commander: a Powerful and Simple Command Framework
 
-There is also a template system, you can find template in the folder ''_support/template''.
-Some template are already written, but if you want to have your own, you had two solutions:
--edit the existing template related to the format you want to change (recommanded)
--create your own template with its own name
+Commander is a library originally developed by Denis Kudriashov. Commander 2.0 is the second iteration of such library. Commander 2 has been designed by J. Delplanque and S. Ducasse. Note that Commander20 is not compatible with Commander but this is really easy to migrate from Commander to Commander 20. This document describes Commander 20 in the context of Spec20, the user interface building framework.
 
-You will found some template examples in ''_support/template'' folder to see how it works.
-The default template system is ''Mustache''.
+%+>figures/rmod.png|width=30+
 
-Output directory's default name is ''book-result'' but you can change it in the pillar.conf file by editing the
-==OUTPUTDIRECTORY== variable
+!!! Commands
+
+Commander models application actions as first class objects following the Command design pattern. Every action is implemented as a separate command class (subclass of ==CmCommand==) with an ==execute== method and all state required for execution.
+
+With Commander you can express commands and use them to generate menus, toolbar but also to script an application from the command line.
 
 
-+>figures/pharo.png|width=30+
-+>figures/rmod.png|width=30+
+Let's start with a sample application: a Contact book
+
+!!! A contact book model
+
+We start defining a little domain model for our example: we define a contact and a contact book
+
+!!!! Contact
+We start by defining a simple contact class.
+
+[[[
+Object subclass: #CmContact
+	instanceVariableNames: 'name phone'
+	classVariableNames: ''
+	package: 'Commander2-ContactBook-Model'
+]]]
+
+We just define a printOn: method and a couple of accessors.
+[[[
+CmContact >> printOn: aStream
+		super printOn: aStream.
+	
+		aStream nextPut: $(.
+		aStream nextPutAll: name.
+		aStream nextPut: $).
+]]]
+
+
+[[[
+CmContact >> name
+	^ name
+]]]
+
+[[[
+CmContact >> phone
+	^ phone
+]]]
+
+[[[
+CmContact >> name: aString
+	name := aString
+]]]
+
+[[[
+CmContact >> phone: anObject
+	phone := anObject
+]]]
+
+!!!! ContactBook
+We start by defining a simple contact class.
+
+[[[
+Object subclass: #CmContactBook
+	instanceVariableNames: 'contents'
+	classVariableNames: ''
+	package: 'Commander2-ContactBook-Model'
+]]]
