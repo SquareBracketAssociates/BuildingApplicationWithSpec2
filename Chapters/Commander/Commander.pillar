@@ -122,4 +122,16 @@ CmContactBook >> add: contactName phone: phone
 	^ contact
 ]]]
 
+!!! A Simple UI
+
+Now we define the application we want to get to illustrate Commander. The application UI is shown in Figure *@final*.
+
++A rudimentary contact book application.>figures/final.png|width=60|label=final+
+
+[[[
+ComposablePresenter subclass: #CmContactBookPresenter
+	instanceVariableNames: 'table contactBook menuBar'
+	classVariableNames: ''
+	package: 'Commander2-ContactBook-Spec'
+]]]
 
