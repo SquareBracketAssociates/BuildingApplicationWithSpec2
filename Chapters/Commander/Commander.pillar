@@ -160,7 +160,7 @@ CmContactBook class >> reset
 ]]]
 
 
-!!! A Simple UI
+!!! A simple UI
 
 Now we define the application we want to get to illustrate Commander. The application UI is shown in Figure *@final*.
 
@@ -264,7 +264,7 @@ CmContactBookPresenter >> newContact
 
 To test it, we can get access to the presenter as follows 
 [[[
-(CmContactBookPresenter2 on: CmContactBook coworkers) 
+(CmContactBookPresenter on: CmContactBook coworkers) 
 	openWithSpec presenter inspect
 ]]]
 
@@ -272,8 +272,19 @@ and you can send the ==newContact== message as shown in Figure *@inspector*.
 
 +Playing inside the inspector.>figures/inspector.png|width=60|label=inspector+
 
+We will also defined the methods ==isContactSelected== and ==selectedContact== to know if a contact is currently selected and to return it. It will help us later to add contact just after the currently selected contact.
 
-!!! Defining Commands
+[[[
+CmContactBookPresenter >> isContactSelected
+	^ table selection selectedItem notNil
+]]]
+
+[[[
+CmContactBookPresenter >> selectedContact
+	^ table selection selectedItem
+]]]
+
+!!! Defining commands
 A command is a simple object instance of a subclass of the class ==CmCommand==.
 It has a description, a name (this name can be either static or dynamic as we will later on). In addition it has a context from which it extracts information to execute itself. But let us have a look at examples. 
 
@@ -312,7 +323,7 @@ CmContactBookCommand >> hasSelectedContact
 	^ self contactBookPresenter isContactSelected
 ]]]
 
-!!!! Adding a contact
+!!!! Adding the add contact command
 
 We define a subclass to define the add a contact command. 
 [[[
@@ -332,13 +343,9 @@ CmAddContactCommand >> initialize
 
 [[[
 CmAddContactCommand >> execute
-	"One should never manipulate UI directly from a commande.
-	 Instead, you can use one of the subclass of LtCommandNotification.
-	 The UI interactions will be handled by the command decorator.
-	 Using this mechanism a command is not dependent on the context in which it is used.
-	"
+	
 	| contact |
-	contact := self context newContact.
+	contact := self contactBookPresenter newContact.
 	self hasSelectedContact
 		ifTrue: [ self contactBook addContact: contact after: self selectedContact ]
 		ifFalse: [ self contactBook addContact: contact ].
@@ -346,23 +353,184 @@ CmAddContactCommand >> execute
 	self contactBookPresenter updateView
 ]]]
 
-We should define the method updateView 
+We should define the method ==updateView== to refresh the contents of the table.
 
 [[[
 CmContactBookPresenter >> updateView
 	table items: contactBook contents
 ]]]
 
+Now in the inspect pane we can simply execute the command as follows:
 
+[[[
+(CmAddContactCommand new context: self) execute
+]]]
+
+Excuting the command should ask you to give a name and a phone number
+and will get added to the list.
+
+!!! Adding the remove contact command
+
+We define now another command to remove a command. 
+This example is interesting because it does not involve any UI interaction.
+It shows that a command is not necessarily linked to UI interaction.
+
+[[[
+CmRemoveContactCommand >> initialize
+	super initialize.
+	self
+		basicName: 'Remove'; 
+		basicDescription: 'Removes the selected contact from the contact book.'
+]]]
+
+This command definition illustrates how we can control when a command should or not be executed. The method ==canBeRun== allows one to specify such condition.
+
+[[[
+CmRemoveContactCommand >> canBeRun
+	^ self context isContactSelected
+]]]
+
+The method ==execute== is straightforward.
+[[[
+CmRemoveContactCommand >> execute
+	self contactBookPresenter removeContact: self selectedContact.
+	self contactBookPresenter updateView
+]]]
 
 !!! Turning commands into menu items
 
-[[[
-buildCommandsGroupWith: presenterInstance forRoot:
+In Spec, commands that are transformed into menu items are structured into a tree of command instances. The class method ==buildCommandsGroupWith:forRoot:== is a hook to let the presenter define the root of the command instance tree.
 
+A command is transformed into a command for Spec using the message ==forSpec==.
+We will show later that we can add UI specific information to a command such as an icon and a shortcut.
+
+The method ==buildCommandsGroupWith:forRoot:== registers commands to which the presenter instance is passed as context. Note that here we just add plain commands, but 
+we can also create groups. This is also in this method that we will specify toolbar.
+
+[[[
+CmContactBookPresenter class >> 
+	buildCommandsGroupWith: presenterInstance 
+	forRoot: rootCommandGroup
+	
+	rootCommandGroup 
+		register: (CmAddContactCommand2 forSpec context: presenterInstance);
+		register: (CmRemoveContactCommand2 forSpec context: presenterInstance)
 ]]]
+
+We have now to attach the root of the command tree to the table. 
+This is what what we do with the new line in the ==initializeWidgets== method. 
+Notice that we have the full control and as we will show we could select a subpart of the tree (using the message ==/==) and defining as root for given component.
+
+
+[[[
+CmContactBookPresenter >> initializeWidgets
+	table := self newTable.
+	table 
+		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
+	table contextMenu: [ self rootCommandsGroup beRoot asMenuPresenter ].
+	table items: contactBook contents.
+]]]
+
+Reopening the interface you should see the menu items as shown in Figure *@withmenu*.
+As we will show later we could even replace a menu item by another one, changing its name, or icon in place. 
+
++With two menu items.>figures/withMenus.png|width=60|label=withmenu+
+
+
+!!! Introducing groups
+
 
 !!! Extending menus
 
+Building menu is nice, but sometimes we need to add a menu into an existing one. Commander supports this as we show it now. 
+
+Imagine that we have a new functionality that we want to add to the contact book and that this behavior is packaged in another package. First we will define a new command
+and second we will show how we can extend the existing menu to add a new menu item. 
+
+[[[
+CmContactBookCommand subclass: #CmChangePhoneCommand
+	instanceVariableNames: 'newPhone'
+	classVariableNames: ''
+	package: 'Commander2-ContactBook-Extensions'
+]]]
+
+[[[
+CmChangePhoneCommand >> newPhone: anObject
+	newPhone := anObject
+]]]
+
+[[[
+CmChangePhoneCommand >> newPhone
+	^ newPhone 
+]]]
+
+[[[
+CmChangePhoneCommand >> initialize
+	super initialize.
+	self
+		basicName: 'Change phone';
+		basicDescription: 'Change the phone number of the contact.'
+]]]
+
+[[[
+CmChangePhoneCommand >> execute
+	self selectedContact phone: self contactBookPresenter newPhone.
+	self contactBookPresenter updateView
+]]]
+
+We extend with the method ==newPhone== the presenter to support the definition of the new phone number. 
+
+[[[
+CmContactBookPresenter >> newPhone
+	| phone |
+	phone := self 
+		request: 'New phone for the contact'
+		initialAnswer: self selectedContact phone 
+		title: 'Set new phone for contact'.
+	(phone matchesRegex: '\d\d\d\s\d\d\d')
+		ifFalse: [ 
+			InvalidUserInput signal: 'The phone number is not well formated. 
+Should match "\d\d\d\s\d\d\d"' ].
+	^ phone
+]]]
+
+The last missing piece is the declaration of the extension. This one is done using the pragma ==<extensionCommands>== on the class side of the presenter class as follows:
+
+Here we see that using ==\==, we can select the group in which we want to add the item. 
+[[[
+CmContactBookPresenter class >> 
+	changePhoneCommandWith: presenter 
+	forRootGroup: aCmCommandsGroup
+	<extensionCommands>
+	
+	(aCmCommandsGroup / 'Context Menu' / 'Edition')
+		register: (CmChangePhoneCommand forSpec context: presenter)
+]]]
+
+!!! Reusing generic commands
+
+Commander supports also the reuse and in place customisation of generic commands.
+Here is an example that shows that we adapt twice the same command. The context is computed at the moment the command is executed and The name and description can be adapted for its specific usage.
+
+[[[
+CmContactBookPresenter class >>	
+	extraCommandsWith: presenter 
+	forRootGroup: aCmCommandsGroup
+	<extensionCommands>
+	
+	aCmCommandsGroup / 'Context Menu'
+		register: ((CmCommandGroup named: 'Extra') asSpecGroup
+						basicDescription: 'Extra commands to help during development.';
+						register: ((CmInspectCommand forSpec context: [ presenter selectedContact ]) 
+											basicName: 'Inspect contact';
+											basicDescription: 'Open an inspector on the selected contact.';
+											yourself);
+						register: ((CmInspectCommand forSpec context: [ presenter contactBook ])
+											basicName: 'Inspect contact book';
+											basicDescription: 'Open an inspector on the contact book.';
+											yourself);
+						yourself)
+]]]
 
 !!! Toolbar
