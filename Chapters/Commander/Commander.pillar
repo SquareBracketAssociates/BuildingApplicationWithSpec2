@@ -440,7 +440,56 @@ As we will show later we could even replace a menu item by another one, changing
 
 !!! Introducing groups
 
+Commands can be managed in groups and such groups can be turned into corresponding menu item sections.
+Here we give an example of such grouping.  Notice the message ==asSpecGroup== sent to a group.
 
+[[[
+CmContactBookPresenter class >> buildAddingGroupWith: presenter
+	^ (CmCommandGroup named: 'Adding') asSpecGroup
+		basicDescription: 'Commands related to contact addition.';
+		register: (CmAddContactCommand forSpec context: presenter);
+		beDisplayedAsGroup;
+		yourself
+]]]
+
+[[[
+CmContactBookPresenter class >> buildRemovingGroupWith: presenter
+	^ (CmCommandGroup named: 'Removing') asSpecGroup
+		basicDescription: 'Commands related to contact removal.';
+		register: (CmRemoveContactCommand forSpec context: presenter);
+		beDisplayedAsGroup;
+		yourself
+]]]
+
+[[[
+CmContactBookPresenter class >> buildContextualMenuGroupWith: presenter
+	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
+		register: (self buildAddingGroupWith: presenter);
+		register: (self buildRemovingGroupWith: presenter);
+		yourself
+]]]
+
+Finally we revisit the hook ==buildCommandsGroupWith:forRoot:== to 
+
+[[[
+CmContactBookPresenter class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup
+	rootCommandGroup
+		register: (self buildContextualMenuGroupWith: presenter)
+]]]
+
+To show you that we can also select a part of the command tree we select the 'Context Menu' group and we declare it as the root of the table menu.
+
+[[[
+initializeWidgets
+	table := self newTable.
+	table 
+		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
+	
+	table contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ].
+	table items: contactBook contents.	
+]]]	
+		
 !!! Extending menus
 
 Building menu is nice, but sometimes we need to add a menu into an existing one. Commander supports this as we show it now. 
@@ -534,4 +583,35 @@ CmContactBookPresenter class >>
 		yourself)
 ]]]
 
-!!! Toolbar
+!!! Managing a menu bar
+
+Commander supports also menu bar definition.
+The logic is the same than for contextual menus: with define a group and register it.
+
+[[[
+CmContactBookPresenter class >> buildMenuBarGroupWith: presenter
+	^ (CmCommandGroup named: 'MenuBar') asSpecGroup
+		register: (CmPrintContactBookInTranscript forSpec context: presenter);
+		yourself
+]]]
+
+[[[
+CmContactBookPresenter class >> 
+	buildCommandsGroupWith: presenter 
+	forRoot: rootCommandGroup
+	
+	rootCommandGroup
+		register: (self buildMenuBarGroupWith: presenter);
+		register: (self buildContextualMenuGroupWith: presenter)
+
+And we hook it into the widget as the last line of this following method. Notice the message ==asMenuBarPresenter==.
+[[[
+CmContactBookPresenter >> initializeWidgets
+	table := self newTable.
+	table 
+		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
+	table contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ].
+	table items: contactBook contents.	
+	menuBar := (self rootCommandsGroup / 'MenuBar') asMenuBarPresenter.
+]]]	
