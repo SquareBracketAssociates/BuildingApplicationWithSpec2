@@ -1,8 +1,6 @@
-!My First book
+!Spec
 
+${inputFile:path=Chapters/Commander/Commander.pillar}$
 
-${inputFile:path=Chapters/Chapter1/chapter1.pillar}$
-
-${inputFile:path=Chapters/Chapter2/chapter2.pillar}$
 
 
