@@ -122,16 +122,118 @@ CmContactBook >> add: contactName phone: phone
 	^ contact
 ]]]
 
+!!! Prefilling up the contact book
+
+Since we want to have some contacts and we way to keep them without resorting 
+to a database or file we set some class instance variables. 
+
+We defined two class instance variables: ==family== and ==coworkers== and define
+some class method accessors as follows: 
+
+[[[
+CmContactBook class >> family
+	^family ifNil: [ 
+		family := self new 
+			add: 'John' phone: '342 345';
+			add: 'Bill' phone: '123 678';
+			add: 'Marry' phone: '789 567';
+			yourself]
+]]]
+
+[[[
+CmContactBook class >> coworkers
+	^coworkers ifNil: [ 
+		coworkers := self new 
+			add: 'Stef' phone: '112 378';
+			add: 'Pavel' phone: '898 678';
+			add: 'Marcus' phone: '444 888';
+			yourself]
+]]]
+
+We add one method to be able to reset them if necessary.
+
+[[[
+CmContactBook class >> reset
+	<script>
+	coworkers := nil.
+	family := nil
+]]]
+
+
 !!! A Simple UI
 
 Now we define the application we want to get to illustrate Commander. The application UI is shown in Figure *@final*.
 
 +A rudimentary contact book application.>figures/final.png|width=60|label=final+
 
+We define the class ==CmContactBookPresenter==. It holds a reference to a contact book 
+and it is structured around a table. 
+
 [[[
 ComposablePresenter subclass: #CmContactBookPresenter
-	instanceVariableNames: 'table contactBook menuBar'
+	instanceVariableNames: 'table contactBook'
 	classVariableNames: ''
 	package: 'Commander2-ContactBook-Spec'
+]]]
+
+We define an accessor for the contact book and the table.
+
+[[[
+CmContactBookPresenter >> contactBook
+	^ contactBook
+]]]
+
+[[[
+CmContactBookPresenter >> table: anObject
+	table := anObject
+]]]
+
+[[[
+CmContactBookPresenter >> table
+	^ table
+]]]
+
+!!! Initializing the model
+
+We specialize the method ==setModelBeforeInitialization:== that is invoked by the framework to assign the contactBook instance variable to the object passed during the 
+execution of the expression ==(CmContactBookPresenter on: CmContactBook coworkers) openWithSpec==.
+
+[[[
+CmContactBookPresenter >> setModelBeforeInitialization: aContactBook
+	super setModelBeforeInitialization: aContactBook.
+	contactBook := aContactBook
+]]]
+
+
+!!!! Layout
+
+[[[
+CmContactBookPresenter class >> defaultSpec
+
+	^ SpecLayout composed
+		newColumn: [ :column |
+			column add: #table];
+		yourself
+]]]
+
+!!!! Widget initialization
+
+[[[
+CmContactBookPresenter class >> initializeWidgets
+	table := self newTable.
+	table 
+		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
+	table items: contactBook contents.
+]]]
+
+Now we can start opening the UI by executing the following snippet
+==(CmContactBookPresenter on: CmContactBook coworkers) openWithSpec==
+
+We define a class method to be able to easily reexecute the set up. 
+[[[
+CmContactBookPresenter class >> 	coworkersExample
+	<example>
+	^ (self on: CmContactBook coworkers) openWithSpec 
 ]]]
 
