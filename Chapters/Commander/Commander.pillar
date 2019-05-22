@@ -59,7 +59,7 @@ CmContact >> phone: anObject
 ]]]
 
 !!!! ContactBook
-We start by defining a simple contact class.
+Now we define the contact book class. It is also straighforward. 
 
 [[[
 Object subclass: #CmContactBook
@@ -67,3 +67,59 @@ Object subclass: #CmContactBook
 	classVariableNames: ''
 	package: 'Commander2-ContactBook-Model'
 ]]]
+
+
+[[[
+CmContactBook >> initialize
+		super initialize.
+		contents := OrderedCollection new.
+]]]
+
+[[[
+CmContactBook >> contents
+	^ contents
+]]]
+
+[[[
+CmContactBook >> contents: anObject
+	contents := anObject
+]]]
+
+
+
+We add the possibility to add and remove a contact
+
+[[[
+CmContactBook >> addContact: aContact
+	contents add: aContact
+]]]
+
+
+[[[
+CmContactBook >> removeContact: aContact
+	contents remove: aContact
+]]]
+
+[[[
+CmContactBook >> addContact: newContact after: contactAfter 
+	contents add: newContact after: contactAfter
+]]]
+
+We add a simple testing method in case you want to write some tests (which we urge you to do).
+
+[[[
+CmContactBook >> 	includesContact: aContact
+	^ contents includes: aContact
+]]]
+
+And now we can add the most important method
+
+[[[
+CmContactBook >> add: contactName phone: phone
+	| contact |
+	contact := CmContact named: contactName phone: phone.
+	self addContact: contact.
+	^ contact
+]]]
+
+
