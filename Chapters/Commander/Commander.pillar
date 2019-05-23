@@ -544,9 +544,9 @@ Should match "\d\d\d\s\d\d\d"' ].
 	^ phone
 ]]]
 
-The last missing piece is the declaration of the extension. This one is done using the pragma ==<extensionCommands>== on the class side of the presenter class as follows:
+The last missing piece is the declaration of the extension. This one is done using the pragma ==\<extensionCommands\>== on the class side of the presenter class as follows:
 
-Here we see that using ==\==, we can select the group in which we want to add the item. 
+Here we see that using slash (== / ==), we can select the group in which we want to add the item. 
 [[[
 CmContactBookPresenter class >> 
 	changePhoneCommandWith: presenter 
@@ -606,6 +606,7 @@ CmContactBookPresenter class >>
 ]]]
 
 And we hook it into the widget as the last line of this following method. Notice the message ==asMenuBarPresenter==.
+
 [[[
 CmContactBookPresenter >> initializeWidgets
 	table := self newTable.
@@ -613,6 +614,6 @@ CmContactBookPresenter >> initializeWidgets
 		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
 		addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
 	table contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ].
-	table items: contactBook contents.	
+	table items: contactBook contents.
 	menuBar := (self rootCommandsGroup / 'MenuBar') asMenuBarPresenter.
 ]]]	
