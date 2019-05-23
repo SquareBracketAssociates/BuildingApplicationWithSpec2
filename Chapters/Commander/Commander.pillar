@@ -603,6 +603,7 @@ CmContactBookPresenter class >>
 	rootCommandGroup
 		register: (self buildMenuBarGroupWith: presenter);
 		register: (self buildContextualMenuGroupWith: presenter)
+]]]
 
 And we hook it into the widget as the last line of this following method. Notice the message ==asMenuBarPresenter==.
 [[[
