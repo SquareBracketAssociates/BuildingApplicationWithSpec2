@@ -1,9 +1,9 @@
 !!First Contact With Examples
 @cha_first_contact
 
-To start this booklet we use a couple of examples to explain the use of Spec. We will first construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will already allow you to build basic user interfaces.
+To start this book, we use a couple of examples to explain the use of Spec. We will first construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will already allow you to build basic user interfaces.
 
-After completing this chapter you should at least read the following chapter about reuse of Spec widgets, which is the key reason behind the power of Spec. With these two chapters read you should be able to construct Spec user interfaces as intended. You could use the rest of this booklet just as reference material, but nonetheless we recommend you to at least give a brief look at the other chapters as well.
+After completing this chapter you should at least read the following chapter about reuse of Spec widgets, which is the key reason behind the power of Spec. With these two chapters read, you should be able to construct Spec user interfaces as intended. You could use the rest of this book just as reference material, but nonetheless we recommend you to at least give a brief look at the other chapters as well.
 
 !! A customer satisfaction UI
 @sec_customer_satisfaction
@@ -22,49 +22,58 @@ the first step in creating the UI is creating a subclass:
 SpPresenter subclass: #CustomerSatisfactionPresenter
 	instanceVariableNames: 'buttonHappy buttonNeutral buttonBad screen'
 	classVariableNames: ''
-	package: 'Spec-BuildUIWithSpec'
+	package: 'CodeOfSpec20Book'
 ]]]
 
-The instance variables of the class hold the widgets that the UI
-contains. In this case we have three buttons and a text screen. Accessors for these instance variables also need to be defined, the Spec interpreter will use them in the UI construction process.
+The instance variables of the class hold ''presenters'' of the widgets of the UI. In this case we have three buttons and a text screen. Accessors for these instance variables also need to be defined, Spec will use them in the UI construction process.
 
-@@note Always remember to generate the accessors for the instance variables of the widgets of the UI.
+@@note Always remember to generate the accessors for the instance variables of the presenter widgets.
 
-The methods of the class provide their initialization and configuration, e.g.
+The methods of the class provide their initialization and configuration, e.g.,
 labels and actions, as well as the logic of their interaction. The
-basic design of our GUI, i.e. how the widgets are laid out, is defined by a method
+basic design of our GUI, i.e., how the widgets are laid out, is defined by a method
 at class side.
 
 !!! Instantiate and configure subwidgets
 
-A subclass of ==ComposableModel== has the responsibility to define the
+A subclass of ==SpPresenter== has the responsibility to define the
 ==initializeWidgets== method, which instantiates and configures the
 widgets used in the user interface. We now discuss it piece by piece.
 
 First we show widget instantiation:
 
 [[[
-CustomerSatisfaction >> initializeWidgets
+CustomerSatisfactionPresenter >> initializeWidgets
 
-	"widget instantiation"
+	"Presenter creation"
 	screen := self newLabel.
 	buttonHappy := self newButton.
 	buttonNeutral := self newButton.
 	buttonBad := self newButton.
 ]]]
 
-==ComposableModel== defines messages for the creation of the standard widgets: ==newButton==, ==newCheckBox==, ==newDropList==, ... All of these are defined in the ==widgets== protocol.
+==SpPresenter== defines messages for the creation of presenters for the standard widgets: ==newButton==, ==newCheckBox==, ==newDropList==, ... All of these are defined in the ==widgets== protocol. These are shortcuts to create presenter for the associated widgets.
+
+The following method shows how ==newButton== is defined.
+
+[[[
+SpPresenter >> newButton
+	^ self instantiate: SpButtonPresenter
+]]]
+
+Note that the naming may be a bit confusing since we write ==newButton== while it should be ==newButtonPresenter==, but it is shorter.
 
 @@note ""Do not"" call ==new== to instantiate a widget that is part of your UI.
 
+
 @@note An alternative way to instantiate widgets is by using the message ==instantiate:== with a class as argument. For example ==screen := self instantiate: LabelModel.== This allows one to instantiate non-standard widgets, but can of course also be used for the standard widgets.
 
-Second, we configure the buttons of our UI. The message ==label:== defines their label and the message ==icon:== specifies the icon that will be displayed near the label. 
-The code below is for Pharo 6, for this to work in Pharo 5 replace ==self iconNamed:== with ==Smalltalk ui icons iconNamed:== .
+
+Second, we configure the buttons of our UI. The message ==label:== defines their label and the message ==icon:== specifies the icon that will be displayed near the label.
 
 [[[
 [ ... continued ... ]
-	"widget configuration"
+	"Presenter configuration"
 	screen label: 'Please give us your feedback.'.
 	buttonHappy
 		label: 'Happy';
@@ -88,7 +97,7 @@ Third and last, it is a good practice to define the focus order, which is useful
 		add: buttonBad
 ]]]
 
-A ==ComposableModel== subclass may also define an ==initializePresenter== method. The purpose of this method is to configure the interactions between the different widgets.
+A ==SpPresenter== subclass may also define an ==initializePresenter== method. The purpose of this method is to configure the interactions between the different widgets.
 
 [[[
 CustomerSatisfaction >> initializePresenter
