@@ -1,8 +1,4 @@
-{
-	"metadata" : {
-		"title" : "First Contact With Examples"
-	}
-}
+!!First Contact With Examples
 @cha_first_contact
 
 To start this booklet we use a couple of examples to explain the use of Spec. We will first construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will already allow you to build basic user interfaces.
@@ -23,7 +19,7 @@ All user interfaces in Spec are subclasses of ==ComposableModel==, so
 the first step in creating the UI is creating a subclass:
 
 [[[
-ComposableModel subclass: #CustomerSatisfaction
+SpPresenter subclass: #CustomerSatisfactionPresenter
 	instanceVariableNames: 'buttonHappy buttonNeutral buttonBad screen'
 	classVariableNames: ''
 	package: 'Spec-BuildUIWithSpec'
