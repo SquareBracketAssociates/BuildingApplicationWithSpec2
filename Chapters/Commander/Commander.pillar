@@ -557,6 +557,28 @@ CmContactBookPresenter class >>
 		register: (CmChangePhoneCommand forSpec context: presenter)
 ]]]
 
+!!! Decorating commands
+
+By default a command does not know about Spec specific behavior. It can be used in other context such as scripting libraries as this was the case with Gofer (Gofer was a scripting API to script monticello).
+
+The Spec project extends Commander so that we can extend commands with specific 
+aspects related to Spec. It uses the fact that Commander allows us to decorate commands with decoration that are polymorphic to commands. 
+
+Let us see how it works from a user perspective. 
+
+The framework offers two method to set icon and shortcut key. 
+
+[[[
+asSpecCommandWithIconNamed: aSymbol shortcutKey: aKMKeyCombination
+]]]
+
+[[[
+asSpecCommandWithShortcutKey: aKMKeyCombination
+]]]
+
+
+
+
 !!! Reusing generic commands
 
 Commander supports also the reuse and in place customisation of generic commands.
