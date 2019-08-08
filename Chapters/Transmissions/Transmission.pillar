@@ -7,7 +7,7 @@
 !!! Presenter definition
 
 [[[
-SpPresenter subclass: #SpClassMethodBrowser
+SpPresenter subclass: #SpClassMethodBrowserPresenter
 	instanceVariableNames: 'methodListPresenter textPresenter classListPresenter'
 	classVariableNames: ''
 	package: 'Spec2-Examples-Standalone'
@@ -16,7 +16,7 @@ SpPresenter subclass: #SpClassMethodBrowser
 
 !!! Initializing the presenters
 [[[
-SpClassMethodBrowser >> initializeWidgets
+SpClassMethodBrowserPresenter >> initializeWidgets
 	classListPresenter := self newList.
 	methodListPresenter := self newList.
 	textPresenter := self newCode.
@@ -37,7 +37,7 @@ In the following method, we state that when a class list item is selected, it sh
 Notice that the ==transform:== block get the selectors from the selected class item. 
 
 [[[
-SpClassMethodBrowser >> initializePresenter
+SpClassMethodBrowserPresenter >> initializePresenter
 
 	classListPresenter 
 		transmitTo: methodListPresenter 
@@ -51,12 +51,12 @@ SpClassMethodBrowser >> initializePresenter
 			transmited ifNotNil: [ destination behavior: transmited methodClass ] ]
 ]]]		
 
-@@Esteban can you explain transmited ifNotNil: [ destination behavior: transmited methodClass ]?
+@@note Esteban can you explain transmited ifNotNil: [ destination behavior: transmited methodClass ]?
 
 !!! Layout
 
 [[[
-SpClassMethodBrowser class >> defaultSpec
+SpClassMethodBrowserPresenter class >> defaultSpec
 	^ SpPanedLayout newVertical
 		add:
 			(SpPanedLayout newHorizontal
@@ -74,7 +74,7 @@ It will be called to pass the classes that we want to display as in the followin
 
 [[[
 | example |
-example := SpClassMethodBrowser new.
+example := SpClassMethodBrowserPresenter new.
 example
 	classes: self environment allClasses;
 	openWithSpec.
@@ -82,7 +82,7 @@ example
 
 
 [[[
-SpClassMethodBrowser >> classes: aList
+SpClassMethodBrowserPresenter >> classes: aList
 
 	classListPresenter items = aList 
 		ifTrue: [ ^ self ].
@@ -109,7 +109,8 @@ defineInputPorts
 
 	^ { SpRootsPresenterPort new }
 ]]]
+
 What is a ListSelectionPort?
 What is a RootsPresenterPort?
 
-
+!!! Conclusion

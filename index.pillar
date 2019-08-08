@@ -3,8 +3,12 @@
 ${inputFile:path=Chapters/Intro/Intro.pillar}$
 ${inputFile:path=Chapters/FirstContact/FirstContact.pillar}$
 ${inputFile:path=Chapters/Reuse/Reuse.pillar}$
-${inputFile:path=Chapters/Transmission/Transmission.pillar}$
+${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 ${inputFile:path=Chapters/Commander/Commander.pillar}$
 
 
 
+!! Topics not to forget
+
+- how to launch GTK
+- 
