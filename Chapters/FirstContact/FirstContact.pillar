@@ -236,7 +236,7 @@ The following messages of the ==ListModel== API are noteworthy:
 - The message ==sortingBlock:== takes a block that is used to sort the elements of the list before displaying them.
 
 
-!! Conclusion
+!!! Conclusion
 
 In this chapter we have given you a first contact with Spec user interfaces. We have first shown you what the different steps are to build a user interface with Spec, and then shown you two examples of how to configure existing Spec widgets.
 
