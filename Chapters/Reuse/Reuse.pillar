@@ -76,7 +76,7 @@ Now, whoever reuses this widget can parameterize it with a block that will be ex
 The UI we build now will show a list of all methods of a given protocol, and it combines two widgets: a list and a label. Considering reuse, there is no difference with the previous UI. This is because the reuse of a UI as a widget is ""not impacted at all"" by the number of widgets it contains (nor by their position). Large and complex UIs are reused in the same way as simple widgets.
 
 [[[
-ComposableModel subclass: #ProtocolMethodList
+SpPresenter subclass: #ProtocolMethodListPresenter
 	instanceVariableNames: 'label methods'
 	classVariableNames: ''
 	package: 'Spec-BuildUIWithSpec'
@@ -85,7 +85,7 @@ ComposableModel subclass: #ProtocolMethodList
 The ==initializeWidgets== method for this UI is quite straightforward. We specify the default label text as 'protocol', which will be changed when the widget is reused. We also give this UI a title.
 
 [[[
-ProtocolMethodList >> initializeWidgets
+ProtocolMethodListPresenter >> initializeWidgets
 	methods := self newList.
 	methods displayBlock: [ :m | m selector ].
 	label :=  self newLabel.
@@ -93,24 +93,40 @@ ProtocolMethodList >> initializeWidgets
 	self focusOrder add: methods.
 ]]]
 
+Now to make sure that we can have a nice title when the widget is opened in a window, we
+define the method ==initializeWindow:==.
+
 [[[
-ProtocolMethodList >> title
-	^ 'Protocol widget'
+ProtocolMethodListPresenter >> initializeWindow: aWindowPresenter
+	aWindowPresenter title: 'Protocol widget'
 ]]]
 
-The layout code builds a column with the fixed-height label on top and the list taking all the space that remains. (See Chapter  *@cha_layout_construction* for more on layouts.)
+The layout code builds a column with the fixed-height label on top and the list taking all the space that remains. (See Chapter *@cha_layout_construction* for more on layouts.)
 
 [[[
-ProtocolMethodList class >> defaultSpec
-	^ SpecColumnLayout composed
-			add: #label height: self toolbarHeight;
+ProtocolMethodListPresenter class >> defaultSpec
+	^ SpBoxLayout newVertical
+			add: #label;
 			add: #methods;
 			yourself
 ]]]
 
-This UI can be seen by evaluating ==ProtocolMethodList new openWithSpec==. As shown in Figure *@fig_protocollist* the list is empty. This is normal since we did not set any items.
+This UI can be seen by executing ==ProtocolMethodList new openWithSpec==. As shown in Figure *@fig_protocollist* the list is empty and the result not really nice. This is normal since we did not set any items but we should also place better the elements.
 
-+Screen shot of the ProtocolMethodList.>file://figures/ProtocolList.png|width=50|label=fig_protocollist+
++ProtocolMethodListPresenter with unclear layout.>file://figures/ProtocolList.png|width=50|label=fig_protocollist+
+
+[[[
+ProtocolMethodListPresenter class >> defaultSpec
+	^ SpBoxLayout newVertical
+			add: #label  withConstraints: [:c | c expand: false];
+			add: #methods withConstraints: [:c | c fill];
+			yourself
+]]]
+
+Now you should get a better look as shown in Figure *@fig_protocollist2*.
+
+
++ProtocolMethodListPresenter with nicer layout.>file://figures/ProtocolList2.png|width=50|label=fig_protocollist2+
 
 Our protocol method list will need to be configured when it is used, for example to fill the list of methods and to specify what the name is of the protocol. To allow this, we add a number of configuration methods in the ==api== protocol:
 

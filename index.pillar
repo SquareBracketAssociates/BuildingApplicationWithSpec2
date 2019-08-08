@@ -8,7 +8,11 @@ ${inputFile:path=Chapters/Commander/Commander.pillar}$
 
 
 
-!! Topics not to forget
+!! Topics not to forget to cover
 
 - how to launch GTK
-- 
+- openDialog 
+- openModal 
+- What is the difference between SpPresenter
+- SpPresenterWithModel
+- SpApplication
