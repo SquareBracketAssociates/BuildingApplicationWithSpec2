@@ -5,7 +5,7 @@ To start this book, we use a couple of examples to explain the use of Spec. We w
 
 After completing this chapter you should at least read the following chapter about reuse of Spec widgets, which is the key reason behind the power of Spec. With these two chapters read, you should be able to construct Spec user interfaces as intended. You could use the rest of this book just as reference material, but nonetheless we recommend you to at least give a brief look at the other chapters as well.
 
-!! A customer satisfaction UI
+!!! A customer satisfaction UI
 @sec_customer_satisfaction
 
 +A screen shot of the customer satisfaction UI.>file://figures/Customers_Basic.png|width=50|label=fig_Customers_Basic+
@@ -181,7 +181,7 @@ But we will discuss it later in this book. More information about managing windo
 
 This concludes our first example of a Spec user interface. We now continue with more examples on how to configure the different widgets that can be used in such a user interface.
 
-!! Fun with Lists
+!!! Fun with Lists
 @sec_listModel
 
 As an illustration of how widgets can be configured, we now show two examples of lists: a list using different background colors and a list that also shows icons.
@@ -197,38 +197,36 @@ We start with an example of a ==ListModel== where the elements have different ba
 The following code shows how this is done:
 
 [[[
- | registeredColorsList |
- registeredColorsList := ListModel new.
- registeredColorsList
+| registeredColorsList |
+registeredColorsList := SpListPresenter new.
+registeredColorsList
 	items: Color registeredColorNames;
-	backgroundColorBlock: [ :item | Color named: item ];
+	displayBlock: [ :item | Color named: item ].
+(registeredColorsList openWithSpec)
 	title: 'Registered colors'.
- registeredColorsList openWithSpec
 ]]]
 
 +Screen shot of the list with modified background colors>file://figures/RegisteredColors.png|width=50|label=fig_modified_background+
 
-Here we see the following messages that are part of the ==ListModel== API.
+Here we see the following messages that are part of the ==SpListPresenter== API.
 
 - The message ==items:== sets the elements of the list.
-- The message ==backgroundColorBlock:== specifies a block that is executed to determine the background color of the current element.  It takes a block with a single parameter: the list item.
-- The message ==title:== sets the title of the window containing the list.
+- The message ==displayBlock:== changes the way the element is displayed.
 
 
 !!! List of icons
 
-The second example shows a list containing the icons of the current theme and their respective selector in an ==IconListModel==. The list items are associations of the icon names and the icons themselves, the text that is shown in the list is the icon name, and the icon shown in the list is the icon itself. We also sort the items in the list alphabetically according to their name.
+The second example shows a list containing the icons of the current theme and their respective selector in an ==SpListPresenter==. The list items are associations of the icon names and the icons themselves, the text that is shown in the list is the icon name, and the icon shown in the list is the icon itself. We also sort the items in the list alphabetically according to their name.
 
 [[[
- | iconList |
- iconList := IconListModel new.
- iconList
+| iconList |
+iconList := SpListPresenter new.
+iconList
 	items: Smalltalk ui icons icons associations;
-	displayBlock: [ :assoc | assoc key];
+	displayBlock: [ :assoc | assoc key ];
 	sortingBlock: [ :assocA :assocB | assocA key < assocB key ];
-	icons: [ :assoc | assoc value ];
-	title: 'Availiable icons for the current theme.'.
- iconList openWithSpec
+	icons: [ :elem | elem value ].
+(iconList openWithSpec) title: 'Availiable icons for the current theme.'
 ]]]
 
 +Screen shot of the list of Icons>file://figures/IconList.png|width=50|label=fig_IconList+
@@ -242,6 +240,6 @@ The following messages of the ==ListModel== API are noteworthy:
 
 In this chapter we have given you a first contact with Spec user interfaces. We have first shown you what the different steps are to build a user interface with Spec, and then shown you two examples of how to configure existing Spec widgets.
 
-More examples of Spec user interfaces are found in the Pharo Image itself. Since all Spec user interfaces are subclasses of ==ComposableModel==, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows, and their configuration methods are classified in the ==api== protocol.
+More examples of Spec user interfaces are found in the Pharo Image itself. Since all Spec user interfaces are subclasses of ==SpPresenter==, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
 
 We recommend that you at least read the next chapter about reuse of Spec widgets, which is the key reason behind the power of Spec. This knowledge will help you in building UIs faster through better reuse, and also allow your own UIs to be reused. The chapter after that on the three pillars of Spec gives a more complete overview of the functioning of Spec and is worthwhile to read in its entirety. Later chapters are intended more as reference material for specific problems or use cases, but can of course be read in full as well.
