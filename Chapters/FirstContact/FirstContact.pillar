@@ -37,15 +37,19 @@ at class side.
 !!! Instantiate and configure subwidgets
 
 A subclass of ==SpPresenter== has the responsibility to define the
-==initializeWidgets== method, which instantiates and configures the
+==initializePresenter== method, which instantiates and configures the
 widgets used in the user interface. We now discuss it piece by piece.
+Note that since this method may be a bit long we will split it into pieces that represent
+their intent.
 
-First we show widget instantiation:
-
+!!!! Presenter creation
 [[[
-CustomerSatisfactionPresenter >> initializeWidgets
+CustomerSatisfactionPresenter >> initializePresenter
 
-	"Presenter creation"
+	self presenterCreation 
+
+CustomerSatisfactionPresenter >> initializePresenter
+
 	screen := self newLabel.
 	buttonHappy := self newButton.
 	buttonNeutral := self newButton.
@@ -68,12 +72,12 @@ Note that the naming may be a bit confusing since we write ==newButton== while i
 
 @@note An alternative way to instantiate widgets is by using the message ==instantiate:== with a class as argument. For example ==screen := self instantiate: LabelModel.== This allows one to instantiate non-standard widgets, but can of course also be used for the standard widgets.
 
-
+!!!! Presenter configuration
 Second, we configure the buttons of our UI. The message ==label:== defines their label and the message ==icon:== specifies the icon that will be displayed near the label.
 
 [[[
-[ ... continued ... ]
-	"Presenter configuration"
+CustomerSatisfactionPresenter >> initializePresenter
+	... continued ...
 	screen label: 'Please give us your feedback.'.
 	buttonHappy
 		label: 'Happy';
@@ -89,7 +93,8 @@ Second, we configure the buttons of our UI. The message ==label:== defines their
 Third and last, it is a good practice to define the focus order, which is useful for keyboard navigation.
 
 [[[
-[ ... continued ... ]
+CustomerSatisfactionPresenter >> initializePresenter
+	... continued ...
 	"specification of order of focus"
 	self focusOrder
 		add: buttonHappy;
@@ -97,10 +102,19 @@ Third and last, it is a good practice to define the focus order, which is useful
 		add: buttonBad
 ]]]
 
-A ==SpPresenter== subclass may also define an ==initializePresenter== method. The purpose of this method is to configure the interactions between the different widgets.
+!!!! Presenter interaction logic
+
+Now we should define what will happen when we press a button. 
+We define this in a separate method (herre called ==presenterConnectionLogic==) as follows: 
+
 
 [[[
-CustomerSatisfaction >> initializePresenter
+CustomerSatisfactionPresenter >> initializePresenter
+
+	self presenterCreation.
+	self presenterConnectionLogic
+	
+CustomerSatisfactionPresenter >> presenterConnectionLogic
 
 	buttonHappy action: [ screen label: buttonHappy label ].
 	buttonNeutral action: [ screen label: buttonNeutral label ].
@@ -109,49 +123,61 @@ CustomerSatisfaction >> initializePresenter
 
 We use the message ==action:== to specify the action that is performed when the buttons are clicked. In this case, we change the content of what is shown on the screen, to provide feedback that the choice has been registered. Note that the message ==action:== is part of the button API. In other situations, you will specify that when a given event occurs, another message should be sent to a widget subpart.
 
-@@note To summarize: the configuration of a widget `on its own' goes in ==initializeWidgets== and the configuration of a widget `in cooperation with others' goes in ==initializePresenter==.
+@@note To summarize: specialize ==initializePresenter== to define, configure and connect your presenters together.
 
+!!!! Specifying the widget layout
 The widgets have now been defined and configured, but their placement in the UI has not yet been specified. This is the role of the class side method ==defaultSpec==.
 
 [[[
-CustomerSatisfaction class >> defaultSpec
-	^ SpecLayout composed
-		newRow: [ :row |
-			row add: #buttonHappy; add: #buttonNeutral; add: #buttonBad ]
-		origin: 0 @ 0 corner: 1 @ 0.7;
-		newRow: [ :row | row add: #screen ]
-		origin: 0 @ 0.7 corner: 1 @ 1;
+CustomerSatisfactionPresenter class >> defaultSpec
+	^ SpBoxLayout newVertical 
+		add: (SpBoxLayout newHorizontal
+				add: #buttonHappy; add: #buttonNeutral; add: #buttonBad)
+		add:  #screen;
 		yourself
 ]]]
 
 In this layout, we add two rows to the UI, one with the buttons and one with the screen of text. Defining widget layout is a complex process with many different possible requirements, hence in this chapter we do not talk in detail about layout specification. Instead for more information we refer to Chapter *@cha_layout_construction*.
 
-@@note The argument of the ==add:== messages are the symbols for the accessors. This is because the Spec interpreter will call these methods to retrieve the widgets when performing the layout.
+@@note The argument of the ==add:== messages are the symbols for the accessors.
+
+
+
+Once the class method ==defaultSpec== is defined, you can start to open your UI as follows: ==CustomerSatisfactionPresenter new openWithSpec==. You should obtain a widget similar to the one shown in Fig. *@figFirstCut*.
+
++A first version of the customer satisfaction UI.>file://figures/FirstCut.png|width=50|label=figFirstCut+
+
 
 !!! Define a title and window size, open and close the UI
 
-To set the window title and the initial size, two more methods need to be defined:
+To set the window title and the initial size of your widget, you have to specialize the method ==initializeWindow:== as follows: 
 
 [[[
-CustomerSatisfaction >> title
-	^ 'Customer Satisfaction Survey'.
-
-CustomerSatisfaction >> extent
-	^ 400@100
+CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
+	
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter
+		title: 'Customer Satisfaction Survey';
+		initialExtent:  400@100
 ]]]
 
-The ==title== method returns a string that will be used as a title, and the ==extent== method returns a point that specifies the size of the window.
+Of course, you are free to use helper method to return the title and extent of your widget. Now reopening your widget you should get the one displayed in Fig. *@figSecondCut*.
 
-To open a UI, an instance of the class needs to be created and it needs to be sent the ==openWithSpec== message. This will open a window and return an instance of ==WindowModel==, which allows the window to be closed from code.
+
++A final version of the customer satisfaction UI.>file://figures/SecondCut.png|width=50|label=figSecondCut+
+
+
+To open a UI, an instance of the class needs to be created and it needs to be sent the ==openWithSpec== message. This will open a window and return an instance of ==WindowPresenter==, which allows the window to be closed from code.
 
 [[[
  | ui |
- ui := CustomerSatisfaction new openWithSpec.
+ ui := CustomerSatisfactionPresenter new openWithSpec.
  [ ... do a lot of stuff until the UI needs to be closed ...]
  ui close.
 ]]]
 
-More information about managing windows: e.g., opening dialog boxes or setting the about text is present in Chapter *@cha_managing_windows*.
+Note that to update the contents of your window once it is open, you have other methods such as ==withWindowDo:==.
+But we will discuss it later in this book. More information about managing windows: e.g., opening dialog boxes or setting the about text is present in Chapter *@cha_managing_windows*.
 
 This concludes our first example of a Spec user interface. We now continue with more examples on how to configure the different widgets that can be used in such a user interface.
 
