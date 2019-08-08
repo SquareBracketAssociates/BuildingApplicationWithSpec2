@@ -7,17 +7,20 @@ smalltalk:
 env:
   matrix:
   - JOB=test TYPE=System ARCHETYPE=book OUTPUT=pdf
+  global:
+  - secure: YQj6rFYlEY3r2+cW0zzW8wfH/TU/x24a+Ip2dnA0f+MNxawy0cvZsvjF/Ng//FgNPn0uz2wNfnCNjEUhHQfb6JJ0HiwmKW8lSmMJlGb+v8OT9lwG0+3LmzW18iYFDL8aalEjalZ82Zt58MoMSUbAlPXSB9tZt3ebygRLqhTPz3Pj7pKssrkIOjoz1i+ddK/KXf+dOTTzqG9inbwiEn6BysOl51x34iGh5PE6Sv7TBvrR80Fe7sKuY3XIckvazKjjKuI4hEBG86bdC1FOUrcK+tanrdIFzNX9N1j+1S/HMO63lgROxk7f8fF82fdpQdE/NVGc2xM7eJdvKUmce2RhLlUuJcq49ylEFoHgsY8G0xZMwtKfY5tMO0RqYnMW8sLVgbPv51GKp4Y4Nf127icOuJKQSZkUBIJGtYc2u9GaMI/Bwf/pQJ/wvjCMui8nRNueA+KysdHqDfN0IVJtEMvHWNq/hwyZIBnaq/rLmPPgAY6VQJoAHWmdXotZCsLeEb7QwU61jFrubLciY3GENg6dy8UY/xFqCltFOgDhrvwt+93NkxYH+m2mpft7A+66NQU2/VBS+0QPFqRFg0uIQkIq3n9FevnnJtHnrqLMIyZtK0nF2I2fmopCmu+bKjfvazVAmugIgfQAxZUtgZ4GSij6JHQ0kU773TC8DbXt6UEaQD0=
+  - secure: WCeZRNujagjz/Xfm6lYd3jBs0gyH+UmfDHU4cUSQzcRjd8+fGXDLwUxfPEy8ne0FW9qIGds5bdsuasnUM+djIxLfx1BXMW62grrDSGVFhe8bH1KHdWbeskoLtEsIn1BAi6juqMlCWEJz6n8xApFcpnJ3ri0C2limQvj+cDdOtg6MBKdRv4g4VeVMXiQwiXpFuZmwr4T/Cx8BP5Yh78SNWDPj2CLN3coVVSy894bTEI0R9qc9i/kOANeC7MpcCPzMqPEsTl7dSCYHJsfEVPaY4FehbSZvXCvwaX3wEdWHcz5foz07SCNODVekivwZKD/vg3fHGXgd1U+5xy8Lfcr+ZPbW9Y/A2PbJOc07VriN9LphL8I54KhiOHrt9gdj824MJKnDE4BoSI/J3fZdv+EwoEFY+dR6GVeSDI43wStIv/vS2e4O3feuQxURVNxO1QteMfUWp0yiDSPkzpsCJF/PK8lXmN/nMp8pxJhV0PaoNdIvt2Q3XPFy5huVLiL7THMdeBN3fpnIsc5zCbYD3ZsFqKfG4aNPsWVxm1+CxVO/fOWANIUTdNMW3CeaPU0d+BelokUaASdD75fgI2nZzj+us83XxCAYtkX3tTJ1bqjZZeLMaOeITmFUFu5O2qSXJkdP9hPCqeoQDEVn7lkVKdIt3WPpD58jN9L07k+SOAqfKAs=
 install:
 - git clone https://github.com/pillar-markup/pillar.git -b v7.4.1
 - cd pillar && ./scripts/build.sh && cd ..
-- . pillar/scripts/ci/ensure_latex.sh
-- ./pillar/scripts/ci/ensure_book_dependencies.sh
+- ". pillar/scripts/ci/ensure_latex.sh"
+- "./pillar/scripts/ci/ensure_book_dependencies.sh"
 script:
-- ./pillar/build/pillar build pdf
+- "./pillar/build/pillar build pdf"
 after_success:
 - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
 - mv _result/pdf/index.pdf Spec20-wip.pdf
 - bash upload.sh Spec20-wip.pdf
 branches:
   except:
-  - /^(?i:continuous)$/
+  - "/^(?i:continuous)$/"
