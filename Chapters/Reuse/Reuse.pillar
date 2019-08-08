@@ -23,7 +23,7 @@ To show how Spec enables the composition and reuse of user interfaces, in this c
 @sec_WidgetClassList
 
 The first custom UI we build should display a list of all subclasses of
-==AbstractWidgetModel==. This UI will later be reused as a widget for a more complete UI. The code is as follows (we do not include code for accessors):
+==AbstractWidgetPresenter==. This UI will later be reused as a widget for a more complete UI. The code is as follows (we do not include code for accessors):
 
 First we create a subclass of ==ComposableModel== with one instance variable ==list== which will hold an instance of ==ListModel==.
 [[[
