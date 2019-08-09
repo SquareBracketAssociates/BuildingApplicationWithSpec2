@@ -142,6 +142,7 @@ ProtocolMethodListPresenter >> label: aText
 ProtocolMethodListPresenter >> resetSelection
 	methods resetSelection
 ]]]
+
 [[[
 ProtocolMethodListPresenter >> whenSelectedItemChanged: aBlock
 	methods whenSelectedItemChanged: aBlock
@@ -170,6 +171,39 @@ Now we can play and for example decide to sort the items as follows:
 [[[
 self items: (Point methods sort: #selector ascending)
 ]]]
+
+!!! Writing tests
+When we start to feel the need to check manually what we have done, this is a sign that we should write a test instead. 
+So let us do that. It is easy to write simple tests for widgets when we do not test popups. So let us take advantage of that.
+
+We add an accessor to access the method list.
+
+[[[
+ProtocolMethodListPresenter >> methods
+
+	^ methods
+]]]
+
+[[[
+TestCase subclass: #ProtocolMethodListPresenterTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'CodeOfSpec20Book'
+]]]
+
+[[[
+ProtocolMethodListPresenterTest >> testItems
+
+	| proto methods |
+	methods := Point methods sort: #selector ascending.
+	proto := ProtocolMethodListPresenter new.
+	proto items: methods.
+	self assert: proto methods items first class equals: CompiledMethod.
+	self assert: proto methods items first selector equals: methods first selector
+]]]
+
+We hope that we convinced you that writing simple UI tests are really easy with Spec. 
+Do not miss this opportunity to control the complexity of your software. 
 
 
 !!! Managing three widgets and their interactions
