@@ -190,9 +190,57 @@ These examples show two important features of Spec:
 # All widgets can be opened as a window. This is because there is no fundamental difference between a complex UI as shown above and the standard widgets.
 # All widgets can be configured, and their configuration methods are classified in ==api== protocols.
 
-!!! Registered colors as item background
+!!! Variations on registered colors
+We start with an example of a ==SpListPresenter== where the elements represent color names as shown in
+(Figure *@figColorNames*). 
+The items held in the list are the names of different colors, and the list shows them simply.
+The following code shows how this is done -- note that we sort the names so that you get the same situation than the one in the figure.
 
-We start with an example of a ==ListModel== where the elements have different background colors, shown in Figure *@fig_modified_background*. The items held in the list are the names of different colors, and the list shows them using a background of that color.
+[[[
+| registeredColorNamesList |
+registeredColorNamesList := SpListPresenter new.
+registeredColorNamesList
+	items: (Color registeredColorNames sort: #yourself ascending).
+(registeredColorNamesList openWithSpec)
+	title: 'Registered color names'.
+]]]
+
++Registered color names.>file://figures/ColorNames.png|width=50|label=figColorNames+
+
+!!! Manipulating color objects
+Now imagine that we have a list of colors and not a list of color names. The items held in the list are different colors.
+The following code shows how this is done. Here the string representation of the item is used by default as shown in Figure *@figRegisteredColors*.
+
+[[[
+| registeredColorsList |
+registeredColorsList := SpListPresenter new.
+registeredColorsList
+	items: (Color allInstances sort: #hue ascending).
+(registeredColorsList openWithSpec)
+	title: 'Registered colors'.
+]]]
+
++All colors.>file://figures/RegisteredColors.png|width=50|label=figRegisteredColors+
+
+Now imagine that we should like to have a different representation such as the rgb triplet representation. 
+Using the message ==displayBlock:==, we configure the list to apply a transformation on the item before displaying it.
+The resulting widget is shown in Figure *@figasTriplet*.
+
+[[[
+| registeredColorsList |
+registeredColorsList := SpListPresenter new.
+registeredColorsList
+	items: (Color allInstances sort: #hue ascending);
+	displayBlock: [ :it | it rgbTriplet ].
+	(registeredColorsList openWithSpec)
+		title: 'Registered colors as triplets'.
+]]]
+
++All rbg.>file://figures/asTriplet.png|width=50|label=figasTriplet+
+
+!!! TOBE DONE WHEN AVAILABLERegistered colors  as item background
+
+We start with an example of a ==SpListPresenter== where the elements have different background colors, shown in Figure *@fig_modified_background*. The items held in the list are the names of different colors, and the list shows them using a background of that color.
 
 The following code shows how this is done:
 
@@ -201,12 +249,12 @@ The following code shows how this is done:
 registeredColorsList := SpListPresenter new.
 registeredColorsList
 	items: Color registeredColorNames;
-	displayBlock: [ :item | Color named: item ].
+	displayBlock: [ :item | item ].
 (registeredColorsList openWithSpec)
 	title: 'Registered colors'.
 ]]]
 
-+Screen shot of the list with modified background colors>file://figures/RegisteredColors.png|width=50|label=fig_modified_background+
++TO BE DONE List with modified background colors>file://figures/RegisteredColorsBack.png|width=50|label=fig_modified_background+
 
 Here we see the following messages that are part of the ==SpListPresenter== API.
 
