@@ -9,7 +9,7 @@ In this chapter, you will learn how we can build a new UI by reusing already def
 
 !!! First requirements
 
-+Screen shot of the ProtocolBrowser.>file://figures/Protocol_Browser.png|width=80|label=fig_protocol_browser+
++ TO BE REDONE the ProtocolBrowser.>file://figures/Protocol_Browser.png|width=80|label=fig_protocol_browser+
 
 
 To show how Spec enables the composition and reuse of user interfaces, in this chapter we build the user interface shown in Figure *@fig_protocol_browser* as a composition of four parts:
@@ -162,10 +162,14 @@ Then in the inspector we can use the newly created methods to pass a collection 
 	self items: Point methods
 ]]]
 
-+Live coding your widgets .>file://figures/inspectingLive.png|width=50|label=figinspectingLive+
++Live coding your widgets.>file://figures/inspectingLive.png|width=50|label=figinspectingLive+
 inspectingLive
 
+Now we can play and for example decide to sort the items as follows: 
 
+[[[
+self items: (Point methods sort: #selector ascending)
+]]]
 
 
 !!! Managing three widgets and their interactions
@@ -176,7 +180,7 @@ The third user interface we build is a composition of the two previous user inte
 This UI is composed of a ==WidgetClassList== and two ==ProtocolMethodList== and specifies that when a model class is selected in the ==WidgetClassList==, the methods in the protocols ==api== and ==api-events== will be shown in the two ==ProtocolMethodList== widgets.
 
 [[[
-ComposableModel subclass: #ProtocolViewer
+SpPresenter subclass: #ProtocolViewerPresenter
 	instanceVariableNames: 'models api events'
 	classVariableNames: ''
 	package: 'Spec-BuildUIWithSpec'
@@ -185,10 +189,10 @@ ComposableModel subclass: #ProtocolViewer
 The ==initializeWidgets== method shows the use of ==instantiate:== to instantiate widgets, and some of the different parametrization methods of the ==ProtocolMethodList== class.
 
 [[[
-ProtocolViewer >> initializeWidgets
-	models := self instantiate: WidgetClassList.
-	api := self instantiate: ProtocolMethodList.
-	events := self instantiate: ProtocolMethodList.
+ProtocolViewerPresenter >> initializeWidgets
+	models := self instantiate: WidgetClassListPresenter.
+	api := self instantiate: ProtocolMethodListPresenter.
+	events := self instantiate: ProtocolMethodListPresenter.
 
 	api label: 'api'.
 	events label: 'api-events'.
@@ -197,14 +201,14 @@ ProtocolViewer >> initializeWidgets
 ]]]
 
 [[[
-ProtocolViewer >> title
-	^ 'Protocol viewer'
+ProtocolViewerPresenter >> initializeWindow: aWindowPresenter
+	aWindowPresenter title: 'Protocol viewer'
 ]]]
 
 To describe the interactions between the different widgets we define the ==initializePresenter== method. It specifies that when a class is selected, the selections in the method lists are reset and both method lists are populated. Additionally, when a method is selected in one method list, the selection in the other list is reset.
 
 [[[
-ProtocolViewer >> initializePresenter
+ProtocolViewerPresenter >> initializePresenter
 	models whenSelectedItemChanged: [ :class |
 		api resetSelection.
 		events resetSelection.
@@ -221,7 +225,7 @@ ProtocolViewer >> initializePresenter
 ]]]
 
 [[[
-ProtocolViewer >> methodsIn: class for: protocol
+ProtocolViewerPresenter >> methodsIn: class for: protocol
 	^ (class methodsInProtocol: protocol) sorted:
 	  		 [ :a :b | a selector < b selector ].
 ]]]
@@ -229,8 +233,8 @@ ProtocolViewer >> methodsIn: class for: protocol
 Lastly, the layout puts the sub widgets in one column, with all sub widgets taking the same amount of space.
 
 [[[
-ProtocolViewer class >> defaultSpec
-	^ SpecColumnLayout composed
+ProtocolViewerPresenter class >> defaultSpec
+	^ SpBoxLayout newHorizontal
 			add: #models; add: #api; add: #events;
 			yourself
 ]]]
@@ -243,15 +247,15 @@ As previously, the result can be seen by executing the following snippet of code
 Similar to the second user interface, when this UI is reused it will probably need to be configured. The relevant configuration here is what to do when a selection change happens in any of the three lists. We hence add the following three methods to the ==api== protocol.
 
 [[[
-ProtocolViewer >> whenClassChanged: aBlock
+ProtocolViewerPresenter >> whenClassChanged: aBlock
 	models whenSelectedItemChanged: aBlock
 ]]]
 [[[
-ProtocolViewer >> whenEventChanged: aBlock
+ProtocolViewerPresenter >> whenEventChanged: aBlock
 	events whenSelectedItemChanged: aBlock
 ]]]
 [[[
-ProtocolViewer >> whenAPIChanged: aBlock
+ProtocolViewerPresenter >> whenAPIChanged: aBlock
 	api whenSelectedItemChanged: aBlock
 ]]]
 
@@ -266,13 +270,13 @@ Sometimes, when you want to reuse an existing UI as a widget, the layout of that
 Our last user interface reuses the ==ProtocolViewer== with a different layout and adds a text zone to edit the source code of the selected method.
 
 [[[
-ComposableModel subclass: #ProtocolBrowser
+SpPresenter subclass: #ProtocolBrowserPresenter
 	instanceVariableNames: 'text viewer'
 	classVariableNames: ''
 	package: 'Spec-BuildUIWithSpec'
 ]]]
 [[[
-ProtocolBrowser >> initializeWidgets
+ProtocolBrowserPresenter >> initializeWidgets
 	text := self instantiate: TextModel.
 	viewer := self instantiate: ProtocolViewer.
 	text
@@ -283,8 +287,8 @@ ProtocolBrowser >> initializeWidgets
 		add: text.
 ]]]
 [[[
-ProtocolBrowser >> title
-	^'Spec Protocol Browser'
+ProtocolBrowserPresenter >> initializeWindow: aWindowPresenter
+	aWindowPresenter title: 'Spec Protocol Browser'
 ]]]
 
 The text field is configured to show source code:
@@ -294,7 +298,7 @@ The text field is configured to show source code:
 The ==initalizePresenter== method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
 
 [[[
-ProtocolBrowser >> initializePresenter
+ProtocolBrowserPresenter >> initializePresenter
 	viewer whenClassChanged: [ :class | text behavior: class ].
 	viewer whenAPIChanged: [ :item |
 		item
@@ -307,7 +311,7 @@ ProtocolBrowser >> initializePresenter
 The last piece of the puzzle is the layout of the different widgets that we are reusing. We combine columns and rows in this UI. The first row is special because we reuse the internal widgets of the ==viewer== widget in a different layout. To do this, we specify the sequence of accessor messages that need to be sent (as an array of symbols): for example, for the list of classes first the ==viewer== message and then the ==models== message.
 
 [[[
-ProtocolBrowser class >> defaultSpec
+ProtocolBrowserPresenter class >> defaultSpec
 	^ SpecLayout composed newColumn: [:col |
 			col newRow: [ :row |
 				row add: #(viewer models);
