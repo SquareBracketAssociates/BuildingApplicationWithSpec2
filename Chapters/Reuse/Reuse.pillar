@@ -128,26 +128,45 @@ Now you should get a better look as shown in Figure *@fig_protocollist2*.
 
 +ProtocolMethodListPresenter with nicer layout.>file://figures/ProtocolList2.png|width=50|label=fig_protocollist2+
 
-Our protocol method list will need to be configured when it is used, for example to fill the list of methods and to specify what the name is of the protocol. To allow this, we add a number of configuration methods in the ==api== protocol:
+Our protocol method list will need to be configured when it is used, for example to fill the list of methods and to specify what the name is of the protocol. To allow this, we add a number of configuration methods:
 
 [[[
-ProtocolMethodList >> items: aCollection
+ProtocolMethodListPresenter >> items: aCollection
 	methods items: aCollection
 ]]]
 [[[
-ProtocolMethodList >> label: aText
+ProtocolMethodListPresenter >> label: aText
 	label label: aText
 ]]]
 [[[
-ProtocolMethodList >> resetSelection
+ProtocolMethodListPresenter >> resetSelection
 	methods resetSelection
 ]]]
 [[[
-ProtocolMethodList >> whenSelectedItemChanged: aBlock
+ProtocolMethodListPresenter >> whenSelectedItemChanged: aBlock
 	methods whenSelectedItemChanged: aBlock
 ]]]
 
 @@note An alternative to adding these methods is simply to do nothing: since both the methods and the label are accessible (through their accessors), a reuser of this widget may simply obtain them and configure them directly. These two alternatives reflect a design decision that we will discuss in Section *@sec_public_API*.
+
+!!!! Inspecting live the widgets
+Now we can check manually if the widget is working doing:
+
+[[[
+ProtocolMethodListPresenter new openWithSpec ; inspect
+]]]
+
+Then in the inspector we can use the newly created methods to pass a collection of methods:
+
+[[[
+	self items: Point methods
+]]]
+
++Live coding your widgets .>file://figures/inspectingLive.png|width=50|label=figinspectingLive+
+inspectingLive
+
+
+
 
 !!! Managing three widgets and their interactions
 @sec_protocolviewer
