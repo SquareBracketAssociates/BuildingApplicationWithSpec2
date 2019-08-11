@@ -163,8 +163,7 @@ Then in the inspector we can use the newly created methods to pass a collection 
 	self items: Point methods
 ]]]
 
-+Live coding your widgets.>file://figures/inspectingLive.png|width=50|label=figinspectingLive+
-inspectingLive
++Live coding your widgets.>file://figures/inspectingLive.png|width=90|label=figinspectingLive+
 
 Now we can play and for example decide to sort the items as follows: 
 
@@ -211,7 +210,7 @@ Do not miss this opportunity to control the complexity of your software.
 
 The third user interface we build is a composition of the two previous user interfaces. We will see that there is no difference between configuring custom UIs and configuring system widgets: both kinds of widgets are configured by calling methods of the ==api== protocol.
 
-This UI is composed of a ==WidgetClassList== and two ==ProtocolMethodList== and specifies that when a model class is selected in the ==WidgetClassList==, the methods in the protocols ==api== and ==api-events== will be shown in the two ==ProtocolMethodList== widgets.
+This UI is composed of a ==WidgetClassListPresenter== and two ==ProtocolMethodListPresenter== and specifies that when a model class is selected in the ==WidgetClassListPresenter==, the methods in the protocols ==api== and ==api-events== will be shown in the two ==ProtocolMethodListPresenter== widgets.
 
 [[[
 SpPresenter subclass: #ProtocolViewerPresenter
@@ -220,10 +219,15 @@ SpPresenter subclass: #ProtocolViewerPresenter
 	package: 'Spec-BuildUIWithSpec'
 ]]]
 
-The ==initializeWidgets== method shows the use of ==instantiate:== to instantiate widgets, and some of the different parametrization methods of the ==ProtocolMethodList== class.
+The ==initializeWidgets== method shows the use of ==instantiate:== to instantiate widgets, and some of the different parametrization methods of the ==ProtocolMethodListPresenter== class.
 
 [[[
-ProtocolViewerPresenter >> initializeWidgets
+ProtocolViewerPresenter >> initializePresenter
+	self presenterCreation
+]]]
+
+[[[
+ProtocolViewerPresenter >> presenterCreation
 	models := self instantiate: WidgetClassListPresenter.
 	api := self instantiate: ProtocolMethodListPresenter.
 	events := self instantiate: ProtocolMethodListPresenter.
@@ -243,6 +247,11 @@ To describe the interactions between the different widgets we define the ==initi
 
 [[[
 ProtocolViewerPresenter >> initializePresenter
+	self presenterCreation.
+	self presenterConnectionLogic
+	
+ProtocolViewerPresenter >> defineInteractionLogic
+
 	models whenSelectedItemChanged: [ :class |
 		api resetSelection.
 		events resetSelection.
@@ -268,16 +277,62 @@ Lastly, the layout puts the sub widgets in one column, with all sub widgets taki
 
 [[[
 ProtocolViewerPresenter class >> defaultSpec
-	^ SpBoxLayout newHorizontal
+	^ SpBoxLayout newVertical
 			add: #models; add: #api; add: #events;
 			yourself
 ]]]
 
 
-As previously, the result can be seen by executing the following snippet of code: ==ProtocolViewer new openWithSpec==, and the result is shown in Figure *@fig_protocol_Viewer*. This user interface is functional, clicking on a class will show the methods of the ==api== and the ==api-events== protocols of that class.
+As previously, the result can be seen by executing the following snippet of code: ==ProtocolViewer new openWithSpec==, and the result is shown in Figure *@figProtocolViewerVertical*. This user interface is functional, clicking on a class will show the methods of the ==api== and the ==api-events== protocols of that class.
 
-+Render of the ProtocolViewer.>file://figures/Protocol_Viewer.png|width=50|label=fig_protocol_Viewer+
++ProtocolViewer in vertical mode.>file://figures/ProtocolViewerVertical.png|width=50|label=figProtocolViewerVertical+
 
+
+!!! Having different layout
+
+Notice that you can change the layout as follows to get all the widgets in a row as shown in Figure *@figProtocolViewerHorizontal*.
+We will show later that a presenter can have multiple layouts and that the programmer decide which one to use.
+
+[[[
+ProtocolViewerPresenter class >> defaultSpec
+	^ SpBoxLayout newHorizontal
+			add: #models; add: #api; add: #events;
+			yourself
+]]]
+
+We can do better. Let us define three methods as follows: 
+
+[[[
+ProtocolViewerPresenter class >>	
+horizontalSpec
+	^ SpBoxLayout newHorizontal
+		add: #models; add: #api; add: #events;
+		yourself
+]]]
+
+[[[
+ProtocolViewerPresenter class >> verticalSpec
+	^ SpBoxLayout newVertical
+		add: #models; add: #api; add: #events;
+		yourself
+]]]
+
+[[[
+ProtocolViewerPresenter class >> defaultSpec
+	^ self verticalSpec
+]]]
+
+Now we can decide to open the viewer with different layouts using the message ==openWithSpec:== as follows (as shown in Figure *@figProtocolViewerHorizontal*):
+
+[[[
+ProtocolViewerPresenter class >> exampleHorizontal
+	
+		self new openWithSpec: #horizontalSpec
+]]]
+
++ProtocolViewer in horizontal mode.>file://figures/ProtocolViewerHorizontal.png|width=50|label=figProtocolViewerHorizontal+
+
+!!! Enhancing our API
 Similar to the second user interface, when this UI is reused it will probably need to be configured. The relevant configuration here is what to do when a selection change happens in any of the three lists. We hence add the following three methods to the ==api== protocol.
 
 [[[
@@ -293,7 +348,7 @@ ProtocolViewerPresenter >> whenAPIChanged: aBlock
 	api whenSelectedItemChanged: aBlock
 ]]]
 
-@@note Compared to the public configuration API methods we have seen before, these methods add semantic information to the configuration API. They state that they configure what to do when a class, ==api== or ==api-events== list item has been changed. This arguably communicates the customization API more clearly than just having the subwidgets accessible.
+@@note These methods add semantic information to the configuration API. They state that they configure what to do when a class, ==api== or ==api-events== list item has been changed. This arguably communicates the customization API more clearly than just having the subwidgets accessible.
 
 
 !!! Changing the layout of a reused widget
@@ -301,18 +356,22 @@ ProtocolViewerPresenter >> whenAPIChanged: aBlock
 
 Sometimes, when you want to reuse an existing UI as a widget, the layout of that UI is not appropriate to your needs. Spec allows you to nonetheless reuse such a UI by overriding the layout of its widgets, and we show this here.
 
-Our last user interface reuses the ==ProtocolViewer== with a different layout and adds a text zone to edit the source code of the selected method.
+Our last user interface reuses the ==ProtocolViewerPresenter== with a different layout and adds a text zone to edit the source code of the selected method.
 
 [[[
-SpPresenter subclass: #ProtocolBrowserPresenter
+SpPresenter subclass: #ProtocolCodeBrowserPresenter
 	instanceVariableNames: 'text viewer'
 	classVariableNames: ''
 	package: 'Spec-BuildUIWithSpec'
 ]]]
 [[[
-ProtocolBrowserPresenter >> initializeWidgets
-	text := self instantiate: TextModel.
-	viewer := self instantiate: ProtocolViewer.
+ProtocolCodeBrowserPresenter >> initializePresenter
+	self presenterCreation.
+]]]	
+[[[
+ProtocolCodeBrowserPresenter >> presenterCreation
+	text := self instantiate: SpCodePresenter.
+	viewer := self instantiate: ProtocolViewerPresenter.
 	text
 		aboutToStyle: true;
 		isCodeCompletionAllowed: true.
@@ -321,7 +380,7 @@ ProtocolBrowserPresenter >> initializeWidgets
 		add: text.
 ]]]
 [[[
-ProtocolBrowserPresenter >> initializeWindow: aWindowPresenter
+ProtocolCodeBrowserPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Spec Protocol Browser'
 ]]]
 
@@ -332,7 +391,7 @@ The text field is configured to show source code:
 The ==initalizePresenter== method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
 
 [[[
-ProtocolBrowserPresenter >> initializePresenter
+ProtocolCodeBrowserPresenter >> presenterConnection
 	viewer whenClassChanged: [ :class | text behavior: class ].
 	viewer whenAPIChanged: [ :item |
 		item
@@ -344,8 +403,10 @@ ProtocolBrowserPresenter >> initializePresenter
 
 The last piece of the puzzle is the layout of the different widgets that we are reusing. We combine columns and rows in this UI. The first row is special because we reuse the internal widgets of the ==viewer== widget in a different layout. To do this, we specify the sequence of accessor messages that need to be sent (as an array of symbols): for example, for the list of classes first the ==viewer== message and then the ==models== message.
 
+@@note I have no idea how to express this is in Spec20. :(
+
 [[[
-ProtocolBrowserPresenter class >> defaultSpec
+ProtocolCodeBrowserPresenter class >> defaultSpec
 	^ SpecLayout composed newColumn: [:col |
 			col newRow: [ :row |
 				row add: #(viewer models);
@@ -353,7 +414,7 @@ ProtocolBrowserPresenter class >> defaultSpec
 							col2 add: #(viewer api);
 								   add: #(viewer events) ] ];
 					  add: #text];
-			yourself
+			yourselfs         
 ]]]
 
 @@note To layout internal widgets of a widget you are reusing (instead of the widget in its entirety), give an array of symbols: it states the sequence of accessors that need to be sent to get to the internal widget.

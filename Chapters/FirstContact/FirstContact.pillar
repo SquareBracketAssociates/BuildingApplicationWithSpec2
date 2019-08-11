@@ -277,7 +277,7 @@ iconList
 (iconList openWithSpec) title: 'Availiable icons for the current theme.'
 ]]]
 
-+Screen shot of the list of Icons>file://figures/IconList.png|width=50|label=fig_IconList+
++A list of icons>file://figures/IconList.png|width=50|label=fig_IconList+
 
 The following messages of the ==ListModel== API are noteworthy:
 - The message ==displayBlock:== takes a block that receives a domain specific item and should return something that can be displayed in a list, like a String.
