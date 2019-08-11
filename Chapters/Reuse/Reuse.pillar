@@ -9,14 +9,14 @@ In this chapter, you will learn how we can build a new UI by reusing already def
 
 !!! First requirements
 
-+ TO BE REDONE the ProtocolBrowser.>file://figures/Protocol_Browser.png|width=80|label=fig_protocol_browser+
++ProtocolCodeBrowser: Browsing the public APIs of widgets.>file://figures/Protocol_Browser.png|width=80|label=fig_protocol_browser+
 
 
 To show how Spec enables the composition and reuse of user interfaces, in this chapter we build the user interface shown in Figure *@fig_protocol_browser* as a composition of four parts:
 # The ""WidgetClassListPresenter"": a widget containing a ==SpListPresenter== specifically for displaying the subclasses of ==SpAbstractWidgetPresenter==.
 # The ""ProtocolMethodListPresenter"": a widget composed of a ==SpListPresenter== and a ==SpLabelPresenter== for displaying methods of a protocol.
 # The ""ProtocolPresenter"":  a composition of one ==WidgetClassListPresenter== and two ==ProtocolMethodListPresenter==, it will browse the methods of all subclasses of ==SpAbstractWidgetPresenter==.
-# The ""ProtocolBrowser"" : reuses a ==ProtocolPresenter==, changes its layout and adds a ==SpTextPresenter== to see the source code of the methods.
+# The ""ProtocolCodeBrowser"" : reuses a ==ProtocolPresenter==, changes its layout and adds a ==SpTextPresenter== to see the source code of the methods.
 
 
 !!! Creating a basic UI to be reused as a widget
@@ -403,23 +403,61 @@ ProtocolCodeBrowserPresenter >> presenterConnection
 
 The last piece of the puzzle is the layout of the different widgets that we are reusing. We combine columns and rows in this UI. The first row is special because we reuse the internal widgets of the ==viewer== widget in a different layout. To do this, we specify the sequence of accessor messages that need to be sent (as an array of symbols): for example, for the list of classes first the ==viewer== message and then the ==models== message.
 
-@@note I have no idea how to express this is in Spec20. :(
 
+To get the following work make sure that  ==resolvePresenter:model:bindings:== is defined as follow: 
+
+[[[SpExecutableLayout >> resolvePresenter: presenterNameOrLayout 
+	model: aModel 
+	bindings: bindings
+
+	"most common case: I receive a symbol that I need to convert into a presenter"
+	presenterNameOrLayout isSymbol ifTrue: [ 
+		^ (self subpresenterOrLayoutNamed: presenterNameOrLayout of: aModel)
+			ifNil: [ self error: 'You presenter named "', presenterNameOrLayout , '" from ', aModel printString ,' was not initialized.' ] ].
+
+	"I receive a layout: dig inside."
+	presenterNameOrLayout isSpLayout ifTrue: [ 
+		^ presenterNameOrLayout buildAdapterFor: aModel bindings: bindings ].
+
+	presenterNameOrLayout isArray ifTrue: [ 
+			| current |
+			current := aModel. 
+			presenterNameOrLayout
+				do: [ :each | current := (self subpresenterOrLayoutNamed: each of: current) ].
+			^ current 
+			].
+
+	"I receive an arbitrary object (needs to understand #asPresenter)"
+	^ presenterNameOrLayout asPresenter
+		owner: aModel;
+		yourself
+
+]]]
+
+Now we can express the layout of the ==ProtocolCodeBrowserPresenter== as follows: 
 [[[
 ProtocolCodeBrowserPresenter class >> defaultSpec
-	^ SpecLayout composed newColumn: [:col |
-			col newRow: [ :row |
-				row add: #(viewer models);
-					 	newColumn: [ :col2 |
-							col2 add: #(viewer api);
-								   add: #(viewer events) ] ];
-					  add: #text];
-			yourselfs         
+	"self new openWithSpec: #defaultSpec"
+	
+	^ SpBoxLayout newVertical 
+			add: 
+			 (SpBoxLayout newHorizontal
+					add: #(viewer #models);
+					add: (SpBoxLayout newVertical
+								add:#( #viewer #api);
+								add:#(#viewer #events);
+								yourself);
+					yourself);
+				add: #text;
+				yourself
 ]]]
+
+Opening it (ProtocolCodeBrowserPresenter self new openWithSpec), you should obtain the widget presented in Figure *@fig_protocol_browser*.
+This concludes the last example of this chapter.
 
 @@note To layout internal widgets of a widget you are reusing (instead of the widget in its entirety), give an array of symbols: it states the sequence of accessors that need to be sent to get to the internal widget.
 
-This concludes the last example of this chapter, and the result can be seen in the first figure of this chapter, Figure *@fig_protocol_browser*.
+
 
 !!! Considerations about a public configuration API
 @sec_public_API
@@ -446,6 +484,6 @@ You need to make a tradeoff of writing extra methods versus possibly making reus
 
 !!! Conclusion
 
-In this chapter we have discussed a key point of Spec: the ability to seamlessly reuse existing UIs as widgets. This ability comes with no significant cost to the creator of a UI. The only thing that needs to be taken into account is how a UI can (or should) be customized, and public customization methods should be placed in a ==api== protocol.
+In this chapter we have discussed a key point of Spec: the ability to seamlessly reuse existing UIs as widgets. This ability comes with no significant cost to the creator of a UI. The only thing that needs to be taken into account is how a UI can (or should) be customized.
 
 The reuse of complex widgets at no significant cost was a key design goal of Spec because it is an important productivity boost for the writing process of UIs. The boost firstly comes from being able to reuse existing nontrivial widgets, and secondly because it allows you to structure your UI in coherent and more easily manageable sub-parts with clear interfaces. We therefore encourage you to think of your UI as a composition of such sub-parts and construct it modularly, to yield greater productivity.
