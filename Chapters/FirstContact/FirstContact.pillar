@@ -37,18 +37,14 @@ at class side.
 !!! Instantiate and configure subwidgets
 
 A subclass of ==SpPresenter== has the responsibility to define the
-==initializePresenter== method, which instantiates and configures the
+==initializePresenters== method, which instantiates and configures the
 widgets used in the user interface. We now discuss it piece by piece.
 Note that since this method may be a bit long we will split it into pieces that represent
 their intent.
 
 !!!! Presenter creation
 [[[
-CustomerSatisfactionPresenter >> initializePresenter
-
-	self presenterCreation 
-
-CustomerSatisfactionPresenter >> initializePresenter
+CustomerSatisfactionPresenter >> initializePresenters
 
 	screen := self newLabel.
 	buttonHappy := self newButton.
@@ -76,7 +72,7 @@ Note that the naming may be a bit confusing since we write ==newButton== while i
 Second, we configure the buttons of our UI. The message ==label:== defines their label and the message ==icon:== specifies the icon that will be displayed near the label.
 
 [[[
-CustomerSatisfactionPresenter >> initializePresenter
+CustomerSatisfactionPresenter >> initializePresenters
 	... continued ...
 	screen label: 'Please give us your feedback.'.
 	buttonHappy
@@ -93,7 +89,7 @@ CustomerSatisfactionPresenter >> initializePresenter
 Third and last, it is a good practice to define the focus order, which is useful for keyboard navigation.
 
 [[[
-CustomerSatisfactionPresenter >> initializePresenter
+CustomerSatisfactionPresenter >> initializePresenters
 	... continued ...
 	"specification of order of focus"
 	self focusOrder
@@ -109,12 +105,7 @@ We define this in a separate method (herre called ==presenterConnectionLogic==) 
 
 
 [[[
-CustomerSatisfactionPresenter >> initializePresenter
-
-	self presenterCreation.
-	self presenterConnectionLogic
-	
-CustomerSatisfactionPresenter >> presenterConnectionLogic
+CustomerSatisfactionPresenter >> connectPresenters
 
 	buttonHappy action: [ screen label: buttonHappy label ].
 	buttonNeutral action: [ screen label: buttonNeutral label ].
@@ -123,7 +114,7 @@ CustomerSatisfactionPresenter >> presenterConnectionLogic
 
 We use the message ==action:== to specify the action that is performed when the buttons are clicked. In this case, we change the content of what is shown on the screen, to provide feedback that the choice has been registered. Note that the message ==action:== is part of the button API. In other situations, you will specify that when a given event occurs, another message should be sent to a widget subpart.
 
-@@note To summarize: specialize ==initializePresenter== to define, configure and connect your presenters together.
+@@note To summarize: specialize ==initializePresenters== to define and configure and ==connectPresenters== connect your presenters together.
 
 !!!! Specifying the widget layout
 The widgets have now been defined and configured, but their placement in the UI has not yet been specified. This is the role of the class side method ==defaultSpec==.
@@ -279,7 +270,7 @@ iconList
 
 +A list of icons>file://figures/IconList.png|width=50|label=fig_IconList+
 
-The following messages of the ==ListModel== API are noteworthy:
+The following messages of the ==SpListModel== API are noteworthy:
 - The message ==displayBlock:== takes a block that receives a domain specific item and should return something that can be displayed in a list, like a String.
 - The message ==sortingBlock:== takes a block that is used to sort the elements of the list before displaying them.
 

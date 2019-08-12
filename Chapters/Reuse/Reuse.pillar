@@ -11,7 +11,6 @@ In this chapter, you will learn how we can build a new UI by reusing already def
 
 +ProtocolCodeBrowser: Browsing the public APIs of widgets.>file://figures/Protocol_Browser.png|width=80|label=fig_protocol_browser+
 
-
 To show how Spec enables the composition and reuse of user interfaces, in this chapter we build the user interface shown in Figure *@fig_protocol_browser* as a composition of four parts:
 # The ""WidgetClassListPresenter"": a widget containing a ==SpListPresenter== specifically for displaying the subclasses of ==SpAbstractWidgetPresenter==.
 # The ""ProtocolMethodListPresenter"": a widget composed of a ==SpListPresenter== and a ==SpLabelPresenter== for displaying methods of a protocol.
@@ -25,18 +24,18 @@ To show how Spec enables the composition and reuse of user interfaces, in this c
 The first custom UI we build should display a list of all subclasses of
 ==AbstractWidgetPresenter==. This UI will later be reused as a widget for a more complete UI. The code is as follows (we do not include code for accessors):
 
-First we create a subclass of ==ComposableModel== with one instance variable ==list== which will hold an instance of ==ListModel==.
+First we create a subclass of ==SpPresenter== with one instance variable ==list== which will hold an instance of ==SpListModel==.
 [[[
-ComposableModel subclass: #WidgetClassListPresenter
+SpPresenter subclass: #WidgetClassListPresenter
 	instanceVariableNames: 'list'
 	classVariableNames: ''
 	package: 'Spec-BuildUIWithSpec
 ]]]
 
-In the method ==initializePresenter==, we create the list and populate it with the required classes, in alphabetical order. We also add a title for the window.
+In the method ==initializePresenters==, we create the list and populate it with the required classes, in alphabetical order. We also add a title for the window.
 
 [[[
-WidgetClassListPresenter >> initializePresenter
+WidgetClassListPresenter >> initializePresenters
 	list := self newList.
 	list items: (AbstractWidgetModel allSubclasses
 		 			sorted: [:a :b | a name < b name ]).
@@ -85,7 +84,7 @@ SpPresenter subclass: #ProtocolMethodListPresenter
 The ==initializeWidgets== method for this UI is quite straightforward. We specify the default label text as 'protocol', which will be changed when the widget is reused. We also give this UI a title.
 
 [[[
-ProtocolMethodListPresenter >> initializeWidgets
+ProtocolMethodListPresenter >> initializePresenters
 	methods := self newList.
 	methods displayBlock: [ :m | m selector ].
 	label :=  self newLabel.
@@ -222,12 +221,8 @@ SpPresenter subclass: #ProtocolViewerPresenter
 The ==initializeWidgets== method shows the use of ==instantiate:== to instantiate widgets, and some of the different parametrization methods of the ==ProtocolMethodListPresenter== class.
 
 [[[
-ProtocolViewerPresenter >> initializePresenter
-	self presenterCreation
-]]]
+ProtocolViewerPresenter >> initializePresenters
 
-[[[
-ProtocolViewerPresenter >> presenterCreation
 	models := self instantiate: WidgetClassListPresenter.
 	api := self instantiate: ProtocolMethodListPresenter.
 	events := self instantiate: ProtocolMethodListPresenter.
@@ -246,11 +241,7 @@ ProtocolViewerPresenter >> initializeWindow: aWindowPresenter
 To describe the interactions between the different widgets we define the ==initializePresenter== method. It specifies that when a class is selected, the selections in the method lists are reset and both method lists are populated. Additionally, when a method is selected in one method list, the selection in the other list is reset.
 
 [[[
-ProtocolViewerPresenter >> initializePresenter
-	self presenterCreation.
-	self presenterConnectionLogic
-	
-ProtocolViewerPresenter >> defineInteractionLogic
+ProtocolViewerPresenter >> connectPresenters
 
 	models whenSelectedItemChanged: [ :class |
 		api resetSelection.
@@ -365,11 +356,8 @@ SpPresenter subclass: #ProtocolCodeBrowserPresenter
 	package: 'Spec-BuildUIWithSpec'
 ]]]
 [[[
-ProtocolCodeBrowserPresenter >> initializePresenter
-	self presenterCreation.
-]]]	
-[[[
-ProtocolCodeBrowserPresenter >> presenterCreation
+ProtocolCodeBrowserPresenter >> initializePresenters
+
 	text := self instantiate: SpCodePresenter.
 	viewer := self instantiate: ProtocolViewerPresenter.
 	text
@@ -388,10 +376,11 @@ The text field is configured to show source code:
 - ==aboutToStyle: true== enables syntax highlighting.
 - ==isCodeCompletionAllowed: true== enables code completion.
 
-The ==initalizePresenter== method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
+The ==initalizePresenters== method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
 
 [[[
-ProtocolCodeBrowserPresenter >> presenterConnection
+ProtocolCodeBrowserPresenter >> connectPresenters
+
 	viewer whenClassChanged: [ :class | text behavior: class ].
 	viewer whenAPIChanged: [ :item |
 		item
@@ -404,6 +393,8 @@ ProtocolCodeBrowserPresenter >> presenterConnection
 The last piece of the puzzle is the layout of the different widgets that we are reusing. We combine columns and rows in this UI. The first row is special because we reuse the internal widgets of the ==viewer== widget in a different layout. To do this, we specify the sequence of accessor messages that need to be sent (as an array of symbols): for example, for the list of classes first the ==viewer== message and then the ==models== message.
 
 
+
+!!! TOBE CHANGED
 To get the following work make sure that  ==resolvePresenter:model:bindings:== is defined as follow: 
 
 [[[SpExecutableLayout >> resolvePresenter: presenterNameOrLayout 
