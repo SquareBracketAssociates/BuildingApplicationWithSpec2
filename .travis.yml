@@ -7,8 +7,6 @@ smalltalk:
 env:
   matrix:
   - JOB=test TYPE=System ARCHETYPE=book OUTPUT=pdf
-  global:
-    secure: hgEUL41AZfPh7BFgCctZlCVGr17EDKLwgN79ejYzob4J6zJBLNqcRgPRN+KNv6nUN3wK1S47H14wPNRHnUt/Lrmx2fUeNAQfnLZkU/H7t/7Neflr95B1f5JrPIvFm8hnLhbB6eY+fY7nc5qHCD14nS3bXJzySVNctRmU7Oh/XJKfOA/PJYutNotfKdyexWJ/J+iZWPe9fGzY3WOem/yHa2GMkR180u+YhhD8lousWY43vshZTNMuRBD4dZCt61xvPQurDUcUUah5VqfprJzWmkxBs8xHJbYRzaYegpVUprCqauckqOxqm/6DF0kZ6H4SQANof4PcaIecTqQBy68YCkRxQcp3Ern05W6DL/TA9dilS9fi8au31h2YUPB8v0kJRR72w4M8X+9vZ0oPdm2vOxqPfOCw/wA8Hq9DsQ89RPf5qqXzFvEr7FRaTYuUkLCv3QSyznntmJQIi461bvfFA2VD/eAE0cq3fIf+6+wXzjUXCNWtzwM/wtU/hXUqgNX18sIcst9IzbVfDMhxmmfGpwasav1TFMGTpalacxHhVMNFruseuHVsboLxn4BtFjaS48CgJh4i50yxAoHprohgQ+acNOSr8QnZE2q6oh4Tji+6FLi5qyoVImZeSqprCC4AiwbL/D8tToonuMn4BBhLVe4qsUFkr9Rpi3QanlHDKhM=
 install:
 - git clone https://github.com/pillar-markup/pillar.git -b v7.4.1
 - cd pillar && ./scripts/build.sh && cd ..
@@ -16,7 +14,6 @@ install:
 - "./pillar/scripts/ci/ensure_book_dependencies.sh"
 script:
 - "./pillar/build/pillar build pdf"
-after_success:
 - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
 - mv _result/pdf/index.pdf Spec20-wip.pdf
 - bash upload.sh Spec20-wip.pdf
