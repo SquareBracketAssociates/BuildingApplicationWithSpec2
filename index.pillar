@@ -19,6 +19,7 @@ ${inputFile:path=Chapters/Commander/Commander.pillar}$
 - openModal 
 
 
+!!! ComponentListPresenter
 
 !!! For forms
 - SpPresenterWithModel
