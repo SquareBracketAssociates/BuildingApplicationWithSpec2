@@ -1,6 +1,7 @@
 !!Managing windows
 @cha_managing_windows
 
+TO REVISE. For now just a simple pass with connectPresenters.
 
 In this book so far we have talked about reuse of ==SpPresenter==s, discussed the fundamental functioning of Spec and presented how to layout the widgets of a user interface. Yet what is still missing for a working user interface is showing all these widgets inside of a window. In our examples until now we have only shown a few of the features of Spec for managing windows, basically restricting ourself to opening a window.
 
@@ -11,21 +12,21 @@ In this chapter we provide a more complete overview of how Spec allows for the m
 To illustrate the window configuration options that are available, we use a simple ==WindowExample== class that has two buttons placed side by side. These buttons do not have any behavior associated yet, this will be added in an example further down this chapter.
 
 [[[
-SpPresenter subclass: #WindowExample
+SpPresenter subclass: #WindowExamplePresenter
    instanceVariableNames: 'button1 button2'
    classVariableNames: ''
    package: 'Spec-BuildUIWithSpec'
 ]]]
 [[[
-WindowExample >> initializePresenters
+WindowExamplePresenter >> initializePresenters
    button1 := self newButton.
    button2 := self newButton.
-   button1 label: '+'.  button2 label: '-'.
+   button1 label: '+'.  button2 label: '-'
 ]]]
 [[[
-WindowExample class >> defaultSpec
+WindowExamplePresenter class >> defaultSpec
    ^ SpecRowLayout composed
-         add: #button1; add: #button2; yourself.
+         add: #button1; add: #button2; yourself
 ]]]
 
 
@@ -44,10 +45,10 @@ For example, below we show the three ways we can open a window for our ==WindowE
 To rewrite
 [[[
 | we |
- we := WindowExample new.
+ we := WindowExamplePresenter new.
  we openWithSpec.
  we openWithSpec: #defaultSpec.
- we openWithSpecLayout: we defaultSpec.
+ we openWithSpecLayout: we defaultSpec
 ]]]
 
 !!!Opening a dialog box and its configuration options
@@ -56,7 +57,7 @@ Spec provides for an easy way to open a UI as a simple dialog box with ''Ok'' an
 
 [[[
 | we diag |
- we := WindowExample new. 
+ we := WindowExamplePresenter new. 
  diag := we openDialog
 ]]]
 
@@ -73,7 +74,7 @@ Lastly, it is also possible to open a UI such that it takes over the entire Phar
 To take over the entire Pharo screen, send the message ==openWorldWithSpec==:
 
 [[[
-WindowExample new openWorldWithSpec.
+WindowExamplePresenter new openWorldWithSpec
 ]]]
 
 @@note Via the halos the UI can still be closed, but any other windows that were open before will have disappeared.
@@ -90,7 +91,7 @@ Spec allows any window to be made modal by sending the message ==modalRelativeTo
 
 [[[
 | we |
- we := WindowExample new. 
+ we := WindowExamplePresenter new. 
  we openWithSpec.
  we window modalRelativeTo: World
 ]]]
@@ -102,12 +103,12 @@ Spec allows any window to be made modal by sending the message ==modalRelativeTo
 Spec provides for the possibility to check if a window can effectively be closed when the user clicks on the close box. To use it, this feature must first be turned on, by sending ==askOkToClose: true== to the ==ComposableModel==. This can be done for example by changing our ==WindowExample== as follows:
 
 [[[
-WindowExample >> initializeWidgets
+WindowExamplePresenter >> connectPresenters
    button1 := self newButton.
    button2 := self newButton.
    button1 label: '+'.
    button2 label: '-'.
-   self askOkToClose: true.
+   self askOkToClose: true
 ]]]
 
 The behavior of the close button however is still not changed, closing a window is still possible. This is because we have not defined the implementation of what to check on window close. This is most easily done by overriding the ==okToChange== method of ==ComposableModel==, for example as below:
@@ -127,9 +128,9 @@ It is also possible to perform an action whenever a window is closed, by sending
 
 [[[
 | we |
- we := WindowExample new. 
+ we := WindowExamplePresenter new. 
  we openWithSpec.
- we window whenClosedDo: [ UIManager default inform: 'Bye bye!' ].
+ we window whenClosedDo: [ UIManager default inform: 'Bye bye!' ]
 ]]]
 
 
@@ -146,21 +147,22 @@ instance the ==extent:== message before opening, for example like this:
 
 [[[
 | we |
- we := WindowExample new.
+ we := WindowExamplePresenter new.
  we extent: 300@80.
  we openWithSpec
 ]]]
 
-After a window is opened, it can also be resized by sending the ==extent:== message to the window of the UI. For example, we can change our examples' ==initializeWidgets== method so that the window resizes itself depending on what button is clicked.
+After a window is opened, it can also be resized by sending the ==extent:== message to the window of the UI. For example, we can change our examples' ==connectPresenters== method so that the window resizes itself depending on what button is clicked.
 
 [[[
-WindowExample >> initializeWidgets
+WindowExamplePresenter >> connectPresenters
+
   button1 := self newButton.
   button2 := self newButton.
   button1 label: '+'.
   button2 label: '-'.
   button1 action: [ self window extent: 500@200].
-  button2 action: [ self window extent: 200@100].
+  button2 action: [ self window extent: 200@100]
 ]]]
 
 !!! Fixed size
@@ -179,7 +181,7 @@ Sometimes it makes sense to have a window without decoration, i.e. without contr
 
 [[[
 | wewin |
- wewin := WindowExample new openWithSpec.
+ wewin := WindowExamplePresenter new openWithSpec.
  wewin window
     removeCollapseBox;
     removeExpandBox;
@@ -199,7 +201,7 @@ You can provide some textual information about the widow by providing a title an
 By default, the title of a new window is '''Untitled window'''. This can be changed by overriding the ==title== method (of ==ComposableModel==) and returning a string that will be used as a title. For example, we can title our example user interface as follows:
 
 [[[
-WindowExample >> title
+WindowExamplePresenter >> title
    ^ 'Click to grow or shrink.'
 ]]]
 
@@ -220,18 +222,19 @@ Firstly, sending the ==windowIcon:== message to the ==ComposableModel== allows a
 
 [[[
 | wm1 wm2 |
- wm1 := WindowExample new.
+ wm1 := WindowExamplePresenter new.
  wm1 openWithSpec.
  wm1 windowIcon: (Smalltalk ui icons iconNamed: #thumbsDown).
+ ARGH I DIE!!!
  wm2 := WindowExample new.
  wm2 windowIcon: (Smalltalk ui icons iconNamed: #thumbsUp).
- wm2 openWithSpec.
+ wm2 openWithSpec
 ]]]
 
 Secondly, the icon can be changed by overriding the ==windowIcon== message, as below. (The code below is for Pharo 6, for this to work in Pharo 5 replace ==self iconNamed:== with ==Smalltalk ui icons iconNamed:== .)
 
 [[[
-WindowExample >> windowIcon
+WindowExamplePresenter >> windowIcon
    ^ self iconNamed: #thumbsUp
 ]]]
 
@@ -244,7 +247,7 @@ To set the about text of a window, either override the ==aboutText== method of t
 
 [[[
 | we |
- we := WindowExample new.
+ we := WindowExamplePresenter new.
  we aboutText: 'Click + to grow, - to shrink.'.
  we openWithSpec
 ]]]

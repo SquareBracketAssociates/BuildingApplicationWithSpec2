@@ -13,11 +13,17 @@ ${inputFile:path=Chapters/Commander/Commander.pillar}$
 
 !! Topics not to forget to cover
 
-- how to launch GTK
-!!! For Windows
-- openDialog 
-- openModal 
+!!! Testing UI
 
+!!! Multiple Back ends: GTK
+- how to switch back end
+- GTK
+
+!!! For Windows
+- openDialog
+- openModal
+
+!!! Dynamic Presenter 
 
 !!! ComponentListPresenter
 
