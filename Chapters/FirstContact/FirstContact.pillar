@@ -13,7 +13,7 @@ After completing this chapter you should read the following chapter about reuse 
 In this first example, we construct a simple customer satisfaction UI, which allow a user to give feedback about a service by clicking on one of three buttons. (This feedback should be recorded and processed, but this is outside of the scope of this example). We show a screenshot of the UI in Figure *@fig_Customers_Basic*.
 
 
-!!! Create the class of the UI and variable accessors
+!!! Create the class of the UI 
 
 All user interfaces in Spec are subclasses of ==SpPresenter==, so
 the first step in creating the UI is subclassing it:
@@ -24,6 +24,7 @@ SpPresenter subclass: #CustomerSatisfactionPresenter
 	classVariableNames: ''
 	package: 'CodeOfSpec20Book'
 ]]]
+
 
 The instance variables of the class hold the ''presenters'' the UI contains.
 In this case, we have three buttons and a text screen.
