@@ -3,6 +3,7 @@
 ${inputFile:path=Chapters/Intro/Intro.pillar}$
 ${inputFile:path=Chapters/FirstContact/FirstContact.pillar}$
 ${inputFile:path=Chapters/Reuse/Reuse.pillar}$
+${inputFile:path=Chapters/ContactBook/ContactBook.pillar}$
 ${inputFile:path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.pillar}$
 ${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
 ${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$

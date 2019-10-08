@@ -134,7 +134,7 @@ It is also possible to perform an action whenever a window is closed, by sending
 ]]]
 
 
-!! Window size and decoration
+!!! Window size and decoration
 @sec_win_size_decoration
 
 We now focus on sizing a window before and after opening it, and then talk about removing the different control widgets that decorate the window.
@@ -192,7 +192,7 @@ Sometimes it makes sense to have a window without decoration, i.e. without contr
 @@note This window is still closable using the halo menus or by calling ==close== on the ==WindowModel== instance (==wewin== in the example above).
 
 
-!! The final details: title, icon and about text
+!!! The final details: title, icon and about text
 
 You can provide some textual information about the widow by providing a title and a text for the window's about dialog, as we show here.
 
@@ -253,6 +253,6 @@ To set the about text of a window, either override the ==aboutText== method of t
 ]]]
 
 
-!! Conclusion
+!!! Conclusion
 
 In this chapter we treated the features of Spec that have to do with windows. We first talked about opening and closing windows as well as how to open a window as a dialog box. This was followed by configuring the window size and its decorating widgets. We ended this chapter with the small yet important details of the window: its title, icon and about text. 
