@@ -2,22 +2,24 @@
 
 In this chapter we develop a simple model for a contact book. 
 Then we define a user interface.
-This example will be used at certain place in the book to show extra concepts such as commands, applications, windows.
+This example will be used in other certain places in the book to show extra concepts such as commands, applications, windows.
 
-Let's start with a sample application: a Contact book.
-We start defining a little domain model for our example: we define a contact and a contact book
+Now it is more a replay of the concept previously mentioned.
+Let's start with a domain and then we will add some basic interface.
 
 !!! Contact domain model
+We start defining a little domain model for our example: we define a contact and a contact book. 
 We start by defining a simple contact class.
 
 [[[
 Object subclass: #EgContact
 	instanceVariableNames: 'name phone'
 	classVariableNames: ''
-	package: 'Eg-ContactBook-Model'
+	package: 'EgContactBook'
 ]]]
 
-We just define a printOn: method and a couple of accessors.
+We just define a ==printOn:== method and a couple of accessors.
+
 [[[
 EgContact >> printOn: aStream
 
@@ -49,20 +51,22 @@ EgContact >> phone: anObject
 ]]]
 
 !!! ContactBook
-Now we define the contact book class. It is also straighforward. 
+Now we define the contact book class.
+It is also straighforward.
 
 [[[
 Object subclass: #EgContactBook
 	instanceVariableNames: 'contents'
 	classVariableNames: ''
-	package: 'Commander2-ContactBook-Model'
+	package: 'EgContactBook'
 ]]]
 
 
 [[[
 EgContactBook >> initialize
+
 		super initialize.
-		contents := OrderedCollection new.
+		contents := OrderedCollection new
 ]]]
 
 [[[
@@ -98,11 +102,11 @@ EgContactBook >> addContact: newContact after: contactAfter
 We add a simple testing method in case you want to write some tests (which we urge you to do).
 
 [[[
-EgContactBook >> 	includesContact: aContact
+EgContactBook >> includesContact: aContact
 	^ contents includes: aContact
 ]]]
 
-And now we can add the most important method
+And now we add a method to create a contact and add it to the contact book.
 
 [[[
 EgContactBook >> add: contactName phone: phone
@@ -152,18 +156,19 @@ EgContactBook class >> reset
 
 !!! A simple UI
 
-Now we define the application we want to get to illustrate Commander. The application UI is shown in Figure *@final*.
+Now we define the application we want to get. 
+The application UI is shown in Figure *@firstFullUI*.
 
-+A rudimentary contact book application.>figures/final.png|width=60|label=final+
++A rudimentary contact book application.>figures/firstFullUI.png|width=60|label=firstFullUI+
 
-We define the class ==EgContactBookPresenter==. It holds a reference to a contact book 
-and it is structured around a table. 
+We define the class ==EgContactBookPresenter==. 
+It holds a reference to a contact book and it is structured around a table. 
 
 [[[
-ComposablePresenter subclass: #EgContactBookPresenter
+SpPresenter subclass: #EgContactBookPresenter
 	instanceVariableNames: 'table contactBook'
 	classVariableNames: ''
-	package: 'Commander2-ContactBook-Spec'
+	package: 'Eg-ContactBook-Spec'
 ]]]
 
 We define an accessor for the contact book and the table.
@@ -212,7 +217,7 @@ We initialize the table to display two columns for the name and the phone.
 The respective accessors willbe sent to the elements to fill up the columns.
 Finally the table contents is set using the contact book contents.
 [[[
-EgContactBookPresenter class >> initializeWidgets
+EgContactBookPresenter class >> initializePresenters
 	table := self newTable.
 	table 
 		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
@@ -273,3 +278,8 @@ EgContactBookPresenter >> isContactSelected
 EgContactBookPresenter >> selectedContact
 	^ table selection selectedItem
 ]]]
+
+
+!!! Conclusion 
+
+We have a little contact book manager now that we can use to explain other topics.
