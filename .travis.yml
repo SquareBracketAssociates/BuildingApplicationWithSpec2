@@ -1,22 +1,31 @@
 language: smalltalk
 sudo: false
+
 os:
-- linux
+  - linux
+
 smalltalk:
-- Pharo-7.0
+  - Pharo-stable
+
 env:
-  matrix:
-  - JOB=test TYPE=System ARCHETYPE=book OUTPUT=pdf
+  global:
+    - PILLAR_RELEASE=v7.7.3
+    - PATH="$HOME/texlive/bin/x86_64-linux:$HOME/pillar/build:$PATH"
+
 install:
-- git clone https://github.com/pillar-markup/pillar.git -b v7.4.1
-- cd pillar && ./scripts/build.sh && cd ..
-- ". pillar/scripts/ci/ensure_latex.sh"
-- "./pillar/scripts/ci/ensure_book_dependencies.sh"
+  - git clone --branch "$PILLAR_RELEASE" https://github.com/pillar-markup/pillar.git "$HOME/pillar"
+  - ( cd $HOME/pillar; ./scripts/build.sh; )
+  - $HOME/pillar/scripts/ci/install-texlive
+  - ./_support/latex/ensure-deps.sh
+
 script:
-- "./pillar/build/pillar build pdf"
-- wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-- mv _result/pdf/index.pdf Spec20-wip.pdf
-- bash upload.sh Spec20-wip.pdf
+  - pillar build pdf
+
+after_success:
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - mv _result/pdf/index.pdf Spec2-wip.pdf
+  - bash upload.sh  Spec2-wip.pdf
+
 branches:
   except:
-  - "/^(?i:continuous)$/"
+    - /^(?i:continuous)$/
