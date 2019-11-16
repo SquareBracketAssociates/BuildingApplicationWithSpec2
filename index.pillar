@@ -42,3 +42,13 @@ ${inputFile:path=Chapters/Commander/Commander.pillar}$
 ==SpApplication== is not a presenter because it does not has a graphical representation: An ==SpApplication== defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
 
 An application can be configured with a configuration (more to come).
+
+
+!!! Roassal inside
+[[[
+	SpMorphPresenter new
+		morph: view canvas createMorph;
+		yourself
+
+
+]]]
