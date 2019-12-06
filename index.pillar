@@ -4,23 +4,26 @@ ${inputFile:path=Chapters/Intro/Intro.pillar}$
 ${inputFile:path=Chapters/FirstContact/FirstContact.pillar}$
 ${inputFile:path=Chapters/Reuse/Reuse.pillar}$
 ${inputFile:path=Chapters/ContactBook/ContactBook.pillar}$
+${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
 ${inputFile:path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.pillar}$
 ${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
 ${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
 ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 ${inputFile:path=Chapters/Commander/Commander.pillar}$
+${inputFile:path=Chapters/Commander2/Commander.pillar}$
 
+!! to rewrite
 
+!!! Layouts Completely
+
+!!! Windows
 
 !! Topics not to forget to cover
 
 !!! Building Menus
-
 ==SpMenuItemPresenter==
 
 
-
-!!! Testing UI
 
 !!! Multiple Back ends: GTK
 - how to switch back end
@@ -30,25 +33,32 @@ ${inputFile:path=Chapters/Commander/Commander.pillar}$
 - openDialog
 - openModal
 
-!!! Dynamic Presenter 
+!!! Dynamic Presenters 
 
-!!! ComponentListPresenter
+!!!! ComponentListPresenter
+
+!!!! Documenter
 
 !!! For forms
+
 - SpPresenterWithModel
 
-!!! SpApplication
+!!! Application
 
 ==SpApplication== is not a presenter because it does not has a graphical representation: An ==SpApplication== defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
 
 An application can be configured with a configuration (more to come).
 
+!!! Transmission
 
-!!! Roassal inside
+!!! Tips and Tricks
+
+!!!! Roassal inside
 [[[
 	SpMorphPresenter new
 		morph: view canvas createMorph;
 		yourself
-
-
 ]]]
+
+!!! Testing UI
+
