@@ -1,0 +1,120 @@
+!! IMDB
+
+[[[
+SpApplication subclass: #ImdbApp
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+
+
+!!! If you want to use GTK
+
+To test if you change using a backend 
+[[[
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Gtk
+]]]
+
+[[[
+
+app := ImdbApp new
+
+]]]
+
+!!! Model
+
+[[[
+Object subclass: #ImdbFilm
+	instanceVariableNames: 'name year director'
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+!!!List
+
+
+[[[
+SpPresenter subclass: #ImdbFilmListPresenter
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+
+[[[
+ImdbFilmListPresenter class >> defaultSpec
+
+	^ SpBoxLayout newVertical
+			add: #filmList; 
+			yourself
+]]]
+
+[[[
+ImdbFilmListPresenter >> initializeWinddow: aWindowPresenter
+
+	aWindowPresenter 
+		title: 'Mini IMDB';
+		initialExtent: 600@400;
+		toolBar: (self newToolBar
+						addItem: (SpToolBarButton new 
+										label: 'Add film' ;
+										icon: (self application iconNamed: #smallAdd);
+										action: [ self addFilm ];
+										yourself);
+									yourself)
+]]]
+
+[[[
+ImdbFilmListPresenter >> addFilm
+]]]
+
+
+[[[
+SpPresenter subclass: #ImdbFilmPresenter
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+[[[
+ImdbFilmPresenter class >> defaultSpec 
+	^ SpGridLayout new 
+			add: 'Name' at: 1@1; add: #nameText at: 2@1;
+			add: 'Director' at: 1@2; add: #directorText at: 2@2;
+			add: 'Year' at: 1@3; add: #yearText at: 2@3;
+			yourself
+]]]
+
+
+
+[[[
+ImdbFilmPresenter >> initializePresenters
+
+	nameText := self newTextInput.
+	directorText := self newTextInput.
+	yearText := self newNumberInput rangeMinimum: 1900 maximum:  Year current year
+]]]
+
+[[[
+ImdbFilmPresenter >> addFilm
+
+	| dialog | 
+	dialog := ImdbFilmPresenter newApplication: self application.
+	dialog openDialogWithSpec.
+	dialog isOk ifFalse: [ ^ self ].
+	"how would you do it differently?"
+	ImdbFilm new
+		name: dialog nameText text;
+		director: dialog director text; 
+		year: dialog yearNumber number.
+	"save is missing"
+	self updatePresenter.
+]]]
+
+
+
+
+
