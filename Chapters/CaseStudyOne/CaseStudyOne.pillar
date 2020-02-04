@@ -69,7 +69,10 @@ ImdbFilmListPresenter >> initializeWinddow: aWindowPresenter
 
 [[[
 ImdbFilmListPresenter >> addFilm
+	"empty for now"
 ]]]
+
++Film list presenter.>file://figures/FilmListPresenter1.png|width=100|label=FilmListPresenter1+
 
 
 [[[
@@ -100,21 +103,31 @@ ImdbFilmPresenter >> initializePresenters
 
 [[[
 ImdbFilmPresenter >> addFilm
-
-	| dialog | 
+	| dialog windowPresenter |
 	dialog := ImdbFilmPresenter newApplication: self application.
-	dialog openDialogWithSpec.
-	dialog isOk ifFalse: [ ^ self ].
+	windowPresenter := dialog openDialogWithSpec.
+	windowPresenter isOk
+		ifFalse: [ ^ self ].
 	"how would you do it differently?"
-	ImdbFilm new
-		name: dialog nameText text;
-		director: dialog director text; 
-		year: dialog yearNumber number.
-	"save is missing"
-	self updatePresenter.
+	ImdbFilm
+		addFilm:
+			(ImdbFilm new
+				name: dialog nameText text;
+				director: dialog director text;
+				year: dialog yearNumber number).
+	self updatePresenter
 ]]]
 
++Film presenter.>file://figures/FilmPresenter1.png|width=100|label=FilmPresenter1+
 
+[[[
+ImdbFilmPresenter class >> defaultSpec
+	^ SpGridLayout new
+		beRowNotHomogeneous;
+		add: 'Name' at: 1 @ 1; add: #nameText at: 2 @ 1;
+		add: 'Director' at: 1 @ 2; add: #directorText at: 2 @ 2;
+		add: 'Year' at: 1 @ 3; add: #yearNumber at: 2 @ 3;
+		yourself
+]]]
 
-
-
++Using the non homogenous.>file://figures/FilmListPresenter2.png|width=100|label=FilmListPresenter2+
