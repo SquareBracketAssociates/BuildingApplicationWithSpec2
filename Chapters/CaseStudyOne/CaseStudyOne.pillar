@@ -131,3 +131,36 @@ ImdbFilmPresenter class >> defaultSpec
 ]]]
 
 +Using the non homogenous.>file://figures/FilmListPresenter2.png|width=100|label=FilmListPresenter2+
+
+
+
+[[[
+ImdbFilmPresenter class >> defaultSpec
+	^ SpGridLayout new
+		beRowNotHomogeneous;
+		beColumnNotHomogeneous;
+		column:2  withConstraints: #beExpand;
+		add: 'Name' at: 1 @ 1; add: #nameText at: 2 @ 1;
+		add: 'Director' at: 1 @ 2; add: #directorText at: 2 @ 2;
+		add: 'Year' at: 1 @ 3; add: #yearNumber at: 2 @ 3;
+		yourself
+]]]
+
+[[[
+ImdbFilmPresenter >> initializeWindow: aWindowPresenter
+	aWindowPresenter
+		title: 'Film';
+		initialExtent: 400 @ 250
+]]]
+
+[[[
+ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
+	aDialogPresenter centered.
+	aDialogPresenter 
+		addButton: 'Cancel' do: [ :presenter | presenter close ];
+		addButton: 'Save' do: [ :presenter | presenter beOk; close ].
+]]]
+
++Better window.>file://figures/FilmListPresenter3.png|width=100|label=FilmListPresenter3+
+
+	
