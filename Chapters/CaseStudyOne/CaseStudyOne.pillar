@@ -9,20 +9,7 @@ SpApplication subclass: #ImdbApp
 
 
 
-!!! If you want to use GTK
 
-To test if you change using a backend 
-[[[
-ImdbApp >> initialize
-	super initialize.
-	self useBackend: #Gtk
-]]]
-
-[[[
-
-app := ImdbApp new
-
-]]]
 
 !!! Model
 
@@ -72,7 +59,7 @@ ImdbFilmListPresenter >> addFilm
 	"empty for now"
 ]]]
 
-+Film list presenter.>file://figures/FilmListPresenter1.png|width=100|label=FilmListPresenter1+
++Film list presenter.>file://figures/FilmListPresenter.png|width=100|label=FilmListPresenter1+
 
 
 [[[
@@ -130,7 +117,7 @@ ImdbFilmPresenter class >> defaultSpec
 		yourself
 ]]]
 
-+Using the non homogenous.>file://figures/FilmListPresenter2.png|width=100|label=FilmListPresenter2+
++Using the non homogenous.>file://figures/FilmPresenter2.png|width=100|label=FilmListPresenter2+
 
 
 
@@ -161,6 +148,124 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 		addButton: 'Save' do: [ :presenter | presenter beOk; close ].
 ]]]
 
-+Better window.>file://figures/FilmListPresenter3.png|width=100|label=FilmListPresenter3+
++Better window.>file://figures/FilmPresenter3.png|width=100|label=FilmListPresenter3+
+
+
+Morphic design left over
+[[[
+ImdbFilmPresenter >> initializePresenters
+	nameText := self newTextInput autoAccept: true.
+	directorText := self newTextInput autoAccept: true.
+	yearNumber := self newNumberInput 
+		autoAccept: true;
+		rangeMinimum: 1900 maximum: Year current year;
+		yourself
+]]]
 
 	
+!!! Bring the list and detail
+
+[[[
+ImdbFilmListPresenter >> initializePresenters
+
+	filmList := self newTable
+		addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (SpStringTableColumn title: 'Director' evaluated: #director);
+		addColumn: (SpStringTableColumn title: 'Year' evaluated: #year);
+		yourself.
+		
+	detail := self instantiate: ImdbFilmPresenter.
+	detail enabled: false.
+	
+	filmList transmitTo: detail.
+	self updatePresenter
+]]]
+
+[[[
+ImdbFilmListPresenter class >> defaultSpec 
+	^ SpBoxLayout newVertical
+			add: #filmList; 
+			add: #detail;
+			yourself
+]]]
+	
+	
+	
+[[[
+ImdbFilmPresenter >> defineInputPorts 
+
+	^ { SpModelPort new }	
+]]]
+
+
+[[[
+ImdbFilmPresenter >> setModel: aFilm
+
+	nameText text: aFilm name.
+	directorText text: aFilm director.
+	yearNumber number: aFilm year.
+]]]
+
+
+Use the same component to show a detail or edit a film.
+
+!!! Adding an image column
+
+
+!!! How to use a Style ?
+
+[[[
+initializePresenters 
+	self newLabel 
+		label: 'Name'; addStyle: 'header'; yourself.
+	nameText := self newTextInput autoAccept: true.	
+	directorText := self newTextInput autoAccept: true.
+	yearNumber := self newNumberInput autoAccept: true;
+		rangeMinimum: 1900 maximum: Year current year;
+		yourself
+]]]
+
+!!! Using GTK theme and settings
+
+
+To test if you change using a backend 
+[[[
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Gtk
+]]]
+
+[[[
+
+GtkSettings default themeName: 'Plane'
+
+]]]
+
+[[[
+SpGtkConfiguration subclass: #ImdbConfiguration
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+
+[[[
+ImdbConfiguration >> configure: anApplication
+
+	self installTheme: 'Sierra-darl'.
+	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
+]]]
+
+[[[
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Gtk with ImdbConfiguration new
+]]]
+
+
+
+
+
+
+
+
