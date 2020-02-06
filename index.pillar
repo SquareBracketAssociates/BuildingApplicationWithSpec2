@@ -1,6 +1,7 @@
 !Spec 2.0
 
 ${inputFile:path=Chapters/Intro/Intro.pillar}$
+${inputFile:path=Chapters/CaseStudyOne/CaseStudyOne.pillar}$
 ${inputFile:path=Chapters/FirstContact/FirstContact.pillar}$
 ${inputFile:path=Chapters/Reuse/Reuse.pillar}$
 ${inputFile:path=Chapters/ContactBook/ContactBook.pillar}$
@@ -11,6 +12,8 @@ ${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
 ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 ${inputFile:path=Chapters/Commander/Commander.pillar}$
 ${inputFile:path=Chapters/Commander2/Commander.pillar}$
+
+
 
 !! to rewrite
 

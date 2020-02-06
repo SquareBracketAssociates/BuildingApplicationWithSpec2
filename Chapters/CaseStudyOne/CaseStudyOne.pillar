@@ -235,11 +235,7 @@ ImdbApp >> initialize
 	self useBackend: #Gtk
 ]]]
 
-[[[
 
-GtkSettings default themeName: 'Plane'
-
-]]]
 
 [[[
 SpGtkConfiguration subclass: #ImdbConfiguration
@@ -263,7 +259,11 @@ ImdbApp >> initialize
 ]]]
 
 
+[[[
 
+GtkSettings default themeName: 'Plane'
+
+]]]
 
 
 
