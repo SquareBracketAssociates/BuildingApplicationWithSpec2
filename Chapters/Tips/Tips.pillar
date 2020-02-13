@@ -1,0 +1,16 @@
+!! Tips
+
+!!! Command reuse
+With commander2 you can reuse commands. The same commander class can return command instance configured differently.
+
+A simple 
+[[[
+asSpecCommand
+	...
+	iconProvider: self
+]]]
+
+[[[
+iconNamed: aSymbol
+	^ (super iconNamed: aSymbol) asGrey
+]]]
