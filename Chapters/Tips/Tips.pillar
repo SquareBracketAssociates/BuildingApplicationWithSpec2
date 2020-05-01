@@ -74,9 +74,13 @@ Pass your model to the presenter (this is a single object) when you create your 
 and you need to implement the method ==setModelBeforeInitialization:==.
 
 [[[
-PRExportPresenter >> setModelBeforeInitialization: aModel
+PRExportPresenter class >> withParser: aParser
 
-    need code for here 
+	^ self on: aParser
+
+PRExportPresenter >> setModelBeforeInitialization: aParser
+
+    self setParser: aParser
 ]]]
 
 
