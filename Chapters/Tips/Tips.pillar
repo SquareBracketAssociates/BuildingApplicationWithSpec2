@@ -14,3 +14,69 @@ asSpecCommand
 iconNamed: aSymbol
 	^ (super iconNamed: aSymbol) asGrey
 ]]]
+
+
+!!! Alternate color
+
+
+[[[
+
+	whenBuiltDo: [ :tree| tree widget alternateRowsColor ] 
+
+]]]
+
+
+!!! How to use your values to initialize your widgets
+
+The ==initializePresenters== hook method is called in the ==initialize== phase of the presenter.
+It means that you may have problem to pass the values of your contructors before. 
+Your code may be as follows: 
+
+[[[
+PRExportPresenter class >> withParser: aParser
+	^ self new
+		setParser: aParser;
+		yourself
+]]]
+
+The problem with above is that your ==initializeWidgets== method may want to use the value passed (==withParser:==) when 
+creating your presenter
+
+For example something like that: 
+[[[
+PRExportPresenter >> initializePresenters
+
+    syntaxScreen := self newLabel label: 'Input syntax: ', self parser name.
+]]]
+
+If you want to use your values you have to pass them before initialize is called y
+several ways for that
+
+!!!! Define your own initialize method.
+
+Write your own initialize method and set your values before calling the ==initialize==.
+
+[[[
+PRExportPresenter class >> withParser: aParser
+
+	^ self basicnew
+		setParser: aParser;
+		initialize; 
+		yourself
+]]]
+
+This is not really nice because if you forget to call ==initialize== you may break Spec2 logic. 
+A better solution is the following one.
+
+!!!! Use on: and setModelBeforeInitialization: 
+
+Pass your model to the presenter (this is a single object) when you create your presenter calling ==on:== instead ==new== 
+and you need to implement the method ==setModelBeforeInitialization:==.
+
+[[[
+PRExportPresenter >> setModelBeforeInitialization: aModel
+
+    need code for here 
+]]]
+
+
