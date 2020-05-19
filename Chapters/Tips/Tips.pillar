@@ -1,4 +1,140 @@
-!! Tips
+!! Tips and how tos 
+
+!!! Table with sorting 
+
+[[[
+SpPresenter subclass: #SpClassPresenter
+	slots: { #table }
+	classVariables: {  }
+	package: 'Spec2-TutorialThree'
+]]]
+
+[[[
+SpClassPresenter >> initializePresenters 
+
+	table := self newTable
+        items: self class environment allClasses ;
+        addColumn:
+            ((SpStringTableColumn title: 'Name' evaluated: #name)
+                width: 250;
+                yourself);
+        addColumn:
+            ((SpStringTableColumn title: '#methods' evaluated: #numberOfMethods)
+                width: 80;
+                yourself);
+        beResizable;
+        beMultipleSelection;
+        yourself.
+]]]
+
+[[[
+SpClassPresenter class >>defaultLayout
+
+	^ SpBoxLayout newVertical
+		add: #table
+		yourself
+]]]
+
+
++Ascending table .>file://figures/FirstClass1-Ascending.png+
+
+
+
+!!!! Initialize sorting
+
+==sortingBlock: == defines the default sorting of elements. 
+Here ==#name descending== specifies that the
+
+[[[
+SpClassPresenter >> initializePresenters 
+
+   table := self newTable
+        items: self class environment allClasses ;
+        sortingBlock: #name descending;
+        addColumn:
+            ((SpStringTableColumn title: 'Name' evaluated: #name)
+                width: 250;
+                yourself);
+        addColumn:
+            ((SpStringTableColumn title: '#methods' evaluated: #numberOfMethods)
+                width: 80;
+                yourself);
+        beResizable;
+        beMultipleSelection;
+        yourself.
+]]]
+
++Descending table .>file://figures/FirstClass2-Descending.png+
+
+
+!!!! More explicit value computation
+
+
+
+[[[
+SpClassPresenter >> initializePresenters 
+
+		table := self newTable
+	        items: (self class environment allClasses first: 100) ;
+	        sortingBlock: #name descending;
+	        addColumn:
+	            ((SpStringTableColumn title: 'Name' evaluated: #name)
+	                width: 250;
+	                yourself);
+	        addColumn:
+	            ((SpStringTableColumn title: '#methods' evaluated: #numberOfMethods)
+	                width: 80;
+	                yourself);
+			 addColumn:
+	            ((SpStringTableColumn 
+						title: '#LOC' 
+						evaluated: [:each | each methods inject: 0 into: [:s :m| s + m linesOfCode]])
+	                width: 80;
+	                yourself);
+	        beResizable;
+	        beMultipleSelection;
+	        yourself.
+]]]
+
+By default, if you do not set ==sortFunction: ==it will compare what the evaluation block returns.
+
+
++With more explicit item value computation.>file://figures/FirstClass3-LOC.png+
+
+!!!! Specific column-level sorting
+The message ==sortFunction:== lets us define how a specific column wants to be sorted.
+Here ==sortFunction: [ :cl | cl allSubclasses size ] ascending== is telling that the subclass column should be sorted using the number of subclasses.
+
+[[[
+SpClassPresenter >> initializePresenters 
+
+	table := self newTable
+			items: self class environment allClasses ;
+			  sortingBlock: #name descending;
+	        addColumn:
+	            ((SpStringTableColumn title: 'Name' evaluated: #name)
+	                width: 250;
+	                yourself);
+				addColumn:
+	            ((SpStringTableColumn title: '#subclass' evaluated: [:each | each allSubclasses size])
+                   sortFunction: [ :cl | cl allSubclasses size ] ascending;
+	                width: 250;
+	                yourself);
+
+	        addColumn:
+	            ((SpStringTableColumn title: '#methods' evaluated: #numberOfMethods)
+	                width: 80;
+	                yourself);
+	        beResizable;
+	        beMultipleSelection;
+	        yourself.
+]]]
+
++With subclasses.>file://figures/FirstClass4-Subclasses.png+
++Sorted based on subclass number.>file://figures/FirstClass5-SubclassesSorted.png+
+
+
+Note that previous example shows that the current implementation forces us to recompute the value while it is not needed.
 
 !!! Command reuse
 With commander2 you can reuse commands. The same commander class can return command instance configured differently.
