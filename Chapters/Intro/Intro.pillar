@@ -1,30 +1,29 @@
 !!Introduction
 @cha_introduction
+%05-21: Stef did a pass. Missing two figures + outline
 
-Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg, Change Sorter, Critics Browser, and the Pharo debugger. 
-An important architectural decision is that Spec20 cn have multiple back-ends (at the time of this writing GTK and Morphic are available).
+Spec20 is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg, Change Sorter, Critics Browser, and the Pharo debugger. 
+An important architectural decision is that Spec20 supports multiple back-ends (at the time of this writing GTK and Morphic are available).
 
-+Here I need a GTK .>file://figures/NovaStelo.png|width=100+
-
-
++Spec20 supports multiple back-ends: Morphic and GTK3.0.>file://figures/MissingFile.png|width=40+
 
 
+!!! Reuse of Logic
 The fundamental principle behind Spec is the reuse of user interface logic and visual composition. User interfaces are built by reusing and composing existing user interfaces, configuring them as needed. This principle starts from the most primitive elements of the UI: widgets such as buttons and labels are in themselves complete UIs that can be reused, configured, and opened in their window. These elements can be combined to form more complex UIs that again can be reused as part of a bigger UI, and so on. This is somewhat similar to how the different tiles on the cover of this book are combined. Smaller tiles configured with different colors or patterns join to form bigger rectangular shapes that are a part of an even bigger floor design. 
-
-
 
 
 
 To allow such reuse, Spec was influenced by VisualWorks and Dolphin Smalltalks' Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter or ApplicationModel class. In Spec 1.0 this role was represented in the class ==ComposableModel== and now in Spec 2.0 the class is called ==SpPresenter==. A presenter manages the ''logic and the link between widgets and domain objects''. Fundamentally, when writing Spec code, the developer does ''not'' come into contact with UI widgets, instead, he programs a Presenter that holds the UI logic. When the UI is opened this model will then instantiate the appropriate widgets. This being said, for the programmer this distinction is not apparent and it feels as if the widgets are being programmed directly.
 
-Spec is the standard GUI framework in Pharo and differs from the Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists et cetera. It cannot be used as a drawing framework per se, even if you can integrate canvas inside Spec component and you can have Roassal visualisation.
+Spec is the standard GUI framework in Pharo and differs from the Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists et cetera. It cannot be used as a drawing framework per se, even if you can integrate canvas inside Spec component and you can have Roassal visualisation (see Figure *@SpecRoassal*), or you can extend Spec20 itself with specific native components.
 
-+Roassal and Spec20.>file://figures/NovaStelo.png|width=100+
++Roassal and Spec20.>file://figures/MissingFile.png|width=100|label=SpecRoassal+
 
-Another example for the possible integration is the NovaStelo project of Prof. E. Ito as shown in Figure 
+Another example for the possible integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo*.
 
-+An integration of Morphic Native Widgets and Spec20.>file://figures/NovaStelo.png|width=100+
++An integration of Morphic Native Widgets and Spec20.>file://figures/NovaStelo.png|width=100|label=NovaStelo+
 
+!!! Spec 20
 Since Spec 2.0, different widget sets can be used to render your applications. At the time of writing this book, Spec can be rendered using Morphic and GTK as backend.
 Spec 2.0 represents a large iteration over Spec 1.0. Many enhancements have been introduced: the way user interface layouts are expressed, the API has been revisited, new widgets supported, integration with other projects, such as ==Commander==, have been added.
 
@@ -39,10 +38,11 @@ While the content of this book is based on existing Spec documentation, almost a
 
 @@note This book focuses on Pharo 8.0 and Spec 2.0. Earlier versions of Pharo have implementations of Spec that differ, causing some example code here to not work. Nonetheless, the fundamental principles of UI development in Spec will hold.
 
+!!!! Outline
 @@note SD: to revise
 This book is meant to be read as follows: Chapter 2 and 3 give a first contact with Spec and talk about how reuse is at the core of Spec. These chapters should be read completely by a Spec novice. The fourth chapter treats the fundamentals of Spec and gives a more complete, conceptual overview of how the different parts of a Spec UI work together. This is recommended reading for all Spec users since a better understanding of the fundamentals will ease UI development at all user experience levels. Chapters 5 and beyond are considered more as reference material to be read on demand. This being said, Chapter 5 treats layouts, which is required by all UIs. Hence it does make sense for all Spec users to read it so that they can construct their UI layout in the best possible way.  Lastly, Chapter 9 gives an assortment of tips and tricks that can be useful in a wide variety of settings, so we recommend all readers of this book to at least browse through it.
 
-
+!!!! Acknowledgements
 The authors would like to super warmly thanks for their financial support: Masashi Fujita, Roch-Alexandre Nominé, Eiichiro Ito, sumim, Hilaire Fernandes, Dominique Dartois, Philippe Mougin, Pavel Krivanek, Michael L. Davis, Ewan Dawson, Luc Fabresse, David Bajger, Jörg Frank, Petter Egesund, Pierre Bulens, Tomohiro Oda, Sebastian Heidbrink, Alexandre Bergel, Jonas Skučas, and Mark Schwenk.
 
 If you supported us and you are not on this list. This is a shame and you should contact us or do a pull request.
