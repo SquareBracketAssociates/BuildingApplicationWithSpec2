@@ -13,7 +13,7 @@ ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 ${inputFile:path=Chapters/Commander/Commander.pillar}$
 ${inputFile:path=Chapters/Commander2/Commander.pillar}$
 
-
+${inputFile:path=Chapters/Tips/Tips.pillar}$
 
 !! to rewrite
 
