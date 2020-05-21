@@ -6,7 +6,7 @@ ${inputFile:path=Chapters/Intro/Intro.pillar}$
 ${inputFile:path=Chapters/CaseStudyOne/CaseStudyOne.pillar}$
 
 !! Testing Spec (30%)?
-
+Stef should check what we have in the testing booklet
 
 ! Spec 2.0 Core
 
@@ -88,6 +88,14 @@ could we script a part of that + little tool to browse as in Spec1 book
 !! Lists
 !! Trees
 !! Tables
+!! Pane
+!! Tabs
+!! Dropbox
+!! TextInput
+!! Buttons
+
+
+! Tables
 !! Pane
 !! Tabs
 !! Dropbox
