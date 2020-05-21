@@ -1,7 +1,6 @@
 ${inputFile:path=Chapters/Intro/Intro.pillar}$
 
-!All Spec20 in one Example
-
+!All Spec20 in one Example (50%)
 
 ${inputFile:path=Chapters/CaseStudyOne/CaseStudyOne.pillar}$
 
