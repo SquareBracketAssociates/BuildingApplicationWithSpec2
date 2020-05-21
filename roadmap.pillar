@@ -1,0 +1,55 @@
+Part: Intro 
+[stephane] An Example (90%)
+- We want  full simple but not trivial example in a first chapter. May be IMBD (tables/list/toolbars/reuse)
+- GTK example early one.
+
+Testing your UI (40%)
+		[Stef put what I have] 
+
+Part Core in a Nutshell: 
+[stephane] Presenter and composition (50%)
+	- Different spec to display the same information
+
+Layout (0%) 
+
+Windows and Menus/toolbars (0%)
+	- modal, dialog
+	- closeWindow action
+
+[ Pavel ] Application (0%)
+icons
+closing subelements
+localisation
+Forms (spWithModel)
+	- memento
+	- Contact books (forms)
+Transmission (0%) 
+
+Dynamic Layout (0%)
+	- small example miller list/search bar
+Style (0%)
+	- withConstraints: should not be used
+	- icon
+Events (0%)
+	- Application logic
+	- Button refresh
+- Canvas Drawing / back integration (0%)
+	- morphic integration
+	- roassal 3
+	- athens
+
+Architecture:  (0%)
+- Backend extensions
+Extensions: Commander may be just after the menu. (100%)
+
+Part Widgets
+Widgets (0%) 
+could we script a part of that + little tool to browse as in Spec1 book
+Lists
+Trees
+Tables
+Pane
+Tabs
+Dropbox
+TextInput
+Buttons
