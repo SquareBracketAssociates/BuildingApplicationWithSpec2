@@ -219,4 +219,11 @@ PRExportPresenter >> setModelBeforeInitialization: aParser
     self setParser: aParser
 ]]]
 
+!!! Roassal inside
+
+[[[
+SpMorphPresenter new
+	morph: view canvas createMorph;
+	yourself
+]]]
 
