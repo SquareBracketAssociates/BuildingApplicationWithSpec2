@@ -227,3 +227,20 @@ SpMorphPresenter new
 	yourself
 ]]]
 
+
+!!! How to load icons?
+ThemeIcons >> loadIconsFromUrl. 
+Here's a simplistic approach to load icons from PNGs in a local ZIP archive
+
+[[[
+| themeIcons newIcons |
+newIcons := IdentityDictionary new.
+themeIcons := ThemeIcons new.
+
+((FileSystem zip: 'C:\icons\a.zip' asFileReference) 
+    open workingDirectory allChildrenMatching: '*.png') do:
+        [ :each | newIcons 
+            at: each base asSymbol
+            put: (themeIcons readPNGFrom: each )].
+newIcons.
+]]]

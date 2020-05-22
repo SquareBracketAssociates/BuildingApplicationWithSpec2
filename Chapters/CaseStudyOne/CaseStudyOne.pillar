@@ -1,13 +1,15 @@
 !! Most of Spec20 in one Example
 
 In this chapter we will guide you over the building of a simple but not trivial 
-application to manage films. 
+application to manage films as shown in Figure *@FullApp*.
 We will show many aspects of Spec20 that we will revisit in depth in the rest of this book:
 application, presenter, separation between domain and model, layout, transmission to connect widget and styles. 
 
 
++Film App: reusing the same component to edit and browsing a film.>file://figures/FullApp.png|width=100|label=FullApp+
+
 !!! Application
-Spec20 introduces the concept of an application. An Application is small object responsible to keep the state the your application. It manages for example, the multiple windows that can compose your application, its back-end, and can hold properties shared by the application. 
+Spec20 introduces the concept of an application. An ''application'' is small object responsible to keep the state the your application. It manages for example, the multiple windows that can compose your application, its back-end, and can hold properties shared by the application. 
 
 We start to define an application as follows: 
 
@@ -19,8 +21,9 @@ SpApplication subclass: #ImdbApp
 ]]]
 
 
+!!! A Basic Model
 
-!!! Model
+Since we will manage films we define a ==Film== class as follows: It has a name, a year and a director. We generate the companion accessors.
 
 [[[
 Object subclass: #ImdbFilm
@@ -28,6 +31,8 @@ Object subclass: #ImdbFilm
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
+
+Now we are ready to define a first presenter.
 
 !!!List of Films
 
