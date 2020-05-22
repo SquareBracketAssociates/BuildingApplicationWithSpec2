@@ -20,6 +20,7 @@ SpApplication subclass: #ImdbApp
 	package: 'Spec2-TutorialOne'
 ]]]
 
+In this example, we will show how we define which back-end to use and this will allow us to switch between Morphic and GTK.
 
 !!! A Basic Model
 
@@ -32,9 +33,39 @@ Object subclass: #ImdbFilm
 	package: 'Spec2-TutorialOne'
 ]]]
 
-Now we are ready to define a first presenter.
+We need to have a way to store and query some films. 
+We could use Voyage since it works without an external Mongo DB. 
+But we want to keep it extremely simple.
+So define a kind of singleton (one of the most misunderstood and ugliest Design Pattern so burn your computer once
+you will coded it).
+
+We define a class instance variable called ==films==.
+
+[[[
+ImdbFilm class
+	instanceVariableNames: 'films'
+]]]
+
+We define a method that lazy initialize the ==films== variable to an ordered collection.
+
+[[[
+ImdbFilm class >> films
+
+	^ films ifNil: [ films := OrderedCollection new ]
+]]]
+
+And to finish we define a way to add a film to the list.
+
+[[[
+ImdbFilm class >> addFilm: aFilm
+	films add: aFilm
+]]]
+
+Now we are ready to define a first presenter that will manage a list of films.
 
 !!!List of Films
+We will now define a presenter to manage a list of films.
+We define a new class ==ImdbFilmListPresenter== which inherits from ==SpPresenter==.
 
 [[[
 SpPresenter subclass: #ImdbFilmListPresenter
@@ -43,6 +74,12 @@ SpPresenter subclass: #ImdbFilmListPresenter
 	package: 'Spec2-TutorialOne'
 ]]]
 
+Now we can define how the information should be presented by defining a class method name ==defaultLayout==.
+You will see later that in fact (1) a presenter can have multiple layouts, (2) that we can define instance level layouts to get more dynamic situations.
+
+We define a simple layout: a list of boxes displayed vertically.
+Inside this box layout we add a specific presenter for the list itself 
+we name it ==filmList==.
 
 [[[
 ImdbFilmListPresenter class >> defaultLayout
@@ -52,8 +89,31 @@ ImdbFilmListPresenter class >> defaultLayout
 			yourself
 ]]]
 
+Now we define how we use the presenter for the filmList.
+In fact the list is more table than a mere list so we assign 
 [[[
-ImdbFilmListPresenter >> initializeWinddow: aWindowPresenter
+ImdbFilmListPresenter >> initializePresenters
+
+	filmList := self newTable
+		addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (SpStringTableColumn title: 'Director' evaluated: #director);
+		addColumn: (SpStringTableColumn title: 'Year' evaluated: #year);
+		yourself.
+		
+	self updatePresenter
+]]]
+
+[[[
+ImdbFilmListPresenter >> updatePresenter
+	
+	filmList items: ImdbFilm films
+]]]
+
+
+
+
+[[[
+ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
 
 	aWindowPresenter 
 		title: 'Mini IMDB';
