@@ -127,8 +127,20 @@ The following expression creates an instance of the film list presenter and open
 ImdbFilmListPresenter new openWithSpec
 ]]]
 
-+A layout and initializePresenters.>file://figures/FilmList-01-LayoutInitilalizePresenters.png|width=100|label=LayoutInitilalizePresenters+
++A layout and initializePresenters.>file://figures/FilmList-01-LayoutInitilalizePresenters.png|width=60|label=LayoutInitilalizePresenters+
 
+!!! Opening presenters 
+
+While directly accessing a presenter to create is possible during development,
+a more canonical way to create a presenter is to ask the application using the message ==newPresenter:== as follows.
+
+[[[
+| app |
+app := ImbdApplication new. 
+(app newPresenter: ImdbFilmListPresenter) openWithSpec.
+]]]
+
+The application is responsible for managing windows and other information, therefore it is important to use it to create presenters that compose the application. 
 
 
 
@@ -136,8 +148,9 @@ ImdbFilmListPresenter new openWithSpec
 !!! Improving window
 A presenter can be embedded in another presenter as we will show later. It can be also placed within a window and this is what the message ==openWithSpec== is doing. 
 Spec offers another hook to specialize the information presented when a presenter is displayed within a window. 
-The method ==initializeWindow:== defines a title, a default size (message ==initialExtent==) and a toolbar. 
-As we will see with the Commander2 chapter, toolbars can be automatically created out of commands. 
+
+The method ==initializeWindow:== defines a title, a default size (message ==initialExtent==) and a toolbar. You should obtain the window with a tool bar as shown in Figure *@FilmListPresenter2*.
+ 
 
 [[[
 ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
@@ -154,42 +167,66 @@ ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
 									yourself)
 ]]]
 
+To make sure that the button does not raise an error we define an empty ==addFilm==.
+In fact we will define a different presenter to be able to define a film. 
+
 [[[
 ImdbFilmListPresenter >> addFilm
 	"empty for now"
 ]]]
 
-+Film list presenter.>file://figures/FilmListPresenter.png|width=100|label=FilmListPresenter1+
+As we will see with the Commander2 chapter, toolbars can be automatically created out of commands.
 
+We could have added the toolbar in a similar way than the ==filmList== as part of the ==ImdbFilmListPresenter== because the toolbar is also a presenter (similar to the table presenter or other predefined presenters). But doing this way is less modular.
+Note also that the toolbar we created could be factored in a separate class to increase reuse too.
+
+
++Film list presenter.>file://figures/FilmList-02-initaliseWindows.png|width=60|label=FilmListPresenter2+
+
+
+!!! An application manages icons
+
+What we can see from the definition of the method ==initializeWindow:== is that an application manages also icons via the message ==iconNamed:==. 
+It means that your application can use its own icon set using the method ==iconManager:==. 
 
 
 !!! Film itself
-
+We are ready to define a simple presenter to edit a film. 
+We create a new subclass of SpPresenter named ==ImdbFilmPresenter==.
+This class has three instance variables: ==nameText==, ==directorText==, and ==year==
 [[[
 SpPresenter subclass: #ImdbFilmPresenter
-	instanceVariableNames: ''
+	instanceVariableNames: 'nameText directorText yearNumber'
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
+
+As we did previously, we define a default layout. 
+This time we just use a grid layout. With a simple grid layout you can define the position in the grid where your elements will appear. 
 
 [[[
 ImdbFilmPresenter class >> defaultLayout 
 	^ SpGridLayout new 
 			add: 'Name' at: 1@1; add: #nameText at: 2@1;
 			add: 'Director' at: 1@2; add: #directorText at: 2@2;
-			add: 'Year' at: 1@3; add: #yearText at: 2@3;
+			add: 'Year' at: 1@3; add: #yearNumber at: 2@3;
 			yourself
 ]]]
 
-
+And similarly as before, we define the method ==initializePresenters== to initialize the variables to the corresponding elementary presenters. 
+Here the ==nameText== and ==directorTest== are initialized to a textInput, and ==yearNumber== is a numberInput
 
 [[[
 ImdbFilmPresenter >> initializePresenters
 
 	nameText := self newTextInput.
 	directorText := self newTextInput.
-	yearText := self newNumberInput rangeMinimum: 1900 maximum:  Year current year
+	yearNumber := self newNumberInput 
+				rangeMinimum: 1900 
+				maximum:  Year current year
 ]]]
+
+
 
 [[[
 ImdbFilmPresenter >> addFilm
