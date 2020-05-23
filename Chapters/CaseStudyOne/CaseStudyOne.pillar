@@ -64,12 +64,13 @@ ImdbFilm class >> addFilm: aFilm
 Now we are ready to define a first presenter that will manage a list of films.
 
 !!!List of Films
-We will now define a presenter to manage a list of films.
-We define a new class ==ImdbFilmListPresenter== which inherits from ==SpPresenter==.
+We define a presenter to manage a list of films.
+For this we define a new class named ==ImdbFilmListPresenter== which inherits from ==SpPresenter==.
+We add an instance variable named ==filList== that will hold an elementary list presenter. 
 
 [[[
 SpPresenter subclass: #ImdbFilmListPresenter
-	instanceVariableNames: ''
+	instanceVariableNames: 'filmList'
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
@@ -78,6 +79,7 @@ We define how the information should be presented by defining a class method nam
 Here we define a simple layout: a list of boxes displayed vertically.
 Inside this box layout, we add a specific presenter for the list itself we name it ==filmList==.
 
+!!!! defaultLayout
 [[[
 ImdbFilmListPresenter class >> defaultLayout
 
@@ -89,9 +91,14 @@ ImdbFilmListPresenter class >> defaultLayout
 When you do not define any other methods to represent layout this is the method that is invoked by Spec logic. 
 You will see later that in fact (1) a presenter can have multiple layouts, (2) that we can define instance level layouts to get more dynamic situations.
 
+!!!! initializePresenters
+So far we did not explain what ==filmList== was. 
+In fact ==filmList== a variable is another elementary presenter (here already existing in Spec20).
+We define how we set the presenter for the ==filmList==.
+Here the message ==newTable== instantiate a ==SpTablePresenter==.
 
-We define how we use the presenter for the filmList.
-In fact the list is more table than a mere list so we assign 
+In fact the list is more table than a mere list: we describe that we want three columns as follows: 
+
 [[[
 ImdbFilmListPresenter >> initializePresenters
 
@@ -104,14 +111,33 @@ ImdbFilmListPresenter >> initializePresenters
 	self updatePresenter
 ]]]
 
+The last message ==updatePresenter== just query the domain (==ImdbFilm==) to get the list of the recorded films
+and populate the internal table with them.
+
 [[[
 ImdbFilmListPresenter >> updatePresenter
 	
 	filmList items: ImdbFilm films
 ]]]
 
+The following expression creates an instance of the film list presenter and open it. You get the widget shown in Figure *@LayoutInitilalizePresenters*.
+
+%ImdbFilmListPresenter0 new openWithSpec
+[[[
+ImdbFilmListPresenter new openWithSpec
+]]]
+
++A layout and initializePresenters.>file://figures/FilmList-01-LayoutInitilalizePresenters.png|width=100|label=LayoutInitilalizePresenters+
 
 
+
+
+
+!!! Improving window
+A presenter can be embedded in another presenter as we will show later. It can be also placed within a window and this is what the message ==openWithSpec== is doing. 
+Spec offers another hook to specialize the information presented when a presenter is displayed within a window. 
+The method ==initializeWindow:== defines a title, a default size (message ==initialExtent==) and a toolbar. 
+As we will see with the Commander2 chapter, toolbars can be automatically created out of commands. 
 
 [[[
 ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
@@ -134,6 +160,7 @@ ImdbFilmListPresenter >> addFilm
 ]]]
 
 +Film list presenter.>file://figures/FilmListPresenter.png|width=100|label=FilmListPresenter1+
+
 
 
 !!! Film itself
