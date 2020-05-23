@@ -74,12 +74,9 @@ SpPresenter subclass: #ImdbFilmListPresenter
 	package: 'Spec2-TutorialOne'
 ]]]
 
-Now we can define how the information should be presented by defining a class method name ==defaultLayout==.
-You will see later that in fact (1) a presenter can have multiple layouts, (2) that we can define instance level layouts to get more dynamic situations.
-
-We define a simple layout: a list of boxes displayed vertically.
-Inside this box layout we add a specific presenter for the list itself 
-we name it ==filmList==.
+We define how the information should be presented by defining a class method named ==defaultLayout==. 
+Here we define a simple layout: a list of boxes displayed vertically.
+Inside this box layout, we add a specific presenter for the list itself we name it ==filmList==.
 
 [[[
 ImdbFilmListPresenter class >> defaultLayout
@@ -89,7 +86,11 @@ ImdbFilmListPresenter class >> defaultLayout
 			yourself
 ]]]
 
-Now we define how we use the presenter for the filmList.
+When you do not define any other methods to represent layout this is the method that is invoked by Spec logic. 
+You will see later that in fact (1) a presenter can have multiple layouts, (2) that we can define instance level layouts to get more dynamic situations.
+
+
+We define how we use the presenter for the filmList.
 In fact the list is more table than a mere list so we assign 
 [[[
 ImdbFilmListPresenter >> initializePresenters
