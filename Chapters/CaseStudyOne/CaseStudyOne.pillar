@@ -181,7 +181,7 @@ We could have added the toolbar in a similar way than the ==filmList== as part o
 Note also that the toolbar we created could be factored in a separate class to increase reuse too.
 
 
-+Film list presenter.>file://figures/FilmList-02-initaliseWindows.png|width=60|label=FilmListPresenter2+
++Film list presenter.>file://figures/FilmList-02-initalizeWindows.png|width=60|label=FilmListPresenter2+
 
 
 !!! An application manages icons
@@ -273,6 +273,10 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 !!! Invoking a presenter. 
 
 We can define the method ==addFilm== in the class ==ImdbFilmListPresenter==. 
+When the user clicks on the button, we create a new film presenter that we associate with the current application. 
+We open such presenter as a modal dialog. 
+When the user press the Ok button (that we have customized in Figure *@FilmListPresenter3*), we add a new film
+to our little database and we update the list as shown in Figure *@refreshed*.
 
 [[[language=Smalltalk
 ImdbFilmListPresenter >> addFilm
@@ -291,12 +295,10 @@ ImdbFilmListPresenter >> addFilm
 ]]]
 
 
-@@note SD: I do not get why the list does not refresh. ImdbFilmListPresenter1 new openWithSpec and addFilm.
 
 
 !!! Better looking Film Presenter
-
-We improve the look of the the film presenter by adding the following new ==initializeWindow:== method.
+We improve the look of the the film presenter by adding the following new ==initializeWindow:== method (See Figure *@FilmListPresenter3*).
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
@@ -305,7 +307,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 		initialExtent: 400 @ 250
 ]]]
 
-+Better window.>file://figures/FilmPresenter3.png|width=100|label=FilmListPresenter3+
++Better window.>file://figures/FilmPresenter3.png|width=60|label=FilmListPresenter3+
 
 !!! Customizing the modal dialog
 
@@ -319,6 +321,15 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 ]]]
 
 @@note how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
+
+%ImdbFilmListPresenter1 new openWithSpec
++Customizing the modal dialog.>file://figures/FilmList-05-Modal.png|width=100|label=FilmListPresenter3+
+
+%ImdbFilmListPresenter1 new openWithSpec
++Film list gets refreshed.>file://figures/FilmList-06-ListRefreshed.png|width=60|label=refreshed+
+
+
+
 
 !!! Embedding the Film presenter into the film list
 
