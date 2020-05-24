@@ -191,15 +191,19 @@ It means that your application can use its own icon set using the method ==iconM
 
 
 !!! Film itself
-We are ready to define a simple presenter to edit a film. 
-We create a new subclass of SpPresenter named ==ImdbFilmPresenter==.
-This class has three instance variables: ==nameText==, ==directorText==, and ==year==
+
+We are ready to define a simple presenter to edit a film. We will use it to add new film or simply display it.
+We create a new subclass of ==SpPresenter== named ==ImdbFilmPresenter==.
+This class has three instance variables: ==nameText==, ==directorText==, and ==yearNumber==.
+
 [[[
 SpPresenter subclass: #ImdbFilmPresenter
 	instanceVariableNames: 'nameText directorText yearNumber'
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
+
+
 
 As we did previously, we define a default layout. 
 This time we just use a grid layout. With a simple grid layout you can define the position in the grid where your elements will appear. 
@@ -212,6 +216,10 @@ ImdbFilmPresenter class >> defaultLayout
 			add: 'Year' at: 1@3; add: #yearNumber at: 2@3;
 			yourself
 ]]]
+
+Note that it is not required to create the accessors for the presenter elements as we were forced to do it in Spec1.0.
+Here we create them because we will need to access to them when creating the corresponding ==ImbdFilm== instance.
+
 
 And similarly as before, we define the method ==initializePresenters== to initialize the variables to the corresponding elementary presenters. 
 Here the ==nameText== and ==directorTest== are initialized to a textInput, and ==yearNumber== is a numberInput
@@ -228,11 +236,17 @@ ImdbFilmPresenter >> initializePresenters
 
 
 
++Single Film presenter.>file://figures/MissingFile.png|width=100|label=FilmPresenter1+
+
+
+
+
+
 [[[
 ImdbFilmPresenter >> addFilm
 	| dialog windowPresenter |
 	dialog := ImdbFilmPresenter newApplication: self application.
-	windowPresenter := dialog openDialogWithSpec.
+	windowPresenter := dialog openModalWithSpec.
 	windowPresenter isOk
 		ifFalse: [ ^ self ].
 	"how would you do it differently?"
@@ -248,20 +262,6 @@ ImdbFilmPresenter >> addFilm
 +Film presenter.>file://figures/FilmPresenter1.png|width=100|label=FilmPresenter1+
 
 [[[
-ImdbFilmPresenter class >> defaultSpec
-	^ SpGridLayout new
-		beRowNotHomogeneous;
-		add: 'Name' at: 1 @ 1; add: #nameText at: 2 @ 1;
-		add: 'Director' at: 1 @ 2; add: #directorText at: 2 @ 2;
-		add: 'Year' at: 1 @ 3; add: #yearNumber at: 2 @ 3;
-		yourself
-]]]
-
-+Using the non homogenous.>file://figures/FilmPresenter2.png|width=100|label=FilmListPresenter2+
-
-
-
-[[[
 ImdbFilmPresenter class >> defaultLayout
 	^ SpGridLayout new
 		beRowNotHomogeneous;
@@ -273,12 +273,21 @@ ImdbFilmPresenter class >> defaultLayout
 		yourself
 ]]]
 
++Using the non homogenous.>file://figures/FilmPresenter2.png|width=100|label=FilmListPresenter2+
+
+
+
+
+
 [[[
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter
 		title: 'Film';
 		initialExtent: 400 @ 250
 ]]]
+
+
+!!! Handling Dialog window
 
 [[[
 ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
@@ -291,19 +300,51 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 +Better window.>file://figures/FilmPresenter3.png|width=100|label=FilmListPresenter3+
 
 
-Morphic design left over
+
+
+
+!!! Embedding the Film presenter into the film list
+
+
+
 [[[
-ImdbFilmPresenter >> initializePresenters
-	nameText := self newTextInput autoAccept: true.
-	directorText := self newTextInput autoAccept: true.
-	yearNumber := self newNumberInput 
-		autoAccept: true;
-		rangeMinimum: 1900 maximum: Year current year;
-		yourself
+ImdbFilmListPresenter >> initializePresenters
+
+	filmList := self newTable
+		addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (SpStringTableColumn title: 'Director' evaluated: #director);
+		addColumn: (SpStringTableColumn title: 'Year' evaluated: #year);
+		yourself.
+		
+	detail := self instantiate: ImdbFilmPresenter.
+	detail enabled: false.
+	
+	"HERE something is missing"
+	"when bla to do blat"
+	self updatePresenter
 ]]]
 
++Embedding the film description in the list.>file://figures/MissingFIle.png|width=100|label=FilmListPresenter3+
+
+!!! Tests
+
+A strong aspect of Spec is the fact that we can write test about the interaction. 
+So let us take this opportunity to show you that writing tests for UI is not complex. 
+
+
+
+
+
+
+
+
+
+
 	
-!!! Bring the list and detail
+!!! Using transmission
+
+Spec20 introduces a nice concept to propagate selection...
+
 
 [[[
 ImdbFilmListPresenter >> initializePresenters
@@ -322,7 +363,7 @@ ImdbFilmListPresenter >> initializePresenters
 ]]]
 
 [[[
-ImdbFilmListPresenter class >> defaultSpec 
+ImdbFilmListPresenter class >> defaultLayout 
 	^ SpBoxLayout newVertical
 			add: #filmList; 
 			add: #detail;
@@ -332,9 +373,15 @@ ImdbFilmListPresenter class >> defaultSpec
 	
 	
 [[[
-ImdbFilmPresenter >> defineInputPorts 
+ImdbFilmPresenter >> defaultInputPort
 
-	^ { SpModelPort new }	
+	^ self inputLabelPort
+]]]
+
+[[[
+ImdbFilmPresenter >> inputLabelPort
+
+	^ no idea what to write here. 
 ]]]
 
 
@@ -349,10 +396,9 @@ ImdbFilmPresenter >> setModel: aFilm
 
 Use the same component to show a detail or edit a film.
 
-!!! Adding an image column
+!!! Styling the application
 
-
-!!! How to use a Style ?
+"I have no idea how it works"
 
 [[[
 initializePresenters 
@@ -364,6 +410,9 @@ initializePresenters
 		rangeMinimum: 1900 maximum: Year current year;
 		yourself
 ]]]
+
+
++Embedding the film description in the list.>file://figures/MissingFIle.png|width=100|label=FilmListPresenter3+
 
 !!! Using GTK theme and settings
 
@@ -405,8 +454,8 @@ GtkSettings default themeName: 'Plane'
 
 ]]]
 
-
++Embedding the film description in the list.>file://figures/MissingFIle.png|width=100|label=FilmListPresenter3+
 
 !!! Conclusion
 
-
+We saw...
