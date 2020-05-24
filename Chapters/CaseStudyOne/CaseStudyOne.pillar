@@ -270,7 +270,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 ]]]
 
 
-!!! Invoking a presenter. 
+!!! Invoking a presenter
 
 We can define the method ==addFilm== in the class ==ImdbFilmListPresenter==. 
 When the user clicks on the button, we create a new film presenter that we associate with the current application. 
@@ -332,7 +332,38 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 
 
 !!! Embedding the Film presenter into the film list
+We have a list of film and a film detail visual elements, but we can imagine that we would like to see the details of a film just in the same
+container than the list, especially since a film description should be larger than the list columns. 
 
+We show how to proceed. First we add a new instance variable named ==detail== to the class ==ImdbFilmListPresenter== as follows:
+
+[[[language=Smalltalk
+ImdbFilmListPresenter1 subclass: #ImdbFilmListPresenter2
+	instanceVariableNames: 'filmList detail'
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+We redefine the default layout or we can define a new one. Let us define a new method returning an alternate layout. 
+
+[[[language=Smalltalk
+ImdbFilmListPresenter class >> embeddedLayout 
+	^ SpBoxLayout newVertical
+			add: #filmList; 
+			add: #detail;
+			yourself
+]]]
+
+We add a little helper method in class ==ImdbFilmPresenter== to be able to pass a film
+and populate the presenter accordingly. 
+
+[[[language=Smalltalk
+ImdbFilmPresenter >> setModel: aFilm
+
+	nameText text: aFilm name.
+	directorText text: aFilm director.
+	yearNumber number: aFilm year.
+]]]
 
 
 [[[language=Smalltalk
@@ -346,9 +377,7 @@ ImdbFilmListPresenter >> initializePresenters
 		
 	detail := self instantiate: ImdbFilmPresenter.
 	detail enabled: false.
-	
-	"HERE something is missing"
-	"when bla to do blat"
+
 	self updatePresenter
 ]]]
 
@@ -395,14 +424,7 @@ ImdbFilmListPresenter >> initializePresenters
 	self updatePresenter
 ]]]
 
-[[[language=Smalltalk
-ImdbFilmListPresenter class >> defaultLayout 
-	^ SpBoxLayout newVertical
-			add: #filmList; 
-			add: #detail;
-			yourself
-]]]
-	
+
 	
 	
 [[[language=Smalltalk
