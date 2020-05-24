@@ -1,0 +1,59 @@
+Stef 24/05
+==============================================================
+Chapter Case study one
+
+- needs reading
+	- can you check the vocabulary (subpresenter)
+	-  we should decide for the instance variable names pointing to subpresenters.-
+	And potentially revisit the code 
+-  needs transmission explanation,
+- Style (I have the impression that I understand)
+- GTK 
+- conclusion(I will write it)
+
+For now I will not touch it except the conclusion and focus on looking at what we have. 
+
+About instance variable names
+
+testSelectingOneFilmDisplaysIt
+
+	| list |
+	list := ImdbFilmListPresenter new.
+	list openWithSpec.
+	self assert: list detail nameText text isEmpty. 
+	list filmList clickAtIndex: 1.
+	self deny: list detail nameText text isEmpty. 
+
+
+To me presenter instance variable should be named ending with presenter (because they are subpresenters)
+this way we can have shortcut to access the data inside. 
+
+testSelectingOneFilmDisplaysIt
+
+	| list |
+	list := ImdbFilmListPresenter new.
+	list openWithSpec.
+	self assert: list detailPresenter namePresenter text isEmpty. 
+	listPresenter filmListPresenter clickAtIndex: 1.
+	self deny:  list detailPresenter namePresenter isEmpty. 
+
+This shows that in fact we should write
+
+
+testSelectingOneFilmDisplaysIt
+
+	| list |
+	list := ImdbFilmListPresenter new.
+	list openWithSpec.
+	detail := list detailPresenter.
+	self assert: detail namePresenter text isEmpty. 
+	list filmListPresenter clickAtIndex: 1.
+	self deny:  detail namePresenter isEmpty. 
+
+This way there is no confusion we know about what we are talking. 
+Once we agree I will rewrite all the chapter.
+Because this is important that the book shows good practices.
+
+S. 
+
+============================================================
