@@ -234,32 +234,18 @@ ImdbFilmPresenter >> initializePresenters
 				maximum:  Year current year
 ]]]
 
-
-
-+Single Film presenter.>file://figures/MissingFile.png|width=100|label=FilmPresenter1+
-
-
-
-
-
 [[[language=Smalltalk
-ImdbFilmPresenter >> addFilm
-	| dialog windowPresenter |
-	dialog := ImdbFilmPresenter newApplication: self application.
-	windowPresenter := dialog openModalWithSpec.
-	windowPresenter isOk
-		ifFalse: [ ^ self ].
-	"how would you do it differently?"
-	ImdbFilm
-		addFilm:
-			(ImdbFilm new
-				name: dialog nameText text;
-				director: dialog director text;
-				year: dialog yearNumber number).
-	self updatePresenter
+| app |
+app := ImbdApplication new. 
+(app newPresenter: ImdbFilmPresenter) openWithSpec.
 ]]]
 
-+Film presenter.>file://figures/FilmPresenter1.png|width=100|label=FilmPresenter1+
+%ImdbFilmPresenter0
++Single Film presenter.>file://figures/FilmList-03-OpenFilmPresenter.png|width=60|label=FilmPresenter1+
+
+
+
+
 
 [[[language=Smalltalk
 ImdbFilmPresenter class >> defaultLayout
@@ -273,11 +259,8 @@ ImdbFilmPresenter class >> defaultLayout
 		yourself
 ]]]
 
-+Using the non homogenous.>file://figures/FilmPresenter2.png|width=100|label=FilmListPresenter2+
-
-
-
-
+%ImdbFilmPresenter1
++Using the non homogenous.>file://figures/FilmList-04-OpenFilmPresenter-2.png|width=60|label=FilmListPresenter2+
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
@@ -287,21 +270,55 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 ]]]
 
 
-!!! Handling Dialog window
+!!! Invoking a presenter. 
+
+We can define the method ==addFilm== in the class ==ImdbFilmListPresenter==. 
+
+[[[language=Smalltalk
+ImdbFilmListPresenter >> addFilm
+	| dialog windowPresenter |
+	dialog := ImdbFilmPresenter newApplication: self application.
+	windowPresenter := dialog openModalWithSpec.
+	windowPresenter isOk
+		ifFalse: [ ^ self ].
+	ImdbFilm
+		addFilm:
+			(ImdbFilm new
+				name: dialog nameText text;
+				director: dialog director text;
+				year: dialog yearNumber number).
+	self updatePresenter
+]]]
+
+
+@@note SD: I do not get why the list does not refresh. ImdbFilmListPresenter1 new openWithSpec and addFilm.
+
+
+!!! Better looking Film Presenter
+
+We improve the look of the the film presenter by adding the following new ==initializeWindow:== method.
+
+[[[language=Smalltalk
+ImdbFilmPresenter >> initializeWindow: aWindowPresenter
+	aWindowPresenter
+		title: 'Film';
+		initialExtent: 400 @ 250
+]]]
+
++Better window.>file://figures/FilmPresenter3.png|width=100|label=FilmListPresenter3+
+
+!!! Customizing the modal dialog
+
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 	aDialogPresenter centered.
 	aDialogPresenter 
 		addButton: 'Cancel' do: [ :presenter | presenter close ];
-		addButton: 'Save' do: [ :presenter | presenter beOk; close ].
+		addButton: 'Save Film' do: [ :presenter | presenter beOk; close ].
 ]]]
 
-+Better window.>file://figures/FilmPresenter3.png|width=100|label=FilmListPresenter3+
-
-
-
-
+@@note how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
 
 !!! Embedding the Film presenter into the film list
 
@@ -334,6 +351,11 @@ So let us take this opportunity to show you that writing tests for UI is not com
 
 
 
+
+!!! Changing layout 
+
+Imagine that we prefer to have the list below the film details. 
+We can do it just proposing an alternate layout.
 
 
 
