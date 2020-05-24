@@ -66,7 +66,8 @@ Now we are ready to define a first presenter that will manage a list of films.
 !!!List of Films
 We define a presenter to manage a list of films.
 For this we define a new class named ==ImdbFilmListPresenter== which inherits from ==SpPresenter==.
-We add an instance variable named ==filList== that will hold an elementary list presenter. 
+We add an instance variable named ==filmList== that will hold an elementary list presenter. 
+Its means that ==ImdbFilmListPresenter== can have multiple subpresenter. 
 
 [[[language=Smalltalk
 SpPresenter subclass: #ImdbFilmListPresenter
@@ -77,7 +78,7 @@ SpPresenter subclass: #ImdbFilmListPresenter
 
 We define how the information should be presented by defining a class method named ==defaultLayout==. 
 Here we define a simple layout: a list of boxes displayed vertically.
-Inside this box layout, we add a specific presenter for the list itself we name it ==filmList==.
+We are declaring that inside this box layout there is a specific presenter for the list itself and it is named ==filmList==.
 
 !!!! defaultLayout
 [[[language=Smalltalk
@@ -88,8 +89,8 @@ ImdbFilmListPresenter class >> defaultLayout
 			yourself
 ]]]
 
-When you do not define any other methods to represent layout this is the method that is invoked by Spec logic. 
-You will see later that in fact (1) a presenter can have multiple layouts, (2) that we can define instance level layouts to get more dynamic situations.
+When you do not define any other methods to represent layout, ==defaultLayout== is the method that is invoked by Spec logic. 
+We saw that a presenter can have subpresenters and you will see later that (1) a presenter can have multiple layouts, (2) that we can define instance level layouts to get more dynamic situations.
 
 !!!! initializePresenters
 So far we did not explain what ==filmList== was. 
@@ -331,23 +332,26 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 
 
 
-!!! Embedding the Film presenter into the film list
-We have a list of film and a film detail visual elements, but we can imagine that we would like to see the details of a film just in the same
+!!! Embedding the film presenter into the film list
+
+We have two main visual element one for a list of films and one for a film details.
+We can imagine that we would like to see the film details just in the same
 container than the list, especially since a film description should be larger than the list columns. 
 
-We show how to proceed. First we add a new instance variable named ==detail== to the class ==ImdbFilmListPresenter== as follows:
+
+Let us proceed. First we add a new instance variable named ==detail== to the class ==ImdbFilmListPresenter==.
 
 [[[language=Smalltalk
-ImdbFilmListPresenter1 subclass: #ImdbFilmListPresenter2
+SpPresenter subclass: #ImdbFilmListPresenter
 	instanceVariableNames: 'filmList detail'
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
 
-We redefine the default layout or we can define a new one. Let us define a new method returning an alternate layout. 
+We redefine the default layout. We will show later that we can have different layouts.
 
 [[[language=Smalltalk
-ImdbFilmListPresenter class >> embeddedLayout 
+ImdbFilmListPresenter class >> defaultLayout 
 	^ SpBoxLayout newVertical
 			add: #filmList; 
 			add: #detail;
@@ -366,6 +370,16 @@ ImdbFilmPresenter >> setModel: aFilm
 ]]]
 
 
+Now we improve the ==initializePresenters== of ==ImdbFilmListPresenter==.
+- First we instantiate ==ImdbFilmPresenter==.
+- Second we configure as readonly using the ==enabled: false== message. 
+- Third we define that when an element of the list is selected we should display the information in the detail presenter. 
+
+Now executing the code snippet above you get the situation illustrated by Figue *@embedded*.
+
+It is worth to take some time to look at ==whenSelectionChangedDo:== message.
+The ==whenSelectionChangedDo:== method expects a block with zero or one argument. Such argument is not the selected item directly but a more complex object representing the selection. Indeed a selection is different in single item selection list and a multiple selection list. Therefore Spec defines the notion of selection mode under the form of subclasses of ==SpAbstractSelectionMode==.
+
 [[[language=Smalltalk
 ImdbFilmListPresenter >> initializePresenters
 
@@ -377,30 +391,166 @@ ImdbFilmListPresenter >> initializePresenters
 		
 	detail := self instantiate: ImdbFilmPresenter.
 	detail enabled: false.
-
+	
+	filmList whenSelectionChangedDo: [ :selectedItemMode | 
+		selectedItemMode isEmpty ifFalse: [detail setModel: selectedItemMode selectedItem] ].
+		
 	self updatePresenter
 ]]]
 
-+Embedding the film description in the list.>file://figures/MissingFIle.png|width=100|label=FilmListPresenter3+
++Embedding the film description in the list: selecting a list item populates the detailed visual component.>file://figures/FilmList-07-embedded.png|width=60|label=embedded+
 
 !!! Tests
 
-A strong aspect of Spec is the fact that we can write test about the interaction. 
-So let us take this opportunity to show you that writing tests for UI is not complex. 
+A strong aspect of Spec is the fact that we can write tests about the interaction. 
+And tests are so powerful to help us create nice design and make sure that we can spot our errors
+that we give you the chance to see that writing tests for UI is not complex. 
+
+We define a subclass of ==TestCase==.
+
+[[[
+TestCase subclass: #FilmListPresenterTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
 
 
+
+[[[
+FilmListPresenterTest >> testSelectingOneFilmDisplaysIt
+
+	| list |
+	list := ImdbFilmListPresenter new.
+	list openWithSpec.
+	detail := list detail.
+	self assert: detail nameText text isEmpty. 
+	list filmList clickAtIndex: 1.
+	self deny: detail nameText text isEmpty. 
+]]]
+
+This test is a bit poor because we do not test explicit the value of the name of the film in the detailled component. 
+We did this to keep the test set up simple, partly because ==ImdbFilm== stores globally the current films (Remember we told you that singleton are ugly
+and they also make testing more complex).
+
+We define three helper methods on ImbdFilm to reset the stored films and add E.T. film.
+
+[[[
+ImbdFilm class >> reset 
+	films := OrderedCollection new
+]]]
+[[[
+ImbdFilm class >> addET
+	films add: self ET
+]]]
+[[[
+ImbdFilm class >> ET
+
+	^ self new 
+		name: 'E.T.';
+		director: 'Steven Spielberg';
+		year: '1982'; 
+		yourself
+]]]
+
+
+So let us fix this:
+
+[[[
+FilmListPresenterTest >> setUp
+	super setUp. 
+	ImdbFilm reset. 
+	ImdbFilm addET.
+]]]
+
+
+[[[
+FilmListPresenterTest >> testSelectingOneFilmDisplaysIt
+
+	| list |
+	list := ImdbFilmListPresenter new.
+	list openWithSpec.
+	detail := list detail.
+	self assert: detail nameText text isEmpty. 
+	list filmList clickAtIndex: 1.
+	self deny: detail nameText text isEmpty. 
+]]]
+
+
+
+Another point that this test is showing is that the API of ==ImdbFilmPresenter== is not nice because it should offer a way to access the presenter and also its model. Here ==nameText== could be renamed ==namePresenter== and ==nameText== would return the text. 
+
+
+!!! Adding more tests
+Tests are so much fun and addictive (they are because we can change programs and check that they still works), that we will write another one. 
+
+[[[
+FilmListPresenterTest >> testSelectingOneFilmAndClickingOnEmpty
+
+	| list text |
+	list := ImdbFilmListPresenter new.
+	list openWithSpec.
+	list filmList clickAtIndex: 1.
+	text := list detail nameText text.
+	self deny:  text isEmpty. 
+	self assert: list filmList listSize equals: 1.
+	list filmList clickAtIndex: 2.
+	self assert: list detail nameText text equals: text
+]]]
+
+
+Since we do not really understand what would be to set the list as multiple selection we test it. 
+
+[[[
+FilmListPresenterTest >> testListIsSimpleSelection
+
+	| list |
+	list := ImdbFilmListPresenter new.
+	list openWithSpec.
+	self deny: list isMultipleSelection.
+]]]
+
+What you see is that it relatively simple to test that the interaction you specified is actually working as expected. 
 
 
 
 !!! Changing layout 
 
-Imagine that we prefer to have the list below the film details. 
-We can do it just proposing an alternate layout.
+With Spec, a presenter can have multiple layouts and even layouts that are created on the fly as we will see with the dynamic layouts.
+We can decide which layout to use to open a presenter. 
+Imagine that we prefer to have the list above the film details, or just the list alone.
+
+[[[language=Smalltalk
+ImdbFilmListPresenter class >> listAboveLayout 
+	^ SpBoxLayout newVertical
+			add: #detail;
+			add: #filmList; 
+			yourself
+]]]
 
 
+The following example shows that we can open ==ImdbFilmListPresenter== with the layout ==embeddedLayout== that we wil define 
+hereafter.
+
+[[[language=Smalltalk
+| app |
+app := ImbdApplication new. 
+(app newPresenter: ImdbFilmListPresenter) openWithSpec: #listAboveLayout.
+]]]
+
+We can also only layout part of the subpresenters.
+Here ==listOnlyLayout== only shows the list.
 
 
+[[[language=Smalltalk
+ImdbFilmListPresenter class >> listOnlyLayout 
+	^ SpBoxLayout newVertical
+			add: #filmList; 
+			yourself
+]]]
 
+
++A presenter can have multiple layouts for its subpresenters.>file://figures/FilmList-08-embeddedAbove.png|width=60|label=embedded+
 
 	
 !!! Using transmission
