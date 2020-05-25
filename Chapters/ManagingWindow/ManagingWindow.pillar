@@ -1,6 +1,28 @@
 !!Managing windows
 @cha_managing_windows
 
+
+!!! About dialogs
+
+
+[[[
+openNonModal
+	^ self
+		openDialogWithSpec
+		okAction: [self okAction];
+		cancelAction: [self cancelAction];
+		whenClosedDo: [self closeAction];	
+		centered
+]]]
+
+
+
+
+
+
+!!! To revise
+
+
 TO REVISE. For now just a simple pass with connectPresenters.
 
 In this book so far we have talked about reuse of ==SpPresenter==s, discussed the fundamental functioning of Spec and presented how to layout the widgets of a user interface. Yet what is still missing for a working user interface is showing all these widgets inside of a window. In our examples until now we have only shown a few of the features of Spec for managing windows, basically restricting ourself to opening a window.
