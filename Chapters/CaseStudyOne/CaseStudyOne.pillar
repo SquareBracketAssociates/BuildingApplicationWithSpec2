@@ -401,6 +401,7 @@ ImdbFilmListPresenter >> initializePresenters
 +Embedding the film description in the list: selecting a list item populates the detailed visual component.>file://figures/FilmList-07-embedded.png|width=60|label=embedded+
 
 !!! Tests
+@@note May be we should move this section to a dedicated 
 
 A strong aspect of Spec is the fact that we can write tests about the interaction. 
 And tests are so powerful to help us create nice design and make sure that we can spot our errors
