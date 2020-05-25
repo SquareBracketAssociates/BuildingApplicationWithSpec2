@@ -1,0 +1,28 @@
+For text chapter. 
+
+there is not anymore "action to perform" concept
+nor "accept" concept because there is not anymore the concept of "autoAccept"
+instead you have whenSubmitDo: (to perform "accept")  and whenResetDo: (to perform "cancel")
+they are there because we use it a lot so the convenience method have sense but if you see the implementation
+
+[[[
+SpCodePresenter >> whenSubmitDo: aBlock
+    "This method will add a 'submit' event to the widget. It will react when user presses meta+s 
+     key (this is for historical reasons) and with enter."
+
+    self 
+        bindKeyCombination: $s meta 
+        toAction: [ aBlock value: self text ]
+]]]
+
+in inputText this is different because it needs 
+
+[[[
+TextInputPresenter >> whenSubmitDo: aBlock
+    "This method will add a 'submit' event to the widget. It will react when user presses meta+s 
+     key (this is for historical reasons) and with enter."
+
+    self 
+        bindKeyCombination: Character cr asKeyCombination | $s meta 
+        toAction: aBlock
+]]]
