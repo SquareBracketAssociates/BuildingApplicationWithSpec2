@@ -38,6 +38,18 @@ While the content of this book is based on existing Spec documentation, almost a
 
 @@note This book focuses on Pharo 8.0 and Spec 2.0. Earlier versions of Pharo have implementations of Spec that differ, causing some example code here to not work. Nonetheless, the fundamental principles of UI development in Spec will hold.
 
+
+
+!!! A Point of Attention
+This section will be removed in the release version of the book. 
+For now we use ==defaultLayout== instead of ==defaultSpec== for the definitions of the layout. We are deprecating ==defaultSpec== in the implementation and we do not want to rewrite the complete book once it is done. So we suggest to define in your class ==defaultSpec== as calling ==defaultLayout== in addition to your ==defaultLayout== definition.
+
+[[[
+defaultSpec
+	^ self defaultLayout
+]]]
+
+
 !!!! Outline
 @@note SD: to revise
 This book is meant to be read as follows: Chapter 2 and 3 give a first contact with Spec and talk about how reuse is at the core of Spec. These chapters should be read completely by a Spec novice. The fourth chapter treats the fundamentals of Spec and gives a more complete, conceptual overview of how the different parts of a Spec UI work together. This is recommended reading for all Spec users since a better understanding of the fundamentals will ease UI development at all user experience levels. Chapters 5 and beyond are considered more as reference material to be read on demand. This being said, Chapter 5 treats layouts, which is required by all UIs. Hence it does make sense for all Spec users to read it so that they can construct their UI layout in the best possible way.  Lastly, Chapter 9 gives an assortment of tips and tricks that can be useful in a wide variety of settings, so we recommend all readers of this book to at least browse through it.
