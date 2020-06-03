@@ -1,5 +1,4 @@
-!  Athens Tutorial
-Inspired by https://www.cairographics.org/tutorial/
+!  Athens & Spec Tutorial
 
 !! Introduction
 There are two different computer graphics: vector and raster graphics. 
@@ -116,6 +115,61 @@ AthensHello >> extent: aPoint
 
 Congratulation, you have now created your first morphic windows where content
 is rendered using Athens. 
+
+
+! Using your morph with Spec
+To integrate your morph:
+[[[language=Smalltalk
+SpPresenter >> newMorph
+	^ self instantiate: SpMorphPresenter
+]]]
+
+Usage in your own presenter: 
+[[[language=Smalltalk
+OwnPresenter >> initializePresenters
+	demo := self newMorph.
+	demo morph: AthensDemoMorph new.
+]]]
+
+! Direct integration of Athens with Spec
+In your presenter:
+[[[language=Smalltalk
+MyPresenter >> initializePresenters
+    paint := self instantiate: SpAthensStaticPresenter.
+	paint surfaceExtent: 600@400.
+	paint drawBlock: [ :canvas | self render: canvas ].
+]]]
+
+The render method:
+[[[language=Smalltalk
+MyPresenter >> render: canvas
+    canvas
+        setPaint:
+            (canvas surface
+                createLinearGradient:
+                    {(0 -> Color white).
+                    (1 -> Color black)}
+                start: 0@0
+                stop: canvas surface extent).
+    canvas drawShape: (0 @ 0 extent: canvas surface extent).
+]]]
+
+The window definition
+[[[language=Smalltalk
+MyPresenter >> initializeWindow: aWindowPresenter
+	aWindowPresenter
+		title: 'Draw athens on Spec';
+		initialExtent: 600@400;
+		windowIcon: self windowIcon;
+		askOkToClose: false;
+		aboutText: 'Draw athens on Spec'
+]]]
+
+
+@@todo 
+- find how I can resize the surface with I resize the window
+- find how I can integrate keyboard and mouse action with the presenter.
+
 
 !! Athens details
 ""AthensSurface"" and its subclass ""AthensCairoSurface"" will initialize a new surface
