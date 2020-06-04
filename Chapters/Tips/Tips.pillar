@@ -244,3 +244,26 @@ themeIcons := ThemeIcons new.
             put: (themeIcons readPNGFrom: each )].
 newIcons.
 ]]]
+
+The class ThemeIcons offers more support. 
+
+
+Another way that is a bit more low-level is to use the ==ImageForm== directly.
+
+[[[
+	| newIcons |
+
+	newIcons := IdentityDictionary new.
+	((FileSystem zip: 'C:\icons\a.zip' asFileReference) 
+	    open workingDirectory allChildrenMatching: '*.png') do:
+	        [ :each | newIcons 
+	            at: each base asSymbol
+	            put: (ImageForm open: each )].
+
+	SpToolBarButton new 
+	   label: 'Go!';
+	   icon: (newIcons at: #iconFileName).
+
+]]]
+
+

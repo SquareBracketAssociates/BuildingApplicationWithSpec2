@@ -17,7 +17,7 @@ To allow such reuse, Spec was influenced by VisualWorks and Dolphin Smalltalks' 
 
 Spec is the standard GUI framework in Pharo and differs from the Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists et cetera. It cannot be used as a drawing framework per se, even if you can integrate canvas inside Spec component and you can have Roassal visualisation (see Figure *@SpecRoassal*), or you can extend Spec20 itself with specific native components.
 
-+Roassal and Spec20.>file://figures/MissingFile.png|width=40|label=SpecRoassal+
++Roassal and Spec20.>file://figures/roassalGTK.png|width=100|label=SpecRoassal+
 
 Another example for the possible integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo*.
 
