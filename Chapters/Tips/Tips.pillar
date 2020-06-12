@@ -266,4 +266,12 @@ Another way that is a bit more low-level is to use the ==ImageForm== directly.
 
 ]]]
 
+!!! Can we draw custom widgets with spec
+
+
+you can
+you have two possibilities
+1) you do a morph and you use ==SpMorphPresenter==
+2) you draw it with athens and you use ==SpAthensStaticPresenter==
+maybe (2) needs some work to be really usable, it was never tried. Also, it needs a rename to ==SpAthensPresenter==
 

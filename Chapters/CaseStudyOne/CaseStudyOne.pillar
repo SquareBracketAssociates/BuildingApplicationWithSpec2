@@ -6,7 +6,7 @@ We will show many aspects of Spec20 that we will revisit in depth in the rest of
 application, presenter, separation between domain and model, layout, transmission to connect widget and styles. 
 
 
-+Film App: reusing the same component to edit and browsing a film.>file://figures/FullApp.png|width=100|label=FullApp+
++Film App: reusing the same component to edit and browsing a film.>file://figures/FullApp.png|width=90|label=FullApp+
 
 !!! Application
 Spec20 introduces the concept of an application. An ''application'' is small object responsible to keep the state the your application. It manages for example, the multiple windows that can compose your application, its back-end, and can hold properties shared by the application. 
@@ -130,7 +130,7 @@ ImdbFilmListPresenter new openWithSpec
 
 +A layout and initializePresenters.>file://figures/FilmList-01-LayoutInitilalizePresenters.png|width=60|label=LayoutInitilalizePresenters+
 
-!!! Opening presenters 
+!!! Opening Presenters 
 
 While directly accessing a presenter to create is possible during development,
 a more canonical way to create a presenter is to ask the application using the message ==newPresenter:== as follows.
@@ -146,7 +146,7 @@ The application is responsible for managing windows and other information, there
 
 
 
-!!! Improving window
+!!! Improving Window
 A presenter can be embedded in another presenter as we will show later. It can be also placed within a window and this is what the message ==openWithSpec== is doing. 
 Spec offers another hook to specialize the information presented when a presenter is displayed within a window. 
 
@@ -185,13 +185,13 @@ Note also that the toolbar we created could be factored in a separate class to i
 +Film list presenter.>file://figures/FilmList-02-initalizeWindows.png|width=60|label=FilmListPresenter2+
 
 
-!!! An application manages icons
+!!! An Application Manages Icons
 
 What we can see from the definition of the method ==initializeWindow:== is that an application manages also icons via the message ==iconNamed:==. 
 It means that your application can use its own icon set using the method ==iconManager:==. 
 
 
-!!! Film itself
+!!! Film Itself
 
 We are ready to define a simple presenter to edit a film. We will use it to add new film or simply display it.
 We create a new subclass of ==SpPresenter== named ==ImdbFilmPresenter==.
@@ -271,7 +271,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 ]]]
 
 
-!!! Invoking a presenter
+!!! Invoking a Presenter
 
 We can define the method ==addFilm== in the class ==ImdbFilmListPresenter==. 
 When the user clicks on the button, we create a new film presenter that we associate with the current application. 
@@ -310,7 +310,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 
 +Better window.>file://figures/FilmPresenter3.png|width=60|label=FilmListPresenter3+
 
-!!! Customizing the modal dialog
+!!! Customizing the Modal Dialog
 
 
 [[[language=Smalltalk
@@ -321,7 +321,7 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 		addButton: 'Save Film' do: [ :presenter | presenter beOk; close ].
 ]]]
 
-@@note how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
+%@@note how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
 
 %ImdbFilmListPresenter1 new openWithSpec
 +Customizing the modal dialog.>file://figures/FilmList-05-Modal.png|width=100|label=FilmListPresenter3+
@@ -482,7 +482,7 @@ FilmListPresenterTest >> testSelectingOneFilmDisplaysIt
 Another point that this test is showing is that the API of ==ImdbFilmPresenter== is not nice because it should offer a way to access the presenter and also its model. Here ==nameText== could be renamed ==namePresenter== and ==nameText== would return the text. 
 
 
-!!! Adding more tests
+!!! Adding More Tests
 Tests are so much fun and addictive (they are because we can change programs and check that they still works), that we will write another one. 
 
 [[[
@@ -515,7 +515,7 @@ What you see is that it relatively simple to test that the interaction you speci
 
 
 
-!!! Changing layout 
+!!! Changing Layout 
 
 With Spec, a presenter can have multiple layouts and even layouts that are created on the fly as we will see with the dynamic layouts.
 We can decide which layout to use to open a presenter. 
@@ -554,13 +554,13 @@ ImdbFilmListPresenter class >> listOnlyLayout
 +A presenter can have multiple layouts for its subpresenters.>file://figures/FilmList-08-embeddedAbove.png|width=60|label=embedded+
 
 	
-!!! Using transmissions
+!!! Using Transmissions
 
-Spec20 introduces a nice concept to propagate selection from one presenter to another, thinking on the "flow" of information more than the implementation details of this propagation, who can change from presenter to presenter.
+Spec20 introduces a nice concept to propagate selection from one presenter to another, thinking on the "flow" of information more than the implementation details of this propagation, which can change from presenter to presenter.
 
 With transmissions, each presenter can define a set of output ports (ports to transmit information) and input ports (ports to receive information). Widget presenters already have defined the output/input ports you can use with them, but you can add your own ports to your presenters.
 
-The easiest way to declare a transmission is by sending the ==#transmitTo:== message from a presenter to another.
+The easiest way to declare a transmission is by sending the ==transmitTo:== message from a presenter to another.
 
 [[[language=Smalltalk
 ImdbFilmListPresenter >> initializePresenters
@@ -574,13 +574,14 @@ ImdbFilmListPresenter >> initializePresenters
 	detail := self instantiate: ImdbFilmPresenter.
 	detail enabled: false.
 	
-	"Transmissing from my filmList to a detal"
+	"Transmissing from my filmList to a detail"
 	filmList transmitTo: detail.
 	self updatePresenter
 ]]]
 
-Here, ==filmList== is a table who will transmit its selection to ==detail== presenter, and is an instance of ==ImdbFilmPresenter== who was defined by us, hence it does not defines any input port and we need to provide it.
-
+Here, ==filmList== is a table which will transmit its selection to ==detail== presenter.
+It is an instance of ==ImdbFilmPresenter== that we defined, hence it does not define any input port.
+Therefore we need to define an input port as follows: 
 	
 [[[language=Smalltalk
 ImdbFilmPresenter >> defaultInputPort
@@ -594,6 +595,10 @@ ImdbFilmPresenter >> inputModelPort
 	^ SpModelPort newPresenter: self. 
 ]]]
 
+
+%%SD: why do we need the two methods?
+%% SD: why do we need the setModel: method.
+
 [[[language=Smalltalk
 ImdbFilmPresenter >> setModel: aFilm
 
@@ -606,12 +611,16 @@ ImdbFilmPresenter >> setModel: aFilm
 Use the same component to show a detail or edit a film.
 
 !!! Styling the application
-Different elements in an application can have different look and feels, for example to change the size or color of a font that will be a header. To allow this Spec introduces the concept of "styles" for components. 
+Different elements in an application can have different look and feels, for example to change the size or color of a font for a header. To allow this, Spec introduces the concept of "styles" for components. 
 
-In Spec, one application defines a Stylesheet (or a set of them), this defines a set of "style classes" that can be later assigned to presenter widgets. Defining a style class, however, work very different for each backend. While Gtk will accept (mostly) regular CSS to style your widgets, Morphic has its own sub-framework. 
+In Spec, one application defines a Stylesheet (or a set of them). 
+This defines a set of "style classes" that can be later assigned to presenter widgets. 
+Defining a style class, however, work very different for each backend. 
+While Gtk will accept (mostly) regular CSS to style your widgets, Morphic has its own sub-framework. 
 
 To define an style, you need to declare an stylesheet in your configuration.
 
+%% SD: why do we need initializePresenters because there is not change?
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializePresenters 
 	self newLabel 
