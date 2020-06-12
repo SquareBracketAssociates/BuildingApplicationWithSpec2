@@ -606,11 +606,14 @@ ImdbFilmPresenter >> setModel: aFilm
 Use the same component to show a detail or edit a film.
 
 !!! Styling the application
+Different elements in an application can have different look and feels, for example to change the size or color of a font that will be a header. To allow this Spec introduces the concept of "styles" for components. 
 
-"I have no idea how it works"
+In Spec, one application defines a Stylesheet (or a set of them), this defines a set of "style classes" that can be later assigned to presenter widgets. Defining a style class, however, work very different for each backend. While Gtk will accept (mostly) regular CSS to style your widgets, Morphic has its own sub-framework. 
+
+To define an style, you need to declare an stylesheet in your configuration.
 
 [[[language=Smalltalk
-initializePresenters 
+ImdbFilmPresenter >> initializePresenters 
 	self newLabel 
 		label: 'Name'; 
 		addStyle: 'header'; 
@@ -622,50 +625,60 @@ initializePresenters
 		yourself
 ]]]
 
-
 +Embedding the film description in the list.>file://figures/MissingFIle.png|width=100|label=FilmListPresenter3+
 
 !!! Using GTK theme and settings
 
-
-To test if you change using a backend 
 [[[language=Smalltalk
-ImdbApp >> initialize
-	super initialize.
-	self useBackend: #Gtk
-]]]
-
-
-
-[[[language=Smalltalk
-SpGtkConfiguration subclass: #ImdbConfiguration
+SpGtkConfiguration subclass: #ImdbGtkConfiguration
 	instanceVariableNames: ''
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
 
-
 [[[language=Smalltalk
-ImdbConfiguration >> configure: anApplication
+ImdbGtkConfiguration >> configure: anApplication
 
-	self installTheme: 'Sierra-darl'.
+	super configure: anApplication.
+	"This will choose the theme 'Sierra-dark' if it is available"
+	self installTheme: 'Sierra-dark'.
+	"This will add a 'provider' (a stylesheet)"
 	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
 ]]]
 
 [[[language=Smalltalk
 ImdbApp >> initialize
 	super initialize.
-	self useBackend: #Gtk with ImdbConfiguration new
+	self useBackend: #Gtk with ImdbGtkConfiguration new
 ]]]
 
+!!! Using Morphic
 
 [[[language=Smalltalk
-
-GtkSettings default themeName: 'Plane'
-
+SpMorphicConfiguration subclass: #ImdbMorphicConfiguration
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
 ]]]
 
-+Embedding the film description in the list.>file://figures/MissingFIle.png|width=100|label=FilmListPresenter3+
+[[[language=Smalltalk
+SpMorphicConfiguration >> configure: anApplication
+
+	super configure: anApplication.
+	"There are ways to write/read this from strings or files, but this is how you do 
+	 it programatically"
+	self styleSheet 
+		 addClass: 'header' with: [ :style |
+		 	style 
+				addPropertyFontWith: [ :font | font bold: true ];
+				addPropertyDrawWith: [ :draw | draw color: Color red ] ]
+]]]
+
+[[[language=Smalltalk
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Morphic with ImdbMorphicConfiguration new
+]]]
 
 !!! Conclusion
 
