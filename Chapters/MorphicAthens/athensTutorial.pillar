@@ -172,12 +172,14 @@ MyPresenter >> initializeWindow: aWindowPresenter
 
 
 !! Athens details
-""AthensSurface"" and its subclass ""AthensCairoSurface"" will initialize a new surface
+""AthensSurface"" and its subclass ""AthensCairoSurface"" will initialize a new surface.
+The surface represent the area in pixel where your drawing will be rendered. You 
+never draw directly on the surface. Instead, you specify what you want to display
+ on the canvas, and Athens will render your it on the area specified by the surface. 
 
 ""AthensCanvas"" is the central object used to perform drawing on an ""AthensSurface""
 Canvas is not directly instanciated but used through a call like 
 "surface drawDuring: [:canvas | .... ]"
-
 
 The Athens drawing model relies on a three layer model. Any drawing process 
 takes place in three steps:
@@ -186,9 +188,6 @@ takes place in three steps:
 # Then ""painting"" must be defined, which may be a color, a color gradient, a bitmap or some vector graphics
 # Finally the result is ""drawn"" to the Athens surface, which is provided by the back-end for the output.
 
- draw class
-
-AthensShape and AthensPath
 
 !! Path
 Athens always has an active path. 
@@ -268,7 +267,21 @@ clockwise or counter clockwise direction. The angle must be specified in Radian.
 % If R = 1, half of the circumference is equal to PI, which is the value of half
 % a circle.
 
-@todo: curveVia: to:
+!!! curveVia: to: and |curveVia: and: to:
+This call is related to bezier curve. A Bézier curve consists of two or more
+ control points, which define the size and shape of the line. The first and 
+ last points mark the beginning and end of the path, while the intermediate 
+ points define the path's curvature.
+ 
+ More detail on Bezier curve on available at: https://pomax.github.io/bezierinfo/
+
+!!! path transformation.
+A path can be rotated, translated and scaled so you can adapt it to your need.
+For example, you can define a path in your own coordinate system, and then 
+scale it to match the size of your surface extent.
+
+
+
 
 !! painting
 
@@ -282,15 +295,15 @@ any object can be treated as paint:
  - athensFillRectangle: aRectangle on: aCanvas
  - asStrokePaint
 
-|surface message                                  |helper class        |  comment               |
-|-------------------------------------------------|--------------------|------------------------|
-|createFormPaint:                                 |                    |create paint from a Form|
-|createLinearGradient: start: stop:               |LinearGradientPaint |linear gradient paint   |
-|createRadialGradient: center: radius:            |RadialGradientPaint |Radial gradient paint   |
-|createRadialGradient: center: radius: focalPoint:|RadialGradientPaint |Radial gradient paint   |
-|createShadowPaint:                               |AthensShadowPaint   |???                     |
-|createSolidColorPaint:                           |                    |fill paint              |
-|createStrokePaintFor:                            |AthensStrokePaint   |stroke paint            |
+|surface message                                  |  comment               |
+|-------------------------------------------------|------------------------|
+|createFormPaint:                                 |create paint from a Form|
+|createLinearGradient: start: stop:               |linear gradient paint   |
+|createRadialGradient: center: radius:            |Radial gradient paint   |
+|createRadialGradient: center: radius: focalPoint:|Radial gradient paint   |
+|createShadowPaint:                               |???                     |
+|createSolidColorPaint:                           |fill paint              |
+|createStrokePaintFor:                            |stroke paint            |
 
 a Canvas define its paint method we will see in detail below:
  - setPaint:
@@ -370,6 +383,10 @@ canvas
             stop: 300@400). 
     canvas drawShape: (0@200 extent: 300@400).
 ]]]
+
+
+!!! paintTransform
+@@todo
 
 !!! drawing
 Either you set the shape first and then you call ""draw"", or you call the 
