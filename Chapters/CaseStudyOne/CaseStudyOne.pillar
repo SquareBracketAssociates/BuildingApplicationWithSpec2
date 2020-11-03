@@ -634,7 +634,7 @@ ImdbFilmPresenter >> initializePresenters
 		yourself
 ]]]
 
-+Embedding the film description in the list.>file://figures/MissingFIle.png|width=100|label=FilmListPresenter3+
++Embedding the film description in the list.>file://figures/MissingFile.png|width=100|label=FilmListPresenter3+
 
 !!! Using GTK theme and settings
 
