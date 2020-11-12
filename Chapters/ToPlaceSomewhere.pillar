@@ -1,4 +1,21 @@
-For text chapter. 
+!!! InteractionModel
+
+A tool can define an interaction. 
+An interaction is a kind of API that can return information such as selector, class, receiver...
+An interaction model has a back pointer to the component it is attached. 
+It is then passed to the subcomponents of the main tool.
+
+For example, the StPlayground instantiates an interaction model dedicated for it: the PlaygroundInteractionModel.
+Such interaction model is then passed to the subcomponents of the tool such as the CodePresenter.
+
+Commands can then perform action on the StPlayground via its code presenter and the code presenter
+uses the interaction model he received from StPlayground.
+
+
+
+
+
+!!! For text chapter. 
 
 there is not anymore "action to perform" concept
 nor "accept" concept because there is not anymore the concept of "autoAccept"
