@@ -14,6 +14,12 @@ uses the interaction model he received from StPlayground.
 
 
 
+!!! About Handler
+FiletringList has a nice example of using eventHandler to create extended behavior.
+For example to show how to implement shift click in list.
+
+
+
 
 !!! For text chapter. 
 
