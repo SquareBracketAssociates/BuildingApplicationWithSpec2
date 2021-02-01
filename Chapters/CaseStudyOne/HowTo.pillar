@@ -1,0 +1,117 @@
+!! Focus Order
+
+default is the one of the layout tree
+If you want to change it
+
+[[[
+initializePresenters
+	self initializePackageList.
+	self initializeClassList.
+	self initializeProtocolList.
+	self initializeSelectorList.
+	self initializeMethodBodyPane.
+	
+	showClassSide := self newCheckBox.
+	showClassSide label: 'Class side'.
+	showClassSide state: false.
+	
+	"this is optional because it is the order of definition 
+	in the layout"
+	self focusOrder
+		add: packages;
+		add: classes;
+		add: protocols;
+		add: selectors;
+		add: method
+]]]
+
+
+[[[
+	defaultSpec
+		<spec: #default>
+
+		^ SpBoxLayout  
+				newTopToBottom 
+				add: 
+				 ( SpBoxLayout newLeftToRight
+						add:  
+						(SpBoxLayout newTopToBottom
+							add: #packages;
+							add: #showClassSide height: 16;
+							yourself);
+					 
+							add: #classes;
+							add: #protocols;
+							add: #selectors ;
+							yourself);
+					add: #method; 
+				yourself
+				
+]]]
+
+[[[
+initializePresenters
+	self initializePackageList.
+	self initializeClassList.
+	self initializeProtocolList.
+	self initializeSelectorList.
+	self initializeMethodBodyPane.
+	
+	showClassSide := self newCheckBox.
+	showClassSide label: 'Class side'.
+	showClassSide state: false
+]]]
+
+
+!! Avoid hardcoding widget height
+
+[[[
+	defaultSpec
+		<spec: #default>
+	
+		^ SpBoxLayout  
+				newTopToBottom 
+				add: 
+				 ( SpBoxLayout newLeftToRight
+						add:  
+						(SpBoxLayout newTopToBottom
+							add: #packages;
+							add: #showClassSide height: 16;
+							yourself);
+					 
+						add: #classes;
+						add: #protocols;
+						add: #selectors ;
+						yourself);
+				add: #method; 
+			yourself
+]]]
+
+
+[[[
+	defaultSpec
+		<spec: #default>
+	
+		^ SpBoxLayout  
+				newTopToBottom 
+				add: 
+				 ( SpBoxLayout newLeftToRight
+						add:  
+						(SpBoxLayout newTopToBottom
+							add: #packages;
+							add: #showClassSide expand: false;
+							yourself);
+					 
+						add: #classes;
+						add: #protocols;
+						add: #selectors ;
+						yourself);
+				add: #method; 
+			yourself
+]]]
+
+method width height.
+percentage would work. 
+not recommanded because of potential problem with scale. 
+
+
