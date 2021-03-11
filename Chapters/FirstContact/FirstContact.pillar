@@ -126,7 +126,7 @@ CustomerSatisfactionPresenter class >> defaultSpec
 				add: #buttonHappy;
 				add: #buttonNeutral;
 				add: #buttonBad;
-				yourself)
+				yourself);
 		add: #screen;
 		yourself
 ]]]
