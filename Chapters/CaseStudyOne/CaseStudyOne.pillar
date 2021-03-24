@@ -421,7 +421,7 @@ TestCase subclass: #FilmListPresenterTest
 [[[
 FilmListPresenterTest >> testSelectingOneFilmDisplaysIt
 
-	| list |
+	| list detail |
 	list := ImdbFilmListPresenter new.
 	list openWithSpec.
 	detail := list detail.
