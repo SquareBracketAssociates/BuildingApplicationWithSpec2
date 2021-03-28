@@ -114,4 +114,76 @@ method width height.
 percentage would work. 
 not recommanded because of potential problem with scale. 
 
+!! Menu
+
+
+contextMenu: [ ]
+	si dynamic
+	
+
+self newMenu
+	addItem
+on group per default
+
+
+!! Style
+
+Each presenter can add a style to the application style. 
+
+
+
+so, you want the text box to have a size, not the text inside?
+then you need to add a style
+textPresenter addStyle: 'aStyleName'
+the only real problem here is that styles need to be defined at "startup" time of your application
+you can check StPharoApplication as inspiration
+it had this method: 
+resetConfiguration
+    
+    self flag: #TODO. "Replace this with a proper initialization mechanism (which is not
+    implemented at the moment, and we need to choose the backend from it)"
+    self class environment 
+        at: #StPharoMorphicConfiguration
+        ifPresent: [ :aClass | self useBackend: #Morphic with: aClass new ]
+which is a bit overcomplicated
+but is to avoid false dependencies reports
+then the class: StPharoMorphicConfiguration has this methods: 
+StPharoMorphicConfiguration >> configureOSX: anApplication
+    
+    anApplication styleSheet: (self styleSheet, self styleSheetOSX)
+    
+StPharoMorphicConfiguration >> styleSheetOSX
+    "Just an example on how to build styles programatically ;)"
+
+    ^ SpStyle newApplication 
+        addClass: 'label' with: [ :label |
+            label addClass: 'shortcut' with: [ :shortcut |
+                shortcut addPropertyFontWith: [ :font |
+                    font name: 'Lucida Grande'; size: 10 ] ] ];
+        yourself
+So you could have 
+MyAppMorphicConfiguration >> myStyleSheet 
+
+  ^ SpStyleSTONReader fromString: '
+.application [
+  .aStyleName [
+    Geometry { 
+      #height: 100, 
+      #width: 100, 
+      #vResizing: false, 
+      #hResizing: false }
+  ]
+]
+' 
+which I know seems overwhelming for your small problem, but take into account this is the attempt of a general solution to style applications :wink:
+cool part is, once you define your stylesheet, changing appearances and/or sizes is just adding the desired style(s) to your widget.
+for example, for a personal project I have this extension method on SpPresenter :
+newSmallButton
+
+    ^ self newButton 
+        "addStyle: 'flat';"
+        addStyle: 'smallButton';
+        addStyle: 'smallFont';
+        addStyle: 'dim';
+        yourself
 
