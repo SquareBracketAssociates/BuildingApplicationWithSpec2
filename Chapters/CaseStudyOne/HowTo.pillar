@@ -187,3 +187,67 @@ newSmallButton
         addStyle: 'dim';
         yourself
 
+
+!! Icon 
+
+n Spec we recently introduced the icon provider hierarchy
+where you can define your own (by inheritance)
+but we provide a couple of interesting pre-defined providers
+SpPharoThemeIconProvider will delegate to the current system icons (Same as doing Smalltalk ui icons)
+SpLocationIconProvider will alloyou to add a location (you can actually have a list of locations) from where to get your icons (externally to the image)
+and SpCompositeIconProvider will allow you to compose providers, so you can do things like  : myLocationProvider, defaultProvider
+SpApplication defines the methods
+iconNamed:, iconProvider and newIconProvider  which you can play to provide your own
+e.g. StPharoApplication defines 
+newIconProvider
+
+[[[
+    ^ StPharoDefaultIconProvider new
+and as an example, for the same application I have the newSmallButton extension, I have 
+newIconProvider
+
+    ^ (SpLocationIconProvider newLocation: self iconsDir), 
+        SgaGtkThemeIconProvider new
+so... the trick is again based on the correct definition of your application
+btw, my "iconsDir" method is defined like this (is temporal) : 
+ iconsDir
+
+    self flag: #TODO. "Refactor this into a production/development environments"
+    IceRepository registry 
+        detect: [ :each | each name = 'Crono' ]
+        ifFound: [ :each | ^ each location / 'resources' / 'icons'  ].
+    
+    ^ FileLocator imageDirectory / 'resources' / 'icons' 
+	
+	
+	
+!!  How to pass data prior to building the user interface
+
+[[[
+SpHelpBrowserPresenter class >> openOn: aHelpTopic
+	"Open the receiver on the given help topic or any other object that can be transformed into
+	 a help topic by sending #asHelpTopic."
+	"SpHelpBrowser openOn: SystemHelp"
+	
+	^ (self on: aHelpTopic)
+			openWithSpec;
+			yourself
+]]]
+
+[[[
+SpHelpBrowserPresenter >> setModelBeforeInitialization: anHelpTopic
+		rootTopic := anHelpTopic
+]]]
+
+
+[[[
+SpHelpBrowserPresenter >> initializePresenters
+
+		loadedTopicList := self newTree.
+		loadedTopicList 
+			roots: { self helpTopic };
+			children: [ :aNode | aNode subtopics ];
+			display: [ :each | each title ].
+]]]
+
+
