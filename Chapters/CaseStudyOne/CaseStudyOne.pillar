@@ -159,7 +159,7 @@ ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter 
 		title: 'Mini IMDB';
 		initialExtent: 600@400;
-		toolBar: (self newToolBar
+		toolbar: (self newToolBar
 						addItem: (self newToolBarButton 
 										label: 'Add film' ;
 										icon: (self application iconNamed: #smallAdd);
