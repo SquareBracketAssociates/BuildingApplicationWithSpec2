@@ -14,7 +14,7 @@ Spec20 introduces the concept of an application. An ''application'' is small obj
 We start to define an application as follows: 
 
 [[[language=Smalltalk
-SpApplication subclass: #ImdbApp
+SpApplication subclass: #ImdbApplication
 	instanceVariableNames: ''
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
@@ -137,7 +137,7 @@ a more canonical way to create a presenter is to ask the application using the m
 
 [[[language=Smalltalk
 | app |
-app := ImbdApplication new. 
+app := ImdbApplication new. 
 (app newPresenter: ImdbFilmListPresenter) openWithSpec.
 ]]]
 
@@ -219,7 +219,7 @@ ImdbFilmPresenter class >> defaultLayout
 ]]]
 
 Note that it is not required to create the accessors for the presenter elements as we were forced to do it in Spec1.0.
-Here we create them because we will need to access to them when creating the corresponding ==ImbdFilm== instance.
+Here we create them because we will need to access to them when creating the corresponding ==ImdbFilm== instance.
 
 
 And similarly as before, we define the method ==initializePresenters== to initialize the variables to the corresponding elementary presenters. 
@@ -237,7 +237,7 @@ ImdbFilmPresenter >> initializePresenters
 
 [[[language=Smalltalk
 | app |
-app := ImbdApplication new. 
+app := ImdbApplication new. 
 (app newPresenter: ImdbFilmPresenter) openWithSpec.
 ]]]
 
@@ -434,18 +434,18 @@ This test is a bit poor because we do not test explicit the value of the name of
 We did this to keep the test set up simple, partly because ==ImdbFilm== stores globally the current films (Remember we told you that singleton are ugly
 and they also make testing more complex).
 
-We define three helper methods on ImbdFilm to reset the stored films and add E.T. film.
+We define three helper methods on ImdbFilm to reset the stored films and add E.T. film.
 
 [[[
-ImbdFilm class >> reset 
+ImdbFilm class >> reset 
 	films := OrderedCollection new
 ]]]
 [[[
-ImbdFilm class >> addET
+ImdbFilm class >> addET
 	films add: self ET
 ]]]
 [[[
-ImbdFilm class >> ET
+ImdbFilm class >> ET
 
 	^ self new 
 		name: 'E.T.';
@@ -535,7 +535,7 @@ hereafter.
 
 [[[language=Smalltalk
 | app |
-app := ImbdApplication new. 
+app := ImdbApplication new. 
 (app newPresenter: ImdbFilmListPresenter) openWithSpec: #listAboveLayout.
 ]]]
 
@@ -656,7 +656,7 @@ ImdbGtkConfiguration >> configure: anApplication
 ]]]
 
 [[[language=Smalltalk
-ImdbApp >> initialize
+ImdbApplication >> initialize
 	super initialize.
 	self useBackend: #Gtk with ImdbGtkConfiguration new
 ]]]
@@ -684,7 +684,7 @@ SpMorphicConfiguration >> configure: anApplication
 ]]]
 
 [[[language=Smalltalk
-ImdbApp >> initialize
+ImdbApplication >> initialize
 	super initialize.
 	self useBackend: #Morphic with ImdbMorphicConfiguration new
 ]]]
