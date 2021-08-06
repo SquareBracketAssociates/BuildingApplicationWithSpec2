@@ -137,7 +137,7 @@ a more canonical way to create a presenter is to ask the application using the m
 
 [[[language=Smalltalk
 | app |
-app := ImbdApplication new. 
+app := ImdbApp new. 
 (app newPresenter: ImdbFilmListPresenter) openWithSpec.
 ]]]
 
@@ -237,7 +237,7 @@ ImdbFilmPresenter >> initializePresenters
 
 [[[language=Smalltalk
 | app |
-app := ImbdApplication new. 
+app := ImdbApp new. 
 (app newPresenter: ImdbFilmPresenter) openWithSpec.
 ]]]
 
@@ -535,7 +535,7 @@ hereafter.
 
 [[[language=Smalltalk
 | app |
-app := ImbdApplication new. 
+app := ImdbApp new. 
 (app newPresenter: ImdbFilmListPresenter) openWithSpec: #listAboveLayout.
 ]]]
 
