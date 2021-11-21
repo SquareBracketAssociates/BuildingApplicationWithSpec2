@@ -86,15 +86,15 @@ Let us get started. So, first, we need to create a subclass of ==SpPresenter==, 
 SpPresenter < #MyMiniBrowserPresenter
     slots: {#treeClasses . #button . #codeShower . #methodsList};
     package: 'MiniBrowser'
-]]
+]]]
 	
 Now, we need to override the ==initializePresenters== method in which we are going to 
 initialize the presenters and the layout of our mini browser.
 
 First we are going to instantiate the tree presenter.
 We want the tree presenter to show all the classes that are presented in the Pharo image. 
-We know that all subclasses (almost) inherit from Object. S
-o, that is going to be the only root of the tree. 
+We know that all subclasses (almost) inherit from Object. 
+So, that is going to be the only root of the tree. 
 To get the subclasses of a class we can send the message subclasses, 
 that is what we need to get the children of a node. 
 We want to each of the nodes (clases) have a nice icon, we can get the icon of a class with the message systemIcon. 
@@ -175,7 +175,8 @@ MyMiniBrowserPresenter >> initializePresenters
 
 !!! Placing elements visually
 
-We want in the upper part of the layout to have the classes and the methods shown in a horizontal way, like in the System Browser (a.k.a. Calypso). So, what we will do is to create another left to right layout, with an spacing of 10 pixels, the classes and the methods.
+We want in the upper part of the layout to have the classes and the methods shown in a horizontal way, like in the System Browser (a.k.a. Calypso). 
+So, what we will do is to create another left to right layout, with an spacing of 10 pixels, the classes and the methods.
 
 Then, we will add that layout to our main layout. the main layout is going to be a top to bottom layout. After, we want the code shower and then the button. We do not want the code to expand and also we want a separarion of 5 pixels for this layout.
 
@@ -215,8 +216,21 @@ MyMiniBrowserPresenter >> connectPresenters
     button action: [ self buttonAction ]
 ]]]
 
+For now we define the method ==buttonAction== to do nothing.
 
-When we click on the button we want several things. That is why it is better to create a separated method. First, we want to change to label to the button to alternate between “Edit” and “Read-Only”. Then, we want to change the presenter of the code shower. If the Mini Browser is on read only mode we want to have a text presenter that is not editable. And if the Mini Browser is on edit mode we want to have a code presenter that highlights the code and show the number of lines of code. But always the code shower is going to have the same text (the code of the methods).
+[[[
+MyMiniBrowserPresenter >> buttonAction
+
+]]]
+
+
+!!! Toggling Edit/Readonly mode
+
+When we click on the button we want several things. 
+That is why it is better to create a separated method. 
+
+- First, we want to change to label to the button to alternate between “Edit” and “Read-Only”. 
+- Then, we want to change the presenter of the code shower. If the Mini Browser is on read only mode we want to have a text presenter that is not editable. And if the Mini Browser is on edit mode we want to have a code presenter that highlights the code and show the number of lines of code. But always the code shower is going to have the same text (the code of the methods).
 
 [[[
 MyMiniBrowserPresenter >> buttonAction
@@ -247,11 +261,10 @@ MyMiniBrowserPresenter >> initializeWindow: aWindowPresenter
         initialExtent: 750 @ 650
 ]]]
 
-Voilà! We have a new version minimal version of the System Browser. If we run MyMiniBrowserPresenter new openWithSpec.
+Voilà! We have a new version minimal version of the System Browser with a read-only mode. If we run ==MyMiniBrowserPresenter new openWithSpec== we should get *@layout7*.
 
++Our little code browser in readonly mode.>figures/layout7.png|width=60|label=layout7+
 
-!!! Mini Browser on Read-Only mode
-
-Fig Mini Browser on Edit mode
+!!! Conclusion
 
 With Spec we can build from simple applications to very sophisticated ones. The dynamic properties are simply nice. Spec has lots of presenters that are ready to be used. Start digging into the code to see with presenters are available, what it is their API and start experimenting and playing! Layouts can be configured in multiple ways, so have a look at their classes and the example available.
