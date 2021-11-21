@@ -1,9 +1,8 @@
 ${inputFile:path=Chapters/Intro/Intro.pillar}$
 
-!All Spec20 in one Example (50%)
+!All Spec20 in one Example
 
 ${inputFile:path=Chapters/CaseStudyOne/CaseStudyOne.pillar}$
-
 ${inputFile:path=Chapters/TestingInSpec/TestingInSpec.pillar}$
 
 ! Spec 2.0 Core
@@ -26,7 +25,7 @@ ${inputFile:path=Chapters/LayoutContruction/Layout.pillar}$
 %${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
 	- modal, dialog
 	- closeWindow action
-
+	
 !! Intermezzo with Commander2
 ${inputFile:path=Chapters/Commander/Commander.pillar}$
 ${inputFile:path=Chapters/Commander2/Commander.pillar}$

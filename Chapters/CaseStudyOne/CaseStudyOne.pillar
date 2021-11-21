@@ -621,7 +621,7 @@ ImdbFilmPresenter >> initializePresenters
 		yourself
 ]]]
 
-@@todo: I thought that autoAccept: was obsolete? 
+@@todo I thought that autoAccept: was obsolete? 
 
 +Embedding the film description in the list.>file://figures/MissingFile.png|width=100|label=FilmListPresenter3+
 
