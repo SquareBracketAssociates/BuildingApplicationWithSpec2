@@ -49,3 +49,11 @@ TextInputPresenter >> whenSubmitDo: aBlock
         bindKeyCombination: Character cr asKeyCombination | $s meta 
         toAction: aBlock
 ]]]
+
+
+!!! Commands vs binding
+
+bindings are specific to a widget
+command are global to a window
+
+

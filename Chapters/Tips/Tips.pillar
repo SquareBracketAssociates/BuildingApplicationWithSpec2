@@ -275,3 +275,16 @@ you have two possibilities
 2) you draw it with athens and you use ==SpAthensStaticPresenter==
 maybe (2) needs some work to be really usable, it was never tried. Also, it needs a rename to ==SpAthensPresenter==
 
+
+
+SpListPresenter new
+		items: self environment allClasses;
+		displayIcon: [ :aClass | self iconNamed: aClass systemIconName  ];
+		displayColor: [ :aClass | 
+			(aClass name endsWith: 'Test')
+				ifTrue: [ Color green ]
+				ifFalse: [ Smalltalk ui theme textColor ] ];
+		displayItalic: [ :aClass | aClass name includesSubstring: 'abstract' caseSensitive: false ];
+		displayBold: [ :aClass | aClass hasSubclasses ];
+		displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
+		openWithSpec

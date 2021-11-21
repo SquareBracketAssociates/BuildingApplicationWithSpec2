@@ -4,18 +4,23 @@ ${inputFile:path=Chapters/Intro/Intro.pillar}$
 
 ${inputFile:path=Chapters/CaseStudyOne/CaseStudyOne.pillar}$
 
-!! Testing Spec (30%)?
-Stef should check what we have in the testing booklet
+${inputFile:path=Chapters/TestingInSpec/TestingInSpec.pillar}$
 
 ! Spec 2.0 Core
 
-${inputFile:path=Chapters/FirstContact/FirstContact.pillar}$
-${inputFile:path=Chapters/Reuse/Reuse.pillar}$
-${inputFile:path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.pillar}$
+${inputFile:path=Chapters/InANutshell/InANutshell.pillar}$
+${inputFile:path=Chapters/DynamicPresenter/DynamicPresenter.pillar}$
 
-!! Layout (0%)
+%${inputFile:path=Chapters/FirstContact/FirstContact.pillar}$
+%${inputFile:path=Chapters/Reuse/Reuse.pillar}$
+%${inputFile:path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.pillar}$
+
+! Diving into Spec 2.0 
+
+${inputFile:path=Chapters/Style/Style.pillar}$
+
 %${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
-
+${inputFile:path=Chapters/LayoutContruction/Layout.pillar}$
 
 !! Windows and Menus/toolbars (0%)
 %${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
@@ -26,7 +31,7 @@ ${inputFile:path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.pillar}$
 ${inputFile:path=Chapters/Commander/Commander.pillar}$
 ${inputFile:path=Chapters/Commander2/Commander.pillar}$
 
-!!! Application (1%)
+!! Application (1%)
 
 ==SpApplication== is not a presenter because it does not has a graphical representation: An ==SpApplication== defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
 
@@ -41,7 +46,7 @@ An application can be configured with a configuration (more to come).
 	- Contact books (forms)
 
 
-!!! Transmission (0%)
+!! Transmission (0%)
 %${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 - principle
 - example 
@@ -51,16 +56,6 @@ An application can be configured with a configuration (more to come).
 ${inputFile:path=Chapters/ContactBook/ContactBook.pillar}$
 ${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
 
-
-!!! Dynamic Presenters (0%)
-- layout builder
-- small example miller list/search bar
-!!!! ComponentListPresenter
-!!!! "documenter flow"
-
-!! Style (0%)
-- withConstraints: should not be used
-- icon
 
 !! Events (0%)
 - Application logic
