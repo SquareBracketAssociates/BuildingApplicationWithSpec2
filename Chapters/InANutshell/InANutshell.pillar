@@ -40,9 +40,10 @@ SpButtonPresenter new
 @@todo add the visual result
 
 To display its elements, a presenter has a layout. A layout describes how elements should be placed on the displayed surface.
-A presenter may also have a model that is a domain object you need to interact with to display or update data. In this case, you should inherit from SpPresenterWithModel so that the presenter keeps a reference to the domain object. If the domain object is an instance of Model, it is stored as is in the presenter, else a value holder is created to hold the domain object so that you can be notified when the domain object used by the presenter changes. You can then implement the #modelChanged method to refresh your UI when the model changes.
 
-If you do not need to react to model changes, you can simply inherit from ==SpPresenter==, override the setModelBeforeInitialization:method to set your domain object and use ==MyPresenter on: myDomainObject== to instantiate it.
+A presenter may also have a model that is a domain object you need to interact with to display or update data. In this case, you should inherit from ==SpPresenterWithModel== so that the presenter keeps a reference to the domain object. If the domain object is an instance of Model, it is stored as is in the presenter, else a value holder is created to hold the domain object so that you can be notified when the domain object used by the presenter changes. You can then implement the #modelChanged method to refresh your UI when the model changes.
+
+If you do not need to react to model changes, you can simply inherit from ==SpPresenter==, override the ==setModelBeforeInitialization:== method to set your domain object and use ==MyPresenter on: myDomainObject== to instantiate it.
 A presenter also has a reference to its Spec application.
 
 If you want to display a presenter with the default spec, you can use the ==openWithSpec== or ==openDialogWithSpec== methods. The former will open a new window with the presenter while the later will open a blocking dialog with the presenter. You can use ==openWithSpec:== or ==openDialogWithSpec:== to open the presenter with the spec you will provide as argument (you can also provide the name of a selector that returns a spec).
@@ -99,9 +100,10 @@ MyMiniBrowserPresenter >> initializeLayout
 
 !!! Styles
 
-A Spec Application always comes with a default style sheet. A style sheet contains style definitions that can be applied to presenters. The chapter *@chastyle* presents styles in detail.
+A Spec Application always comes with a default style sheet. 
+A style sheet contains style definitions that can be applied to presenters. The chapter *@chastyle* presents styles in detail.
 
-A style is a property container to “style” morphic components, and define (in a certain degree) its behaviour within the different layouts implemented.
+A style is a property container to “style” components, and define (in a certain degree) its behaviour within the different layouts implemented.
 
 Here is an example of style sheet:
 
@@ -111,7 +113,8 @@ Here is an example of style sheet:
     .lightBlue [ Draw { #color: #lightBlue } ] ]'
 ]]]
 
-The styles in Spec format are similar to CSS. You can apply it on your Spec application:
+The styles in Spec format are similar to CSS but expressed in STON. 
+You can apply it on your Spec application:
 
 [[[
 myStyleSheet := SpStyleVariableSTONReader fromString: 
@@ -123,7 +126,7 @@ myStyleSheet := SpStyleVariableSTONReader fromString:
 application styleSheet: SpStyle defaultStyleSheet, myStyleSheet.
 ]]]
 
-Then you can style a presenter with:
+Then you can style a presenter using the message ==addStyle:== as follows
 
 [[[
 presenter label: 'I am a label'.
@@ -151,12 +154,5 @@ messageList
 ]]]
 
 
-!!!! Using transmissions and ports
-
-Transmissions are a way to connect presenters, thinking on the “flow” of information more than the way it is displayed.
-Each presenter defines output ports (ports to send information) and input ports (ports to receive information). There are at least one default input port and one default output port.
-A transmission connects a presenter’s output port with a presenter’s input port.
-
-For example, think on a overview-detail (O->D) relationship, when you navigate the elements in the overview O, you want to see the detail D. This is typically solved by showing a list with list elements and a form with the detail of an element.
-In Spec, this will be declared more or less like this:
+!!! Presenter responsibility
 

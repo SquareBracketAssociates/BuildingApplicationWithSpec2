@@ -44,17 +44,10 @@ An application can be configured with a configuration (more to come).
 	- memento
 	- Contact books (forms)
 
-
-!! Transmission (0%)
-%${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
-- principle
-- example 
-- port definition
-
+${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 
 ${inputFile:path=Chapters/ContactBook/ContactBook.pillar}$
 ${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
-
 
 !! Events (0%)
 - Application logic
