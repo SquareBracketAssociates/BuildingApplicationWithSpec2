@@ -27,7 +27,7 @@ ${inputFile:path=Chapters/LayoutContruction/Layout.pillar}$
 	- closeWindow action
 	
 !! Intermezzo with Commander2
-${inputFile:path=Chapters/Commander/Commander.pillar}$
+${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
 ${inputFile:path=Chapters/Commander2/Commander.pillar}$
 
 !! Application (1%)
@@ -46,8 +46,8 @@ An application can be configured with a configuration (more to come).
 
 ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 
-${inputFile:path=Chapters/ContactBook/ContactBook.pillar}$
-${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
+
+
 
 !! Events (0%)
 - Application logic

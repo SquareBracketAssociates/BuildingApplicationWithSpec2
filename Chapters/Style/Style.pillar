@@ -5,7 +5,7 @@ In this chapter we will see how to use custom styles in Spec applications. We wi
 
 We will show that an application in Spec manages styles and let you adapt the look of a presenter as shown in Figure *@style1*.
 
-+Building a little styling editor.>figures/style1.png|width=60|label=style1+
++Building a little styling editor.>figures/style1.png|width=80|label=style1+
 
 
 !!! How do styles work?
@@ -16,16 +16,16 @@ As a general principle it is better to use styles instead of fixed constraints, 
 For example, you want a button to have a specific width and height.
 You can do it using constraints with the method add:withConstraints: or using styles. In both cases the result will be as shown in Figure *@style2*:
 
-+Untitled window.>figures/style2.png|width=60|label=style2+
++Untitled window.>figures/style2.png|width=50|label=style2+
 
 But, if you change the size of the fonts of the Pharo image using Settings/Appearance/Standard Fonts/Huge, using fixed constraints, you will obtain the following result shown in Figure *@*.
 You will for example do not be able to see the icons because the size is not recomputed correctly.
 
-+Badly scaled untitled window.>figures/style3.png|width=60|label=style3+
++Badly scaled untitled window.>figures/style3.png|width=50|label=style3+
 
 While using styles,the size of the button will also scale as shown by Figure *@style4*.
 
-+Nicely scaled untitled window.>figures/style4.png|width=60|label=style4+
++Nicely scaled untitled window.>figures/style4.png|width=50|label=style4+
 
 !!! Anatomy of a style
 
@@ -123,7 +123,7 @@ label addStyle: 'black'.
 presenter openWithSpec.
 ]]]
 
-+Styling.>figures/style5.png|width=60|label=style5+
++Styling.>figures/style5.png|width=50|label=style5+
 
 !!! Dynamically applying styles
 
@@ -135,7 +135,7 @@ label removeStyle: 'bgBlack'.
 label addStyle: 'blue'.
 ]]]
 
-+After changing the style.>figures/style6.png|width=60|label=style6+
++After changing the style.>figures/style6.png|width=50|label=style6+
 
 !!! Now using classes
 Up until now we just wrote scripts. Now we want to show how we can use style using presenter classes.
@@ -253,7 +253,7 @@ CustomStylesPresenter>> initializeWindow: aWindowPresenter
 
 Without setting the custom styles nor using our custom application in the presenter, we obtain Figure *@style7*:
 
-+Styling.>figures/style7.png|width=60|label=style7+
++Styling.>figures/style7.png|width=70|label=style7+
 
 !!! Initializing styles
 
@@ -262,17 +262,16 @@ We do not want the black background color for the text presenter. We will like t
 [[[
 CustomStylesPresenter >> initializeStyles
 
-    "Change the height and size of the label."
+    "Change the height and size of the label and the color as ligthgreen"
     label addStyle: 'labelStyle'.
-    "But the color as light green"
     label addStyle: 'lightGreen'.
 
     "The default font of the text will be the code font and 
-	the size size will be the small one."
+	the font size will be the small one."
     text addStyle: 'codeFont'.
     text addStyle: 'smallFontSize'.
+	
     "Change the background color."
-    
     text addStyle: 'bgOpaque'.
 
     "But a smaller width for the zoom buttons"
@@ -288,8 +287,9 @@ CustomStylesPresenter >> initializeStyles
     self addStyle: 'container'
 ]]]
 
++Styled editor.>figures/style8.png|width=70|label=style8+
 
-Finally, we have to override the start method in the application. With this, we are going to set the application of the presenter and run the presenter from the application.
+Finally, we have to override the ==start== method in the application. With this, we are going to set the application of the presenter and run the presenter from the application.
 
 [[[
 CustomStylesApplication >> start
@@ -297,16 +297,18 @@ CustomStylesApplication >> start
 	(self new: CustomStylesPresenter) openWithSpec
 ]]]
 
-Now, if we run CustomStylesApplication new start we will obtain Figure *@style8*:
+Now, when we run ==CustomStylesApplication new start== we will obtain Figure *@style8*.
 
-+Styled editor.>figures/style8.png|width=60|label=style8+
+
 
 
 !!! Wiring buttons
 
 The only thing missing is to add the behaviour when pressing the buttons.
 
-For example, if we click on the zoom in button we want to remove the ==smallFontStyle== and add the ==bigFontSize==. Or, if we click on the text font button, we want to remove the style codeFont and add the textFont style. So, in the ==connectPresenters== method we have:
+For example, if we click on the zoom in button we want to remove the ==smallFontStyle== and add the ==bigFontSize==. When we click on the text font button, we should remove the style codeFont and add the textFont style. 
+
+This is what to do in the ==connectPresenters== method defined below:
 
 [[[
 CustomStylesPresenter >> connectPresenters
@@ -326,11 +328,11 @@ CustomStylesPresenter >> connectPresenters
 		text addStyle: 'textFont']
 ]]]
 
-Now, if we click on zoom in we obtain Figure *@style9*.
+Now, when we click on zoom in, we obtain Figure *@style9*.
 
 +Zoomed styled editor.>figures/style9.png|width=60|label=style9+
 
-Now, if we click on text font in we obtain Figure *@style10*.
+Now, when we select the button text font, we obtain Figure *@style10*.
 
 +Zoomed styled editor.>figures/style10.png|width=60|label=style10+
 
