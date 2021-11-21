@@ -69,30 +69,28 @@ ${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
 - Backend extensions
 
 
-!!! Tips and Tricks
-
 ${inputFile:path=Chapters/Tips/Tips.pillar}$
 
+${inputFile:path=Chapters/MigratingFromSpec1/MigratingFromSpec1.pillar}$
+
+%!Widgets
+%could we script a part of that + little tool to browse as in Spec1 book
+
+%!! Lists
+%!! Trees
+%!! Tables
+%!! Pane
+%!! Tabs
+%!! Dropbox
+%!! TextInput
+%!! Buttons
 
 
-!Widgets
-could we script a part of that + little tool to browse as in Spec1 book
-
-!! Lists
-!! Trees
-!! Tables
-!! Pane
-!! Tabs
-!! Dropbox
-!! TextInput
-!! Buttons
-
-
-! Tables
-!! Pane
-!! Tabs
-!! Dropbox
-!! TextInput
-!! Buttons
+%! Tables
+%!! Pane
+%!! Tabs
+%!! Dropbox
+%!! TextInput
+%!! Buttons
 
 
