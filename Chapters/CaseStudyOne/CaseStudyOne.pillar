@@ -50,7 +50,6 @@ We define a method that lazy initialize the ==films== variable to an ordered col
 
 [[[language=Smalltalk
 ImdbFilm class >> films
-
 	^ films ifNil: [ films := OrderedCollection new ]
 ]]]
 
@@ -89,8 +88,11 @@ ImdbFilmListPresenter class >> defaultLayout
 			yourself
 ]]]
 
-When you do not define any other methods to represent layout, ==defaultLayout== is the method that is invoked by Spec logic. 
+When you do not define any other methods to represent layout, ==defaultLayout== is the method that is invoked by Spec logic.
+
 We saw that a presenter can have subpresenters and you will see later that (1) a presenter can have multiple layouts, (2) that we can define instance level layouts to get more dynamic situations.
+
+In Spec20, layouts are by default dynamic and can be expressed at the level of instances. 
 
 !!!! initializePresenters
 So far we did not explain what ==filmList== was. 
@@ -123,12 +125,12 @@ ImdbFilmListPresenter >> updatePresenter
 
 The following expression creates an instance of the film list presenter and open it. You get the widget shown in Figure *@LayoutInitilalizePresenters*.
 
-%ImdbFilmListPresenter0 new openWithSpec
 [[[language=Smalltalk
 ImdbFilmListPresenter new openWithSpec
 ]]]
 
 +A layout and initializePresenters.>file://figures/FilmList-01-LayoutInitilalizePresenters.png|width=60|label=LayoutInitilalizePresenters+
+
 
 !!! Opening Presenters 
 
@@ -190,6 +192,7 @@ Note also that the toolbar we created could be factored in a separate class to i
 What we can see from the definition of the method ==initializeWindow:== is that an application manages also icons via the message ==iconNamed:==. 
 It means that your application can use its own icon set using the method ==iconManager:==. 
 
+@@todo why not have iconNamed: in presenter that dispatches to self application iconNamed:? May be this is done like that?
 
 !!! Film Itself
 
@@ -241,10 +244,7 @@ app := ImdbApp new.
 (app newPresenter: ImdbFilmPresenter) openWithSpec.
 ]]]
 
-%ImdbFilmPresenter0
 +Single Film presenter.>file://figures/FilmList-03-OpenFilmPresenter.png|width=60|label=FilmPresenter1+
-
-
 
 
 
@@ -260,8 +260,7 @@ ImdbFilmPresenter class >> defaultLayout
 		yourself
 ]]]
 
-%ImdbFilmPresenter1
-+Using the non homogenous.>file://figures/FilmList-04-OpenFilmPresenter-2.png|width=60|label=FilmListPresenter2+
++Using the non homogenous grid layout.>file://figures/FilmList-04-OpenFilmPresenter-2.png|width=60|label=FilmListPresenter2+
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
@@ -275,6 +274,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 
 We can define the method ==addFilm== in the class ==ImdbFilmListPresenter==. 
 When the user clicks on the button, we create a new film presenter that we associate with the current application. 
+
 We open such presenter as a modal dialog. 
 When the user press the Ok button (that we have customized in Figure *@FilmListPresenter3*), we add a new film
 to our little database and we update the list as shown in Figure *@refreshed*.
@@ -294,8 +294,6 @@ ImdbFilmListPresenter >> addFilm
 				year: dialog yearNumber number).
 	self updatePresenter
 ]]]
-
-
 
 
 !!! Better looking Film Presenter
@@ -321,18 +319,15 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 		addButton: 'Save Film' do: [ :presenter | presenter beOk; close ].
 ]]]
 
-%@@note how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
+@@todo how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
 
-%ImdbFilmListPresenter1 new openWithSpec
 +Customizing the modal dialog.>file://figures/FilmList-05-Modal.png|width=100|label=FilmListPresenter3+
 
-%ImdbFilmListPresenter1 new openWithSpec
 +Film list gets refreshed.>file://figures/FilmList-06-ListRefreshed.png|width=60|label=refreshed+
 
 
 
-
-!!! Embedding the film presenter into the film list
+!!! Embedding a Film Presenter into the Film List
 
 We have two main visual element one for a list of films and one for a film details.
 We can imagine that we would like to see the film details just in the same
@@ -400,10 +395,9 @@ ImdbFilmListPresenter >> initializePresenters
 
 +Embedding the film description in the list: selecting a list item populates the detailed visual component.>file://figures/FilmList-07-embedded.png|width=60|label=embedded+
 
-!!! Tests
-@@note May be we should move this section to a dedicated 
+!!! Testing your Application UI
 
-A strong aspect of Spec is the fact that we can write tests about the interaction. 
+A strong aspect of Spec is the fact that we can write tests about the interaction and logic of your UI.
 And tests are so powerful to help us create nice design and make sure that we can spot our errors
 that we give you the chance to see that writing tests for UI is not complex. 
 
@@ -415,8 +409,6 @@ TestCase subclass: #FilmListPresenterTest
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
-
-
 
 [[[
 FilmListPresenterTest >> testSelectingOneFilmDisplaysIt
@@ -454,7 +446,6 @@ ImbdFilm class >> ET
 		yourself
 ]]]
 
-
 So let us fix this:
 
 [[[
@@ -477,9 +468,8 @@ FilmListPresenterTest >> testSelectingOneFilmDisplaysIt
 	self deny: detail nameText text isEmpty. 
 ]]]
 
-
-
-Another point that this test is showing is that the API of ==ImdbFilmPresenter== is not nice because it should offer a way to access the presenter and also its model. Here ==nameText== could be renamed ==namePresenter== and ==nameText== would return the text. 
+Another point that this test is showing is that the API of ==ImdbFilmPresenter== is not nice because it should offer a way to access the presenter and also its model. 
+Here ==nameText== could be renamed ==namePresenter== and ==nameText== would return the text. 
 
 
 !!! Adding More Tests
@@ -499,7 +489,6 @@ FilmListPresenterTest >> testSelectingOneFilmAndClickingOnEmpty
 	self assert: list detail nameText text equals: text
 ]]]
 
-
 Since we do not really understand what would be to set the list as multiple selection we test it. 
 
 [[[
@@ -512,8 +501,6 @@ FilmListPresenterTest >> testListIsSimpleSelection
 ]]]
 
 What you see is that it relatively simple to test that the interaction you specified is actually working as expected. 
-
-
 
 !!! Changing Layout 
 
@@ -530,8 +517,7 @@ ImdbFilmListPresenter class >> listAboveLayout
 ]]]
 
 
-The following example shows that we can open ==ImdbFilmListPresenter== with the layout ==embeddedLayout== that we wil define 
-hereafter.
+The following example shows that we can open ==ImdbFilmListPresenter== with the layout ==embeddedLayout== that we wil define hereafter.
 
 [[[language=Smalltalk
 | app |
@@ -549,7 +535,6 @@ ImdbFilmListPresenter class >> listOnlyLayout
 			add: #filmList; 
 			yourself
 ]]]
-
 
 +A presenter can have multiple layouts for its subpresenters.>file://figures/FilmList-08-embeddedAbove.png|width=60|label=embedded+
 
@@ -596,8 +581,8 @@ ImdbFilmPresenter >> inputModelPort
 ]]]
 
 
-%%SD: why do we need the two methods?
-%% SD: why do we need the setModel: method.
+@@todo why do we need the two methods?
+@@todo why do we need the setModel: method.
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> setModel: aFilm
@@ -618,9 +603,11 @@ This defines a set of "style classes" that can be later assigned to presenter wi
 Defining a style class, however, work very different for each backend. 
 While Gtk will accept (mostly) regular CSS to style your widgets, Morphic has its own sub-framework. 
 
-To define an style, you need to declare an stylesheet in your configuration.
+To define an style, you need to declare a stylesheet in your configuration.
 
-%% SD: why do we need initializePresenters because there is not change?
+@@todo how ? I do not understand how we declare a stylesheet in a configuration? What is a configuration?
+@@todo explain addStyle:  
+
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializePresenters 
 	self newLabel 
@@ -634,7 +621,12 @@ ImdbFilmPresenter >> initializePresenters
 		yourself
 ]]]
 
+@@todo: I thought that autoAccept: was obsolete? 
+
 +Embedding the film description in the list.>file://figures/MissingFile.png|width=100|label=FilmListPresenter3+
+
+
+@@todo without more explanation I would remove the rest.
 
 !!! Using GTK theme and settings
 
@@ -663,6 +655,8 @@ ImdbApp >> initialize
 
 !!! Using Morphic
 
+@@todo Explain what we are doing. Whay do we need a configuration. How does it relate to style?
+
 [[[language=Smalltalk
 SpMorphicConfiguration subclass: #ImdbMorphicConfiguration
 	instanceVariableNames: ''
@@ -671,7 +665,7 @@ SpMorphicConfiguration subclass: #ImdbMorphicConfiguration
 ]]]
 
 [[[language=Smalltalk
-SpMorphicConfiguration >> configure: anApplication
+ImdbMorphicConfiguration >> configure: anApplication
 
 	super configure: anApplication.
 	"There are ways to write/read this from strings or files, but this is how you do 
@@ -686,7 +680,7 @@ SpMorphicConfiguration >> configure: anApplication
 [[[language=Smalltalk
 ImdbApp >> initialize
 	super initialize.
-	self useBackend: #Morphic with ImdbMorphicConfiguration new
+	self useBackend: #Morphic with: ImdbMorphicConfiguration new
 ]]]
 
 !!! Conclusion

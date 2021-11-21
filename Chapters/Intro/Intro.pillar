@@ -32,11 +32,9 @@ Using Spec20 provides back-end independence and logic reuse.
 This means that a UI written in Spec20 will be able to be rendered on back-ends other than GTK and Morphic. As new back-ends become available, all applications written in Spec20 will be able to use them.
 
 
-
-
 While this book used previous Spec documentation as a foundation, the text has been almost completely rewritten with an aim toward higher quality. We hope that it will be of use to developers who need to write UIs in Pharo by significantly easing the UI development experience with Spec.
 
-@@note This book focuses on Pharo 8.0 and Spec 2.0. Earlier versions of Pharo have implementations of Spec that differ, preventing some example code here from working. Nevertheless, the fundamental principles of UI development in Spec hold.
+@@note This book focuses on Pharo 9.0 and Spec 2.0. Earlier versions of Pharo have implementations of Spec that differ, preventing some example code here from working. Nevertheless, the fundamental principles of UI development in Spec hold.
 
 
 
@@ -58,11 +56,3 @@ This book is meant to be read as follows: Chapter 2 and 3 give a first contact w
 The authors would like to super warmly thanks for their financial support: Masashi Fujita, Roch-Alexandre Nominé, Eiichiro Ito, sumim, Hilaire Fernandes, Dominique Dartois, Philippe Mougin, Pavel Krivanek, Michael L. Davis, Ewan Dawson, Luc Fabresse, David Bajger, Jörg Frank, Petter Egesund, Pierre Bulens, Tomohiro Oda, Sebastian Heidbrink, Alexandre Bergel, Jonas Skučas, and Mark Schwenk.
 
 If you supported us and you are not on this list, this is a shame and you should contact us or do a pull request.
-
-Stéphane Ducasse and Pavel Krivanek
-
-
-From 8th October I decided that redraw from this project and I will give all my support and sponsored money to people willing to continue. 
-I'm sorry but I cannot continue.
-
-Stéphane Ducasse

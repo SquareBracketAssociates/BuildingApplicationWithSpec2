@@ -23,10 +23,10 @@ presenter layout: SpPanedLayout newTopToBottom.
 presenter openWithSpec.
 ]]]
 
-Of course, we are going to see an empty window because we did not put anything in the layout.
+Of course, we are going to see an empty window because we did not put anything in the layout as shown in Figure *@layout1*.
 
++An empty layout.>figures/layout1.png|width=60|label=layout1+
 
-Fig Empty layout
 
 Now, without closing the window, we can dynamically edit the layout of the main presenter. We will add a button presenter executing the following lines:
 
@@ -35,8 +35,7 @@ presenter layout add: (button1 := presenter newButton).
 button1 label: 'I am a button'.
 ]]]
 
-
-Fig Paned layout with one button
++Paned layout with one button.>figures/layout2.png|width=60|label=layout2+
 
 
 Now, we can add another button. There is no need to close and reopen the window, everything updates dynamically and without the need of rebuilding the window. As we instantiate the layout with newTopToBottom, the presenters will align vertically.
@@ -46,8 +45,7 @@ presenter layout add: (button2 := presenter newButton).
 button2 label: 'I am another button'.
 ]]]
 
-
-Fig Paned layout with two buttons
++Paned layout with two buttons.>figures/layout3.png|width=60|label=layout3+
 
 Now, we can put an icon for the first button:
 
@@ -55,21 +53,21 @@ Now, we can put an icon for the first button:
 button1 icon: (button1 iconNamed: #smallDoIt).
 ]]]
 
++Paned layout with two buttons.>figures/layout4.png|width=60|label=layout4+
 
-Fig Paned layout
-
-Or we can delete one of the buttons from the layout:
+Or we can delete one of the buttons from the layout (as shown in Figure *@layout5*)
 
 [[[
 presenter layout remove: button2.
 ]]]
 
++Removing a button.>figures/layout5.png|width=60|label=layout5+
 
-What we should see here is that all the changes happens simply by creating a new instance of a given layout and sending messages to it. It means that programs can create simply complex logic of the dynamic behavior of a widget.
+@@note What we should see here is that all the changes happens simply by creating a new instance of a given layout and sending messages to it.  It means that programs can create simply complex logic of the dynamic behavior of a widget.
 
 !!! Building a little dynamic browser
 
-Now, with all of this knowledge, we are going to build a new mini version of the System Browser. We want to have
+Now, with all of this knowledge, we are going to build a new mini version of the System Browser as shown in Figure *@layout6*. We want to have:
 
 - A tree that shows all the system classes.
 - A list that shows all methods in the selected class.
@@ -77,18 +75,32 @@ Now, with all of this knowledge, we are going to build a new mini version of the
 
 Initially the code of the method will be in “Read-Only” mode. When we press the button, we are going to pass to “Edit” mode.
 
-Let us get started. So, first, we need to create a subclass of SpPresenter, called MyMiniBrowserPresenter.
+
++A little code browser.>figures/layout6.png|width=60|label=layout6+
+
+
+
+Let us get started. So, first, we need to create a subclass of ==SpPresenter==, called ==MyMiniBrowserPresenter==.
 
 [[[
-SpPresenter subclass: #MyMiniBrowserPresenter
-    instanceVariableNames: 'treeClasses button codeShower methodsList'
-    classVariableNames: ''
+SpPresenter < #MyMiniBrowserPresenter
+    slots: {#treeClasses . #button . #codeShower . #methodsList};
     package: 'MiniBrowser'
 ]]
 	
-Now, we need to override the initializePresenters method in which we are going to initialize the presenters and the layout of our mini browser.
+Now, we need to override the ==initializePresenters== method in which we are going to 
+initialize the presenters and the layout of our mini browser.
 
-First we are going to instantiate the tree presenter. We want the tree presenter to show all the classes that are presented in the Pharo image. We know that all subclasses (almost) inherit from Object. So, that is going to be the only root of the tree. To get the subclasses of a class we can send the message subclasses, that is what we need to get the children of a node. We want to each of the nodes (clases) have a nice icon, we can get the icon of a class with the message systemIcon. Finally, we want to “activate” the presenter with only one click instead of two. The code will be:
+First we are going to instantiate the tree presenter.
+We want the tree presenter to show all the classes that are presented in the Pharo image. 
+We know that all subclasses (almost) inherit from Object. S
+o, that is going to be the only root of the tree. 
+To get the subclasses of a class we can send the message subclasses, 
+that is what we need to get the children of a node. 
+We want to each of the nodes (clases) have a nice icon, we can get the icon of a class with the message systemIcon. 
+Finally, we want to “activate” the presenter with only one click instead of two. 
+
+The code will be:
 
 [[[
 MyMiniBrowserPresenter >> initializePresenters
@@ -100,6 +112,7 @@ MyMiniBrowserPresenter >> initializePresenters
        children: [ :each | each subclasses ];
        displayIcon: [ :each | each systemIcon ]
 ]]]
+
 For the methods, we want to have a filtering list. That means, a list in which we can search of elements. Also, we want that to display only the selector of the method to the user and sort them in an ascending way.
 
 [[[
@@ -188,7 +201,6 @@ So far, so good… but we did not add any behaviour to the presenters. To do tha
 !!! Connecting the flow
 
 When we click on a class of the tree, we want to update the items of the methods list with the methods of the selected class. When we click on a method, we want to update the text of the code shower with the source code of the method.
-
 
 [[[
 MyMiniBrowserPresenter >> connectPresenters
