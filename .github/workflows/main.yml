@@ -35,3 +35,13 @@ jobs:
           export PATH="$HOME/texlive/bin/x86_64-linux:$PWD/build:$PATH"
           echo $PATH
           pillar build pdf
+
+      - name: Continuous Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            _result/pdf/*.pdf
