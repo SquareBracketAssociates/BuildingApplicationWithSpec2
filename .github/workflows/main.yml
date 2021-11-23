@@ -34,10 +34,12 @@ jobs:
           echo $PATH
           pillar build pdf
           mv _result/pdf/index.pdf _result/pdf/Spec2-wip.pdf
+          ls -R _result/
 
       - name: Build HTML
         run: |
           export PATH="$HOME/texlive/bin/x86_64-linux:$PWD/build:$PATH"
+          ls -R _result/
           pillar build html
           ls -R _result/
 
