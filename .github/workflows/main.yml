@@ -26,22 +26,20 @@ jobs:
           ./pillar/scripts/ci/install-texlive
           ./_support/latex/ensure-deps.sh
           ./pillar/scripts/build.sh
+          mkdir artifacts
           
       - name: Build PDF
         run: |
-          echo $PATH
           export PATH="$HOME/texlive/bin/x86_64-linux:$PWD/build:$PATH"
-          echo $PATH
           pillar build pdf
-          mv _result/pdf/index.pdf _result/pdf/Spec2-wip.pdf
-          ls -R _result/
+          mv _result/pdf/index.pdf artifacts/Spec2-wip.pdf
 
       - name: Build HTML
         run: |
           export PATH="$HOME/texlive/bin/x86_64-linux:$PWD/build:$PATH"
-          ls -R _result/
           pillar build html
           ls -R _result/
+        # TODO: move html files to archive to artifacts folder
 
       - name: Continuous Release
         if: ${{ github.event_name == 'push' }}
@@ -52,4 +50,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            _result/pdf/*.pdf
+            artifacts/*.pdf
+          # TODO: add html files
