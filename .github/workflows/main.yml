@@ -1,4 +1,4 @@
-name: SquareBracketAssociates book generation
+name: Book generation
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -22,9 +22,16 @@ jobs:
       - name: Prepare Pillar
         run: |
           git clone https://github.com/pillar-markup/pillar.git -b v8.0.12
+          echo $PATH
+          export PATH="$HOME/texlive/bin/x86_64-linux:$PWD/build:$PATH"
+          echo $PATH
           ./pillar/scripts/ci/install-texlive
           ./_support/latex/ensure-deps.sh
           ./pillar/scripts/build.sh
           
       - name: Build PDF
-        run: pillar build pdf
+        run: |
+          echo $PATH
+          export PATH="$HOME/texlive/bin/x86_64-linux:$PWD/build:$PATH"
+          echo $PATH
+          pillar build pdf
