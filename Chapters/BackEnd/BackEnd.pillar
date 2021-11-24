@@ -1,0 +1,56 @@
+!! Using back-ends
+
+!!! Using GTK theme and settings
+
+[[[language=Smalltalk
+SpGtkConfiguration subclass: #ImdbGtkConfiguration
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+[[[language=Smalltalk
+ImdbGtkConfiguration >> configure: anApplication
+
+	super configure: anApplication.
+	"This will choose the theme 'Sierra-dark' if it is available"
+	self installTheme: 'Sierra-dark'.
+	"This will add a 'provider' (a stylesheet)"
+	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
+]]]
+
+[[[language=Smalltalk
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Gtk with: ImdbGtkConfiguration new
+]]]
+
+!!! Using Morphic
+
+@@todo Explain what we are doing. Whay do we need a configuration. How does it relate to style?
+
+[[[language=Smalltalk
+SpMorphicConfiguration subclass: #ImdbMorphicConfiguration
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'Spec2-TutorialOne'
+]]]
+
+[[[language=Smalltalk
+ImdbMorphicConfiguration >> configure: anApplication
+
+	super configure: anApplication.
+	"There are ways to write/read this from strings or files, but this is how you do 
+	 it programatically"
+	self styleSheet 
+		 addClass: 'header' with: [ :style |
+		 	style 
+				addPropertyFontWith: [ :font | font bold: true ];
+				addPropertyDrawWith: [ :draw | draw color: Color red ] ]
+]]]
+
+[[[language=Smalltalk
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Morphic with: ImdbMorphicConfiguration new
+]]]

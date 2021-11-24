@@ -62,11 +62,11 @@ MyApplication >> start
    (self new: MyMainPresenter) openWithSpec
 ]]]
 
-You can run your application with MyApplication new run. It will call the start method you defined.
-A Spec application also provides a way to access windows, to access resources like icons, and provide abstractions for interactions with the user (inform, error, file or directoy selection).
+You can run your application with ==MyApplication new run==. It will call the ==start== method you defined.
+A Spec application also provides a way to access windows, to access resources like icons, and provide abstractions for interactions with the user (inform, error, file or directory selection).
 
-An application also provides the style used by Spec to style UI elements. A default style is available but you can customize it.
-
+An application also provides the style used by Spec to style UI elements. 
+A default style is available but you can customize it as shown in Chapter *@Style*.
 
 !!! Layout
 
@@ -79,7 +79,11 @@ A layout describes how elements are placed on the displayed surface. To help you
 - MillerLayout: a Layout to implement miller columns (*https://en.wikipedia.org/wiki/Miller_columns*), also known as cascading lists.
 Any layout in Spec is dynamic and composable.
 
-To define a layout is as simple as defining the following method
+To define a layout is as simple as defining the following method and getting it called from the ==initializePresenters== method.
+The following method define two box layouts
+-  one containing a tree and a list and 
+- the second one containing the first one and a code text below 
+Figure *@layout6B* shows the corresponding result.
 
 [[[
 MyMiniBrowserPresenter >> initializeLayout
@@ -96,6 +100,8 @@ MyMiniBrowserPresenter >> initializeLayout
         add: codeShower;
         yourself)
 ]]]
+
++The layout corresponding to the initializeLayout method.>figures/layout6.png|width=70|label=layout6B+
 
 
 !!! Styles
@@ -154,5 +160,13 @@ messageList
 ]]]
 
 
-!!! Presenter responsibility
+!!! Conclusion 
 
+As we started to see it, the class ==SpPresenter== is a central class which as the following responsibilities
+
+- Initializing its part and state
+- Defining the layout of the application
+- Connecting the elements to support the interaction flow
+- Updating the UI components
+ 
+We will illustrate these points in the following chapter.

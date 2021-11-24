@@ -1,6 +1,6 @@
 ${inputFile:path=Chapters/Intro/Intro.pillar}$
 
-!All Spec20 in one Example
+!All Spec20 in One Example
 
 ${inputFile:path=Chapters/CaseStudyOne/CaseStudyOne.pillar}$
 ${inputFile:path=Chapters/TestingInSpec/TestingInSpec.pillar}$
@@ -9,58 +9,38 @@ ${inputFile:path=Chapters/TestingInSpec/TestingInSpec.pillar}$
 
 ${inputFile:path=Chapters/InANutshell/InANutshell.pillar}$
 ${inputFile:path=Chapters/DynamicPresenter/DynamicPresenter.pillar}$
-
-%${inputFile:path=Chapters/FirstContact/FirstContact.pillar}$
+${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
+${inputFile:path=Chapters/FirstContact/FirstContactShrunk.pillar}$
 %${inputFile:path=Chapters/Reuse/Reuse.pillar}$
 %${inputFile:path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.pillar}$
 
 ! Diving into Spec 2.0 
 
-${inputFile:path=Chapters/Style/Style.pillar}$
-
-%${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
 ${inputFile:path=Chapters/LayoutContruction/Layout.pillar}$
-
-!! Windows and Menus/toolbars (0%)
-%${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
-	- modal, dialog
-	- closeWindow action
-	
-!! Intermezzo with Commander2
-${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
-${inputFile:path=Chapters/Commander2/Commander.pillar}$
-
-!! Application (1%)
-
-==SpApplication== is not a presenter because it does not has a graphical representation: An ==SpApplication== defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
-
-An application can be configured with a configuration (more to come).
-
-- icons
-- closing subelements
-- localisation
-
-!! Forms (SpPresenterWithModel)
-	- memento
-	- Contact books (forms)
-
+${inputFile:path=Chapters/Style/Style.pillar}$
 ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 
+%${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
 
+
+${inputFile:path=Chapters/Application/Application.pillar}$
+${inputFile:path=Chapters/BackEnd/BackEnd.pillar}$
+
+!! About SpPresenterWithModel
 
 
 !! Events (0%)
 - Application logic
 - Button refresh
 
+
+${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
+${inputFile:path=Chapters/Commander2/Commander.pillar}$
+
 !! Canvas Drawing / back integration (0%)
 - Morphic integration
 - Roassal 3
 - Athens
-
-!! Architecture:  (0%)
-- Backend extensions
-
 
 ${inputFile:path=Chapters/Tips/Tips.pillar}$
 
@@ -77,8 +57,6 @@ ${inputFile:path=Chapters/MigratingFromSpec1/MigratingFromSpec1.pillar}$
 %!! Dropbox
 %!! TextInput
 %!! Buttons
-
-
 %! Tables
 %!! Pane
 %!! Tabs

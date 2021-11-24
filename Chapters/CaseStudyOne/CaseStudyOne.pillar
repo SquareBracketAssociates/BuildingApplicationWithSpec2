@@ -1,5 +1,5 @@
-!! Most of Spec20 in one Example
-
+!! Most of Spec20 in one example
+@casestudyone
 In this chapter we will guide you over the building of a simple but not trivial 
 application to manage films as shown in Figure *@FullApp*.
 We will show many aspects of Spec20 that we will revisit in depth in the rest of this book:
@@ -22,7 +22,7 @@ SpApplication subclass: #ImdbApp
 
 In this example, we will show how we define which back-end to use and this will allow us to switch between Morphic and GTK.
 
-!!! A Basic Model
+!!! A basic film model
 
 Since we will manage films we define a ==Film== class as follows: It has a name, a year and a director. We generate the companion accessors.
 
@@ -62,7 +62,7 @@ ImdbFilm class >> addFilm: aFilm
 
 Now we are ready to define a first presenter that will manage a list of films.
 
-!!!List of Films
+!!!List of films
 We define a presenter to manage a list of films.
 For this we define a new class named ==ImdbFilmListPresenter== which inherits from ==SpPresenter==.
 We add an instance variable named ==filmList== that will hold an elementary list presenter. 
@@ -132,7 +132,7 @@ ImdbFilmListPresenter new openWithSpec
 +A layout and initializePresenters.>file://figures/FilmList-01-LayoutInitilalizePresenters.png|width=60|label=LayoutInitilalizePresenters+
 
 
-!!! Opening Presenters 
+!!! Opening presenters 
 
 While directly accessing a presenter to create is possible during development,
 a more canonical way to create a presenter is to ask the application using the message ==newPresenter:== as follows.
@@ -148,7 +148,7 @@ The application is responsible for managing windows and other information, there
 
 
 
-!!! Improving Window
+!!! Improving window
 A presenter can be embedded in another presenter as we will show later. It can be also placed within a window and this is what the message ==openWithSpec== is doing. 
 Spec offers another hook to specialize the information presented when a presenter is displayed within a window. 
 
@@ -187,14 +187,14 @@ Note also that the toolbar we created could be factored in a separate class to i
 +Film list presenter.>file://figures/FilmList-02-initalizeWindows.png|width=60|label=FilmListPresenter2+
 
 
-!!! An Application Manages Icons
+!!! An Application manages icons
 
 What we can see from the definition of the method ==initializeWindow:== is that an application manages also icons via the message ==iconNamed:==. 
 It means that your application can use its own icon set using the method ==iconManager:==. 
 
 @@todo why not have iconNamed: in presenter that dispatches to self application iconNamed:? May be this is done like that?
 
-!!! Film Itself
+!!! FilmPresenter itself
 
 We are ready to define a simple presenter to edit a film. We will use it to add new film or simply display it.
 We create a new subclass of ==SpPresenter== named ==ImdbFilmPresenter==.
@@ -206,8 +206,6 @@ SpPresenter subclass: #ImdbFilmPresenter
 	classVariableNames: ''
 	package: 'Spec2-TutorialOne'
 ]]]
-
-
 
 As we did previously, we define a default layout. 
 This time we just use a grid layout. With a simple grid layout you can define the position in the grid where your elements will appear. 
@@ -247,7 +245,6 @@ app := ImdbApp new.
 +Single Film presenter.>file://figures/FilmList-03-OpenFilmPresenter.png|width=60|label=FilmPresenter1+
 
 
-
 [[[language=Smalltalk
 ImdbFilmPresenter class >> defaultLayout
 	^ SpGridLayout new
@@ -270,7 +267,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 ]]]
 
 
-!!! Invoking a Presenter
+!!! Invoking a presenter
 
 We can define the method ==addFilm== in the class ==ImdbFilmListPresenter==. 
 When the user clicks on the button, we create a new film presenter that we associate with the current application. 
@@ -296,7 +293,7 @@ ImdbFilmListPresenter >> addFilm
 ]]]
 
 
-!!! Better looking Film Presenter
+!!! Better looking FilmPresenter
 We improve the look of the the film presenter by adding the following new ==initializeWindow:== method (See Figure *@FilmListPresenter3*).
 
 [[[language=Smalltalk
@@ -308,8 +305,9 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 
 +Better window.>file://figures/FilmPresenter3.png|width=60|label=FilmListPresenter3+
 
-!!! Customizing the Modal Dialog
-
+!!! Customizing the modal Dialog
+Spec let us adapt the dialog window for example to add interaction buttons.
+Here we specialize the method ==initializeDialogWindow:== to add two buttons that control the behavior of the application.
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
@@ -327,7 +325,7 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 
 
 
-!!! Embedding a Film Presenter into the Film List
+!!! Embedding a FilmPresenter into the FilmList
 
 We have two main visual element one for a list of films and one for a film details.
 We can imagine that we would like to see the film details just in the same
@@ -395,7 +393,7 @@ ImdbFilmListPresenter >> initializePresenters
 
 +Embedding the film description in the list: selecting a list item populates the detailed visual component.>file://figures/FilmList-07-embedded.png|width=60|label=embedded+
 
-!!! Testing your Application UI
+!!! Testing your application UI
 
 A strong aspect of Spec is the fact that we can write tests about the interaction and logic of your UI.
 And tests are so powerful to help us create nice design and make sure that we can spot our errors
@@ -472,7 +470,7 @@ Another point that this test is showing is that the API of ==ImdbFilmPresenter==
 Here ==nameText== could be renamed ==namePresenter== and ==nameText== would return the text. 
 
 
-!!! Adding More Tests
+!!! Adding more tests
 Tests are so much fun and addictive (they are because we can change programs and check that they still works), that we will write another one. 
 
 [[[
@@ -502,7 +500,7 @@ FilmListPresenterTest >> testListIsSimpleSelection
 
 What you see is that it relatively simple to test that the interaction you specified is actually working as expected. 
 
-!!! Changing Layout 
+!!! Changing layout 
 
 With Spec, a presenter can have multiple layouts and even layouts that are created on the fly as we will see with the dynamic layouts.
 We can decide which layout to use to open a presenter. 
@@ -539,9 +537,9 @@ ImdbFilmListPresenter class >> listOnlyLayout
 +A presenter can have multiple layouts for its subpresenters.>file://figures/FilmList-08-embeddedAbove.png|width=60|label=embedded+
 
 	
-!!! Using Transmissions
+!!! Using transmissions
 
-Spec20 introduces a nice concept to propagate selection from one presenter to another, thinking on the "flow" of information more than the implementation details of this propagation, which can change from presenter to presenter.
+Spec20 introduces a nice optional concept to propagate selection from one presenter to another, thinking on the "flow" of information more than the implementation details of this propagation, which can change from presenter to presenter.
 
 With transmissions, each presenter can define a set of output ports (ports to transmit information) and input ports (ports to receive information). Widget presenters already have defined the output/input ports you can use with them, but you can add your own ports to your presenters.
 
@@ -626,63 +624,11 @@ ImdbFilmPresenter >> initializePresenters
 +Embedding the film description in the list.>file://figures/MissingFile.png|width=100|label=FilmListPresenter3+
 
 
-@@todo without more explanation I would remove the rest.
+@@todo without more explanation. I would remove the rest and move it into a back-end part because there is not a single explanation.
 
-!!! Using GTK theme and settings
 
-[[[language=Smalltalk
-SpGtkConfiguration subclass: #ImdbGtkConfiguration
-	instanceVariableNames: ''
-	classVariableNames: ''
-	package: 'Spec2-TutorialOne'
-]]]
-
-[[[language=Smalltalk
-ImdbGtkConfiguration >> configure: anApplication
-
-	super configure: anApplication.
-	"This will choose the theme 'Sierra-dark' if it is available"
-	self installTheme: 'Sierra-dark'.
-	"This will add a 'provider' (a stylesheet)"
-	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
-]]]
-
-[[[language=Smalltalk
-ImdbApp >> initialize
-	super initialize.
-	self useBackend: #Gtk with ImdbGtkConfiguration new
-]]]
-
-!!! Using Morphic
-
-@@todo Explain what we are doing. Whay do we need a configuration. How does it relate to style?
-
-[[[language=Smalltalk
-SpMorphicConfiguration subclass: #ImdbMorphicConfiguration
-	instanceVariableNames: ''
-	classVariableNames: ''
-	package: 'Spec2-TutorialOne'
-]]]
-
-[[[language=Smalltalk
-ImdbMorphicConfiguration >> configure: anApplication
-
-	super configure: anApplication.
-	"There are ways to write/read this from strings or files, but this is how you do 
-	 it programatically"
-	self styleSheet 
-		 addClass: 'header' with: [ :style |
-		 	style 
-				addPropertyFontWith: [ :font | font bold: true ];
-				addPropertyDrawWith: [ :draw | draw color: Color red ] ]
-]]]
-
-[[[language=Smalltalk
-ImdbApp >> initialize
-	super initialize.
-	self useBackend: #Morphic with: ImdbMorphicConfiguration new
-]]]
 
 !!! Conclusion
 
-We saw...
+We saw that with Spec the developer define how a visual element (a presenter) is composed out other visual elements. 
+Such presenter has the responsibility to 
