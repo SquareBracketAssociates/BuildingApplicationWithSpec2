@@ -20,7 +20,7 @@ Spec core is composed of the following elements:
 - ""Layout."" A layout describe positions of elements and it can be recursive.
 - ""Stylesheet and Styles"". A stylesheet is compose of Styles which describe visual properties such as fonts, colors,....
 
-+Presenter, Application, Layout and Style of Spec.>figures/Core.pdf|label=core|width=60+
++Presenter, Application, Layout and Style of Spec.>figures/core.pdf|label=core|width=60+
 
 
 We detail now each of the main elements.
