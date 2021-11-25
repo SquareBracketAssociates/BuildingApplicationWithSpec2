@@ -187,7 +187,7 @@ Note also that the toolbar we created could be factored in a separate class to i
 +Film list presenter.>file://figures/FilmList-02-initalizeWindows.png|width=60|label=FilmListPresenter2+
 
 
-!!! An Application manages icons
+!!! An application manages icons
 
 What we can see from the definition of the method ==initializeWindow:== is that an application manages also icons via the message ==iconNamed:==. 
 It means that your application can use its own icon set using the method ==iconManager:==. 
@@ -207,11 +207,13 @@ SpPresenter subclass: #ImdbFilmPresenter
 	package: 'Spec2-TutorialOne'
 ]]]
 
-As we did previously, we define a default layout. 
+As we did previously, we define a default layout by defining the class method ==defaultSpec==.
+We could also define it as an instance level layout by redefining the method ==defaultLayout==.
+This is the last solution that we are using now. 
 This time we just use a grid layout. With a simple grid layout you can define the position in the grid where your elements will appear. 
 
 [[[language=Smalltalk
-ImdbFilmPresenter class >> defaultLayout 
+ImdbFilmPresenter >> defaultLayout 
 	^ SpGridLayout new 
 			add: 'Name' at: 1@1; add: #nameText at: 2@1;
 			add: 'Director' at: 1@2; add: #directorText at: 2@2;
@@ -224,7 +226,7 @@ Here we create them because we will need to access to them when creating the cor
 
 
 And similarly as before, we define the method ==initializePresenters== to initialize the variables to the corresponding elementary presenters. 
-Here the ==nameText== and ==directorTest== are initialized to a textInput, and ==yearNumber== is a numberInput
+Here the ==nameText== and ==directorTest== are initialized to a textInput, and ==yearNumber== is a numberInput.
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializePresenters
@@ -236,21 +238,23 @@ ImdbFilmPresenter >> initializePresenters
 				maximum:  Year current year
 ]]]
 
+Now we can try our little application with the following script: 
 [[[language=Smalltalk
 | app |
 app := ImdbApp new. 
 (app newPresenter: ImdbFilmPresenter) openWithSpec.
 ]]]
 
+
 +Single Film presenter.>file://figures/FilmList-03-OpenFilmPresenter.png|width=60|label=FilmPresenter1+
 
 
 [[[language=Smalltalk
-ImdbFilmPresenter class >> defaultLayout
+ImdbFilmPresenter >> defaultLayout
 	^ SpGridLayout new
 		beRowNotHomogeneous;
 		beColumnNotHomogeneous;
-		column:2  withConstraints: #beExpand;
+		column:2 withConstraints: #beExpand;
 		add: 'Name' at: 1 @ 1; add: #nameText at: 2 @ 1;
 		add: 'Director' at: 1 @ 2; add: #directorText at: 2 @ 2;
 		add: 'Year' at: 1 @ 3; add: #yearNumber at: 2 @ 3;
@@ -258,6 +262,9 @@ ImdbFilmPresenter class >> defaultLayout
 ]]]
 
 +Using the non homogenous grid layout.>file://figures/FilmList-04-OpenFilmPresenter-2.png|width=60|label=FilmListPresenter2+
+
+
+We define the method ==initializeWindow:== to control a bit better the size and decoration of the window embedding the presenter.
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
@@ -306,11 +313,13 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 +Better window.>file://figures/FilmPresenter3.png|width=60|label=FilmListPresenter3+
 
 !!! Customizing the modal Dialog
+
 Spec let us adapt the dialog window for example to add interaction buttons.
-Here we specialize the method ==initializeDialogWindow:== to add two buttons that control the behavior of the application.
+Here we specialize the method ==initializeDialogWindow:== to add two buttons that control the behavior of the application (as shown in Figure *@Customized dialog*).
 
 [[[language=Smalltalk
 ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
+
 	aDialogPresenter centered.
 	aDialogPresenter 
 		addButton: 'Cancel' do: [ :presenter | presenter close ];
@@ -319,7 +328,7 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 
 @@todo how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
 
-+Customizing the modal dialog.>file://figures/FilmList-05-Modal.png|width=100|label=FilmListPresenter3+
++Customizing the dialog window.>file://figures/FilmList-05-Modal.png|width=100|label=Customized dialog+
 
 +Film list gets refreshed.>file://figures/FilmList-06-ListRefreshed.png|width=60|label=refreshed+
 
@@ -341,10 +350,10 @@ SpPresenter subclass: #ImdbFilmListPresenter
 	package: 'Spec2-TutorialOne'
 ]]]
 
-We redefine the default layout. We will show later that we can have different layouts.
+We redefine the default layout using a class method this time. We will show later that we can have different layouts.
 
 [[[language=Smalltalk
-ImdbFilmListPresenter class >> defaultLayout 
+ImdbFilmListPresenter class >> defaultSpec 
 	^ SpBoxLayout newVertical
 			add: #filmList; 
 			add: #detail;
@@ -393,11 +402,11 @@ ImdbFilmListPresenter >> initializePresenters
 
 +Embedding the film description in the list: selecting a list item populates the detailed visual component.>file://figures/FilmList-07-embedded.png|width=60|label=embedded+
 
+
 !!! Testing your application UI
 
 A strong aspect of Spec is the fact that we can write tests about the interaction and logic of your UI.
-And tests are so powerful to help us create nice design and make sure that we can spot our errors
-that we give you the chance to see that writing tests for UI is not complex. 
+And tests are so powerful to help us create nice design and make sure that we can spot our errors that we give you the chance to see that writing tests for UI is not complex. 
 
 We define a subclass of ==TestCase==.
 
@@ -430,10 +439,12 @@ We define three helper methods on ImbdFilm to reset the stored films and add E.T
 ImbdFilm class >> reset 
 	films := OrderedCollection new
 ]]]
+
 [[[
 ImbdFilm class >> addET
 	films add: self ET
 ]]]
+
 [[[
 ImbdFilm class >> ET
 
@@ -500,14 +511,20 @@ FilmListPresenterTest >> testListIsSimpleSelection
 
 What you see is that it relatively simple to test that the interaction you specified is actually working as expected. 
 
+@@todo how do we close all the open windows
+
 !!! Changing layout 
 
 With Spec, a presenter can have multiple layouts and even layouts that are created on the fly as we will see with the dynamic layouts.
+
+@@ todo can we have multiple instance level layout returned by different instance side methods and can we pass their name to the openWithSpec: (is it looking for instance side then class side)?
+
 We can decide which layout to use to open a presenter. 
 Imagine that we prefer to have the list above the film details, or just the list alone.
 
 [[[language=Smalltalk
-ImdbFilmListPresenter class >> listAboveLayout 
+ImdbFilmListPresenter class >> listAboveLayout
+
 	^ SpBoxLayout newVertical
 			add: #detail;
 			add: #filmList; 
@@ -515,7 +532,7 @@ ImdbFilmListPresenter class >> listAboveLayout
 ]]]
 
 
-The following example shows that we can open ==ImdbFilmListPresenter== with the layout ==embeddedLayout== that we wil define hereafter.
+The following example shows that we can open ==ImdbFilmListPresenter== with the layout ==listAboveLayout== that we just defined.
 
 [[[language=Smalltalk
 | app |
@@ -631,4 +648,4 @@ ImdbFilmPresenter >> initializePresenters
 !!! Conclusion
 
 We saw that with Spec the developer define how a visual element (a presenter) is composed out other visual elements. 
-Such presenter has the responsibility to 
+Such presenter has the responsibility to describe the interaction with other presenters but also with the domain objects. It has also the responsibility to describe its visual aspect.

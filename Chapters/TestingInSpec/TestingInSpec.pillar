@@ -6,7 +6,7 @@ However, testing the logic of an application and in particular the interaction l
 We show that testing Spec application is simple and effective.
 
 
-!!! Testing Spec
+!!! Testing presenters
 Tests are key to ensure that everything works correctly. In addition, they free us from the fear to break something without being warned about it. Tests support refactorings. While such facts are general and applicable to many domains, they also true for user interfaces.
 
 
@@ -38,7 +38,7 @@ Inversely when the user interface components change, we should ensure that the m
 But let us check an example.
 
 
-!!! Spec User Example
+!!! Spec user example
 
 We will test a simple spec application. The model for this application can be any class.
 It shows in a tree presenter all the subclasses of the model. Also, has a text presenter that shows the definition string for the selected class.

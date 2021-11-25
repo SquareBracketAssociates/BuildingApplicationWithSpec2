@@ -1,6 +1,17 @@
 !! Layouts 
 @chalayout
 
+
+
+!!! Basic principle reminder
+
+To define the layout of a presenter you can: 
+- define the ==defaultSpec== class side method of your presenter
+- or define the method ==defaultLayout== on the instance side. 
+
+Both methods should return a layout for example instance of ==SpBoxLayout== or ==SpPanedLayout==.
+These methods will be automatically be called when the presenter is created.
+
 !!! Boxed
 
 !!! Paned
