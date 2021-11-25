@@ -1,5 +1,5 @@
 # BuildingApplicationWithSpec2
 
-This project will contain the new documentation for Spec20. 
+This project contains the new documentation for Spec20. 
 
-[https://travis-ci.com/SquareBracketAssociates/BuildingApplicationWithSpec2](https://travis-ci.com/SquareBracketAssociates/BuildingApplicationWithSpec2)
+[Latest build](https://github.com/SquareBracketAssociates/BuildingApplicationWithSpec2/releases/download/latest/Spec2-wip.pdf)
