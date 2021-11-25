@@ -6,18 +6,9 @@ In this book so far we have talked about reuse of ==SpPresenter==s, discussed th
 In this chapter we provide a more complete overview of how Spec allows for the managing of windows. We show opening and closing, the built-in dialog box facility, sizing of windows and all kinds of window decoration.
 
 
-!!! About dialogs
 
 
-[[[
-openNonModal
-	^ self
-		openDialogWithSpec
-		okAction: [self okAction];
-		cancelAction: [self cancelAction];
-		whenClosedDo: [self closeAction];	
-		centered
-]]]
+
 
 
 !!! A working example
@@ -84,41 +75,28 @@ The result of this (e.g. assigned to the ==diag== variable above) is an instance
 +A rather simple window on WindowExamplePresent.>figures/WindowExamplePresenterDialog|width=50|label=windowDialog+
 
 
-The ==SpDialogWindowPresenter== instance (==diag== in the example above) can also be configured in multiple ways. To execute code when the user clicks on a button, send it the ==okAction:== or ==cancelAction:== message with a zero-argument block. If the block returns ==false== the window will not be closed (if it returns anything else it will be closed). This closing logic allows for the validation of the contents of the dialog box, only allowing it to be closed if validation succeeds. Complimentarily, the ''OK'' button can be grayed out by sending the ==okButtonEnabled: false== message, and enabled again with a ==true== argument.
-
-Also, the message ==cancelled== will return ==true== if the box was closed by clicking on the ''Cancel'' button.
-
-
-
-
-
-
-
-
-
-
-
-!!!Taking over the entire screen
-
-Lastly, it is also possible to open a UI such that it takes over the entire Pharo screen. There are no other windows, the UI is full screen without any resizing or closing boxes, nor a title bar. The Pharo window is your UI's window.
-
-To take over the entire Pharo screen, send the message ==openWorldWithSpec==:
+The ==SpDialogWindowPresenter== instance (==diag== in the example above) can also be configured in multiple ways. To execute code when the user clicks on a button, send it the ==okAction:== or ==cancelAction:== message with a zero-argument block. 
 
 [[[
-WindowExamplePresenter new openWorldWithSpec
+| we diag |
+we := WindowExamplePresenter new. 
+diag := we openDialogWithSpec
+		okAction: [Transcript show: 'okAction'];
+		cancelAction: [Transcript show: 'cancelAction'];
+		whenClosedDo: [ Transcript show: 'whenClosedDo']	
 ]]]
 
-@@note Via the halos the UI can still be closed, but any other windows that were open before will have disappeared.
+%If the block returns ==false== the window will not be closed (if it returns anything else it will be closed). This closing logic allows for the validation of the contents of the dialog box, only allowing it to be closed if validation succeeds. Complimentarily, the ''OK'' button can be grayed out by sending the ==okButtonEnabled: false== message, and enabled again with a ==true== argument.
 
-!! Modal windows and the closing of windows
+The message ==cancelled== sent to diag will return ==true== if the dialog was closed by clicking on the ''Cancel'' button.
 
-Windows are not alone on the screen, and they probably will not live forever. Here we talk about gaining full control of the entire user interface, and how to hook into the window closing logic.
 
 !!! Modal windows
 
 A modal window is a window that takes control of the entire Pharo user interface, making it impossible for the user to select another window while it is open. This is especially useful for dialog boxes, but may also be needed for other kinds of windows.
 
-Spec allows any window to be made modal by sending the message ==modalRelativeTo: World== to the ==WindowModel== that corresponds to the opened ==ComposableModel==. To get a handle on the ==WidowModel==, send the ==window== message (after the UI has been opened with ==openWithSpec==). 
+Spec allows any window to be made modal by sending the message ==modalRelativeTo: World== to the ==SpWindowPresenter==. 
+To get a handle on the ==WidowModel==, send the ==window== message (after the UI has been opened with ==openWithSpec==). 
 
 [[[
 | we |

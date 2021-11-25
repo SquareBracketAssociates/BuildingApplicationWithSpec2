@@ -147,7 +147,7 @@ Transmissions can be achieved either “manually” by reacting to events or by 
 
 !!!! Using presenter events
 
-It is quite easy to define the beahviour of the UI by using widgets predefined events. You can find them in the api-events protocol of the presenters. Most used events are #whenSelectionChangedDo:, #whenSelectedDo:, #whenModelChangedDo:, #whenTextChangedDo:, #action:.
+It is quite easy to define the beahviour of the UI by using widgets predefined events. You can find them in the api-events protocol of the presenters. Most used events are #whenSelectionChangedDo:, ==whenSelectedDo:==, ==whenModelChangedDo:==, ==whenTextChangedDo:==, ==action:==.
 Here are some examples:
 
 [[[

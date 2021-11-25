@@ -1,6 +1,5 @@
-!!Introduction
-@cha_introduction
-%05-21: Stef did a pass. Missing two figures + outline
+!! Introduction
+@chaintroduction
 
 Spec20 is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg, Change Sorter, Critics Browser, and the Pharo debugger. 
 An important architectural decision is that Spec20 supports multiple back-ends (at the time of this writing GTK and Morphic are available).
@@ -8,7 +7,7 @@ An important architectural decision is that Spec20 supports multiple back-ends (
 +Spec20 supports multiple back-ends Morphic and GTK3.0.: Here we see GTK>file://figures/GTK.png|width=100+
 
 
-!!! Reuse of Logic
+!!! Reuse of logic
 The fundamental principle behind Spec is the reuse of user interface logic and visual composition. User interfaces are built by reusing and composing existing user interfaces, configuring them as needed. This principle starts from the most primitive elements of the UI: widgets such as buttons and labels are in themselves complete UIs that can be reused, configured, and opened in their window. These elements can be combined to form more complex UIs that again can be reused as part of a bigger UI, and so on. This is somewhat similar to how the different tiles on the cover of this book are combined. Smaller tiles configured with different colors or patterns join to form bigger rectangular shapes that are a part of an even bigger floor design. 
 
 
@@ -17,7 +16,7 @@ To allow such reuse, Spec was influenced by VisualWorks and Dolphin Smalltalks' 
 
 Spec is the standard GUI framework in Pharo and differs from Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists et cetera. It cannot be used as a general drawing framework, but you can integrate a canvas inside a Spec component. For example, you can embed a Roassal visualisation (see Figure *@SpecRoassal*), or you can extend Spec20 itself with additional native components.
 
-+Roassal and Spec20.>file://figures/roassalGTK.png|width=100|label=SpecRoassal+
++Roassal and Spec20 integration.>file://figures/roassalGTK.png|width=100|label=SpecRoassal+
 
 Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo*.
 
@@ -34,25 +33,14 @@ This means that a UI written in Spec20 will be able to be rendered on back-ends 
 
 While this book used previous Spec documentation as a foundation, the text has been almost completely rewritten with an aim toward higher quality. We hope that it will be of use to developers who need to write UIs in Pharo by significantly easing the UI development experience with Spec.
 
-@@note This book focuses on Pharo 9.0 and Spec 2.0. Earlier versions of Pharo have implementations of Spec that differ, preventing some example code here from working. Nevertheless, the fundamental principles of UI development in Spec hold.
+@@note This book focuses on Pharo 10 and Spec 2.0. Earlier versions of Pharo have implementations of Spec that differ, preventing some example code here from working. Nevertheless, the fundamental principles of UI development in Spec hold.
 
 
-
-!!! A Point of Attention
-This section will be removed in the release version of the book. 
-For now we use ==defaultLayout== instead of ==defaultSpec== for the definitions of the layout. We are deprecating ==defaultSpec== in the implementation and we do not want to rewrite the complete book once it is done. So we suggest to define in your class ==defaultSpec== as calling ==defaultLayout== in addition to your ==defaultLayout== definition.
-
-[[[
-defaultSpec
-	^ self defaultLayout
-]]]
-
-
-!!!! Outline
+!!! Outline
 @@note SD: to revise
 This book is meant to be read as follows: Chapter 2 and 3 give a first contact with Spec and talk about how reuse is at the core of Spec. These chapters should be read completely by a Spec novice. The fourth chapter treats the fundamentals of Spec and gives a more complete, conceptual overview of how the different parts of a Spec UI work together. This is recommended reading for all Spec users since a better understanding of the fundamentals will ease UI development at all user experience levels. Chapters 5 and beyond are considered more as reference material to be read on demand. This being said, Chapter 5 treats layouts, which is required by all UIs. Hence it does make sense for all Spec users to read it so that they can construct their UI layout in the best possible way.  Lastly, Chapter 9 gives an assortment of tips and tricks that can be useful in a wide variety of settings, so we recommend that all readers of this book at least browse through it.
 
-!!!! Acknowledgements
+!!! Acknowledgements
 The authors would like to super warmly thanks for their financial support: Masashi Fujita, Roch-Alexandre Nominé, Eiichiro Ito, sumim, Hilaire Fernandes, Dominique Dartois, Philippe Mougin, Pavel Krivanek, Michael L. Davis, Ewan Dawson, Luc Fabresse, David Bajger, Jörg Frank, Petter Egesund, Pierre Bulens, Tomohiro Oda, Sebastian Heidbrink, Alexandre Bergel, Jonas Skučas, and Mark Schwenk.
 
 If you supported us and you are not on this list, this is a shame and you should contact us or do a pull request.
