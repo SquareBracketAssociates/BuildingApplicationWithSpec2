@@ -11,9 +11,7 @@ ${inputFile:path=Chapters/InANutshell/InANutshell.pillar}$
 ${inputFile:path=Chapters/FirstContact/FirstContactShrunk.pillar}$
 ${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
 ${inputFile:path=Chapters/DynamicPresenter/DynamicPresenter.pillar}$
-
-
-%${inputFile:path=Chapters/Reuse/Reuse.pillar}$
+${inputFile:path=Chapters/Reuse/Reuse.pillar}$
 %${inputFile:path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.pillar}$
 
 ! Diving into Spec 2.0 

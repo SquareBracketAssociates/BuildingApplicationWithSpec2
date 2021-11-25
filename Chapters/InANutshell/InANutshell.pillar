@@ -1,5 +1,5 @@
 !! Spec core in a nutshell
-@chacore
+@cha_core
 Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed most tools in Pharo are written in Spec, e.g., the inspector, spotter, the Pharo debugger, Iceberg, etc.
 
 The fundamental principle behind Spec is the reuse of user interface logic and visual composition. User interfaces are built by reusing and composing existing user interfaces, configuring them as needed. This principle starts from the most primitive elements of the UI: widgets such as buttons and labels are in themselves complete UIs that can be reused, configured, and opened in their own window. These elements can be combined to form more complex UIs that again can be reused as part of a bigger UI, and so on.

@@ -1,4 +1,4 @@
-!! Reusing and composing elements
+!! About reuse and composition
 @cha_reuse
 
 A key design goal of Spec is to enable the seamless reuse of user interfaces as widgets for the user interface you are building. The reason for this is that it results in a significant productivity boost when creating user interfaces.
@@ -42,6 +42,8 @@ WidgetClassListPresenter >> initializePresenters
 	self focusOrder add: list.
 ]]]
 
+@@todo: is focusOrder correct?
+
 [[[
 WidgetClassListPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Widgets'
@@ -50,7 +52,7 @@ WidgetClassListPresenter >> initializeWindow: aWindowPresenter
 The layout contains only the list:
 
 [[[
-WidgetClassListPresenter class >> defaultSpec
+WidgetClassListPresenter >> defaultLayout
 	^ SpBoxLayout newHorizontal
 		add: #list;
 		yourself
@@ -59,6 +61,9 @@ WidgetClassListPresenter class >> defaultSpec
 Doing ==WidgetClassListPresenter new openWithSpec==, you should obtain UI shown in Figure *@fig_WidgetClassList*.
 
 +WidgetClassListPresenter open.>file://figures/WidgetClassList.png|width=50|label=fig_WidgetClassList+
+
+
+!!! Supporting reuse
 
 Since this UI will later be used together with other widgets to provide a more complete user interface, some actions will need to occur when a list item is clicked. However, we cannot know beforehand what all these possible actions will be everywhere that it will be reused. The best solution therefore is to place this responsibility on the reuser of the widget. Every time this UI is reused as a widget, it will be configured by the reuser. To allow this, we add a configuration method named ==whenSelectedItemChanged:== :
 
@@ -103,7 +108,7 @@ ProtocolMethodListPresenter >> initializeWindow: aWindowPresenter
 The layout code builds a column with the fixed-height label on top and the list taking all the space that remains. (See Chapter *@cha_layout_construction* for more on layouts.)
 
 [[[
-ProtocolMethodListPresenter class >> defaultSpec
+ProtocolMethodListPresenter >> defaultLayout
 	^ SpBoxLayout newVertical
 			add: #label;
 			add: #methods;
@@ -115,7 +120,7 @@ This UI can be seen by executing ==ProtocolMethodList new openWithSpec==. As sho
 +ProtocolMethodListPresenter with unclear layout.>file://figures/ProtocolList.png|width=50|label=fig_protocollist+
 
 [[[
-ProtocolMethodListPresenter class >> defaultSpec
+ProtocolMethodListPresenter >> defaultLayout
 	^ SpBoxLayout newVertical
 			add: #label  withConstraints: [:c | c expand: false];
 			add: #methods withConstraints: [:c | c fill];
@@ -149,7 +154,7 @@ ProtocolMethodListPresenter >> whenSelectedItemChanged: aBlock
 
 @@note An alternative to adding these methods is simply to do nothing: since both the methods and the label are accessible (through their accessors), a reuser of this widget may simply obtain them and configure them directly. These two alternatives reflect a design decision that we will discuss in Section *@sec_public_API*.
 
-!!!! Inspecting live the widgets
+!!! Inspecting live the widgets
 Now we can check manually if the widget is working doing:
 
 [[[
@@ -178,7 +183,6 @@ We add an accessor to access the method list.
 
 [[[
 ProtocolMethodListPresenter >> methods
-
 	^ methods
 ]]]
 
@@ -238,7 +242,7 @@ ProtocolViewerPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Protocol viewer'
 ]]]
 
-To describe the interactions between the different widgets we define the ==initializePresenter== method. It specifies that when a class is selected, the selections in the method lists are reset and both method lists are populated. Additionally, when a method is selected in one method list, the selection in the other list is reset.
+To describe the interactions between the different widgets we define the ==connectPresenters== method. It specifies that when a class is selected, the selections in the method lists are reset and both method lists are populated. Additionally, when a method is selected in one method list, the selection in the other list is reset.
 
 [[[
 ProtocolViewerPresenter >> connectPresenters
@@ -267,7 +271,7 @@ ProtocolViewerPresenter >> methodsIn: class for: protocol
 Lastly, the layout puts the sub widgets in one column, with all sub widgets taking the same amount of space.
 
 [[[
-ProtocolViewerPresenter class >> defaultSpec
+ProtocolViewerPresenter >> defaultLayout
 	^ SpBoxLayout newVertical
 			add: #models; add: #api; add: #events;
 			yourself
@@ -279,13 +283,13 @@ As previously, the result can be seen by executing the following snippet of code
 +ProtocolViewer in vertical mode.>file://figures/ProtocolViewerVertical.png|width=50|label=figProtocolViewerVertical+
 
 
-!!! Having different layout
+!!! Having different layouts
 
 Notice that you can change the layout as follows to get all the widgets in a row as shown in Figure *@figProtocolViewerHorizontal*.
 We will show later that a presenter can have multiple layouts and that the programmer decide which one to use.
 
 [[[
-ProtocolViewerPresenter class >> defaultSpec
+ProtocolViewerPresenter >> defaultLayout
 	^ SpBoxLayout newHorizontal
 			add: #models; add: #api; add: #events;
 			yourself
@@ -294,23 +298,22 @@ ProtocolViewerPresenter class >> defaultSpec
 We can do better. Let us define three methods as follows: 
 
 [[[
-ProtocolViewerPresenter class >>	
-horizontalSpec
+ProtocolViewerPresenter >> horizontalLayout
 	^ SpBoxLayout newHorizontal
 		add: #models; add: #api; add: #events;
 		yourself
 ]]]
 
 [[[
-ProtocolViewerPresenter class >> verticalSpec
+ProtocolViewerPresenter >> verticalLayout
 	^ SpBoxLayout newVertical
 		add: #models; add: #api; add: #events;
 		yourself
 ]]]
 
 [[[
-ProtocolViewerPresenter class >> defaultSpec
-	^ self verticalSpec
+ProtocolViewerPresenter >> defaultLayout
+	^ self verticalLayout
 ]]]
 
 Now we can decide to open the viewer with different layouts using the message ==openWithSpec:== as follows (as shown in Figure *@figProtocolViewerHorizontal*):
@@ -318,12 +321,13 @@ Now we can decide to open the viewer with different layouts using the message ==
 [[[
 ProtocolViewerPresenter class >> exampleHorizontal
 	
-		self new openWithSpec: #horizontalSpec
+		self new openWithSpec: #horizontalLayout
 ]]]
 
 +ProtocolViewer in horizontal mode.>file://figures/ProtocolViewerHorizontal.png|width=50|label=figProtocolViewerHorizontal+
 
 !!! Enhancing our API
+
 Similar to the second user interface, when this UI is reused it will probably need to be configured. The relevant configuration here is what to do when a selection change happens in any of the three lists. We hence add the following three methods to the ==api== protocol.
 
 [[[
@@ -376,7 +380,7 @@ The text field is configured to show source code:
 - ==aboutToStyle: true== enables syntax highlighting.
 - ==isCodeCompletionAllowed: true== enables code completion.
 
-The ==initalizePresenters== method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
+The ==connectPresenters== method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
 
 [[[
 ProtocolCodeBrowserPresenter >> connectPresenters
@@ -390,63 +394,35 @@ ProtocolCodeBrowserPresenter >> connectPresenters
 			ifNotNil: [ text text: item sourceCode ] ]
 ]]]
 
-The last piece of the puzzle is the layout of the different widgets that we are reusing. We combine columns and rows in this UI. The first row is special because we reuse the internal widgets of the ==viewer== widget in a different layout. To do this, we specify the sequence of accessor messages that need to be sent (as an array of symbols): for example, for the list of classes first the ==viewer== message and then the ==models== message.
 
 
 
-!!! TOBE CHANGED
-To get the following work make sure that  ==resolvePresenter:model:bindings:== is defined as follow: 
+%!!! What?
 
-[[[SpExecutableLayout >> resolvePresenter: presenterNameOrLayout 
-	model: aModel 
-	bindings: bindings
+%The last piece of the puzzle is the layout of the different widgets that we are reusing. We combine columns and rows in this UI. The first row is special because we reuse the internal widgets of the ==viewer== widget in a different layout. To do this, we specify the sequence of accessor messages that need to be sent (as an array of symbols): for example, for the list of classes first the ==viewer== message and then the ==models== message.
 
-	"most common case: I receive a symbol that I need to convert into a presenter"
-	presenterNameOrLayout isSymbol ifTrue: [ 
-		^ (self subpresenterOrLayoutNamed: presenterNameOrLayout of: aModel)
-			ifNil: [ self error: 'You presenter named "', presenterNameOrLayout , '" from ', aModel printString ,' was not initialized.' ] ].
+%Now we can express the layout of the ==ProtocolCodeBrowserPresenter== as follows: 
+%[[[
+%ProtocolCodeBrowserPresenter class >> defaultSpec
+%	"self new openWithSpec: #defaultSpec"
+%	
+%	^ SpBoxLayout newVertical 
+%			add: 
+%			 (SpBoxLayout newHorizontal
+%					add: #(viewer #models);
+%					add: (SpBoxLayout newVertical
+%								add: #( #viewer #api);
+%								add: #( #viewer #events);
+%								yourself);
+%					yourself);
+%				add: #text;
+%				yourself
+%]]]
 
-	"I receive a layout: dig inside."
-	presenterNameOrLayout isSpLayout ifTrue: [ 
-		^ presenterNameOrLayout buildAdapterFor: aModel bindings: bindings ].
+%Opening it (ProtocolCodeBrowserPresenter self new openWithSpec), you should obtain the widget presented in Figure *@fig_protocol_browser*.
+%This concludes the last example of this chapter.
 
-	presenterNameOrLayout isArray ifTrue: [ 
-			| current |
-			current := aModel. 
-			presenterNameOrLayout
-				do: [ :each | current := (self subpresenterOrLayoutNamed: each of: current) ].
-			^ current 
-			].
-
-	"I receive an arbitrary object (needs to understand #asPresenter)"
-	^ presenterNameOrLayout asPresenter
-		owner: aModel;
-		yourself
-
-]]]
-
-Now we can express the layout of the ==ProtocolCodeBrowserPresenter== as follows: 
-[[[
-ProtocolCodeBrowserPresenter class >> defaultSpec
-	"self new openWithSpec: #defaultSpec"
-	
-	^ SpBoxLayout newVertical 
-			add: 
-			 (SpBoxLayout newHorizontal
-					add: #(viewer #models);
-					add: (SpBoxLayout newVertical
-								add:#( #viewer #api);
-								add:#(#viewer #events);
-								yourself);
-					yourself);
-				add: #text;
-				yourself
-]]]
-
-Opening it (ProtocolCodeBrowserPresenter self new openWithSpec), you should obtain the widget presented in Figure *@fig_protocol_browser*.
-This concludes the last example of this chapter.
-
-@@note To layout internal widgets of a widget you are reusing (instead of the widget in its entirety), give an array of symbols: it states the sequence of accessors that need to be sent to get to the internal widget.
+%@@note To layout internal widgets of a widget you are reusing (instead of the widget in its entirety), give an array of symbols: it states the sequence of accessors that need to be sent to get to the internal widget.
 
 
 

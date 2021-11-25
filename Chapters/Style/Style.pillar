@@ -1,5 +1,5 @@
 !! Styling Applications
-@chastyle
+@cha_style
 
 In this chapter we will see how to use custom styles in Spec applications. We will start to present styles and then build a little editor as the one displayed hereafter.
 

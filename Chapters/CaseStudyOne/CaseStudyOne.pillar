@@ -1,5 +1,5 @@
 !! Most of Spec20 in one example
-@casestudyone
+@cha_casestudy_one
 In this chapter we will guide you over the building of a simple but not trivial 
 application to manage films as shown in Figure *@FullApp*.
 We will show many aspects of Spec20 that we will revisit in depth in the rest of this book:
