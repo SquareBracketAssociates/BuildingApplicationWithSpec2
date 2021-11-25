@@ -11,24 +11,24 @@ Spec offers different backends to render the presenters: Morphic (the default ba
 
 Spec is a standard UI framework in Pharo and differs from the other UI frameworks present: Morphic. Morphic is a general-purpose graphics system originally built for the Self language, and later included in Squeak (the ancestor of Pharo). Morphic provides standard UI widgets, and as such is used by Spec to render UI’s, but can also be used to build any kind of graphical shape and allows for their direct manipulation. Spec is more restricted than Morphic in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists et cetera.
 
-!!! Spec Core Architecture Overview
+!!! Spec core architecture overview
 
-Spec core is composed of the following elements
+Spec core is composed of the following elements:
 
+- ""Application."" An application is composed of multiple presenters and a stylesheet.
+- ""Presenters."" A presenter is a unit of interactive behavior. It is connected to domain objects and other presenters. Its visual representation is defined via at least one layout.
+- ""Layout."" A layout describe positions of elements and it can be recursive.
+- ""Stylesheet and Styles"". A stylesheet is compose of Styles which describe visual properties such as fonts, colors,....
 
-@@todo describe them + a diagram
++Presenter, Application, Layout and Style of Spec.>figures/Core.pdf|label=core|width=60+
 
-- Presenters
-- Application
-- Layout
-- Styles
 
 We detail now each of the main elements.
 
 !!! Presenters
 
-A Spec presenter (an instance of SpPresenter), is an essential part of the Spec framework. It represents a UI element. It could be a simple UI widget such as a button as well as a complex UI widget composed of many others presenters (either simple or complex). To build your User Interface, you compose presenters.
-Spec already comes with a predefined set of basic presenters (widgets) ready to use in your presenters. You can find them in scripting - widgets category of the SpPresenter class. You will find buttons, labels, check boxes, text input, drop lists, lists, tables, trees, toolbar, action bars, but also more complex widgets like diff presenters or notebooks.
+A Spec presenter (an instance of ==SpPresenter==), is an essential part of the Spec framework. It represents a UI element. It could be a simple UI widget such as a button as well as a complex UI widget composed of many others presenters (either simple or complex). To build your User Interface, you compose presenters.
+Spec already comes with a predefined set of basic presenters (widgets) ready to use in your presenters. You can find them in scripting - widgets category of the ==SpPresenter== class. You will find buttons, labels, check boxes, text input, drop lists, lists, tables, trees, toolbar, action bars, but also more complex widgets like diff presenters or notebooks.
 You can easily instantiate a new presenter and display it:
 
 [[[
@@ -52,31 +52,34 @@ More information on how to build presenters in the @*Building@ a presenter secti
 
 !!! Application
 
-A spec application (SpApplication instance) handles your application initialisation, configuration and resources. It also keeps the windows you have currently opened.
+A spec application (==SpApplication== instance) handles your application initialization, configuration and resources. It also keeps the windows you have currently opened.
 In the application initialization, you can configure the backend you want to use: morphic (default, Gtk).
+
 You should also define a method to tell what is the main window / presenter to use when running the application.
 
 [[[
 MyApplication >> start
 
-   (self new: MyMainPresenter) openWithSpec
+	(self new: MyMainPresenter) openWithSpec
 ]]]
 
 You can run your application with ==MyApplication new run==. It will call the ==start== method you defined.
+
 A Spec application also provides a way to access windows, to access resources like icons, and provide abstractions for interactions with the user (inform, error, file or directory selection).
 
 An application also provides the style used by Spec to style UI elements. 
 A default style is available but you can customize it as shown in Chapter *@Style*.
 
-!!! Layout
 
-A layout describes how elements are placed on the displayed surface. To help you build nice User Interfaces, several layouts are available:
+!!! Layouts
 
-- GridLayout : choose this layout when you need to create a widget with label, fields that needs to be aligned (form-style). You can specify in which box of the grid you want to place an element.
-- BoxLayout: a BoxLayout arranges presenters in a box, vertically (top to bottom) or horizontally (left to right).
-- PanedLayout: a PanedLayout is a BoxLayout with only 2 elements with a splitter in between, that user can drag to resize the panel.
-- TabLayout: a TabLayout will show all its elements as tabs you can select to display the content.
-- MillerLayout: a Layout to implement miller columns (*https://en.wikipedia.org/wiki/Miller_columns*), also known as cascading lists.
+A layout describes how elements are placed on the displayed surface. To help you build nice user interfaces, several layouts are available:
+
+- ""GridLayout"": choose this layout when you need to create a widget with label, fields that needs to be aligned (form-style). You can specify in which box of the grid you want to place an element.
+- ""BoxLayout"": a BoxLayout arranges presenters in a box, vertically (top to bottom) or horizontally (left to right).
+- ""PanedLayout"": a PanedLayout is a BoxLayout with only 2 elements with a splitter in between, that user can drag to resize the panel.
+- ""TabLayout"": a TabLayout will show all its elements as tabs you can select to display the content.
+- ""MillerLayout"": a Layout to implement miller columns (*https://en.wikipedia.org/wiki/Miller_columns*), also known as cascading lists.
 Any layout in Spec is dynamic and composable.
 
 To define a layout is as simple as defining the following method and getting it called from the ==initializePresenters== method.
@@ -85,8 +88,9 @@ The following method define two box layouts
 - the second one containing the first one and a code text below 
 Figure *@layout6B* shows the corresponding result.
 
+
 [[[
-MyMiniBrowserPresenter >> initializeLayout
+MyMiniBrowserPresenter >> defaultLayout
  
     | classesAndMethodsLayout |
     classesAndMethodsLayout := SpBoxLayout newLeftToRight.
@@ -94,7 +98,7 @@ MyMiniBrowserPresenter >> initializeLayout
         spacing: 10;
         add: treeClasses;
         add: methodsFilteringList.
-    self layout: (SpBoxLayout newTopToBottom
+    ^ (SpBoxLayout newTopToBottom
         spacing: 5;
         add: classesAndMethodsLayout;
         add: codeShower;
@@ -147,12 +151,13 @@ Transmissions can be achieved either “manually” by reacting to events or by 
 
 !!!! Using presenter events
 
-It is quite easy to define the beahviour of the UI by using widgets predefined events. You can find them in the api-events protocol of the presenters. Most used events are #whenSelectionChangedDo:, ==whenSelectedDo:==, ==whenModelChangedDo:==, ==whenTextChangedDo:==, ==action:==.
+It is quite easy to define the beahviour of the UI by using widgets predefined events. You can find them in the api-events protocol of the presenters. Most used events are ==whenSelectionChangedDo:==, ==whenSelectedDo:==, ==whenModelChangedDo:==, ==whenTextChangedDo:==, ==action:==.
 Here are some examples:
 
 [[[
 messageList
-		whenSelectionChangedDo: [ :selection | messageDetail model: selection selectedItem ];
+		whenSelectionChangedDo: [ :selection | 
+			messageDetail model: selection selectedItem ];
 		whenModelChangedDo: [ self updateTitle ].
 	textModel whenSubmitDo: [ :text | self accept: text ].
 	addButton action: [ self addDirectory ].
