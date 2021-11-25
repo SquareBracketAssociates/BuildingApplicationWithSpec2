@@ -42,7 +42,7 @@ WidgetClassListPresenter >> initializePresenters
 	self focusOrder add: list.
 ]]]
 
-@@todo: is focusOrder correct?
+@@todo is focusOrder correct?
 
 [[[
 WidgetClassListPresenter >> initializeWindow: aWindowPresenter
