@@ -1,5 +1,6 @@
 !! Most of Spec20 in one example
 @cha_casestudy_one
+
 In this chapter we will guide you over the building of a simple but not trivial 
 application to manage films as shown in Figure *@FullApp*.
 We will show many aspects of Spec20 that we will revisit in depth in the rest of this book:
@@ -336,7 +337,7 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 
 !!! Embedding a FilmPresenter into the FilmList
 
-We have two main visual element one for a list of films and one for a film details.
+We have two main visual elements:  one for a list of films and one for a film details.
 We can imagine that we would like to see the film details just in the same
 container than the list, especially since a film description should be larger than the list columns. 
 
@@ -517,7 +518,7 @@ What you see is that it relatively simple to test that the interaction you speci
 
 With Spec, a presenter can have multiple layouts and even layouts that are created on the fly as we will see with the dynamic layouts.
 
-@@ todo can we have multiple instance level layout returned by different instance side methods and can we pass their name to the openWithSpec: (is it looking for instance side then class side)?
+@@todo can we have multiple instance level layout returned by different instance side methods and can we pass their name to the openWithSpec: (is it looking for instance side then class side)?
 
 We can decide which layout to use to open a presenter. 
 Imagine that we prefer to have the list above the film details, or just the list alone.
@@ -597,6 +598,7 @@ ImdbFilmPresenter >> inputModelPort
 
 
 @@todo why do we need the two methods?
+
 @@todo why do we need the setModel: method.
 
 [[[language=Smalltalk
