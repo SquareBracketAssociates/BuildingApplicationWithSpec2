@@ -395,37 +395,6 @@ ProtocolCodeBrowserPresenter >> connectPresenters
 ]]]
 
 
-
-
-%!!! What?
-
-%The last piece of the puzzle is the layout of the different widgets that we are reusing. We combine columns and rows in this UI. The first row is special because we reuse the internal widgets of the ==viewer== widget in a different layout. To do this, we specify the sequence of accessor messages that need to be sent (as an array of symbols): for example, for the list of classes first the ==viewer== message and then the ==models== message.
-
-%Now we can express the layout of the ==ProtocolCodeBrowserPresenter== as follows: 
-%[[[
-%ProtocolCodeBrowserPresenter class >> defaultSpec
-%	"self new openWithSpec: #defaultSpec"
-%	
-%	^ SpBoxLayout newVertical 
-%			add: 
-%			 (SpBoxLayout newHorizontal
-%					add: #(viewer #models);
-%					add: (SpBoxLayout newVertical
-%								add: #( #viewer #api);
-%								add: #( #viewer #events);
-%								yourself);
-%					yourself);
-%				add: #text;
-%				yourself
-%]]]
-
-%Opening it (ProtocolCodeBrowserPresenter self new openWithSpec), you should obtain the widget presented in Figure *@fig_protocol_browser*.
-%This concludes the last example of this chapter.
-
-%@@note To layout internal widgets of a widget you are reusing (instead of the widget in its entirety), give an array of symbols: it states the sequence of accessors that need to be sent to get to the internal widget.
-
-
-
 !!! Considerations about a public configuration API
 @sec_public_API
 
