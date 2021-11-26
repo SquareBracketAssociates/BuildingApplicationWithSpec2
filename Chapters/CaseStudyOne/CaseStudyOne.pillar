@@ -67,7 +67,7 @@ Now we are ready to define a first presenter that will manage a list of films.
 We define a presenter to manage a list of films.
 For this we define a new class named ==ImdbFilmListPresenter== which inherits from ==SpPresenter==.
 We add an instance variable named ==filmList== that will hold an elementary list presenter. 
-Its means that ==ImdbFilmListPresenter== can have multiple subpresenter. 
+Its means that ==ImdbFilmListPresenter== can have multiple subpresenters. 
 
 [[[language=Smalltalk
 SpPresenter subclass: #ImdbFilmListPresenter
@@ -96,10 +96,10 @@ We saw that a presenter can have subpresenters and you will see later that (1) a
 In Spec20, layouts are by default dynamic and can be expressed at the level of instances. 
 
 !!!! initializePresenters
-So far we did not explain what ==filmList== was. 
-In fact ==filmList== a variable is another elementary presenter (here already existing in Spec20).
-We define how we set the presenter for the ==filmList==.
-Here the message ==newTable== instantiate a ==SpTablePresenter==.
+So far we did not initialized ==filmList==. 
+In fact ==filmList== is variable pointing to another presenter.
+
+The place to initialize the subpresenters is in the method ==initializePresenters== as shown below. Here we define that ==filmList== is a table with three columns. The message ==newTable== instantiate a ==SpTablePresenter==.
 
 In fact the list is more table than a mere list: we describe that we want three columns as follows: 
 
@@ -115,8 +115,7 @@ ImdbFilmListPresenter >> initializePresenters
 	self updatePresenter
 ]]]
 
-The last message ==updatePresenter== just query the domain (==ImdbFilm==) to get the list of the recorded films
-and populate the internal table with them.
+The last message ==updatePresenter== just queries the domain (==ImdbFilm==) to get the list of the recorded films and populates the internal table with them.
 
 [[[language=Smalltalk
 ImdbFilmListPresenter >> updatePresenter
@@ -327,7 +326,7 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 		addButton: 'Save Film' do: [ :presenter | presenter beOk; close ].
 ]]]
 
-@@todo how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? I do not think that addButton:do: is a good API because we cannot customize anything. 
+@@todo how do I get a button that does not suck and cut half the text (because I tried with Save Film in DB)? how can customize the buttons eg add icon?
 
 +Customizing the dialog window.>file://figures/FilmList-05-Modal.png|width=100|label=Customized dialog+
 

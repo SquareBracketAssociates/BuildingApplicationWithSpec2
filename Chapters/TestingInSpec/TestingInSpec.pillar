@@ -18,7 +18,7 @@ Spec is based on an architecture with three different layers as shown in Figure 
 - ""Adapters:"" Adapters are objects exposing low-level back-end widgets. They are a bridge between presenters and low-level widgets.
 - ""Back-end widgets"". Back-end widgets are plain widgets that can be used without Spec.
 
-+Spec Architecture: three layers Presenters - Adapters - Back-ends.>file://figures/ArchitectureSpec2.pdf|width=75|label=fig:Architecture+
++Spec Architecture: three layers Presenters - Adapters - Back-ends.>file://figures/ArchitectureSpec2.pdf|width=95|label=fig:Architecture+
 
 !!!! Three roles and concerns
 To help you understand the different possibilities of testing that you can engage, we identify the following roles and their related concerns.
