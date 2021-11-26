@@ -43,7 +43,7 @@ The following creates a window with the list of methods of the class ==Point== a
 (SpMethodLister on: Point) openWithSpec.
 ]]]
 
-+A simple list of sorted selectors of the class Point.>figures/PointSelectors.png|label=pointselectors|width=80+
++A simple list of sorted selectors of the class Point.>figures/PointSelectors.png|label=pointselectors|width=50+
 
 !!! Presenter vs. PresenterWithModel
 

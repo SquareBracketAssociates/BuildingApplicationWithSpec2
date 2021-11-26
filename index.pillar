@@ -13,15 +13,13 @@ ${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
 ${inputFile:path=Chapters/AboutModel/AboutModel.pillar}$
 ${inputFile:path=Chapters/DynamicPresenter/DynamicPresenter.pillar}$
 
-
-
 ! Diving into Spec 2.0 
-
 
 ${inputFile:path=Chapters/LayoutContruction/Layout.pillar}$
 ${inputFile:path=Chapters/Style/Style.pillar}$
 ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 
+!! Missing Menus and MenuBars
 %${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
 
 %${inputFile:path=Chapters/BackEnd/BackEnd.pillar}$
