@@ -105,7 +105,7 @@ MyMiniBrowserPresenter >> defaultLayout
         yourself)
 ]]]
 
-+The layout corresponding to the initializeLayout method.>figures/layout6.png|width=70|label=layout6B+
++The layout corresponding to the initializeLayout method.>figures/layout6Annotated.png|width=70|label=layout6B+
 
 
 !!! Styles

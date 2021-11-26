@@ -1,7 +1,7 @@
-!!First Contact With Examples
-@chafirstcontact
+!! A small example
+@cha_small_example
 
-As a first step in Spec's world, we will construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will allow you to build basic user interfaces.
+We will construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will allow you to build basic user interfaces.
 
 After completing this chapter you should read the following chapter about reuse of Spec widgets, which is the key behind the power of Spec. With these two chapters, you should be able to construct Spec user interfaces as intended. You could use the rest of this book just as reference material, but nonetheless we recommend you to at least give a brief look at the other chapters as well.
 
@@ -10,7 +10,7 @@ After completing this chapter you should read the following chapter about reuse 
 
 +A screen shot of the customer satisfaction UI.>file://figures/Customers_Basic.png|width=50|label=fig_Customers_Basic+
 
-In this first example, we construct a simple customer satisfaction UI, which allow a user to give feedback about a service by clicking on one of three buttons. (This feedback should be recorded and processed, but this is outside of the scope of this example). We show a screenshot of the UI in Figure *@fig_Customers_Basic*.
+We construct a simple customer satisfaction UI, which allow a user to give feedback about a service by clicking on one of three buttons. (This feedback should be recorded and processed, but this is outside of the scope of this example). We show a screenshot of the UI in Figure *@fig_Customers_Basic*.
 
 
 !!! Create the class of the UI 
@@ -117,10 +117,10 @@ We use the message ==action:== to specify the action that is performed when the 
 @@note To summarize: specialize ==initializePresenters== to define and configure and ==connectPresenters== connect your presenters together.
 
 !!!! Specifying the widget layout
-The widgets have now been defined and configured, but their placement in the UI has not yet been specified. This is the role of the class side method ==defaultSpec==.
+The widgets have now been defined and configured, but their placement in the UI has not yet been specified. This is the role of the method ==defaultLayout==.
 
 [[[
-CustomerSatisfactionPresenter class >> defaultSpec
+CustomerSatisfactionPresenter >> defaultLayout
 	^ SpBoxLayout newVertical 
 		add: (SpBoxLayout newHorizontal
 				add: #buttonHappy;
@@ -137,7 +137,7 @@ In this layout, we add two rows to the UI, one with the buttons and one with the
 
 
 
-Once the class method ==defaultSpec== is defined, you can start to open your UI as follows: ==CustomerSatisfactionPresenter new openWithSpec==. You should obtain a widget similar to the one shown in Fig. *@figFirstCut*.
+Once the class method ==defaultSpec== is defined, you can start to open your UI as follows: ==CustomerSatisfactionPresenter new openWithSpec==. You should obtain a widget similar to the one shown in Figure *@figFirstCut*.
 
 +A first version of the customer satisfaction UI.>file://figures/FirstCut.png|width=50|label=figFirstCut+
 
@@ -176,7 +176,7 @@ This concludes our first example of a Spec user interface. We now continue with 
 
 !!! Conclusion
 
-In this chapter we have given you a first contact with Spec user interfaces. We have first shown you what the different steps are to build a user interface with Spec, and then shown you two examples of how to configure existing Spec widgets.
+In this chapter we have given you a little example of Spec user interfaces. We have first shown you what the different steps are to build a user interface with Spec.
 
 More examples of Spec user interfaces are found in the Pharo Image itself. Since all Spec user interfaces are subclasses of ==SpPresenter==, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
 
