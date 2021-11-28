@@ -23,7 +23,7 @@ ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 
 %${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
 
-%${inputFile:path=Chapters/BackEnd/BackEnd.pillar}$
+${inputFile:path=Chapters/BackEnd/BackEnd.pillar}$
 
 % People can read the booklet on commander no need to add it here.
 %${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
