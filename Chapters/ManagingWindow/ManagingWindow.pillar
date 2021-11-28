@@ -7,19 +7,18 @@ In this chapter we provide a more complete overview of how Spec allows for the m
 
 
 
-
-
-
-
 !!! A working example
 
 To illustrate the window configuration options that are available, we use a simple ==WindowExample== class that has two buttons placed side by side. These buttons do not have any behavior associated yet, this will be added in an example further down this chapter.
+
++A rather simple window on WindowExamplePresent.>figures/WindowExamplePresenterOpen1.png|width=40|label=windowExample1+
+
 
 [[[
 SpPresenter subclass: #WindowExamplePresenter
    instanceVariableNames: 'button1 button2'
    classVariableNames: ''
-   package: 'Spec-BuildUIWithSpec'
+   package: 'SpecBook'
 ]]]
 
 [[[
@@ -31,7 +30,7 @@ WindowExamplePresenter >> initializePresenters
 ]]]
 
 [[[
-WindowExamplePresenter class >> defaultSpec
+WindowExamplePresenter >> defaultLayout
    ^ SpBoxLayout newLeftToRight
          add: #button1; add: #button2; yourself
 ]]]
@@ -57,7 +56,6 @@ we openWithSpec: #defaultSpec.
 we openWithSpecLayout: we defaultSpec
 ]]]
 
-+A rather simple window on WindowExamplePresent.>figures/WindowExamplePresenterOpen1|width=50|label=windowExample1+
 
 
 !!!Opening a dialog box and its configuration options
@@ -72,7 +70,7 @@ diag := we openDialogWithSpec
 
 The result of this (e.g. assigned to the ==diag== variable above) is an instance of the  ==SpDialogWindowPresenter== class (a subclass of ==SpWindowPresenter==). 
 
-+A rather simple window on WindowExamplePresent.>figures/WindowExamplePresenterDialog|width=50|label=windowDialog+
++A rather simple window on WindowExamplePresent.>figures/WindowExamplePresenterDialog|width=40|label=windowDialog+
 
 
 The ==SpDialogWindowPresenter== instance (==diag== in the example above) can also be configured in multiple ways. To execute code when the user clicks on a button, send it the ==okAction:== or ==cancelAction:== message with a zero-argument block. 

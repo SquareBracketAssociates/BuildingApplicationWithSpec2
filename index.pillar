@@ -5,13 +5,14 @@ ${inputFile:path=Chapters/Intro/Intro.pillar}$
 ${inputFile:path=Chapters/CaseStudyOne/CaseStudyOne.pillar}$
 ${inputFile:path=Chapters/TestingInSpec/TestingInSpec.pillar}$
 
-! Spec 2.0 Core
+! Spec 2.0 Essentials
 
 ${inputFile:path=Chapters/InANutshell/InANutshell.pillar}$
 ${inputFile:path=Chapters/Reuse/Reuse.pillar}$
 ${inputFile:path=Chapters/ManagingWindow/ManagingWindow.pillar}$
 ${inputFile:path=Chapters/AboutModel/AboutModel.pillar}$
 ${inputFile:path=Chapters/DynamicPresenter/DynamicPresenter.pillar}$
+${inputFile:path=Chapters/Menus/Menus.pillar}$
 
 ! Diving into Spec 2.0 
 
@@ -19,13 +20,14 @@ ${inputFile:path=Chapters/LayoutContruction/Layout.pillar}$
 ${inputFile:path=Chapters/Style/Style.pillar}$
 ${inputFile:path=Chapters/Transmissions/Transmission.pillar}$
 
-!! Missing Menus and MenuBars
+
 %${inputFile:path=Chapters/LayoutContruction/LayoutContruction.pillar}$
 
 %${inputFile:path=Chapters/BackEnd/BackEnd.pillar}$
 
-${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
-${inputFile:path=Chapters/Commander2/Commander.pillar}$
+% People can read the booklet on commander no need to add it here.
+%${inputFile:path=Chapters/ContactBook2/ContactBook.pillar}$
+%${inputFile:path=Chapters/Commander2/Commander.pillar}$
 
 %!! BackEnd integration 
 %
