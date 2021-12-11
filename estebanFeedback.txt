@@ -47,10 +47,10 @@ We do not have an application at that moment (a child of SpApplication), so I wo
 (is more clear), or even :
 (MyMainPresenter newApplication: self) openWithSpec
 
-[ todo ] p 56
+[ pending ] p 56
 askOkToClose: is not valid anymore, I will add next days a different mechanism
 
-[ todo ] p 57
+[ pending ] p 57
 beUnresizeable :  not implemented, but I need to add that too (next days).
 Both of this should be ready for book release.
 
