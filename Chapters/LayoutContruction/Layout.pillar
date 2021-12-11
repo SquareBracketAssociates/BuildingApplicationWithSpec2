@@ -12,6 +12,24 @@ To define the layout of a presenter you can:
 Both methods should return a layout for example instance of ==SpBoxLayout== or ==SpPanedLayout==.
 These methods will be automatically be called when the presenter is created.
 
+!!! How can we get normal button
+
+[[[
+WindowExamplePresenter >> initializePresenters
+
+  button1 := self newButton.
+  button2 := self newButton.
+  button1 label: '+'.
+  button2 label: '-'.
+  
+WindowExamplePresenter class >> defaultSpec
+   ^ SpBoxLayout newLeftToRight
+        add: #button1; add: #button2; yourself
+]]]
+
+This produces a large window....
+
+
 !!! Boxed
 
 !!! Paned

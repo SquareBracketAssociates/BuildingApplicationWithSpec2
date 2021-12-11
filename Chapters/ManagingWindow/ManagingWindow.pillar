@@ -114,73 +114,48 @@ Because this method returns ==false==, clicking on the close button of an open =
 
 Of course the example ==okToChange== method above is extremely simplistic and not very useful. It instead should define application-dependent logic of what to check on window close. Note that there are many examples of ==okToChange== methods in the system that can be used as inspiration.
 
-!!! Acting on window close
+
+!!! Acting on window close or open
+
+It is also possible to perform an action whenever a window is closed, both with a plain window or a dialog window.
 
 
-!!!! With a Window 
-
-[[[
-exampleWhenClosed
-	<example>
-	| we diag |
-	we := self new. 
-	diag := we openWithSpec.
-
-initializeWindow: aWindowPresenter
-
-	aWindowPresenter whenClosedDo: [ UIManager default inform: 'When closed' ]
-]]]		
-
-!!!! With dialog
+!!!! With a window 
+When you want to get notified that a window is closed, you should redefine the ==initializeWindow:== method in the class of your presenter as follows: 
 
 [[[
-exampleDialogWhenClosed
-	<example>
-	| we diag |
-	we := self new. 
-	diag := we openDialogWithSpec.
-	diag
-		okAction: [Transcript show: 'okAction'];
-		cancelAction: [Transcript show: 'cancelAction'].
-		whenClosedDo: 
-		
-]]]
-
-[[[
-exampleDialogWhenClosed
-	<example>
-	| we diag |
-	we := self new. 
-		diag := we openDialogWithSpec.
-		diag
-			okAction: [Transcript show: 'okAction'];
-			cancelAction: [Transcript show: 'cancelAction'].
-]]]
-[[[	
-initializeWindow: aWindowPresenter
+WindowExamplePresenter >> initializeWindow: aWindowPresenter
 
 	aWindowPresenter whenClosedDo: [ UIManager default inform: 'When closed' ]
 ]]]
 
 
+Then the following snippet programmatically open and close a window and you should see the notification triggered on close.
+[[[
+| we window |
+we := WindowExamplePresenter3 new. 
+window := we openWithSpec.
+window close.
+]]]
 
+!!!! With a dialog window
 
-
-
-
-
-
-
-
-
-It is also possible to perform an action whenever a window is closed, by sending the ==whenClosedDo:== message to the UI's ==SpWindowPresenter==. For example, below we specify a goodbye message to deliver when our example UI is closed.
+When you want the same behavior with a dialog window you can either use the mechanism as described previously (i.e. declare your interest in window closing in the method ==initializeWindow:==) or configure the dialog presenter returned by the message ==openDialogWithSpec==.
 
 [[[
-| we |
- we := WindowExamplePresenter new. 
- we openWithSpec.
- we window whenClosedDo: [ UIManager default inform: 'Bye bye!' ]
+| we diag |
+we := WindowExamplePresenter new. 
+diag := we openDialogWithSpec.
+diag
+	okAction: [Transcript show: 'okAction'];
+	cancelAction: [Transcript show: 'cancelAction'].
+	whenClosedDo: [ UIManager default inform: 'Bye bye!' ]
 ]]]
+
+!!!! Action on opening
+
+@@todo not working right now. Add it when it will work.
+
 
 
 !!! Window size and decoration
@@ -190,8 +165,9 @@ We now focus on sizing a window before and after opening it, and then talk about
 
 !!! Setting initial size and changing size
 
+@@todo following does not work
 To set the initial size of a window when it opens, either override the ==extent==
-method of the corresponding ==ComposableModel== so that it returns a Point, or send the
+method of the corresponding ==SpPresenter== so that it returns a Point, or send the
 instance the ==extent:== message before opening, for example like this:
 
 [[[
@@ -203,8 +179,11 @@ instance the ==extent:== message before opening, for example like this:
 
 After a window is opened, it can also be resized by sending the ==extent:== message to the window of the UI. For example, we can change our examples' ==connectPresenters== method so that the window resizes itself depending on what button is clicked.
 
+
+@@todo Does not work :(
+
 [[[
-WindowExamplePresenter >> connectPresenters
+WindowExamplePresenter >> initializePresenters
 
   button1 := self newButton.
   button2 := self newButton.
@@ -214,15 +193,31 @@ WindowExamplePresenter >> connectPresenters
   button2 action: [ self window extent: 200@100]
 ]]]
 
+
+If you want to specify an initial size, you should use the message ==initialExtent:== as follows: 
+[[[
+WindowExamplePresenter >> initializeWindow: aWindowPresenter
+
+  aWindowPresenter initialExtent: 80@100
+]]]
+
+Note that you can also propose an initial position using the message ==initialPosition:==.
+
+You have also "centered", "centeredRelativeTo:" and "centeredRelativeToTopWindow" to help you place the windows relatively to world/other windows.
+And finally, you have the message "resize:" which can be used AFTER the window is opened :)
+
+
+
 !!! Fixed size
 
-The size of a window can be made fixed, so that the user cannot resize it by dragging the sides or corners. To configure this we however need to talk to the underlying widget library (==Morphic== in Pharo 5).  We get the ==Morphic== window of our example (via its ==WindowModel==) and instruct it to be unresizable as follows: 
+The size of a window can be made fixed, so that the user cannot resize it by dragging the sides or corners as follows: 
 
 [[[
 | wewin |
- wewin := WindowExample new openWithSpec.
- wewin window beUnresizeable
+wewin := WindowExample new openWithSpec.
+wewin window beUnresizeable
 ]]]
+%%verified
 
 !!! Removing window decoration
 
@@ -230,15 +225,15 @@ Sometimes it makes sense to have a window without decoration, i.e. without contr
 
 [[[
 | wewin |
- wewin := WindowExamplePresenter new openWithSpec.
- wewin window
-    removeCollapseBox;
-    removeExpandBox;
-    removeCloseBox;
-    removeMenuBox
+wewin := WindowExamplePresenter new openWithSpec.
+wewin window
+   removeCollapseBox;
+   removeExpandBox;
+   removeCloseBox;
+   removeMenuBox
 ]]]
 
-@@note This window is still closable using the halo menus or by calling ==close== on the ==WindowModel== instance (==wewin== in the example above).
+@@note This window is still closable using the halo menus or by calling ==close== on the ==WindowPresenter== instance (==wewin== in the example above).
 
 
 !!! The final details: title, icon and about text
@@ -247,20 +242,21 @@ You can provide some textual information about the widow by providing a title an
 
 !!! Setting and changing the title
 
-By default, the title of a new window is '''Untitled window'''. This can be changed by overriding the ==title== method (of ==ComposableModel==) and returning a string that will be used as a title. For example, we can title our example user interface as follows:
-
+By default, the title of a new window is '''Untitled window'''. 
+This of course can be changed. The first way is to specialize the method ==initializeWindow:==
+to send the message ==title:== to the ==windowPresenter== as follows: 
 [[[
-WindowExamplePresenter >> title
-   ^ 'Click to grow or shrink.'
+WindowExamplePresenter >> initializeWindow: aWindowPresenter 
+  	 aWindowPresenter title: 'Click to grow or shrink.'
 ]]]
 
 In addition, you can set the title of any UI after it has been opened (even if it specifies a ==title== method) by sending the ==title:== message with the new title as argument to the window of the UI. An example is below:
 
 [[[
 | we |
- we := WindowExample new. 
- we openWithSpec.
- we window title: 'I am different!'
+we := WindowExamplePresenter new. 
+we openWithSpec.
+we window title: 'I am different!'
 ]]]
 
 !!! Setting the icon
@@ -302,13 +298,11 @@ To set the about text of a window, either override the ==aboutText== method of t
 ]]]
 
 
-!!! Conclusion
-
-In this chapter we treated the features of Spec that have to do with windows. We first talked about opening and closing windows as well as how to open a window as a dialog box. This was followed by configuring the window size and its decorating widgets. We ended this chapter with the small yet important details of the window: its title, icon and about text. 
-
-
-
 !!! Modal windows
 
 A modal window is a window that takes control of the entire Pharo user interface, making it impossible for the user to select another window while it is open. This is especially useful for dialog boxes, but may also be needed for other kinds of windows.
 
+
+!!! Conclusion
+
+In this chapter we treated the features of Spec that have to do with windows. We first talked about opening and closing windows as well as how to open a window as a dialog box. This was followed by configuring the window size and its decorating widgets. We ended this chapter with the small yet important details of the window: its title, icon and about text. 
