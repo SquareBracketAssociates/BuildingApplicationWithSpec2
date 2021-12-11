@@ -12,15 +12,9 @@ Use the fluid builder to show the classes
 
 
 
+[ done ] p 13 use #add: instead #addItem: (both apis are supported, but add: is better since more homogeneous.
 
-
-p 13
-
-use #add: instead #addItem: (both apis are supported, but add: is better since more homogeneous.
-
-p 14
-"why not have iconNamed: in presenter that dispatches to self
-application iconNamed:? May be this is done like that?" ==> Now it is like that.
+[done ] p 14 "why not have iconNamed: in presenter that dispatches to self application iconNamed:? May be this is done like that?" ==> Now it is like that.
 
 p 22
 

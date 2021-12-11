@@ -158,7 +158,7 @@ ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
 		title: 'Mini IMDB';
 		initialExtent: 600@400;
 		toolbar: (self newToolBar
-						addItem: (self newToolBarButton 
+						add: (self newToolBarButton 
 										label: 'Add film' ;
 										icon: (self application iconNamed: #smallAdd);
 										action: [ self addFilm ];
@@ -187,8 +187,6 @@ Note also that the toolbar we created could be factored in a separate class to i
 
 What we can see from the definition of the method ==initializeWindow:== is that an application manages also icons via the message ==iconNamed:==. 
 It means that your application can use its own icon set using the method ==iconManager:==. 
-
-@@todo why not have iconNamed: in presenter that dispatches to self application iconNamed:? May be this is done like that?
 
 !!! FilmPresenter itself
 
