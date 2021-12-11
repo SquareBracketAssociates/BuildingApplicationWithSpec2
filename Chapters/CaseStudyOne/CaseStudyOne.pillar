@@ -15,9 +15,7 @@ Spec20 introduces the concept of an application. An ''application'' is small obj
 We start to define an application as follows: 
 
 [[[language=Smalltalk
-SpApplication subclass: #ImdbApp
-	instanceVariableNames: ''
-	classVariableNames: ''
+SpApplication << #ImdbApp
 	package: 'Spec2-TutorialOne'
 ]]]
 
@@ -28,9 +26,8 @@ In this example, we will show how we define which back-end to use and this will 
 Since we will manage films we define a ==Film== class as follows: It has a name, a year and a director. We generate the companion accessors.
 
 [[[language=Smalltalk
-Object subclass: #ImdbFilm
-	instanceVariableNames: 'name year director'
-	classVariableNames: ''
+Object << #ImdbFilm
+	slots: {#name . #year . #director};
 	package: 'Spec2-TutorialOne'
 ]]]
 
@@ -43,8 +40,8 @@ you will coded it).
 We define a class instance variable called ==films==.
 
 [[[language=Smalltalk
-ImdbFilm class
-	instanceVariableNames: 'films'
+Object class << ImdbFilm class
+	slots: { #films }
 ]]]
 
 We define a method that lazy initialize the ==films== variable to an ordered collection.
@@ -70,9 +67,8 @@ We add an instance variable named ==filmList== that will hold an elementary list
 Its means that ==ImdbFilmListPresenter== can have multiple subpresenters. 
 
 [[[language=Smalltalk
-SpPresenter subclass: #ImdbFilmListPresenter
-	instanceVariableNames: 'filmList'
-	classVariableNames: ''
+SpPresenter << #ImdbFilmListPresenter
+	slots: { #filmList};
 	package: 'Spec2-TutorialOne'
 ]]]
 
@@ -84,7 +80,7 @@ We are declaring that inside this box layout there is a specific presenter for t
 [[[language=Smalltalk
 ImdbFilmListPresenter class >> defaultLayout
 
-	^ SpBoxLayout newVertical
+	^ SpBoxLayout newTopToBottom
 			add: #filmList; 
 			yourself
 ]]]
@@ -201,9 +197,8 @@ We create a new subclass of ==SpPresenter== named ==ImdbFilmPresenter==.
 This class has three instance variables: ==nameText==, ==directorText==, and ==yearNumber==.
 
 [[[language=Smalltalk
-SpPresenter subclass: #ImdbFilmPresenter
-	instanceVariableNames: 'nameText directorText yearNumber'
-	classVariableNames: ''
+SpPresenter << #ImdbFilmPresenter
+	slots: { #nameText . #directorText . #yearNumber};
 	package: 'Spec2-TutorialOne'
 ]]]
 
@@ -344,9 +339,8 @@ container than the list, especially since a film description should be larger th
 Let us proceed. First we add a new instance variable named ==detail== to the class ==ImdbFilmListPresenter==.
 
 [[[language=Smalltalk
-SpPresenter subclass: #ImdbFilmListPresenter
-	instanceVariableNames: 'filmList detail'
-	classVariableNames: ''
+SpPresenter << #ImdbFilmListPresenter
+	slots: { #filmList . #detail};
 	package: 'Spec2-TutorialOne'
 ]]]
 
@@ -354,7 +348,7 @@ We redefine the default layout using a class method this time. We will show late
 
 [[[language=Smalltalk
 ImdbFilmListPresenter class >> defaultSpec 
-	^ SpBoxLayout newVertical
+	^ SpBoxLayout newTopToBottom
 			add: #filmList; 
 			add: #detail;
 			yourself
@@ -411,9 +405,7 @@ And tests are so powerful to help us create nice design and make sure that we ca
 We define a subclass of ==TestCase==.
 
 [[[
-TestCase subclass: #FilmListPresenterTest
-	instanceVariableNames: ''
-	classVariableNames: ''
+TestCase << #FilmListPresenterTest
 	package: 'Spec2-TutorialOne'
 ]]]
 
@@ -525,7 +517,7 @@ Imagine that we prefer to have the list above the film details, or just the list
 [[[language=Smalltalk
 ImdbFilmListPresenter class >> listAboveLayout
 
-	^ SpBoxLayout newVertical
+	^ SpBoxLayout newTopToBottom
 			add: #detail;
 			add: #filmList; 
 			yourself
@@ -546,7 +538,7 @@ Here ==listOnlyLayout== only shows the list.
 
 [[[language=Smalltalk
 ImdbFilmListPresenter class >> listOnlyLayout 
-	^ SpBoxLayout newVertical
+	^ SpBoxLayout newTopToBottom
 			add: #filmList; 
 			yourself
 ]]]

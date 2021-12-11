@@ -1,14 +1,18 @@
-Hi Stef,
 
-I made a pass on the Spec2 book and I made some notes.  I wanted to make a PR, but I find all structure very confusing for me. Do you have a way to work that allows you to see all together and find what you are looking for ?
-Anyway... here my notes (I will find out how to contribute in an easier way, but also, writing in a clear way is not "my thing" so better having a better writer reviewing anything I could do :P).
+General todo:
 
-Notes:
-In general, I would rewrite the example using the instance side/dynamic way of writing components. With time, I guess the class side style should be removed (not right now, but I would not use it anymore if I have to write anything).
+rewrite the example using the instance side/dynamic way of writing components. With time, I guess the class side style should be removed (not right now, but I would not use it anymore if I have to write anything).
+	Left in  Chpater case study one
 
 homogeneize newVertical ==> newTopToBottom, newHorizontal ==> newLeftToRight
+	 Did a pass on Chapter case study one
 
-I would also use the fluid builder to show the classes?
+Use the fluid builder to show the classes
+		Did a pass on Chapter case study one
+
+
+
+
 
 p 13
 
