@@ -27,7 +27,7 @@ I have the feeling we need to work on "Spec 3" which will instantiate presenters
 I removed the question and said that it is only possible so far to change layout with class side layouts.
 
 
-p 24
+[ todo : sd: no idea what I should write ] p 24
 
 why do we need the two methods? => We don't. This is for clarity (default and "named" port)
 
@@ -37,38 +37,26 @@ We could add a parameter with the setter method name to make it more flexible, b
 [ done ] p 24 section "Styling the application"
 We do not have an application at that moment (a child of SpApplication), so I would remove that section and point to the "Styling Applications" chapter.
 
-
- p 25
-
-I thought that autoAccept: was obsolete? ==> it is
+[done] p 25 I thought that autoAccept: was obsolete? ==> it is
 
 
-p 37
-
+[ done ] p 37
 (self new: MyMainPresenter) openWithSpec
-
- better use
-
+	 better use
 (self newPresenter: MyMainPresenter) openWithSpec
 (is more clear), or even :
-
 (MyMainPresenter newApplication: self) openWithSpec
 
-
-p 56
-
+[ todo ] p 56
 askOkToClose: is not valid anymore, I will add next days a different mechanism
 
-
-p 57
-
+[ todo ] p 57
 beUnresizeable :  not implemented, but I need to add that too (next days).
 Both of this should be ready for book release.
 
- p 58
 
+[ todo ] p 58
 remove window decoration is made now with `withoutDecorations` method sent to the window presenter.
-
 
 this is not valid anymore:
 WindowExamplePresenter >> title
@@ -78,7 +66,7 @@ WindowExamplePresenter >> title
 
 Same for #windowIcon: in same page.
 
-p. 59
+[ todo ] p. 59
 "aboutText:" property is no longer supported for Spec (since this was a Morphic exclusive property that had no much sense anyway).
 
 p. 86

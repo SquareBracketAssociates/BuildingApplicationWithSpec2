@@ -59,8 +59,7 @@ You should also define a method to tell what is the main window / presenter to u
 
 [[[
 MyApplication >> start
-
-	(self new: MyMainPresenter) openWithSpec
+	(MyMainPresenter newApplication: self) openWithSpec
 ]]]
 
 You can run your application with ==MyApplication new run==. It will call the ==start== method you defined.
