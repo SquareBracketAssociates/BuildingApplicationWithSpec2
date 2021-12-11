@@ -16,13 +16,16 @@ Use the fluid builder to show the classes
 
 [done ] p 14 "why not have iconNamed: in presenter that dispatches to self application iconNamed:? May be this is done like that?" ==> Now it is like that.
 
-p 22
+[ done ] p 22
 
 "can we have multiple instance level layout returned by different
 instance side methods and can we pass their name to the openWithSpec:
 (is it looking for instance side then class side)?" ==> No, just class side.
 We need to discuss how to improve this.
 I have the feeling we need to work on "Spec 3" which will instantiate presenters on open time, not as it is now, at initialization time (then we can switch layouts, choose them, etc. in an easier and more efficient way than now).
+
+I removed the question and said that it is only possible so far to change layout with class side layouts.
+
 
 p 24
 
@@ -31,9 +34,9 @@ why do we need the two methods? => We don't. This is for clarity (default and "n
 why do we need the setModel: method ==> Because the SpModelPort will call setModel:.
 We could add a parameter with the setter method name to make it more flexible, but we will always need a method to receive the model.
 
-p 24 section "Styling the application"
-
+[ done ] p 24 section "Styling the application"
 We do not have an application at that moment (a child of SpApplication), so I would remove that section and point to the "Styling Applications" chapter.
+
 
  p 25
 
