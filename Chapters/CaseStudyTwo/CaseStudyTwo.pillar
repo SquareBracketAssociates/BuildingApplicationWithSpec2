@@ -4,9 +4,9 @@ This is a small tutorial to give a first look at the world of Spec2 and developi
 It should not be taken as a comprehensive guide since a lot of details and featurs are left out explicitly to avoid difficult issues. 
   
 We will build a small TODO application that will connect a couple of components and it will show some interesting characteristics.
-It will look like Figure *@taskManager@*.
+It will look like Figure *@taskManager*.
 
-+First full version of the Task List Manager.>figures/figure4.png?label=taskManager&width=80+
++First full version of the Task List Manager.>figures/figure4.png|label=taskManager&width=80+
 
 
 !!! A TODOTask class
@@ -122,7 +122,7 @@ TODOApplication new run
 ]]]
 
 
-+The todo list manager.>figures/figure1.png?width=80|label=firstfig+
++The todo list manager.>figures/figure1.png|width=80|label=firstfig+
 
 Not bad as a start, isn't?
 But you will see the window has "Untitled window" as title, and maybe its size is not right.  
@@ -147,7 +147,7 @@ You may ask why this is done like that and not directly modifying the presenter?
 
 Figure *@fig2*@ shows how the task manager looks like now.
 
-+Task Manager is a better window title.>figures/figure2.png?width=80&label=fig2+
++Task Manager is a better window title.>figures/figure2.png|width=80&label=fig2+
 
 !!!  Making checkbox columns actionable
 
@@ -173,7 +173,7 @@ TODOListPresenter >> initializePresenters
 
 We added
 
-- ==onActivation:==/==onDeactivation:== are messages which add behavior to make sure our task gets updated.  
+- ==onActivation:== and ==onDeactivation:== are messages which add behavior to make sure our task gets updated.
 
 Now you will see everything changes as expected.
 
@@ -221,9 +221,9 @@ TODOTaskPresenter >> updatePresenter
 
 This is almost equal to our list presenter, but there are a couple of new elements:
 
-- ==newTextInput== creates a text input presenter to add to our layout.
-- ==add: titlePresenter expand: false== Along with the addition of the presenter, we also tell the layout that it should not expand the text input. The ==expand== property indicates the layout will not resize the presenter to take the whole available space.
-- ==titlePresenter text: (aTask title ifNil: [ '' ])== changes the contents of our text input presenter.
+- The message ==newTextInput== creates a text input presenter to add to our layout.
+- The message ==add: titlePresenter expand: false== Along with the addition of the presenter, we also tell the layout that it should not expand the text input. The ==expand== property indicates the layout will not resize the presenter to take the whole available space.
+- The message ==titlePresenter text: (aTask title ifNil: [ \'\' ])== changes the contents of our text input presenter.
 
 Now, we need to define this presenter to act as a dialog.  
 And we do it in the same way (almost) we defined ==TODOListPresenter== as window. But to define a ""dialog presenter"" we need to define the method ==initializeDialogWindow:==.
@@ -325,14 +325,14 @@ TODOListPresenter >> addTask
 
 What we did here?
 
-- ==TODOTaskPresenter newApplication: self application== we create the dialog presenter but not by calling ==new== as usual but ==newApplication:== and passing the application of current presenter. This is **fundamentally important** to keep your dialogs chained as part of your application. If you skip this, what will happen is that the presenter will be created in the *default application* of Pharo, which is called ==NullApplication==. You do not want that. 
+- ==TODOTaskPresenter newApplication: self application== we create the dialog presenter but not by calling ==new== as usual but ==newApplication:== and passing the application of current presenter. This is ""fundamentally important"" to keep your dialogs chained as part of your application. If you skip this, what will happen is that the presenter will be created in the ""default application"" of Pharo, which is called ==NullApplication==. You do not want that. 
 - ==task:== set a new task.
 - ==openModalWithSpec== will open the dialog in modal way. It means the execution of your program will be stop until you accept or cancel your dialog.
 - ==updatePresenter== will call the method we defined, to update your list.
 
 The following figure shows how the task manager looks like.
 
-+Task Manager with a button to add tasks.>figures/figure3.png?width=80&label=fig3+
++Task Manager with a button to add tasks.>figures/figure3.png|width=80&label=fig3+
 
 !!!  Add edit and remove
 
@@ -372,7 +372,9 @@ TODOListPresenter >> initializePresenters
 
 What is added now? 
  
-- ==contextMenu: self todoListContextMenu== sets the context menu to what is defined in the method ==todoListContextMenu==. Let us study right now.
+- ==contextMenu: self todoListContextMenu== sets the context menu to what is defined in the method ==todoListContextMenu==. 
+
+Let us study right now.
 
 
 [[[
@@ -389,7 +391,7 @@ TODOListPresenter >> todoListContextMenu
 
 This method creates a menu to be displayed when pressing right-click on the table. Let's see what it contains: 
 
-- ==self newMenu== as all other *factory methods*, this creates a menu presenter to be attached to another presenter.
+- ==self newMenu== as all other ""factory methods"", this creates a menu presenter to be attached to another presenter.
 - ==addItem: [ :item | ... ]== add an item, with a ==name:== and an associated ==action:==
 
 And now let's define the actions
@@ -413,7 +415,7 @@ TODOListPresenter >> removeSelectedTask
 As you see, ==editSelectedTask== is almost equal to ==addTask== but instead of adding a new task, it takes the selected task in our table by sending ==todoListPresenter selection selectedItem==.  
 Remove simply takes the selected item and send the ==remove== message.
 
-+First full version of the Task List Manager.>figures/figure4.png?width=80&label=fig4+
++First full version of the Task List Manager.>figures/figure4.png|width=80&label=fig4+
 
 %!!!  Switching the backend to Gtk
 
