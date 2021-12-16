@@ -14,7 +14,7 @@ Since this application will show and support the edition of a simple TODO list, 
 
 [[[
 Object << #TODOTask
-	slots: { #done. #title };
+	slots: { #done . #title };
 	package: 'TODO'
 ]]]
 
@@ -46,12 +46,12 @@ TODOTask new title: 'Task Two'; save.
 
 !!! Creating your application
 
-Every application needs an entry point, a place where to configure the basics and start the GUI. Compiled programs have like C have ==main()==, Cocoa have the class ==NSApplication== and you add a ""delegate"" to add your configuration and Gtk3 has ==GtkApplication==.  
-Pharo is a living environment where many things can be executed at same time, and because of that Spec2 also needs its own entry point: Your application needs to be independent of the rest of system! To do that, Spec2 needs you to extend the class ==SpApplication==.  
+Every application needs an entry point, a place where to configure the basics and start the GUI. Compiled programs have like C have ==main()==, Cocoa have the class ==NSApplication== and you add a ""delegate"" to add your configuration and Gtk3 has ==GtkApplication==.
+Pharo is a living environment where many things can be executed at same time, and because of that Spec2 also needs its own entry point: Your application needs to be independent of the rest of system! To do that, Spec2 needs you to extend the class ==SpApplication==.
 
 [[[
 SpApplication << #TODOApplication
-	slots: {  };
+	slots: { };
 	package: 'TODO'
 ]]]
 
@@ -65,7 +65,7 @@ We create a presenter, named ==TODOListPresenter== to represent the logic of man
 
 [[[
 SpPresenter << #TODOListPresenter
-	slots: {  };
+	slots: { };
 	package: 'TODO'
 ]]]
 
@@ -93,16 +93,16 @@ TODOListPresenter >> initializePresenters
 Even if we want to manage a list of tasks, we use a table because we want to display multiple information side by side.
 In this case, you are adding to your presenter a table widget, which is a very complex component by itself. Let us explain what each part of it means: 
 
-- ==newTable== is the factory method that will create the table component you are going to use to display your TODO list.
-- ==addColumn:== is the way you add different table columns (you can have several, if we wanted to have just a single string we would have use a list).
-- ==SpCheckBoxTableColumn evaluated: [:aTask | aTask isDone]== will create a table column that will display the status of your TODO task (done or not done).
-- ==width: 20== is to avoid the column to take all available space (otherwise, the table component will distribute the available space proportionally by column).
-- ==SpStringTableColumn title: 'Title' evaluated: [:aTask | aTask title])== is the same as ==SpCheckBoxTableColumn== but it will create a column that has a title and it will to show the title of the task as a string.
+- The message ==newTable== is the factory method that will create the table component you are going to use to display your TODO list.
+- The message ==addColumn:== is the way you add different table columns (you can have several, if we wanted to have just a single string we would have use a list).
+- The expression ==SpCheckBoxTableColumn evaluated: [:aTask | aTask isDone]== will create a table column that will display the status of your TODO task (done or not done).
+- The message ==width: 20== is to avoid the column to take all available space (otherwise, the table component will distribute the available space proportionally by column).
+- The expression ==SpStringTableColumn title: 'Title' evaluated: [:aTask | aTask title])== is the same as ==SpCheckBoxTableColumn== but it will create a column that has a title and it will to show the title of the task as a string.
 
 And about the layout definition:
 
-- ==SpBoxLayout newTopToBottom== creates a box layout that distributes elements in vertical arrangement.
-- ==add: todoListPresenter== adds the list as a subcomponent of our presenter. Here we only have one but you can have as many subcomponents you want. Note that by default, the box layout distributes all elements in proportional way (since this is the only element for the moment, it will take 100% of the avalaible space.  
+- The expression ==SpBoxLayout newTopToBottom== creates a box layout that distributes elements in vertical arrangement.
+- The message ==add: todoListPresenter== adds the list as a subcomponent of our presenter. Here we only have one but you can have as many subcomponents you want. Note that by default, the box layout distributes all elements in proportional way (since this is the only element for the moment, it will take 100% of the avalaible space.  
 
 And now, we need to give our TODO list the tasks to display:
 
@@ -140,12 +140,12 @@ initializeWindow: aWindowPresenter
 
 Here we took ==aWindowPresenter== (the presenter that contains definition of a window), and we add: 
 
-- ==title:== which is self explanatory, it will set the title of the window
-- ==initialExtent:== it will declare the initial size of the window.
+- The message ==title:== which is self explanatory, it will set the title of the window
+- The message ==initialExtent:== it will declare the initial size of the window.
 
 You may ask why this is done like that and not directly modifying the presenter? And the answer is quite simple: Presenters are designed to be reusable. This means that a presenter can be used as a window in some cases (as ours), but it can be used as a part of another presenter in other. Then we need to split its functionality between ""presenter"" and ""presenter window"".
 
-Figure *@fig2*@ shows how the task manager looks like now.
+Figure *@fig2* shows how the task manager looks like now.
 
 +Task Manager is a better window title.>figures/figure2.png|width=80&label=fig2+
 
@@ -197,6 +197,7 @@ SpPresenter << #TODOTaskPresenter
 TODOTaskPresenter >> task
 	^ task
 ]]]
+
 [[[
 TODOTaskPresenter >> task: aTask
 	task := aTask.
@@ -243,10 +244,10 @@ TODOTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter
 
 Here, along with the already known ==title:== and ==initialExtent:== we added 
 
-- ==addButton: 'Save' do: [ ... ]==. This will add buttons to our dialog window. And you need to define its behavior (the ==accept== method).
-- ==addButton: 'Cancel' do: [ ... ]==. This is the same as the positive action, but here we do not want to do anything, that's why we just send ==dialog close==.
+- The message ==addButton: 'Save' do: [ ... ]==. This will add buttons to our dialog window. And you need to define its behavior (the ==accept== method).
+- The message ==addButton: 'Cancel' do: [ ... ]==. This is the same as the positive action, but here we do not want to do anything, that's why we just send ==dialog close==.
 
-How would be the ==accept== method? Thanks to Voyage, very simple.
+How would be the ==accept== method? ==SD: We should change it to have a kind of singleton==
 
 [[[
 TODOTaskPresenter >> accept
