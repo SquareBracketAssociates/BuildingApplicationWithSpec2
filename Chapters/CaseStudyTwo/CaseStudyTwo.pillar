@@ -32,12 +32,11 @@ TODOTask >> done: aBoolean
 ]]]
 [[[	
 TODOTask >> initialize
-
 	super initialize.
 	self done: false
 ]]]
 
-And let's create a couple of testing tasks: 
+And let's create a couple of testing tasks:
 
 [[[
 TODOTask new title: 'Task One'; save.
@@ -46,7 +45,8 @@ TODOTask new title: 'Task Two'; save.
 
 !!! Creating your application
 
-Every application needs an entry point, a place where to configure the basics and start the GUI. Compiled programs have like C have ==main()==, Cocoa have the class ==NSApplication== and you add a ""delegate"" to add your configuration and Gtk3 has ==GtkApplication==.
+Every application needs an entry point, a place where to configure the basics and start the GUI.
+Compiled programs have like C have ==main()==, Cocoa have the class ==NSApplication== and you add a ""delegate"" to add your configuration and Gtk3 has ==GtkApplication==.
 Pharo is a living environment where many things can be executed at same time, and because of that Spec2 also needs its own entry point: Your application needs to be independent of the rest of system! To do that, Spec2 needs you to extend the class ==SpApplication==.
 
 [[[
@@ -57,9 +57,9 @@ SpApplication << #TODOApplication
 
 Note that an application is not a visual element, it manages the application and information that may be displayed visually such as icons but also other concerns such as the backend.
 
-You will also need your main window, a TODO list.  
-In Spec2, all components that you create inherit (directly or indirectly) from a single root base class: ==SpPresenter==. A ""presenter"" is how you expose (present) your data to the user.  
-
+You will also need your main window, a TODO list.
+In Spec2, all components that you create inherit (directly or indirectly) from a single root base class: ==SpPresenter==. 
+A ""presenter"" is how you expose (present) your data to the user.
 
 We create a presenter, named ==TODOListPresenter== to represent the logic of managing a list of todo items. 
 
@@ -69,11 +69,12 @@ SpPresenter << #TODOListPresenter
 	package: 'TODO'
 ]]]
 
-This component will contain a list of your todo tasks and the logic to add, remove, or edit them. Let's define your first presenter contents.   
+This component will contain a list of your todo tasks and the logic to add, remove, or edit them.
+Let's define your first presenter contents.
 
 !!!  Showing tasks
 
-A presenter needs to define a ""layout"" (how the component and its subcomponents will be displayed) and which ""widgets"" it will show. 
+A presenter needs to define a ""layout"" (how the component and its subcomponents will be displayed) and which ""widgets"" it will show.
 While this is not the best way to organise your presenter, for simplicity we will add all needed behavior in just a single method that you need to implement: ==initializePresenters==.
 
 [[[
@@ -131,10 +132,10 @@ To fix this we implement another method ==initializeWindow:==, which sets the va
 
 
 [[[
-initializeWindow: aWindowPresenter
+TODOListPresenter >> initializeWindow: aWindowPresenter
 
 	aWindowPresenter 
-		title: 'TODO List';
+		title: 'TODO 4List';
 		initialExtent: 500@500
 ]]]
 
@@ -158,7 +159,7 @@ To fix this, let's modify ==initializePresenters==.
 TODOListPresenter >> initializePresenters
 
 	todoListPresenter := self newTable
-		addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone] ) 
+		addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone] )
 			width: 20;
 			onActivation: [ :task | task done: true ];
 			onDeactivation: [ :task | task done: false ];
@@ -166,7 +167,7 @@ TODOListPresenter >> initializePresenters
 		addColumn: (SpStringTableColumn title: 'Title' evaluated: #title);
 		yourself.
 
-	self layout: (SpBoxLayout newTopToBottom 
+	self layout: (SpBoxLayout newTopToBottom
 		add: todoListPresenter;
 		yourself)
 ]]]
@@ -210,7 +211,7 @@ This is very simple, the only thing that is different is that setting a task wil
 TODOTaskPresenter >> initializePresenters
 
 	titlePresenter := self newTextInput.
-	self layout: (SpBoxLayout newTopToBottom 
+	self layout: (SpBoxLayout newTopToBottom
 						add: titlePresenter expand: false;
 						yourself).
 ]]]
@@ -232,7 +233,7 @@ And we do it in the same way (almost) we defined ==TODOListPresenter== as window
 [[[
 TODOTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter
 
-	aDialogWindowPresenter 
+	aDialogWindowPresenter
 		title: 'New task';
 		initialExtent: 350@120;
 		addButton: 'Accept' do: [ :dialog |
@@ -252,7 +253,7 @@ How would be the ==accept== method? ==SD: We should change it to have a kind of 
 [[[
 TODOTaskPresenter >> accept
 
-	self task 
+	self task
 		title: titlePresenter text;
 		save.
 ]]]
@@ -260,7 +261,7 @@ TODOTaskPresenter >> accept
 ""Tip:"" You can try your dialog even if not yet integrated to your application by executing.
 
 [[[
-TODOTaskPresenter new 
+TODOTaskPresenter new
 	task: TODOTask new;
 	openModalWithSpec.
 ]]]
@@ -273,26 +274,26 @@ TODOListPresenter >> initializePresenters
 
 	todoListPresenter := self newTable
 		addColumn: ((SpCheckBoxTableColumn 
-							evaluated: [:task | task isDone]) 
+							evaluated: [:task | task isDone])
 				width: 20;
 				onActivation: [ :task | task done: true ];
 				onDeactivation: [ :task | task done: false ];
 				yourself);
-		addColumn: (SpStringTableColumn 
-						title: 'Title' 
+		addColumn: (SpStringTableColumn
+						title: 'Title'
 						evaluated: [:task | task title]);
 		yourself.
 
-	addButton := self newButton 
+	addButton := self newButton
 		label: 'Add task';
 		action: [ self addTask ];
 		yourself.
 
-	self layout: (SpBoxLayout newTopToBottom 
+	self layout: (SpBoxLayout newTopToBottom
 		add: todoListPresenter;
 		add: (SpBoxLayout newHorizontal
 				addLast: addButton expand: false;
-				yourself) 
+				yourself)
 			expand: false;
 		yourself)
 ]]]
