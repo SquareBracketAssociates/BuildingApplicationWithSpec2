@@ -57,3 +57,47 @@ bindings are specific to a widget
 command are global to a window
 
 
+!!! 
+
+Esteban Lorenzano — 12/06/2022 9:23 PM
+how do you have a CmUICommandGroup ? That's abstract... you should have a CmCommandGroup or a SpCommandGroup there.
+in anycase, if this is the first case, then you do:
+
+
+myGroup asSpecGroup asMenuPresenter
+
+and if is the second (most likely)
+you just do
+
+myGroup asMenuPresenter
+
+Esteban Lorenzano — 12/06/2022 9:36 PM
+also, status of presenters are not updated all the time
+to get that, you need to pass the context menu as a block, not as a direct instance, e.g. :
+
+myPresenter
+  contextMenu; [ myGroup asMenuPresenter ];
+  yourself
+
+Yes, I have a SpecCommandGroup but I just got lost in this class hierarchy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

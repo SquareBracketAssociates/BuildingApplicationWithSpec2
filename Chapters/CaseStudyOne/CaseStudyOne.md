@@ -5,13 +5,14 @@
 In this chapter we will guide you over the building of a simple but not trivial 
 application to manage films as shown in Figure *@FullApp@*.
 We will show many aspects of Spec20 that we will revisit in depth in the rest of this book:
-application, presenter, separation between domain and model, layout, transmission to connect widget and styles. 
+application, presenter, separation between domain and model, layout, transmission to connect widgets, and styles. 
 
 ![Film App: reusing the same component to edit and browsing a film.](figures/FullApp.png width=90&label=FullApp)
 
 ### Application
 
-Spec20 introduces the concept of an application. An _application_ is a small object responsible to keep the state of your application. It manages for example, the multiple windows that can compose your application, its back-end, and can hold properties shared by the application. 
+Spec20 introduces the concept of an application. An _application_ is a small object responsible to keep the state of your application. 
+It manages, for example, the multiple windows that can compose your application, its back-end (Morphic or Gtk), and can hold properties shared by the application.
 
 We start to define an application as follows: 
 
@@ -36,9 +37,9 @@ Object << #ImdbFilm
 We need to have a way to store and query some films. 
 We could use Voyage [https://github.com/pharo-nosql/voyage](https://github.com/pharo-nosql/voyage) since it works without an external Mongo DB. 
 But we want to keep it extremely simple.
-So let's define a kind of singleton (one of the most misunderstood and ugliest Design Pattern so burn your computer once you will have coded it).
+So let's define a kind of singleton (one of the most misunderstood Design Pattern).
 
-We define a _class_ instance variable called `films`.
+We define a _class_ instance variable called `films` (you can use the expand menu to get the full definition on class side).
 
 ```language=Smalltalk
 Object class << ImdbFilm class
@@ -46,7 +47,7 @@ Object class << ImdbFilm class
 ```
 
 
-We define a method that lazy initialize the `films` variable to an ordered collection.
+We define a method that lazy initializes the `films` variable to an ordered collection.
 
 ```language=Smalltalk
 ImdbFilm class >> films
@@ -91,14 +92,13 @@ ImdbFilmListPresenter >> defaultLayout
 		yourself
 ```
 
-
 When you do not define any other methods to represent layout, `defaultLayout` is the method that is invoked by Spec logic.
 
-We saw that a presenter can have subpresenters and you will see later that 
+A presenter can have subpresenters e.g., `ImdbFilmListPresenter` will contain table presenters and you will see later that 
 - (1) a presenter can have multiple layouts, 
 - (2) that we can get more dynamic situations.
 
-In Spec20, layouts are by default dynamic and are expressed at the level of instances. To allow backward compatibility, it is still possible to define a `defaultLayout` class side method that returns a layout instead of using a `defaultLayout` instance side method but it is not the recommanded way.
+In Spec20, layouts are by default dynamic and are expressed at the instance level. To allow backward compatibility, it is still possible to define a `defaultLayout` _class_ side method that returns a layout instead of using a `defaultLayout` instance side method but it is not the recommanded way.
 
 #### initializePresenters
 
@@ -107,7 +107,7 @@ In fact, `filmList` is a variable pointing to another presenter.
 
 The place to initialize the subpresenters is in the method `initializePresenters` as shown below. Here we define that `filmList` is a table with three columns. The message `newTable` instantiate a `SpTablePresenter`.
 
-In fact the list is more a table than a mere list: we describe that we want three columns as follows: 
+In fact the list is more a table than a mere list: we describe that we want three columns. This is why we use a table and not a simple list. We define it as follows:
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> initializePresenters
@@ -119,7 +119,12 @@ ImdbFilmListPresenter >> initializePresenters
 		yourself.
 ```
 
-The method `updatePresenter` which is automally invoked after `initializePresenters` just queries the domain (`ImdbFilm`) to get the list of the recorded films and populates the internal table with them.
+At this point `ImdbFilmListPresenter new open` opens an empty list as shown in *@LayoutInitilalizePresenters@*.
+
+### Filling up the film list
+
+We define the method `updatePresenter` which is automally invoked after `initializePresenters`. 
+It just queries the domain (`ImdbFilm`) to get the list of the recorded films and populates the internal table with them.
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> updatePresenter
@@ -150,13 +155,13 @@ app := ImdbApp new.
 
 The application is responsible for managing windows and other information, therefore it is important to use it to create presenters that compose the application. 
 
-
 ### Improving window
 
-A presenter can be embedded in another presenter as we will show later. It can be also placed within a window and this is what the message `open` is doing. 
-Spec offers another hook to specialize the information presented when a presenter is displayed within a window. 
+A presenter can be embedded in another presenter as we will show later. 
+It can be also placed within a window and this is what the message `open` is doing. 
+Spec offers another hook, the method `initializeWindow:` to specialize the information presented when a presenter is displayed within a window. 
 
-The method `initializeWindow:` allows you to define a title, a default size \(message `initialExtent`\) and a toolbar. 
+The method `initializeWindow:` allows you to define a title, a default size (message `initialExtent`) and a toolbar. 
  
 
 ```language=Smalltalk
@@ -188,7 +193,7 @@ ImdbFilmListPresenter >> addFilm
 
 As we will see with the Commander2 chapter, toolbars can be automatically created out of commands.
 
-We could have added the toolbar in a similar way than the `filmList` as part of the `ImdbFilmListPresenter` because the toolbar is also a presenter (similar to the table presenter or other predefined presenters). But doing this way is less modular.
+We could have added the toolbar in a similar way than the `filmList` (e.g. using an instance variable) as part of the `ImdbFilmListPresenter` because the toolbar is also a presenter (similar to the table presenter or other predefined presenters). But doing this way is less modular.
 Note also that the toolbar we created could be factored in a separate class to increase reuse too.
 
 ![Film list presenter.](figures/FilmList-02-initalizeWindows.png width=60&label=FilmListPresenter2)
@@ -248,10 +253,10 @@ ImdbFilmPresenter >> defaultLayout
 		builder 
 			add: 'Name'; add: nameText; nextRow;
 			add: 'Director'; add: directorText; nextRow;
-			add: 'Year'; add: yearNumber ];
-		yourself
+			add: 'Year'; add: yearNumber ]
 ```
 
+Pay attention, do not add a `yourself` message here. Because you would return the class and not the layout instance.
 
 And similarly as before, we define the method `initializePresenters` to initialize the variables to the corresponding elementary presenters. 
 Here the `nameText` and `directorText` are initialized to a textInput, and `yearNumber` is a numberInput.
@@ -315,7 +320,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 
 ### Customizing the modal Dialog
 
-Spec let us adapt the dialog window, for example to add interaction buttons.
+Spec lets us adapt the dialog window, for example to add interaction buttons.
 Here we specialize the method `initializeDialogWindow:` to add two buttons that control the behavior of the application (as shown in Figure *@Customizeddialog@*).
 
 ```language=Smalltalk
