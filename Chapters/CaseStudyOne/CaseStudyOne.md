@@ -421,7 +421,8 @@ Now we improve the `initializePresenters` of `ImdbFilmListPresenter`.
 - First we instantiate `ImdbFilmPresenter`.
 - Second we configure it as readonly using the `enabled: false` message. 
 
-""Note CD: Esteban???"" is it the best way to do that? it is not intuitive + does not work in current Spec2. maybe we shoudl add a #beReadOnly method on presenter calling #enabled: true. Also the method comment says "enable means clickable or focusable"
+""Esteban???"" The enabled: true does not seem to work. I can still edit the film while I should not. 
+
 - Third we define that, when an element of the list is selected, we should display the information in the detail presenter. 
 
 
@@ -436,9 +437,6 @@ ImdbFilmListPresenter >> initializePresenters
 		
 	detail := self instantiate: ImdbFilmPresenter.
 	detail enabled: false.
-	
-	filmList whenSelectionChangedDo: [ :selectedItemMode | 
-		selectedItemMode isEmpty ifFalse: [detail setModel: selectedItemMode selectedItem] ].
 ```
 
 Definining interactions between presenters is done in the `connectPresenters` method. We will define it to define that, when an element of the list is selected, we should display the information in the detail presenter.
@@ -806,6 +804,7 @@ ImdbFilmPresenter >> defaultLayout
 ```
 
 We can now see that the name label of a film detail has been styled.
+""esteban"" I get a grey not read label. No idea why.
 
 ![Styled film description](figures/FilmList-styling.png width=100&label=FilmListPresenterStyled)
 
