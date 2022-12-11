@@ -415,7 +415,7 @@ Now we improve the `initializePresenters` of `ImdbFilmListPresenter`.
 - First we instantiate `ImdbFilmPresenter`.
 - Second we configure it as readonly using the `enabled: false` message. 
 
-""Note CD: SD should come back"" is it the best way to do that? it is not intuitive + does not work in current Spec2. maybe we shoudl add a #beReadOnly method on presenter calling #enabled: true. Also the method comment says "enable means clickable or focusable"
+""Note CD: Esteban???"" is it the best way to do that? it is not intuitive + does not work in current Spec2. maybe we shoudl add a #beReadOnly method on presenter calling #enabled: true. Also the method comment says "enable means clickable or focusable"
 - Third we define that, when an element of the list is selected, we should display the information in the detail presenter. 
 
 
@@ -463,6 +463,7 @@ TestCase << #FilmListPresenterTest
 	package: 'Spec2-TutorialOne'
 ```
 
+
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
 
@@ -478,11 +479,11 @@ FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
 
 	"Assert"
 	self deny: detail name isEmpty.
-	list close.
+	list delete.
 ```
 
 
-As you see, we will need to define two methods on ImdbFilmListPresenter to allow proper testing: a getter for `detail` and an intercation method `clickFilmAtIndex`.
+As you see, we will need to define two methods on `ImdbFilmListPresenter` to support proper testing: a getter for `detail` and an interaction method `clickFilmAtIndex:`.
 We will categorize them in a `testing - support` category to show they are only useful for testing purposes.
 
 ```
@@ -530,13 +531,7 @@ FilmListPresenterTest >> setUp
 	ImdbFilm addET.
 ```
 
-We will also update the test to keep the opened presenter in an instance variable, allowing us to define a tearDown method that will always close the presenter, no matter if the test succeeds or fails.
-```
-FilmListPresenterTest >> tearDown
-	presenter ifNotNil: [ presenter delete ].
-	super tearDown. 
-```
-
+We will also update the test to keep the opened presenter in an instance variable, allowing us to define a `tearDown` method that will always close the presenter, no matter if the test succeeds or fails.
 
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
@@ -557,9 +552,29 @@ FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
 
 
 
+```
+FilmListPresenterTest >> tearDown
+	presenter ifNotNil: [ presenter delete ].
+	super tearDown. 
+```
+
+
+
+
+
+
 ### Adding more tests
 
-Tests are so much fun and addictive (they are because we can change programs and check that they still works), that we will write another one.
+Tests are so much fun and addictive (they are because we can change programs and check that they still works and limit our stress), that we will write another one.
+
+Let us add the following method to support our tests.
+
+```
+ImdbFilmListPresenter >> filmList
+	^ filmList
+```
+
+Let us test that a list has one film and that if we select a not existing index, the name is still the last valid selected one.
 
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmAndClickingOnEmpty
@@ -577,16 +592,10 @@ FilmListPresenterTest >> testWhenSelectingOneFilmAndClickingOnEmpty
 	self deny:  name isEmpty. 
 	self assert: presenter filmList listSize equals: 1.
 
-	list clickFilmAtIndex 2.
+	presenter clickFilmAtIndex: 2.
 	self assert: presenter detail name equals: name
 ```
 
-""note CD:"" What are we testing? A list has one film. If we select a not existing index, the name is still the last valid selected one.
-
-```
-ImdbFilmListPresenter >> filmList
-	^ filmList
-```
 
 Since we do not really understand what would be to set the list as multiple selection we test it. 
 
@@ -622,7 +631,7 @@ ImdbFilmListPresenter >> listAboveLayout
 The following example shows that we can open `ImdbFilmListPresenter` with the layout `listAboveLayout` that we just defined.
 
 ```language=Smalltalk
-| app |
+| app presenter |
 app := ImdbApp new. 
 presenter := app newPresenter: ImdbFilmListPresenter.
 presenter openWithLayout: presenter listAboveLayout.
@@ -642,16 +651,15 @@ ImdbFilmListPresenter >> listOnlyLayout
 
 
 The following example shows that we can open `ImdbFilmListPresenter` with one layout and dynamically change it by another layout.
+In the playground do not declare the temporaries variables so that they are bound and kept in the playground.
 
 ```language=Smalltalk
-| app |
 app := ImdbApp new. 
 presenter := app newPresenter: ImdbFilmListPresenter.
 presenter open.
 ```
 
-
-The presenter is opened with the default layout.
+The presenter is opened with the default layout, now in the playground execute the following line. 
 
 ```language=Smalltalk
 presenter layout: presenter listOnlyLayout.
