@@ -9,6 +9,12 @@ application, presenter, separation between domain and model, layout, transmissio
 
 ![Film App: reusing the same component to edit and browsing a film.](figures/FullApp.png width=90&label=FullApp)
 
+You can find the code of this chapter at:
+
+```
+https://github.com/SquareBracketAssociates/CodeOfSpec20Book
+```
+
 ### Application
 
 Spec20 introduces the concept of an application. An _application_ is a small object responsible to keep the state of your application. 
@@ -680,28 +686,31 @@ The easiest way to declare a transmission is by sending the `transmitTo:` messag
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> connectPresenters
-	"Transmiting from my filmList to a detail"
+	"Transmitting from my filmList to detail"
 	
 	filmList transmitTo: detail.
 ```
 
-
 Here, `filmList` is a table which will transmit its selection to `detail` presenter.
-It is an instance of `ImdbFilmPresenter` that we defined, hence it does not define any input port.
-Therefore we need to define an input port as follows: 
-	
-```language=Smalltalk
-ImdbFilmPresenter >> defaultInputPort
 
-	^ self inputModelPort
-```
+	
+Let us explain a bit. `ImdbFilmPresenter` is a custom presenter. Spec does not know how to "fill" it with input data. 
+We need to tell Spec that `ImdbFilmPresenter` model will be the input port and receive the input data. 
+Therefore we need to define an input port as follows: 
 
 
 ```language=Smalltalk
 ImdbFilmPresenter >> inputModelPort
-
 	^ SpModelPort newPresenter: self
 ```
+
+```language=Smalltalk
+ImdbFilmPresenter >> defaultInputPort
+	^ self inputModelPort
+```
+
+
+Note that we could have inlined `inputModelPort` definition into the `defaultInputPort` definition.
 
 The input data will be set by using the `setModel:` method we already defined on `ImdbFilmPresenter`.
 
@@ -711,23 +720,31 @@ You can now open the application and see that it still behaves like expected.
 app := ImdbApp new. 
 (app newPresenter: ImdbFilmListPresenter) open.
 ```
-Let us explain a bit. `ImdbFilmPresenter` is a custom presenter. Spec does not know how to "fill" it with input data. We need to tell Spec that `ImdbFilmPresenter` model will be the input port and receive the input data. We could inline `inputModelPort` into `defaultInputPort`.
 
-
-Use the same component to show a detail or edit a film.
-""note CD SD:"" What would you like to show here?
+""Esteban"" I do not understand why this is not working. I get an error with the ports.
 
 ### Styling the application
 
-Different elements in an application can have different look and feels, for example to change the size or color of a font for a header. To allow this, Spec introduces the concept of "styles" for components. 
+Different elements in an application can have different looks and feels, for example to change the size or color of a font for a header. 
+To support this, Spec introduces the concept of "styles" for components. 
 
 In Spec, one application defines a Stylesheet (or a set of them). 
 This defines a set of "style classes" that can be later assigned to presenter widgets. 
-Defining a style class, however, work very differently for each backend. 
-While Gtk will accept (mostly) regular CSS to style your widgets, Morphic has its own sub-framework. 
+Defining a style class, however, works differently for each backend. 
+While Gtk accepts (mostly) regular CSS to style your widgets, Morphic has its own sub-framework. 
 
-An application comes with a default configuration and a default style sheet. If you do not need to style your application, there is no need to define them.
-In our example we would like to define a `header` style to customize some labels. To do so, you need to declare a stylesheet in a configuration. The configuration itself needs to be declared in your application.
+An application comes with a default configuration and a default style sheet. 
+If you do not need to style your application, there is no need to define them.
+In our example we would like to define a `header` style to customize some labels. 
+To do so, you need to declare a stylesheet in a configuration. 
+The configuration itself needs to be declared in your application.
+
+We create the specific configuration for our application.
+```
+SpMorphicConfiguration << #ImdbConfiguration
+	package: 'Spec2-TutorialOne'
+```
+
 
 ```language=Smalltalk
 ImdbApp >> initialize
@@ -738,26 +755,28 @@ ImdbApp >> initialize
 		with: ImdbConfiguration new.
 ```
 
+We can now define our custom styles.
+The easiest way is to create a style from a String and then use the appropriate reader to convert it into a style sheet object.
+Here we define that an element usingthe tag `customLabel` will be drawn in red.
 
-We create the specific configuration for our application.
-```
-SpMorphicConfiguration << #ImdbConfiguration
-	package: 'Spec2-TutorialOne'
-```
-
-We can now define our custom styles. The easiest way is to create a style from a String and then use the appropriate reader to convert it into a style sheet object.
 ```
 ImdbConfiguration >> customStyleSheet
-	^ (SpStyleVariableSTONReader fromString: '.application [
-		customLabel [ Draw { #color: #red } ] ]
-	')
+	^ (SpStyleVariableSTONReader fromString: '
+.application [ 
+	.customLabel [ Draw { #color: #red } ] ] ')
 ```
+
+Pay attention not to forget the '.' in front of `application` and `customLabel`
+We specialize the method `newStyleSheet` so that it includes the custom style as follows: 
 
 ```
 ImdbConfiguration >> newStyleSheet
 
 	^ SpStyle defaultStyleSheet copy, self customStyleSheet
 ```
+
+We are ready to using the tag for the label.
+We add a `nameLabel` instance variable to `ImdbFilmPresenter` to get a label and we initialize it in the method `initializePresenters` as follows: 
 
 ```language=Smalltalk
 ImdbFilmPresenter >> initializePresenters 
@@ -772,7 +791,6 @@ ImdbFilmPresenter >> initializePresenters
 			yourself.
 ```
 
-We add a `nameLabel` instance variable to `ImdbFilmPresenter`. 
 We then update the layout to use the newly defined label presenter.
 
 ```language=Smalltalk
@@ -793,5 +811,6 @@ We can now see that the name label of a film detail has been styled.
 
 ### Conclusion
 
-We saw that with Spec the developer define how a visual element \(a presenter\) is composed out other visual elements. 
-Such presenter has the responsibility to describe the interaction with other presenters but also with the domain objects. It has also the responsibility to describe its visual aspect.
+We saw that with Spec the developer define how a visual element (a presenter) is composed out other visual elements. 
+Such a presenter has the responsibility to describe the interaction with other presenters but also with the domain objects. 
+It has also the responsibility to describe its visual aspect.
