@@ -812,6 +812,7 @@ ImdbFilmPresenter >> defaultLayout
 ```
 
 We can now see that the name label of a film detail has been styled.
+""esteban"" I get a grey not read label. No idea why.
 
 ![Styled film description](figures/FilmList-styling.png width=100&label=FilmListPresenterStyled)
 
