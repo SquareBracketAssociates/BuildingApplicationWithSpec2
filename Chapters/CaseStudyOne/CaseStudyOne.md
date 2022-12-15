@@ -402,7 +402,6 @@ ImdbFilmListPresenter >> defaultLayout
 		yourself
 ```
 
-
 We add a little helper method in class `ImdbFilmPresenter` to be able to pass a film
 and populate the presenter accordingly. 
 
@@ -414,15 +413,21 @@ ImdbFilmPresenter >> setModel: aFilm
 	yearNumber number: aFilm year.
 ```
 
-
 Note that we need to define the method `setModel:` is needed only if you do not subclass from `SpPresenterWithModel`. If you subclass from `SpPresenter`, it is the only way to have the model initialized before the setup of the presenter (and avoid errors when opening the presenter).
+
+Finally, since we are going to use this presenter in different places, we will need to add a method to control wheather it is editable or not:
+
+```language=Smalltalk
+ImdbFilmPresenter >> editable: aBoolean
+
+	nameText editable: aBoolean.
+	directorText editable: aBoolean.
+	yearNumber editable: aBoolean
+```
 
 Now we improve the `initializePresenters` of `ImdbFilmListPresenter`.
 - First we instantiate `ImdbFilmPresenter`.
-- Second we configure it as readonly using the `enabled: false` message. 
-
-""Esteban???"" The enabled: true does not seem to work. I can still edit the film while I should not. 
-
+- Second we configure it as readonly using the `editable: false` message. 
 - Third we define that, when an element of the list is selected, we should display the information in the detail presenter. 
 
 
@@ -436,7 +441,10 @@ ImdbFilmListPresenter >> initializePresenters
 		yourself.
 		
 	detail := self instantiate: ImdbFilmPresenter.
-	detail enabled: false.
+	detail editable: false.
+	
+	filmList whenSelectionChangedDo: [ :selectedItemMode | 
+		selectedItemMode isEmpty ifFalse: [detail setModel: selectedItemMode selectedItem] ].
 ```
 
 Definining interactions between presenters is done in the `connectPresenters` method. We will define it to define that, when an element of the list is selected, we should display the information in the detail presenter.
