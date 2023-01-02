@@ -28,18 +28,20 @@ To show how Spec enables the composition and reuse of user interfaces, in this c
 @sec_WidgetClassList
 
 The first custom UI we build should display a list of all subclasses of
-`AbstractWidgetPresenter`. This UI will later be reused as a widget for a more complete UI. The code is as follows (we do not include code for accessors):
+ the class `AbstractWidgetPresenter`.
+ This UI will later be reused as a widget for a more complete UI. 
+ The code is as follows (we do not include code for accessors):
 
 First we create a subclass of `SpPresenter` with one instance variable `list` which will hold an instance of `SpListModel`.
 
 ```
-SpPresenter subclass: #WidgetClassListPresenter
-	instanceVariableNames: 'list'
-	classVariableNames: ''
-	package: 'Spec-BuildUIWithSpec
+SpPresenter << #WidgetClassListPresenter
+	slots: { #list };
+	tag: 'MiniClassBrowser';
+	package: 'CodeOfSpec20Book'
 ```
 
-In the method `initializePresenters`, we create the list and populate it with the required classes, in alphabetical order. We also add a title for the window.
+In the method `initializePresenters`, we create the list and populate it with the required classes, in alphabetical order.
 
 ```
 WidgetClassListPresenter >> initializePresenters
@@ -49,25 +51,23 @@ WidgetClassListPresenter >> initializePresenters
 	self focusOrder add: list.
 ```
 
-
-!!todo is focusOrder correct?
-
+We also add a title for the window.
+ 
 ```
 WidgetClassListPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Widgets'
 ```
 
-
 The layout contains only the list:
 
 ```
 WidgetClassListPresenter >> defaultLayout
-	^ SpBoxLayout newHorizontal
+	^ SpBoxLayout newLeftToRight 
 		add: #list;
 		yourself
 ```
 
-Doing `WidgetClassListPresenter new openWithSpec`, you should obtain UI shown in Figure *@fig_WidgetClassList@*.
+Doing `WidgetClassListPresenter new open`, you should obtain UI shown in Figure *@fig_WidgetClassList@*.
 
 ![WidgetClassListPresenter open.](figures/WidgetClassList.png width=50&label=fig_WidgetClassList)
 
@@ -89,17 +89,22 @@ Now, whoever reuses this widget can parameterize it with a block that will be ex
 
 @sec_protocollist
 
-The UI we build now will show a list of all methods of a given protocol, and it combines two widgets: a list and a label. Considering reuse, there is no difference with the previous UI. This is because the reuse of a UI as a widget is **not impacted at all** by the number of widgets it contains \(nor by their position\). Large and complex UIs are reused in the same way as simple widgets.
+The UI we build now will show a list of all methods of a given protocol, and it combines two widgets: a list and a label. 
+Considering reuse, there is no difference with the previous UI. 
+This is because the reuse of a UI as a widget is **not impacted at all** by the number of widgets it contains (nor by their position). 
+Large and complex UIs are reused in the same way as simple widgets.
 
 ```
-SpPresenter subclass: #ProtocolMethodListPresenter
-	instanceVariableNames: 'label methods'
-	classVariableNames: ''
-	package: 'Spec-BuildUIWithSpec'
+SpPresenter << #ProtocolMethodListPresenter
+	slots: { #label . #methods };
+	tag: 'MiniClassBrowser';
+	package: 'CodeOfSpec20Book'
 ```
 
 
-The `initializeWidgets` method for this UI is quite straightforward. We specify the default label text as 'protocol', which will be changed when the widget is reused. We also give this UI a title.
+The `initializePresenters` method for this UI is quite straightforward. 
+We specify the default label text as 'protocol', which will be changed when the widget is reused. 
+We also give this UI a title.
 
 ```
 ProtocolMethodListPresenter >> initializePresenters
@@ -120,18 +125,21 @@ ProtocolMethodListPresenter >> initializeWindow: aWindowPresenter
 ```
 
 
-The layout code builds a column with the fixed-height label on top and the list taking all the space that remains. \(See Chapter *@cha_layout_construction@* for more on layouts.\)
+The layout code builds a column with the fixed-height label on top and the list taking all the space that remains. 
+%(See Chapter *@cha_layout_construction@* for more on layouts.)
 
 ```
 ProtocolMethodListPresenter >> defaultLayout
-	^ SpBoxLayout newVertical
-			add: #label;
-			add: #methods;
+	^ SpBoxLayout newTopToBottom 
+			add: #label ;
+			add: #methods ;
 			yourself
 ```
 
 
-This UI can be seen by executing `ProtocolMethodList new openWithSpec`. As shown in Figure *@figprotocollist@* the list is empty and the result not really nice. This is normal since we did not set any items but we should also place better the elements.
+This UI can be seen by executing `ProtocolMethodList new open`. 
+As shown in Figure *@figprotocollist@* the list is empty and the result not really nice. 
+This is normal since we did not set any items but we should also place better the elements.
 
 ![ProtocolMethodListPresenter with unclear layout.](figures/ProtocolList.png width=50&label=figprotocollist)
 
@@ -173,14 +181,15 @@ ProtocolMethodListPresenter >> whenSelectedItemChanged: aBlock
 ```
 
 
-!!note An alternative to adding these methods is simply to do nothing: since both the methods and the label are accessible \(through their accessors\), a reuser of this widget may simply obtain them and configure them directly. These two alternatives reflect a design decision that we will discuss in Section *@sec_public_API@*.
+#### Note. 
+An alternative to adding these methods is simply to do nothing: since both the methods and the label are accessible through their accessors, a reuser of this widget may simply obtain them and configure them directly. These two alternatives reflect a design decisions that we will discuss later in Section *@sec_public_API@*.
 
 ### Inspecting live the widgets
 
 Now we can check manually if the widget is working doing:
 
 ```
-ProtocolMethodListPresenter new openWithSpec ; inspect
+ProtocolMethodListPresenter new open ; inspect
 ```
 
 
@@ -203,7 +212,9 @@ self items: (Point methods sort: #selector ascending)
 ### Writing tests
 
 When we start to feel the need to check manually what we have done, this is a sign that we should write a test instead. 
-So let us do that. It is easy to write simple tests for widgets when we do not test popups. So let us take advantage of that.
+So let us do that. 
+It is easy to write simple tests for widgets when we do not test popups. 
+So let us take advantage of that.
 
 We add an accessor to access the method list.
 
@@ -214,9 +225,8 @@ ProtocolMethodListPresenter >> methods
 
 
 ```
-TestCase subclass: #ProtocolMethodListPresenterTest
-	instanceVariableNames: ''
-	classVariableNames: ''
+TestCase << #ProtocolMethodListPresenterTest
+	tag: 'MiniClassBrowser';
 	package: 'CodeOfSpec20Book'
 ```
 
@@ -238,10 +248,10 @@ Do not miss this opportunity to control the complexity of your software.
 
 
 ### Managing three widgets and their interactions
-
 @sec_protocolviewer
 
-The third user interface we build is a composition of the two previous user interfaces. We will see that there is no difference between configuring custom UIs and configuring system widgets: both kinds of widgets are configured by calling methods of the `api` protocol.
+The third user interface we build is a composition of the two previous user interfaces. 
+We will see that there is no difference between configuring custom UIs and configuring system widgets: both kinds of widgets are configured by calling methods of the `api` protocol.
 
 This UI is composed of a `WidgetClassListPresenter` and two `ProtocolMethodListPresenter` and specifies that when a model class is selected in the `WidgetClassListPresenter`, the methods in the protocols `api` and `api-events` will be shown in the two `ProtocolMethodListPresenter` widgets.
 
