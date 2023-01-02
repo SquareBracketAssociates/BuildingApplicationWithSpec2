@@ -29,8 +29,8 @@ To show how Spec enables the composition and reuse of user interfaces, in this c
 
 The first custom UI we build should display a list of all subclasses of
  the class `AbstractWidgetPresenter`.
- This UI will later be reused as a widget for a more complete UI. 
- The code is as follows (we do not include code for accessors):
+This UI will later be reused as a widget for a more complete UI. 
+The code is as follows (we do not include code for accessors):
 
 First we create a subclass of `SpPresenter` with one instance variable `list` which will hold an instance of `SpListModel`.
 
@@ -52,7 +52,7 @@ WidgetClassListPresenter >> initializePresenters
 ```
 
 We also add a title for the window.
- 
+
 ```
 WidgetClassListPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Widgets'
@@ -78,14 +78,14 @@ Doing `WidgetClassListPresenter new open`, you should obtain UI shown in Figure 
 Since this UI will later be used together with other widgets to provide a more complete user interface, some actions will need to occur when a list item is clicked. However, we cannot know beforehand what all these possible actions will be everywhere that it will be reused. The best solution therefore is to place this responsibility on the reuser of the widget. Every time this UI is reused as a widget, it will be configured by the reuser. To allow this, we add a configuration method named `whenSelectedItemChanged:` :
 
 ```
-WidgetClassListPresenter >> whenSelectedItemChanged: aBlock
-	list whenSelectedItemChanged: aBlock
+WidgetClassListPresenter >> whenSelectionChangedDo: aBlock
+	list whenSelectionChangedDo: aBlock
 ```
 
 
 Now, whoever reuses this widget can parameterize it with a block that will be executed whenever the selected item is changed.
 
-### Combining two basic widgets into a reusable UI
+### Combining two basic presenters into a reusable UI
 
 @sec_protocollist
 
@@ -171,13 +171,13 @@ ProtocolMethodListPresenter >> label: aText
 
 ```
 ProtocolMethodListPresenter >> resetSelection
-	methods resetSelection
+	methods selection unselectAll
 ```
 
 
 ```
-ProtocolMethodListPresenter >> whenSelectedItemChanged: aBlock
-	methods whenSelectedItemChanged: aBlock
+ProtocolMethodListPresenter >> whenSelectionChangedDo: aBlock
+	methods whenSelectionChangedDo: aBlock
 ```
 
 
@@ -200,7 +200,7 @@ Then in the inspector we can use the newly created methods to pass a collection 
 ```
 
 
-![Live coding your widgets.](figures/inspectingLive.png width=90&label=figinspectingLive)
+![Live coding your widgets (no it is not openWithSpec but open my friend but the background is supercool!).](figures/inspectingLive.png width=90&label=figinspectingLive)
 
 Now we can play and for example decide to sort the items as follows: 
 
@@ -256,14 +256,14 @@ We will see that there is no difference between configuring custom UIs and confi
 This UI is composed of a `WidgetClassListPresenter` and two `ProtocolMethodListPresenter` and specifies that when a model class is selected in the `WidgetClassListPresenter`, the methods in the protocols `api` and `api-events` will be shown in the two `ProtocolMethodListPresenter` widgets.
 
 ```
-SpPresenter subclass: #ProtocolViewerPresenter
-	instanceVariableNames: 'models api events'
-	classVariableNames: ''
-	package: 'Spec-BuildUIWithSpec'
+SpPresenter << #ProtocolViewerPresenter
+	slots: { #models . #api . #events };
+	tag: 'MiniClassBrowser';
+	package: 'CodeOfSpec20Book'
 ```
 
 
-The `initializeWidgets` method shows the use of `instantiate:` to instantiate widgets, and some of the different parametrization methods of the `ProtocolMethodListPresenter` class.
+The `initializePresenters` method shows the use of `instantiate:` to instantiate widgets, and some of the different parametrization methods of the `ProtocolMethodListPresenter` class.
 
 ```
 ProtocolViewerPresenter >> initializePresenters
@@ -285,46 +285,54 @@ ProtocolViewerPresenter >> initializeWindow: aWindowPresenter
 ```
 
 
-To describe the interactions between the different widgets we define the `connectPresenters` method. It specifies that when a class is selected, the selections in the method lists are reset and both method lists are populated. Additionally, when a method is selected in one method list, the selection in the other list is reset.
+To describe the interactions between the different widgets we define the `connectPresenters` method. It specifies that when a class is selected, the selections in the method lists are reset and both method lists are populated. 
+Additionally, when a method is selected in one method list, the selection in the other list is reset.
 
 ```
 ProtocolViewerPresenter >> connectPresenters
 
-	models whenSelectedItemChanged: [ :class |
+	models whenSelectionChangedDo: [ :selection |
+		| class |
 		api resetSelection.
 		events resetSelection.
+		class := selection selectedItem.
 		class
-			ifNil: [ api items: #(). events items: #() ]
+			ifNil: [ 
+				api items: #(). 
+				events items: #() ]
 			ifNotNil: [
 				api items: (self methodsIn: class for: 'api').
-				events items: (self methodsIn: class for: 'api-events') ] ].
+				events items: (self methodsIn: class for: 'api - events') ] ].
 
-	api whenSelectedItemChanged: [ :method |
- 		method ifNotNil: [ events resetSelection ] ].
-	events whenSelectedItemChanged: [ :method |
-		method ifNotNil: [ api resetSelection ] ].
+	api whenSelectionChangedDo: [ :selection |
+ 		selection selectedItem ifNotNil: [ events resetSelection ] ].
+	events whenSelectionChangedDo: [ :selection |
+		selection selectedItem ifNotNil: [ api resetSelection ] ]
 ```
 
 
 ```
 ProtocolViewerPresenter >> methodsIn: class for: protocol
 	^ (class methodsInProtocol: protocol) sorted:
-	  		 [ :a :b | a selector < b selector ].
+			 [ :a :b | a selector < b selector ]
 ```
-
 
 Lastly, the layout puts the sub widgets in one column, with all sub widgets taking the same amount of space.
 
 ```
 ProtocolViewerPresenter >> defaultLayout
-	^ SpBoxLayout newVertical
-			add: #models; add: #api; add: #events;
-			yourself
+	^ SpBoxLayout newTopToBottom
+		add: #models; 
+		add: #api; 
+		add: #events;
+		yourself
 ```
 
 
 
-As previously, the result can be seen by executing the following snippet of code: `ProtocolViewer new openWithSpec`, and the result is shown in Figure *@figProtocolViewerVertical@*. This user interface is functional, clicking on a class will show the methods of the `api` and the `api-events` protocols of that class.
+As previously, the result can be seen by executing the following snippet of code: `ProtocolViewer new open`, and the result is shown in Figure *@figProtocolViewerVertical@*.
+
+This user interface is functional, clicking on a class will show the methods of the `api` and the `api-events` protocols of that class.
 
 ![ProtocolViewer in vertical mode.](figures/ProtocolViewerVertical.png width=50&label=figProtocolViewerVertical)
 
@@ -335,28 +343,25 @@ As previously, the result can be seen by executing the following snippet of code
 Notice that you can change the layout as follows to get all the widgets in a row as shown in Figure *@figProtocolViewerHorizontal@*.
 We will show later that a presenter can have multiple layouts and that the programmer decide which one to use.
 
-```
-ProtocolViewerPresenter >> defaultLayout
-	^ SpBoxLayout newHorizontal
-			add: #models; add: #api; add: #events;
-			yourself
-```
-
 
 We can do better. Let us define three methods as follows: 
 
 ```
 ProtocolViewerPresenter >> horizontalLayout
-	^ SpBoxLayout newHorizontal
-		add: #models; add: #api; add: #events;
+	^ SpBoxLayout newLeftToRight 
+		add: #models; 
+		add: #api; 
+		add: #events;
 		yourself
 ```
 
 
 ```
 ProtocolViewerPresenter >> verticalLayout
-	^ SpBoxLayout newVertical
-		add: #models; add: #api; add: #events;
+	^ SpBoxLayout newTopToBottom 
+		add: #models; 
+		add: #api; 
+		add: #events;
 		yourself
 ```
 
@@ -384,22 +389,22 @@ ProtocolViewerPresenter class >> exampleHorizontal
 Similar to the second user interface, when this UI is reused it will probably need to be configured. The relevant configuration here is what to do when a selection change happens in any of the three lists. We hence add the following three methods to the `api` protocol.
 
 ```
-ProtocolViewerPresenter >> whenClassChanged: aBlock
-	models whenSelectedItemChanged: aBlock
+ProtocolViewerPresenter >> whenSelectionInAPIChanged: aBlock
+	api whenSelectionChangedDo: aBlock
 ```
 
 ```
-ProtocolViewerPresenter >> whenEventChanged: aBlock
-	events whenSelectedItemChanged: aBlock
+ProtocolViewerPresenter >> whenSelectionInClassChanged: aBlock
+	models whenSelectionChangedDo: aBlock
 ```
 
 ```
-ProtocolViewerPresenter >> whenAPIChanged: aBlock
-	api whenSelectedItemChanged: aBlock
+ProtocolViewerPresenter >> whenSelectionInEventChanged: aBlock
+	events whenSelectionChangedDo: aBlock
 ```
 
 
-!!note These methods add semantic information to the configuration API. They state that they configure what to do when a class, `api` or `api-events` list item has been changed. This arguably communicates the customization API more clearly than just having the subwidgets accessible.
+####Note. These methods add semantic information to the configuration API. They state that they configure what to do when a class, `api` or `api-events` list item has been changed. This arguably communicates the customization API more clearly than just having the subwidgets accessible.
 
 
 ### Changing the layout of a reused widget
@@ -411,31 +416,40 @@ Sometimes, when you want to reuse an existing UI as a widget, the layout of that
 Our last user interface reuses the `ProtocolViewerPresenter` with a different layout and adds a text zone to edit the source code of the selected method.
 
 ```
-SpPresenter subclass: #ProtocolCodeBrowserPresenter
-	instanceVariableNames: 'text viewer'
-	classVariableNames: ''
-	package: 'Spec-BuildUIWithSpec'
+SpPresenter << #ProtocolCodeBrowserPresenter
+	slots: { #text . #viewer };
+	tag: 'MiniClassBrowser';
+	package: 'CodeOfSpec20Book'
 ```
 
 ```
 ProtocolCodeBrowserPresenter >> initializePresenters
-
 	text := self instantiate: SpCodePresenter.
 	viewer := self instantiate: ProtocolViewerPresenter.
-	text
-		aboutToStyle: true;
-		isCodeCompletionAllowed: true.
+	text syntaxHighlight: true.
 	self focusOrder
 		add: viewer;
-		add: text.
+		add: text
 ```
+
+```
+defaultLayout
+	
+	^ SpBoxLayout newTopToBottom
+			add: (SpBoxLayout newHorizontal add: #viewer ; yourself);
+			add: #text;
+			yourself
+```
+
+
+
 
 ```
 ProtocolCodeBrowserPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Spec Protocol Browser'
 ```
 
-
+TO BE CHANGED
 The text field is configured to show source code:
 - `aboutToStyle: true` enables syntax highlighting.
 - `isCodeCompletionAllowed: true` enables code completion.
@@ -446,14 +460,17 @@ The `connectPresenters` method is used to make the text zone react to a selectio
 ```
 ProtocolCodeBrowserPresenter >> connectPresenters
 
-	viewer whenClassChanged: [ :class | text behavior: class ].
-	viewer whenAPIChanged: [ :item |
-		item
-			ifNotNil: [ text text: item sourceCode ] ].
-	viewer whenEventChanged: [ :item |
-		item
-			ifNotNil: [ text text: item sourceCode ] ]
+	viewer whenSelectionInClassChanged: [ :selection | text behavior: selection selectedItem ].
+	viewer whenSelectionInAPIChanged: [ :selection |
+		selection selectedItem
+			ifNotNil: [ :item | text text: item sourceCode ] ].
+	viewer whenSelectionInEventChanged: [ :selection |
+		selection selectedItem
+			ifNotNil: [ :item | text text: item sourceCode ] ]
 ```
+
+ESTEBAN Am I right that from the top level presenter I cannot reorder the layout of the subpresenters?
+Because at composition time I would like to change and not get three list on top of each other but one list on the left and a column with to lists of the right. 
 
 
 
@@ -480,6 +497,57 @@ In the end, it is safer to define a public API and ensure in future versions of 
 
 So in the end it is important to consider future reusers of your UI and future evolution of your UI.
 You need to make a tradeoff of writing extra methods versus possibly making reuse of the UI harder as well as possibly making future evolution of the UI harder.
+
+### New versus old patterns
+
+In Spec 1.0 list presenters were exposing a different API namely `whenSelectedItemChanged:` as in the following example. 
+
+```
+initializePresenters
+
+	models := self instantiate: WidgetClassListPresenter.
+	api := self instantiate: ProtocolMethodListPresenter.
+	events := self instantiate: ProtocolMethodListPresenter.
+
+	api label: 'api'.
+	events label: 'api-events’.
+
+
+connectPresenters
+	….
+
+	api whenSelectedItemChanged: [ :method |
+		method ifNotNil: [ events resetSelection ] ].
+	events whenSelectedItemChanged: [ :method |
+		method ifNotNil: [ api resetSelection ] ].
+```
+
+In Spec2 list presenters and friends are exposing a different one exposing the selection of the list itself. 
+The design rationale is that a selection is a complex object (multi selection...).
+So we have 
+
+```
+	api whenSelectionChangedDo: [ :selection |
+		selection selectedItem ifNotNil: [ events resetSelection ] ].
+	events whenSelectionChangedDo: [ :selection |
+		selection selectedItem ifNotNil: [ api resetSelection ] ].
+```
+
+Now the question for your presenter definers is what is the API that you should expose to your users. 
+We would say that it does not matter because exposing a API similar to the one of Spec1 is possible as shown below. 
+
+
+
+```
+whenSelectedItemChangedDo: aBlock
+	methods whenSelectionChangedDo: [ :selection |
+		selection selectedItem ifNotNil: [ :i | aBlock value: i ] ]
+```
+
+
+Now we suggest to use the Spec20 way because it will give to your presenters a consistency with the core presenters of Spec
+and it will make them easier to collaborate. 
+
 
 ### Conclusion
 
