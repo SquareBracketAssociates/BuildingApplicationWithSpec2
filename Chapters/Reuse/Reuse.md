@@ -371,17 +371,25 @@ ProtocolViewerPresenter >> defaultLayout
 	^ self verticalLayout
 ```
 
-
 Now we can decide to open the viewer with different layouts using the message `openWithSpec:` as follows (as shown in Figure *@figProtocolViewerHorizontal@*):
 
 ```
 ProtocolViewerPresenter class >> exampleHorizontal
 	
-		self new openWithSpec: #horizontalLayout
+		self new openWithLayout: #horizontalLayout
 ```
 
 
 ![ProtocolViewer in horizontal mode.](figures/ProtocolViewerHorizontal.png width=50&label=figProtocolViewerHorizontal)
+
+
+
+
+
+
+
+
+
 
 ### Enhancing our API
 
@@ -469,8 +477,59 @@ ProtocolCodeBrowserPresenter >> connectPresenters
 			ifNotNil: [ :item | text text: item sourceCode ] ]
 ```
 
-ESTEBAN Am I right that from the top level presenter I cannot reorder the layout of the subpresenters?
-Because at composition time I would like to change and not get three list on top of each other but one list on the left and a column with to lists of the right. 
+SHOULD Update 
+
+```
+initializePresenters
+
+	self instantiate: ProtocolViewer withL ProtocolViewer horizontalLayout
+	
+```
+
+
+### Changing layouts
+
+
+```
+presenter := MyPresenter new.
+presenter openWithLayout: (SpBoxLayout newTopToBottom
+add: #models;
+add: #api;
+add: #events;
+yourself).
+ ```
+ 
+or you can do:
+
+````
+presenter := MyPresenter new.
+presenter layout: (SpBoxLayout newTopToBottom
+add: #models;
+add: #api;
+add: #events;
+yourself).
+presenter open.
+```
+
+or you can do:
+
+```
+presenter := MyPresenter new.
+presenter layout: presenter layoutAlternative1.
+presenter open.
+```
+
+which means you can do your layout choose without requiring to specify a method that will be executed later.
+
+
+
+
+
+
+
+
+
+
 
 
 
