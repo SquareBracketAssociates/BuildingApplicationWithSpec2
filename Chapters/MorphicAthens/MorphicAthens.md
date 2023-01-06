@@ -25,25 +25,27 @@ transform it into a set of pixels for output on a screen.
 ##### Note. 
 You have the same concept when doing 3D programming with an API like openGL. You describe your scene with point, vertices, etc..., and in the end, you rasterize your scene to display it on your screen.
 
-Morphic is currently the way to go on Pharo for Graphics. However, most existing canvas
-are pixel based, and not vector based. This can be an issue with current IT ecosystems,
-where the resolution can differ from machine to machine (desktop, tablet, phones, etc...)
+Morphic is currently the way to go on Pharo for Graphics. 
+However, most existing canvas are pixel based, and not vector based. 
+This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc...)
+
 Enter Athens, a vector based graphic API. Under the scene, it can either use
 balloon Canvas, or the cairo graphic library for the rasterization phase.
 
-When you integrate Athens with Morphic, you'll use its rendering engine to 
-create your picture. It's then transformed in a Form and displayed using on 
-the screen using BitBlt.
+When you integrate Athens with Spec, you'll use its rendering engine to 
+create your picture. 
+It's then transformed in a `Form` and displayed on the screen.
 
-### Hello-world in Athens with Morphic.
+### Hello-world in Athens
 
-We'll see how to use Athens directly integrated with Morphic. So will be the 
-base class we'll use after for all our experiment:
+We'll see how to use Athens directly integrated with Morphic. 
+This is why we first start to create a Morph class 
+It will be the class we'll use after for all our experiment:
 
-First, we define a class, which inherit from Morph:
+First, we define a class, which inherit from `Morph`:
 ```language=Smalltalk
-Morph subclass: #AthensHello
-	instanceVariableNames: 'surface'c	classVariableNames: ''
+Morph << #AthensHello
+	slots: { #surface }; 	
 	package: 'Athens-Hello'
 ```
 
@@ -56,14 +58,14 @@ AthensHello >> initialize
 	surface := AthensCairoSurface extent: self extent.
 ```
 
-
-where defaultExtent is simply defined as
+where `defaultExtent` is simply defined as
 ```language=Smalltalk
 AthensHello >> defaultExtent
+???
 ```
 
 
-The `drawOn:` method, mandatory in Morph subclasses, will ask Athens to render
+The `drawOn:` method, mandatory in Morph subclasses, asks Athens to render
 its drawing, and it'll then display it in a Morphic canvas as a Form (a bitmap 
 pictures)
 
@@ -74,14 +76,13 @@ AthensHello >> drawOn: aCanvas
 ```
 
 
-Our actual Athens code is located into renderAthens method:, and the result is
+Our actual Athens code is located into `renderAthens` method:, and the result is
 stored in the surface instance variable.
 
 ```language=Smalltalk
 AthensHello >> renderAthens
-|font|
-font := LogicalFont familyName: 'Arial' pointSize: 10.
-
+	| font |
+	font := LogicalFont familyName: 'Arial' pointSize: 10.
 	surface drawDuring: [:canvas | 
 		"canvas pathTransform loadIdentity."
 		surface clear. 
@@ -106,7 +107,9 @@ AthensHello >> open
 ```
 
 
-On last things. You can already create the window, and see a nice gradient, with 
+### One last thing: Handling resizing
+
+You can already create the window, and see a nice gradient, with 
 a greeting text. However, you'll notice, if you resize your window, that the 
 Athens content is not resized. To fix this, we'll need one last method.
 
