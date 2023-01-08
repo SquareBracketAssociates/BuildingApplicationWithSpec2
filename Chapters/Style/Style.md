@@ -12,8 +12,8 @@ We give some basis before showing how to effectively use styles to enhance the l
 
 ### About stylesheet
 
-Spec first collects the style for the presenter, then collects style for is
-specific sub-element. 'application' is the default root level, there is no
+Spec first collects the style for the presenter, then collects style for its
+ sub-components. 'application' is the default root level, there is no
 'application' adapter.
 
 A defined stylesheet has to have always a root element, and this root element
@@ -25,6 +25,8 @@ So each style follows a cascading style, starting from `.application` like
 .application.link
 .application.checkBox
 ```
+
+There are two ways to express stylesheets: one for Morphic expressed using an extended version of STON and CSS for Gtk.
 
 ### STON notation
 
@@ -66,78 +68,55 @@ styleSheet
    Font { #name: "Lucida Grande", #size: 10, #bold: true } ],
   .shortcut [
    Draw { #color: Color{ #rgb: 622413393 } },
-   Font { #name: "Lucida Grande", #size: 10 }
-  ],
+   Font { #name: "Lucida Grande", #size: 10 } ],
   .fixed [
-   Geometry { #hResizing: false, #width: 100 }
-  ],
+   Geometry { #hResizing: false, #width: 100 } ],
   .dim [
-   Draw { #color : Color{ #rgb: 708480675 } }
-  ]
+   Draw { #color : Color{ #rgb: 708480675 } } ]
  ],
  .link [  
-  Geometry { #hResizing: true }  
- ],
+  Geometry { #hResizing: true } ],
  .button [  
   Geometry { #width: 100 },
   .small [
-     Geometry { #width: 26 }
-  ]
- ],
+     Geometry { #width: 26 } ] ],
  .checkBox [  
-  Geometry { #hResizing: true }
- ],
+  Geometry { #hResizing: true } ],
  .radioButton [
-  Geometry { #hResizing: true }
- ],
+  Geometry { #hResizing: true } ],
  .dropList [
-  Geometry { #width: 150, #hResizing: true }
- ],
+  Geometry { #width: 150, #hResizing: true } ],
  .list [
-  Geometry { #width: 150, #hResizing: true, #vResizing: true }
- ],
+  Geometry { #width: 150, #hResizing: true, #vResizing: true } ],
  .slider [
-  Geometry { #width: 150, #hResizing: true }
- ],
+  Geometry { #width: 150, #hResizing: true } ],
  .actionBar [  
   Container {
    #borderColor: Color { #rgb: 0, #alpha: 0 },
    #borderWidth: 2,
    #padding: 5 },
-  Geometry { #width: 150, #height: 29, #hResizing: true, #vResizing: false }
- ],
+  Geometry { #width: 150, #height: 29, #hResizing: true, #vResizing: false } ],
  .menuBar [
-  Geometry { #width: 150, #hResizing: true }
- ],
+  Geometry { #width: 150, #hResizing: true } ],
  .actionButton [  
   Geometry { #width: 60, #hResizing: false },
-  .showIcon [ Geometry { #width: 25 } ]
- ],
+  .showIcon [ Geometry { #width: 25 } ]  ],
  .toolBar [
   Geometry { #hResizing: true },
   .icons [
-   Geometry { #height: 30 }
-  ],
+   Geometry { #height: 30 } ],
   .iconsAndLabel [  
-   Geometry { #height: 45 }
-  ]
- ],
+   Geometry { #height: 45 } ] ],
  .text [
-  Geometry { #height: 0 }
- ],
+  Geometry { #height: 0 } ],
  .code [
-  Font { #name : "Source Code Pro", #size : 10 }
- ],
+  Font { #name : "Source Code Pro", #size : 10 } ],
  .codePopover [
   Draw { #color : #transparent },
   .button [
-   Geometry { #width : 25 }
-  ]
- ],
+   Geometry { #width : 25 } ] ],
  .scrollbarPopoverLarge [
-  Geometry { #height: 350 }
- ]
-]
+  Geometry { #height: 350 } ] ]
 '
 ```
 
@@ -155,9 +134,7 @@ styleSheet
  .textInputField [ Draw { #backgroundColor: #blue} ],
  .label [
   Font {  #name: "Verdana", #size: 10, #italic: false, #bold: true},
-  Draw { #color: #red, #backgroundColor: #lightBlue}
- ]
-]
+  Draw { #color: #red, #backgroundColor: #lightBlue} ] ]
 ')
 ```
 
