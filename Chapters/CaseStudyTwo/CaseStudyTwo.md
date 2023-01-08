@@ -186,6 +186,7 @@ We added
 
 Now you will see everything changes as expected.
 
+
 ### Adding new tasks to your list
 
 Now, how do we add new elements? We will need different things: 
@@ -229,14 +230,15 @@ TodoTaskPresenter >> updatePresenter
 This is almost equal to our list presenter, but there are a couple of new elements.
 
 - `newTextInput` creates a text input presenter to add to our layout.
-- `add: titlePresenter expand: false` Along with the addition of the presenter, we also tell the layout that it should not expand the text input. The `expand` property indicates the layout will not resize the presenter to take the whole available space.
+- `add: titlePresenter expand: false`: Along with the addition of the presenter, we also tell the layout that it should not expand the text input. The `expand` property indicates the layout will not resize the presenter to take the whole available space.
 - `titlePresenter text: (aTask title ifNil: [ '' ])` changes the contents of our text input presenter.
 
 Now, we need to define this presenter to act as a dialog.  
-And we do it in the same way (almost) we defined `TodoListPresenter` as window. But to define a *dialog presenter* we need to define the method `initializeDialogWindow:`.
+And we do it in the same way (almost) we defined `TodoListPresenter` as window. 
+But to define a *dialog presenter* we need to define the method `initializeDialogWindow:`.
 
 ```Smalltalk
-TodoTaskPresenter >> initializeDialogWindow: 	aDialogWindowPresenter
+TodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter
 
 	aDialogWindowPresenter 
 		title: 'New task';
