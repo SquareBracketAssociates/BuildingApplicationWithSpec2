@@ -10,6 +10,26 @@ We will show that an application in Spec manages styles and let you adapt the lo
 
 We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
 
+### How do styles work?
+
+Styles in Spec work like CSS. They are style sheets in which the properties for presenting a presenter are defined. Properties such as colors, width, height, font, and others.
+As a general principle it is better to use styles instead of fixed constraints, because your application will be more responsive.
+
+For example, you want a button to have a specific width and height.
+You can do it using constraints with the method add:withConstraints: or using styles. In both cases the result will be as shown in Figure *@style2@*:
+
+![Untitled window.](figures/style2.png width=50&label=style2)
+
+But, if you change the size of the fonts of the Pharo image using Settings/Appearance/Standard Fonts/Huge, using fixed constraints, you will obtain the following result shown in Figure *@@*.
+You will for example do not be able to see the icons because the size is not recomputed correctly.
+
+![Badly scaled untitled window.](figures/style3.png width=50&label=style3)
+
+While using styles,the size of the button will also scale as shown by Figure *@style4@*.
+
+![Nicely scaled untitled window.](figures/style4.png width=50&label=style4)
+
+
 ### About stylesheet
 
 Spec first collects the style for the presenter, then collects style for its
@@ -138,25 +158,7 @@ styleSheet
 ')
 ```
 
-### How do styles work?
 
-
-Styles in Spec work like CSS. They are style sheets in which the properties for presenting a presenter are defined. Properties such as colors, width, height, font, and others.
-As a general principle it is better to use styles instead of fixed constraints, because your application will be more responsive.
-
-For example, you want a button to have a specific width and height.
-You can do it using constraints with the method add:withConstraints: or using styles. In both cases the result will be as shown in Figure *@style2@*:
-
-![Untitled window.](figures/style2.png width=50&label=style2)
-
-But, if you change the size of the fonts of the Pharo image using Settings/Appearance/Standard Fonts/Huge, using fixed constraints, you will obtain the following result shown in Figure *@@*.
-You will for example do not be able to see the icons because the size is not recomputed correctly.
-
-![Badly scaled untitled window.](figures/style3.png width=50&label=style3)
-
-While using styles,the size of the button will also scale as shown by Figure *@style4@*.
-
-![Nicely scaled untitled window.](figures/style4.png width=50&label=style4)
 
 ### Anatomy of a style
 
