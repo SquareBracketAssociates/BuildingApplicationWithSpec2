@@ -114,7 +114,7 @@ TODOListPresenter >> updatePresenter
 
 Note we send `asOrderedCollection` message to the list of tasks. This is because a table presenter receives an `OrderedCollection` as items, so we make sure we have the list as the presenter expects.  
 
-## How does this look? 
+###  How does this look? 
 Now we can open our task list manager as follows:
 
 ```Smalltalk
@@ -442,7 +442,7 @@ And that's all, you have your todo application running as shown by Figure *@todo
 
 ![Task Manager running in GTK.](figures/figure5.png?label=todogtk&width=80)
 
-## Conclusion
+### Conclusion
 In this tutorial we show that with Spec presenters are responsible of defining
 - their subcomponents
 - their layouts (how such components are displayed)
