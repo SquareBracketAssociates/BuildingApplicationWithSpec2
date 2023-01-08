@@ -1,18 +1,19 @@
-# Spec2 - style
+## Style 
 
-Spec2 allows you to style your widget, either morphic or Gtk. Here, we'll focus on morphic, which is the only platform  I work on currently.
+This text is based on notes of renault villemeur and should be integrated to the style chapter.
 
-SpMorphStyle class >> fromStylesheet: aStyle adapter: anAdapter
- "I collect all styles that apply to an adapter.
-  I traverse all styles in a very precise order: from more generic to more specific, this way
-  the order of the collected elements will be in reverse order of execution."
+Spec2 allows you to style your widget, either morphic or Gtk. Here, we'll focus on morphic.
 
-find style name for morphic element:
 
-SpAbstractMorphicAdapter >> styleName
-^ ((self className withoutPrefix: 'SpMorphic') allButLast: 7) uncapitalized
+### Spec implementation details 
 
-=> SpMorphicLabelAdapter -> Label
+You can ask an adapter for its style name using the message `styleName`
+
+```
+ SpMorphicLabelAdapter styleName 
+ > Label
+ ```
+
 
 We first collect the style for the presenter, then we collect style for is
 specific sub-element. 'application' is the default root level, there is no
@@ -21,31 +22,37 @@ specific sub-element. 'application' is the default root level, there is no
 A defined stylesheet has to have always a root element, and this root element
 needs to be called '.application'.
 
-So each style follow a cascading style, starting from .application
+So each style follow a cascading style, starting from `.application`
 like
+```
 .application.label.header
 .application.link
 .application.checkBox
+```
 
-A style can be declared through the STON notation.
-Each style can follow in on of these category with properties taken from
-object messages.
+### STON notation
 
-- Container -> SpStyleContainer
-- Draw -> SpStyleDraw
-- Font -> SpStyleFont
-- Geometry -> SpStyleGeometry.
+A style can be declared using the STON notation.
+Each style can follow in on of these categories with properties taken from object messages.
+
+- Container: `SpStyleContainer`
+- Draw: `SpStyleDraw`
+- Font:  `SpStyleFont`
+- Geometry: `SpStyleGeometry`
 
 Example:
-    Geometry { #hResizing: true }
-    Draw { #color:  Color{ #red: 1, #green: 0, #blue: 0, #alpha: 1}}
-    Draw { #color: #blue}
-    Font { #name: "Lucida Grande", #size: 10, #bold: true }
-    Container { #borderColor: Color { #rgb: 0, #alpha: 0 }, #borderWidth: 2, #padding: 5 },
+```
+Geometry { #hResizing: true }
+Draw { #color:  Color{ #red: 1, #green: 0, #blue: 0, #alpha: 1}}
+Draw { #color: #blue}
+Font { #name: "Lucida Grande", #size: 10, #bold: true }
+Container { #borderColor: Color { #rgb: 0, #alpha: 0 }, #borderWidth: 2, #padding: 5 },
+```
 
-you can define your style globaly, and to your specific presenter, with the 'addStyle:'
-message: addStyle: 'section'. This message is specific to the SpAbstractMorphicAdapter backend.
+You can define your style globally, and to your specific presenter, with the `addStyle:`
+message: for example `addStyle: 'section'`. This message is specific to the `SpAbstractMorphicAdapter` backend.
 
+```
 styleSheet
  ^ SpStyleSTONReader fromString: '
 .application [
@@ -133,7 +140,9 @@ styleSheet
  ]
 ]
 '
-  
+```
+
+```
 styleSheet
  ^ SpStyle defaultStyleSheet, (SpStyleSTONReader
   fromString:
@@ -151,3 +160,4 @@ styleSheet
  ]
 ]
 ')
+```
