@@ -1,6 +1,6 @@
-# TODO Application: a 15min tutorial
+## TODO Application: a 15min tutorial
 
-## Introduction
+### Introduction
 This is a small tutorial to give a first look at the world of Spec2 and developing application with it.  
 It should not be taken as a comprehensive guide since a lot of details and featurs are left out explicitly to avoid difficult issues. 
   
@@ -10,23 +10,6 @@ It will look like Figure *@taskManager@*.
 
 ![First full version of the Task List Manager. ](figures/figure4.png?label=taskManager&width=80)
 
-
-## Requirements
-
-We will use Voyage to keep our small database, but since this will not be very big and we want to keep things simple, we will use an "in-memory" version of it. You can install it in your image executing:
-
-```Smalltalk
-Metacello new 
-	repository: 'github://pharo-nosql/voyage';
-	baseline: 'Voyage';
-	load: 'memory tests'.
-```
-
-Then you can create the in-memory repository we are going to use during this tutorial.
-
-```Smalltalk
-VOMemoryRepository new enableSingleton.
-```
 
 ### A TODOTask class
 Since this application will show and support the edition of a simple TODO list, we need to create a class that models the task. We are going to have the simplest approach possible for this example, but is clear it can be a lot more complex.
@@ -59,7 +42,7 @@ TODOTask new title: 'Task One'; save.
 TODOTask new title: 'Task Two'; save.
 ```
 
-## Creating your application
+### Creating your application
 
 Every application needs an entry point, a place where to configure the basics and start the GUI. Compiled programs have like C have `main()`, Cocoa have the class `NSApplication` and you add a _delegate_ to add your configuration and Gtk3 has `GtkApplication`.  
 Pharo is a living environment where many things can be executed at same time, and because of that Spec2 also needs its own entry point: Your application needs to be independent of the rest of system! To do that, Spec2 needs you to extend the class `SpApplication`.  
@@ -88,7 +71,7 @@ SpPresenter subclass: #TODOListPresenter
 
 This component will contain a list of your todo tasks and the logic to add, remove, or edit them. Let's define your first presenter contents.   
 
-## Showing tasks
+### Showing tasks
 
 A presenter needs to define a _layout_ (how the component and its subcomponents will be displayed) and which _widgets_ it will show.  
 While this is not the best way to organise your presenter, for simplicity we will add all needed behavior in just a single method that you need to implement: `initializePresenters`.
@@ -166,7 +149,7 @@ Figure *@fig2*@ shows how the task manager looks like now.
 
 ![Task Manager is a better window title.](figures/figure2.png?width=80&label=fig2)
 
-## Making checkbox columns actionable
+### Making checkbox columns actionable
 
 If you play a little bit with your newly created presenter, you will notice that if you enable the task checkbox and you re-execute the application (reopen the window), nothing changes in the task, it is still marked as not done. This is because no action is yet associated to the checkbox column!  
 To fix this, let's modify `initializePresenters`.
@@ -194,7 +177,7 @@ We added
 
 Now you will see everything changes as expected.
 
-## Adding new tasks to your list
+### Adding new tasks to your list
 
 Now, how do we add new elements? We will need different things: 
 
@@ -351,7 +334,7 @@ The following figure shows how the task manager looks like.
 
 ![Task Manager with a button to add tasks.s](figures/figure3.png?width=80&label=fig3)
 
-## Add edit and remove
+### Add edit and remove
 
 But a task list is not just adding tasks. Sometimes we want to edit a tast or even remove it.  
 Let's add a context menu to table for this, and for it we will always need to modify `initializePresenters`. 
@@ -432,7 +415,7 @@ Remove simply takes the selected item and send the `remove` message.
 
 ![First full version of the Task List Manager ](figures/figure4.png?width=80&label=fig4)
 
-## Switching the backend to Gtk
+### Switching the backend to Gtk
 
 Since we are developing a Spec2 application, we can decide to use Gtk as a backend instead of Morphic. How do we do this?
 
