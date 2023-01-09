@@ -22,6 +22,7 @@ Object << #TodoTask
 	
 TodoTask >> initialize
 	super initialize.
+	self title: 'Please give me a title'.
 	self done: false
 	
 TodoTask >> isDone
@@ -35,16 +36,33 @@ Object class << TodoTask class
 ```
 
 ```Smalltalk
-TodoTask class << tasks
+TodoTask class >> tasks
 	^ tasks ifNil: [ tasks := OrderedCollection new ]
 ```
 
-We add a save method to register the instances in the tasks stored in the class. 
+We add two methods to manage the addition and removal
+
+```Smalltalk
+TodoTask class >> addTask: aTask
+	(tasks includes: aTask) ifFalse: [ tasks add: aTask ]
+
+TodoTask class >> deleteTask: aTask
+	tasks remove: aTask ifAbsent: [ nil ]
+```
+We made sure that adding a task does not add twice the same task because we can use it for `save` and `accept`. 
+
+At the level of instance, we add a `save` method to register the instances in the tasks stored in the class and a `delete` method.
 
 ```
 TodoTask >> save
-	self class tasks add: self
+	self class addTask: self
 ```
+
+```
+TodoTask >> delete
+	self class deleteTask: self
+```
+
 And let's create a couple of testing tasks: 
 
 ```Smalltalk
@@ -125,13 +143,13 @@ TodoApplication >> start
 	TodoListPresenter open
 ```
 
-Now we can open our task list manager as follows:
+Now we can open our task list manager as follows and we should get a situation similar to the one displayed in Figure *@firstfig@*.
 
 ```Smalltalk
 TodoApplication new run.
 ```
 
-![Figure 1](figures/figure1.png?width=80|label=firstfig)
+![A draft version of our task manager.](figures/figure1.png width=60&label=firstfig)
 
 Not bad as a start, isn't?
 But you will see the window has "Untitled window" as title, and maybe its size is not right.  
@@ -152,11 +170,12 @@ Here we took `aWindowPresenter` (the presenter that contains definition of a win
 - `title:` which is self explanatory, it sets the title of the window
 - `initialExtent:` it declares the initial size of the window.
 
-You may ask *why this is done like that and not directly modifying the presenter?* And the answer is quite simple: Presenters are designed to be reusable. This means that a presenter can be used as a window in some cases (as ours), but it can be used as a part of another presenter in other. Then we need to split its functionality between *presenter* and *presenter window*.
+You may ask why this is done like that and not directly modifying the presenter?
+ And the answer is quite simple: Presenters are designed to be reusable. This means that a presenter can be used as a window in some cases (as ours), but it can be used as a part of another presenter in other. Then we need to split its functionality between _presenter_ and _presenter window_.
 
-Figure *@fig2*@ shows how the task manager looks like now.
+Figure *@fig2@* shows how the task manager looks like now.
 
-![Task Manager is a better window title.](figures/figure2.png?width=80&label=fig2)
+![Task Manager is a better window title.](figures/figure2.png width=60&label=fig2)
 
 ### Making checkbox columns actionable
 
@@ -166,17 +185,17 @@ To fix this, let's modify `initializePresenters`.
 ```Smalltalk
 TodoListPresenter >> initializePresenters
 
-	TodoListPresenter := self newTable
+	todoListPresenter := self newTable
 		addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone] ) 
 			width: 20;
-			
+			onActivation: [ :task | task done: true ];
+			onDeactivation: [ :task | task done: false ];
 			yourself);
-		addColumn: (SpStringTableColumn onActivation: [ :task | task done: true ];
-			onDeactivation: [ :task | task done: false ];title: 'Title' evaluated: #title);
+		addColumn: (SpStringTableColumn title: 'Title' evaluated: #title);
 		yourself.
 
 	self layout: (SpBoxLayout newTopToBottom 
-		add: TodoListPresenter;
+		add: todoListPresenter;
 		yourself)
 ```
 
@@ -221,21 +240,30 @@ TodoTaskPresenter >> initializePresenters
 				yourself).
 ```
 
-```Smalltalk			
-TodoTaskPresenter >> updatePresenter
-	titlePresenter text: (task title ifNil: [ '' ])
 
-```
 
 This is almost equal to our list presenter, but there are a couple of new elements.
 
 - `newTextInput` creates a text input presenter to add to our layout.
 - `add: titlePresenter expand: false`: Along with the addition of the presenter, we also tell the layout that it should not expand the text input. The `expand` property indicates the layout will not resize the presenter to take the whole available space.
+
+
+
+```Smalltalk			
+TodoTaskPresenter >> updatePresenter
+	task ifNotNil: [
+		titlePresenter text: (task title ifNil: [ '' ])]
+```
+
+The method `updatePresenter` deserves a bit of explanation: 
+
+- indeed it is necessary to check that the task is not nil because the method is executed just after the instance creation and we did not initialize the task with a default task. The alternative to this ifNotNil: is to initialize the instance variable task to a kind of NullObject, here a null task.
+
 - `titlePresenter text: (aTask title ifNil: [ '' ])` changes the contents of our text input presenter.
 
 Now, we need to define this presenter to act as a dialog.  
 And we do it in the same way (almost) we defined `TodoListPresenter` as window. 
-But to define a *dialog presenter* we need to define the method `initializeDialogWindow:`.
+But to define a _dialog presenter_ we need to define the method `initializeDialogWindow:`.
 
 ```Smalltalk
 TodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter
@@ -250,45 +278,46 @@ TodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter
 			dialog close ]
 ```
 
-Here, along with the already known `title:` and `initialExtent:` we added 
+Here, along with the already known `title:` and `initialExtent:` we added: 
 
 - `addButton: 'Save' do: [ ... ]`. This will add buttons to our dialog window. And you need to define its behavior (the `accept` method).
 - `addButton: 'Cancel' do: [ ... ]`. This is the same as the positive action, but here we do not want to do anything, that's why we just send `dialog close`.
 
-How would be the `accept` method? Thanks to Voyage, very simple.
+How would be the `accept` method? Very simple.
 
 ```Smalltalk
-TodoTaskPresenter >> accept
-
-	self task 
-		title: titlePresenter text;
-		save.
+TodoTaskPresenter >>accept
+	self task title: titlePresenter text; save	
 ```
+
 
 **Tip:** You can try your dialog even if not yet integrated to your application by executing 
 
 ```Smalltalk
-TodoTaskPresenter new 
+TodoTaskPresenter new
 	task: TodoTask new;
-	openModalWithSpec.
+	openModal.
 ```
 
+
+### Using the dialog
+
 So, now we can use it. And to use it we need to define how we want to present that "add task" option. It can be a toolbar, an actionbar or a simple button. To remain simple and expand a little what we already know about layouts, we will use a simple button and for that, we go back again to the method `TodoListPresenter >> initializePresenters`.
+We will add a new instance variable named `addButton` to the `TodoListPresenter` class.
 
 ```Smalltalk
 TodoListPresenter >> initializePresenters
-	| addButton |
 
-	TodoListPresenter := self newTable
+	| addButton |
+	todoListPresenter := self newTable
 		addColumn: ((SpCheckBoxTableColumn 
-							evaluated: [:task | task isDone]) 
+					evaluated: [:task | task isDone]) 
 				width: 20;
 				onActivation: [ :task | task done: true ];
 				onDeactivation: [ :task | task done: false ];
 				yourself);
 		addColumn: (SpStringTableColumn 
-						title: 'Title' 
-						evaluated: [:task | task title]);
+					title: 'Title' evaluated: [:task | task title]);
 		yourself.
 
 	addButton := self newButton 
@@ -296,12 +325,13 @@ TodoListPresenter >> initializePresenters
 		action: [ self addTask ];
 		yourself.
 
-	self layout: (SpBoxLayout newVertical 
-		add: TodoListPresenter;
-		add: (SpBoxLayout newHorizontal
+	self layout: (SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: todoListPresenter;
+		add: (SpBoxLayout newLeftToRight
 				addLast: addButton expand: false;
 				yourself) 
-			expand: false;
+		expand: false;
 		yourself)
 ```
 
@@ -312,10 +342,11 @@ First, we added a button.
 - `label:` sets the label of the button.
 - `action:` sets the action block to execute when we press the button.
 
-Second, we modify our layout by adding a new layout! *Yes, layouts can be composed!*.  
+Second, we modify our layout by adding a new layout! **Yes, layouts can be composed!**. 
 
-- `spacing: 5` is used to set the space between presenters, otherwise they will apprear stick together and this is not visually good. SD: I did not see it.
-- `SpBoxLayout newHorizontal` creates a box layout that will be arranged horizontally.
+- `spacing: 5` is used to set the space between presenters, otherwise they will apprear stick 
+together and this is not visually good.
+- `SpBoxLayout newLeftToRight` creates a box layout that will be arranged horizontally.
 - `addLast: addButton expand: false` adds the button at the end (sorting it effectively at the end, as if it would be a dialog). The `expand` property indicates the layout will not resize the button to take the whole available space.
 - finally, the layout itself was added with `expand` set to `false` to prevent the button to take half the size vertically. 
 
@@ -328,101 +359,133 @@ TodoListPresenter >> addTask
 
 	(TodoTaskPresenter newApplication: self application) 
 		task: TodoTask new;
-		openModalWithSpec.
+		openModal.
 	self updatePresenter
 ```
 
 What we did here?
 
-- `TodoTaskPresenter newApplication: self application` we create the dialog presenter but not by calling `new` as usual but `newApplication:` and passing the application of current presenter. This is **fundamentally important** to keep your dialogs chained as part of your application. If you skip this, what will happen is that the presenter will be created in the *default application* of Pharo, which is called `NullApplication`. You do not want that. 
+- With `TodoTaskPresenter newApplication: self application` we create the dialog presenter but not by calling `new` as usual but `newApplication:` and passing the application of current presenter. This is **fundamentally important** to keep your dialogs chained as part of your application. If you skip this, what will happen is that the presenter will be created in the _default application_ of Pharo, which is called `NullApplication`. You do not want that. 
 - `task:` set a new task.
-- `openModalWithSpec` will open the dialog in modal way. It means the execution of your program will be stop until you accept or cancel your dialog.
+- `openModal` will open the dialog in modal way. It means the execution of your program will be stop until you accept or cancel your dialog.
 - `updatePresenter` will call the method we defined, to update your list.
 
-The following figure shows how the task manager looks like.
+Figure *@fig3@* shows how the task manager looks like.
 
-![Task Manager with a button to add tasks.s](figures/figure3.png?width=80&label=fig3)
+![Task Manager with a button to add tasks.s](figures/figure3.png width=80&label=fig3)
+
+### Refactoring initializePresenters
+
+
+In Spec you can either define a layout as we have done before using the message `layout:` or define a separate method named `defaultLayout` and this is what we are doing now to avoid to have too long method with different concerns.
+
+```
+TodoListPresenter >> defaultLayout
+
+	^ SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: todoListPresenter;
+		add: (SpBoxLayout newLeftToRight
+				addLast: addButton expand: false;
+				yourself)
+		expand: false;
+		yourself
+```
+
+Now the method `initialzePresenters` gets a single focus: the one of defining the subcomponents.
+
+```
+TodoListPresenter >> initializePresenters
+
+	todoListPresenter := self newTable
+		addColumn:
+			((SpCheckBoxTableColumn evaluated: [ :task |  task isDone ])
+				width: 20;
+				onActivation: [ :task | task done: true ];
+				onDeactivation: [ :task | task done: false ];
+				yourself);
+		addColumn:
+			(SpStringTableColumn
+				title: 'Title'
+				evaluated: [ :task | task title ]);
+				yourself.
+	addButton := self newButton
+		label: 'Add task';
+		action: [ self addTask ];
+		yourself
+```
+
 
 ### Add edit and remove
 
-But a task list is not just adding tasks. Sometimes we want to edit a tast or even remove it.  
+But a task list is not just adding tasks. Sometimes we want to edit a task or even remove it.
 Let's add a context menu to table for this, and for it we will always need to modify `initializePresenters`. 
 
 ```Smalltalk
 TodoListPresenter >> initializePresenters
-	| addButton |
 
-	TodoListPresenter := self newTable
-		addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) 
-			width: 20;
-			onActivation: [ :task | task done: true ];
-			onDeactivation: [ :task | task done: false ];
-			yourself);
-		addColumn: (SpStringTableColumn 
-						title: 'Title' 
-						evaluated: [:task | task title);
-		contextMenu: self TodoListContextMenu;
+	todoListPresenter := self newTable
+		addColumn:
+			((SpCheckBoxTableColumn evaluated: [ :task | task isDone ])
+				width: 20;
+				onActivation: [ :task | task done: true ];
+				onDeactivation: [ :task | task done: false ];
+				yourself);
+		addColumn:
+			(SpStringTableColumn
+				title: 'Title'
+				evaluated: [ :task | task title ]);
 		yourself.
+	todoListPresenter contextMenu: self todoListContextMenu.
 
-	addButton := self newButton 
+	addButton := self newButton
 		label: 'Add task';
 		action: [ self addTask ];
-		yourself.
-
-	self layout: (SpBoxLayout newVertical 
-		spacing: 5;
-		add: TodoListPresenter;
-		add: (SpBoxLayout newHorizontal
-				addLast: addButton expand: false;
-				yourself) 
-			expand: false;
-		yourself)
+		yourself
 ```
 
 What is added now? 
  
-- `contextMenu: self TodoListContextMenu` sets the context menu to what is defined in the method `TodoListContextMenu`. Let us study right now.
+- `contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
 
 
 ```Smalltalk
-TodoListPresenter >> TodoListContextMenu
+TodoListPresenter >> todoListContextMenu
 
 	^ self newMenu 
 		addItem: [ :item | item 
-						name: 'Edit...'; 
-						action: [ self editSelectedTask ] ];
+					name: 'Edit...'; 
+					action: [ self editSelectedTask ] ];
 		addItem: [ :item | item 
-						name: 'Remove'; 
-						action: [ self removeSelectedTask ] ]
+					name: 'Remove'; 
+					action: [ self removeSelectedTask ] ]
 ```
 
 This method creates a menu to be displayed when pressing right-click on the table. Let's see what it contains: 
 
-- `self newMenu` as all other *factory methods*, this creates a menu presenter to be attached to another presenter.
+- `self newMenu` as all other _factory methods_, this creates a menu presenter to be attached to another presenter.
 - `addItem: [ :item | ... ]` add an item, with a `name:` and an associated `action:`
 
 And now let's define the actions
 
 ```Smalltalk
 TodoListPresenter >> editSelectedTask
-
 	(TodoTaskPresenter newApplication: self application) 
-		task: TodoListPresenter selection selectedItem;
-		openModalWithSpec.
+		task: todoListPresenter selection selectedItem;
+		openModal.
 	self updatePresenter
 ```
 
 ```Smalltalk	
 TodoListPresenter >> removeSelectedTask
-
-	TodoListPresenter selection selectedItem remove.
+	todoListPresenter selection selectedItem remove.
 	self updatePresenter
 ```
 
 As you see, `editSelectedTask` is almost equal to `addTask` but instead of adding a new task, it takes the selected task in our table by sending `TodoListPresenter selection selectedItem`.  
 Remove simply takes the selected item and send the `remove` message.
 
-![First full version of the Task List Manager ](figures/figure4.png?width=80&label=fig4)
+![First full version of the Task List Manager.](figures/figure4.png width=80&label=fig4)
 
 ### Switching the backend to Gtk
 
@@ -449,7 +512,7 @@ TodoApplication new
 
 And that's all, you have your Todo application running as shown by Figure *@Todogkt@*.
 
-![Task Manager running in GTK.](figures/figure5.png?label=Todogtk&width=80)
+![Task Manager running in GTK.](figures/figure5.png label=Todogtk&width=80)
 
 ### Conclusion
 In this tutorial we show that with Spec presenters are responsible of defining
