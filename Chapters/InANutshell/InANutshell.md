@@ -77,6 +77,8 @@ You can use `openWithLayout:` or `openDialogWithLayout:` to open the presenter w
 ### Application
 
 A spec application (`SpApplication` or one of its subclasses instance) handles your application initialization, configuration and resources. 
+`SpApplication` is not a presenter because it does not has a graphical representation: An `SpApplication` defines your application \(keeping the backend, theme, icons, other graphical resources\), keeps the flow of windows \(and the opened windows that belongs to that application\) but it is not shown itself.
+
 It also keeps the windows you have currently opened.
 In the application initialization, you can configure the backend you want to use: morphic (default, Gtk).
  
@@ -96,6 +98,20 @@ A Spec application also provides a way to access windows, to access resources li
 An application also provides the style used by Spec to style UI elements.  
 A default style is available but you can customize it as shown in Chapter *@Style@*. 
 
+
+
+
+An application can be configured with a configuration \(more to come\).
+
+- icons
+- closing subelements
+- localisation
+
+#### Responsibilities
+An application can be configured with a configuration. 
+It is reponsible for icon management, closing sub components and it will be the natural place for localisation. 
+
+SD: More?
 
 ### Layouts 
 
