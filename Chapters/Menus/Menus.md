@@ -1,13 +1,16 @@
-!! Menu and MenuBar Soon in the best theaters...
+## Menu and MenuBar
 
 Soon in the best theater...
 
-==contextMenu: self todoListContextMenu== sets the context menu to what is defined in the method ==todoListContextMenu==. Let us study right now.
+
+### Menu
+
+`contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
 
 
 
-[[[
-TODOListPresenter >> initializePresenters
+``
+TodoListPresenter >> initializePresenters
 	| addButton |
 	todoListPresenter := self newTable
 	addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) 
@@ -20,10 +23,10 @@ TODOListPresenter >> initializePresenters
 			evaluated: [:task | task title);
 	contextMenu: self todoListContextMenu;
 	yourself.
-]]]
+```
 
-[[[
-TODOListPresenter >> todoListContextMenu
+```
+TodoListPresenter >> todoListContextMenu
 
 	^ self newMenu 
 		addItem: [ :item | item 
@@ -32,4 +35,9 @@ TODOListPresenter >> todoListContextMenu
 		addItem: [ :item | item 
 						name: 'Remove'; 
 						action: [ self removeSelectedTask ] ]
-]]]
+```
+
+
+### MenuBar
+
+How to create one that we can resue across components?

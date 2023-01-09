@@ -1,17 +1,17 @@
-## Layouts 
+## Layouts (underway)
 @cha_layout
 
 
-Hi. In Spec1, the UI layout was described in the class side defaultSpec method. In the TODO tutorial, the layout is given is the initializePresenters instance side method. What is the prefered way in Spec2 ? Stick with class side method, or add it in initializePresenters ?
-Esteban Lorenzano
- —
-10/27/2020
+
+
+
+
+
 in spec2 layout will be created in instance side and class-side accessors will remain for those who prefer it.
 this is to reflect the dynamic nature of layouts in spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare them by name before.
 now... it is possible that there are cases where you want the layout "template" instead the layout instantiated... so you still can do it.
 
 ### Basic principle reminder
-
 
 To define the layout of a presenter you can: 
 - Define the `defaultLayout` on the instance side.
@@ -29,10 +29,11 @@ WindowExamplePresenter >> initializePresenters
   button1 label: '+'.
   button2 label: '-'.
   
-WindowExamplePresenter class >> defaultSpec
+WindowExamplePresenter >> defaultLayout
  	^ SpBoxLayout newLeftToRight
-	add: #button1; 
-	add: #button2; yourself
+		add: button1; 
+		add: button2; 
+		yourself
 ```
 
 
@@ -55,10 +56,11 @@ padding  - extra space in pixels to put between this child and its neighbors, ov
      reference edge of box"
 
 ```smalltalk
-SpBoxLayout newVertical  spacing: 15;
- add: #button1 expand: false fill: true padding: 5;
- add: #button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];
- addLast: #button3 expand: false fill: true padding: 5;
+SpBoxLayout newVertical 
+	spacing: 15;
+	add: button1 expand: false fill: true padding: 5;
+	add: button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];
+	addLast: button3 expand: false fill: true padding: 5;
  yourself
 ```
 
@@ -94,7 +96,7 @@ SpGridLayout new
   yourself
 ```  
 
-As of this writing (january 13, 2020), we cannot add a box layout to a grid.
+As of this writing, we cannot add a box layout to a grid.
 
 ### Paned layout (SpPanedLayout and SpPanedConstraints)
 
@@ -106,13 +108,15 @@ be a percentage (e.g. 30 percent)
 
 ```smalltalk
 SpPanedLayout newHorizontal position: 80 percent;
-                        add: '#acceptButton';
-                        add: #cancelButton; yourself.
+	add: acceptButton;
+	add: cancelButton;
+	yourself.
 ```
 
 		
 		
 ### Overlay
+
 
 ```
 app := SpApplication new.
