@@ -48,32 +48,30 @@ A user interface can be opened as a normal window, or opened as a dialog box, i.
 ### Opening a window
 
 
-As we have shown in previous sections, to open a user interface you need to instantiate the `SpPresenter` for that interface and send it the `openWithSpec` message. This creates an instance of `SpWindowPresenter` which points to the window containing the user interface and shows it in a window on screen.
+As we have shown in previous sections, to open a user interface you need to instantiate the `SpPresenter` for that interface and send it the `open` message. This creates an instance of `SpWindowPresenter` which points to the window containing the user interface and shows it in a window on screen.
 
-We have also seen the `openWithSpec:` method, notably in Chapter *@cha_layout_construction@*, that takes the name of a layout message as argument. Instead of using the default layout \(whose lookup is described in Section *@sec_layoutmethod@*\), the opened UI will use the layout returned by that method. A second variant is `openWithSpecLayout:` that takes a `SpLayout` instance \(or an instance of its subclasses\).
+We have also seen the `openWithLayout:` method  that takes a layout (instance of SpLayout subclasses) as argument. 
+Instead of using the default layout, the opened UI will use the layout passed as argument. 
 
 For example, below we show the three ways we can open a window for our `WindowExample`. It will open three identical windows as shown in *@windowExample1@*.
 
 ```
 | we |
 we := WindowExamplePresenter new.
-we openWithSpec.
-we openWithSpec: #defaultSpec.
-we openWithSpecLayout: we defaultSpec
+we open.
+we openWithLayout: aLayout.
+we openWithLayout: aLayout
 ```
-
-
-
 
 ### Opening a dialog box and its configuration options
 
 
-Spec provides for an easy way to open a UI as a simple dialog box with _Ok_ and _Cancel_ buttons \(that has no icons for resizing, closing or the window menu\). To do this, send the message `openDialogWithSpec` as below:
+Spec provides for an easy way to open a UI as a simple dialog box with _Ok_ and _Cancel_ buttons \(that has no icons for resizing, closing or the window menu\). To do this, send the message `openDialog` as below:
 
 ```
 | we diag |
 we := WindowExamplePresenter new. 
-diag := we openDialogWithSpec
+diag := we openDialog
 ```
 
 
@@ -87,7 +85,7 @@ The `SpDialogWindowPresenter` instance \(`diag` in the example above\) can also 
 ```
 | we diag |
 we := WindowExamplePresenter new. 
-diag := we openDialogWithSpec
+diag := we openDialog
 		okAction: [Transcript show: 'okAction'];
 		cancelAction: [Transcript show: 'cancelAction'];
 		whenClosedDo: [ Transcript show: 'whenClosedDo']	
@@ -151,7 +149,7 @@ Then the following snippet programmatically open and close a window and you shou
 ```
 | we window |
 we := WindowExamplePresenter3 new. 
-window := we openWithSpec.
+window := we open.
 window close.
 ```
 
@@ -159,12 +157,12 @@ window close.
 #### With a dialog window
 
 
-When you want the same behavior with a dialog window you can either use the mechanism as described previously \(i.e. declare your interest in window closing in the method `initializeWindow:`\) or configure the dialog presenter returned by the message `openDialogWithSpec`.
+When you want the same behavior with a dialog window you can either use the mechanism as described previously \(i.e. declare your interest in window closing in the method `initializeWindow:`\) or configure the dialog presenter returned by the message `openDialog`.
 
 ```
 | we diag |
 we := WindowExamplePresenter new. 
-diag := we openDialogWithSpec.
+diag := we openDialog.
 diag
 	okAction: [Transcript show: 'okAction'];
 	cancelAction: [Transcript show: 'cancelAction'].
@@ -197,7 +195,7 @@ instance the `extent:` message before opening, for example like this:
 | we |
  we := WindowExamplePresenter new.
  we extent: 300@80.
- we openWithSpec
+ we open
 ```
 
 
@@ -241,7 +239,7 @@ The size of a window can be made fixed, so that the user cannot resize it by dra
 
 ```
 | wewin |
-wewin := WindowExample new openWithSpec.
+wewin := WindowExample new open.
 wewin window beUnresizeable
 ```
 
@@ -254,7 +252,7 @@ Sometimes it makes sense to have a window without decoration, i.e. without contr
 
 ```
 | wewin |
-wewin := WindowExamplePresenter new openWithSpec.
+wewin := WindowExamplePresenter new open.
 wewin window
    removeCollapseBox;
    removeExpandBox;
@@ -288,7 +286,7 @@ In addition, you can set the title of any UI after it has been opened \(even if 
 ```
 | we |
 we := WindowExamplePresenter new. 
-we openWithSpec.
+we open.
 we window title: 'I am different!'
 ```
 
@@ -303,12 +301,11 @@ Firstly, sending the `windowIcon:` message to the `ComposableModel` allows an ic
 ```
 | wm1 wm2 |
  wm1 := WindowExamplePresenter new.
- wm1 openWithSpec.
+ wm1 open.
  wm1 windowIcon: (Smalltalk ui icons iconNamed: #thumbsDown).
- ARGH I DIE!!!
  wm2 := WindowExample new.
  wm2 windowIcon: (Smalltalk ui icons iconNamed: #thumbsUp).
- wm2 openWithSpec
+ wm2 open
 ```
 
 
@@ -332,18 +329,19 @@ To set the about text of a window, either override the `aboutText` method of the
 | we |
  we := WindowExamplePresenter new.
  we aboutText: 'Click + to grow, - to shrink.'.
- we openWithSpec
+ we open
 ```
 
 
 
 ### Modal windows
 
-
 A modal window is a window that takes control of the entire Pharo user interface, making it impossible for the user to select another window while it is open. This is especially useful for dialog boxes, but may also be needed for other kinds of windows.
 
+SD: More here
 
 ### Conclusion
 
 
 In this chapter we treated the features of Spec that have to do with windows. We first talked about opening and closing windows as well as how to open a window as a dialog box. This was followed by configuring the window size and its decorating widgets. We ended this chapter with the small yet important details of the window: its title, icon and about text. 
+ss
