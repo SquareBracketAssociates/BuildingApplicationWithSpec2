@@ -1,7 +1,7 @@
 ## Spec core in a nutshell 
 @cha_core 
 
-ssstatus: ready for review
+status: ready for review
 
 
 Spec is a framework in Pharo for describing user interfaces. 

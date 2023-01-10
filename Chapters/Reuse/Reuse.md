@@ -490,7 +490,6 @@ initializePresenters
 
 ### Changing layouts
 
-
 ```
 presenter := MyPresenter new.
 presenter openWithLayout: (SpBoxLayout newTopToBottom
@@ -498,7 +497,7 @@ add: #models;
 add: #api;
 add: #events;
 yourself).
- ```
+```
  
 or you can do:
 
@@ -521,17 +520,6 @@ presenter open.
 ```
 
 which means you can do your layout choose without requiring to specify a method that will be executed later.
-
-
-
-
-
-
-
-
-
-
-
 
 
 ### Considerations about a public configuration API
@@ -574,8 +562,7 @@ initializePresenters
 
 
 connectPresenters
-	….
-
+…
 	api whenSelectedItemChanged: [ :method |
 		method ifNotNil: [ events resetSelection ] ].
 	events whenSelectedItemChanged: [ :method |
@@ -595,8 +582,6 @@ So we have
 
 Now the question for your presenter definers is what is the API that you should expose to your users. 
 We would say that it does not matter because exposing a API similar to the one of Spec1 is possible as shown below. 
-
-
 
 ```
 whenSelectedItemChangedDo: aBlock
