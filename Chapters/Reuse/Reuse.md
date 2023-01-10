@@ -1,6 +1,7 @@
 ## About reuse and composition
-
 @cha_reuse
+
+status: Currently working on it. 
 
 A key design goal of Spec is to enable the seamless reuse of user interfaces as widgets for the user interface you are building. The reason for this is that it results in a significant productivity boost when creating user interfaces.
 

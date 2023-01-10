@@ -12,6 +12,8 @@ We give some basis before showing how to effectively use styles to enhance the l
 
 ### How do styles work?
 
+status: integrated some material from renaud. Now should do another pass. 
+
 Styles in Spec work like CSS. They are style sheets in which the properties for presenting a presenter are defined. Properties such as colors, width, height, font, and others.
 As a general principle it is better to use styles instead of fixed constraints, because your application will be more responsive.
 

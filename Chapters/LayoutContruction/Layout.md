@@ -1,14 +1,11 @@
 ## Layouts (underway)
 @cha_layout
 
+status: should check the old LayoutConstruction.md file
 
 
-
-
-
-
-in spec2 layout will be created in instance side and class-side accessors will remain for those who prefer it.
-this is to reflect the dynamic nature of layouts in spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare them by name before.
+In Spec2 layouts are created in instance side. But class-side accessors will remain for those who prefer it.
+This is to reflect the dynamic nature of layouts in spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare them by name before.
 now... it is possible that there are cases where you want the layout "template" instead the layout instantiated... so you still can do it.
 
 ### Basic principle reminder
@@ -56,7 +53,7 @@ padding  - extra space in pixels to put between this child and its neighbors, ov
      reference edge of box"
 
 ```smalltalk
-SpBoxLayout newVertical 
+SpBoxLayout newTopToBottom 
 	spacing: 15;
 	add: button1 expand: false fill: true padding: 5;
 	add: button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];

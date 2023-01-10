@@ -1,5 +1,6 @@
 ## A Simple Contact Book
 
+status: Ready for review - should publish the code
 
 In this chapter we develop a simple model for a contact book.
 Then we define a user interface.

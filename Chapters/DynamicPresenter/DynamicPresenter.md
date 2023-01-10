@@ -2,6 +2,8 @@
 
 @cha_dynamic_presenter
 
+status: should do a pass before review
+
 Contrary to Spec1, in Spec2 all the layouts are dynamic. It means that you can change on the fly the elements displayed. It is a radical improvement from Spec1 where most of the layout were static and building dynamic widgets was cumbersome.
 
 In this chapter we will show that presenters can be dynamically composed using layouts. We will show a little interactive section. Then we will build a little code editor with dynamic aspects. Note that In this post, we are going to use simply Spec, to refer to Spec2 when we do not need to stress a difference.
@@ -286,7 +288,7 @@ MyMiniBrowserPresenter >> initializeWindow: aWindowPresenter
 ```
 
 
-Voilà! We have a new version minimal version of the System Browser with a read-only mode. If we run `MyMiniBrowserPresenter new openWithSpec` we should get *@layout7@*.
+Voilà! We have a new version minimal version of the System Browser with a read-only mode. If we run `MyMiniBrowserPresenter new open` we should get *@layout7@*.
 
 ![Our little code browser in readonly mode.](figures/layout7.png width=60&label=layout7)
 

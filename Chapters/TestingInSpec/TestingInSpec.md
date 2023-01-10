@@ -1,6 +1,7 @@
-
 ## Testing Spec Applications
 @cha_testing
+
+status: ready for review. Looking for some source of already written tests - may be the launcher so that people can have a look
 
 Developers often think that testing UI is difficult. This is true that fully testing the placement and layout of widgets can be tedious. 
 However, testing the logic of an application and in particular the interaction logic is possible and this is what we will show in this chapter. 

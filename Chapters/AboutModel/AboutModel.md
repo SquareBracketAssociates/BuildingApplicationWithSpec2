@@ -1,5 +1,6 @@
 ## About presenter on a model
 
+status: ready for review
 
 It is frequent that you want to open a presenter on a given object.
 In that case you would like that the sub presenters \(list, text,..\) get initialized based on the object that you passed. 
@@ -74,6 +75,8 @@ lister class: Rectangle
 
 
 ### With SpPresenterWithModel
+
+
 
 A presenter may also have a model that is a domain object you need to interact with to display or update data. 
 In this case, you should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object and manages its change.

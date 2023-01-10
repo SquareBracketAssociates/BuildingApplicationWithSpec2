@@ -1,5 +1,7 @@
 ## Integration of Athens in Spec
 
+status: Did a first pass on the material of renaud
+
 This chapter has been originally written by renaud villemeur. We thank him for this contribution. It shows how you can integrate vector graphic drawing within Spec component.
 
 ### Introduction
@@ -223,6 +225,7 @@ This example is simple because the rendering may have to be invalidated if somet
 
 ### Conclusion
 
-
+This chapter illustrates clearly that Spec can take advantage of canvas related operations such as proposed by Athens to open 
+the door to specific visuals. 
 
 

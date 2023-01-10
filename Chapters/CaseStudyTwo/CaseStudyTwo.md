@@ -1,5 +1,7 @@
 ## Todo Application: a 15min tutorial
 
+status: Ready for review
+
 This is a small tutorial to give a first look at the world of Spec2 and developing application with it.  
 It should not be taken as a comprehensive guide since a lot of details and featurs are left out explicitly to avoid difficult issues. 
   

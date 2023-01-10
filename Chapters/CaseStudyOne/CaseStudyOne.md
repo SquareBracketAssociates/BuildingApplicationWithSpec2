@@ -1,6 +1,7 @@
-open## Most of Spec20 in one example
+## Most of Spec20 in one example
 @chacasestudyone
 
+status: ready for review
 
 In this chapter we will guide you over the building of a simple but not trivial 
 application to manage films as shown in Figure *@FullApp@*.

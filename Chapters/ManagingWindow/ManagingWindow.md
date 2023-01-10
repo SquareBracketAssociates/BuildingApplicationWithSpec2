@@ -2,6 +2,9 @@
 
 @cha_managing_windows
 
+status: need a pass before review need some explanation about modal window.
+
+
 In this book so far we have talked about reuse of `SpPresenter`s, discussed the fundamental functioning of Spec and presented how to layout the widgets of a user interface. Yet what is still missing for a working user interface is showing all these widgets inside of a window. In our examples until now we have only shown a few of the features of Spec for managing windows, basically restricting ourself to opening a window.
 
 In this chapter we provide a more complete overview of how Spec allows for the managing of windows. We show opening and closing, the built-in dialog box facility, sizing of windows and all kinds of window decoration.
@@ -16,9 +19,8 @@ To illustrate the window configuration options that are available, we use a simp
 
 
 ```
-SpPresenter subclass: #WindowExamplePresenter
-   instanceVariableNames: 'button1 button2'
-   classVariableNames: ''
+SpPresenter << #WindowExamplePresenter
+   slots: {#button1 . #button2};
    package: 'SpecBook'
 ```
 
@@ -97,10 +99,7 @@ The message `cancelled` sent to diag will return `true` if the dialog was closed
 
 
 
-### Preventing window close \(help here\)
-
-
-!!todo I tried in WindowExamplePresenter2 in pharo-spec/CodeOfSpecBook but I could not make it work.
+### Preventing window close
 
 Spec provides for the possibility to check if a window can effectively be closed when the user clicks on the close box. To use it, this feature must first be turned on, by sending `askOkToClose: true` to the `SpWindowPresenter`. This can be done for example by changing our `WindowExample` as follows:
 
@@ -118,7 +117,7 @@ The behavior of the close button however is still not changed, closing a window 
 
 ```
 WindowExample >> okToChange
-   ^false
+   ^ false
 ```
 
 
@@ -157,7 +156,7 @@ window close.
 #### With a dialog window
 
 
-When you want the same behavior with a dialog window you can either use the mechanism as described previously \(i.e. declare your interest in window closing in the method `initializeWindow:`\) or configure the dialog presenter returned by the message `openDialog`.
+When you want the same behavior with a dialog window you can either use the mechanism as described previously (i.e. declare your interest in window closing in the method `initializeWindow:`) or configure the dialog presenter returned by the message `openDialog`.
 
 ```
 | we diag |
@@ -178,7 +177,6 @@ diag
 
 
 ### Window size and decoration
-
 @sec_win_size_decoration
 
 We now focus on sizing a window before and after opening it, and then talk about removing the different control widgets that decorate the window.
@@ -243,8 +241,6 @@ wewin := WindowExample new open.
 wewin window beUnresizeable
 ```
 
-% %verified
-
 ### Removing window decoration
 
 
@@ -272,9 +268,10 @@ You can provide some textual information about the widow by providing a title an
 ### Setting and changing the title
 
 
-By default, the title of a new window is _'Untitled window_'. 
+By default, the title of a new window is _'Untitled window'_. 
 This of course can be changed. The first way is to specialize the method `initializeWindow:`
 to send the message `title:` to the `windowPresenter` as follows: 
+
 ```
 WindowExamplePresenter >> initializeWindow: aWindowPresenter 
   	 aWindowPresenter title: 'Click to grow or shrink.'
@@ -309,7 +306,7 @@ Firstly, sending the `windowIcon:` message to the `ComposableModel` allows an ic
 ```
 
 
-Secondly, the icon can be changed by overriding the `windowIcon` message, as below. \(The code below is for Pharo 6, for this to work in Pharo 5 replace `self iconNamed:` with `Smalltalk ui icons iconNamed:` .\)
+Secondly, the icon can be changed by overriding the `windowIcon` message, as below. 
 
 ```
 WindowExamplePresenter >> windowIcon
@@ -317,13 +314,13 @@ WindowExamplePresenter >> windowIcon
 ```
 
 
-!!note Changing the `windowIcon` method will affect all open windows, as the taskbar is periodically refreshed. This refreshing is also why `windowIcon:` can be sent before or after the window has been opened.
+""Notes"" Changing the `windowIcon` method will affect all open windows, as the taskbar is periodically refreshed. This refreshing is also why `windowIcon:` can be sent before or after the window has been opened.
 
 ### Setting the about text
 
 
 To set the about text of a window, either override the `aboutText` method of the corresponding
-`ComposableModel` so that it returns the new about text, or send the instance the `aboutText:` message before opening, for example like below.
+`SpPresenter` so that it returns the new about text, or send the instance the `aboutText:` message before opening, for example like below.
 
 ```
 | we |
@@ -331,8 +328,6 @@ To set the about text of a window, either override the `aboutText` method of the
  we aboutText: 'Click + to grow, - to shrink.'.
  we open
 ```
-
-
 
 ### Modal windows
 

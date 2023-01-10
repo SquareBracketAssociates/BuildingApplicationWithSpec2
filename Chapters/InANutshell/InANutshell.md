@@ -1,6 +1,8 @@
 ## Spec core in a nutshell 
- 
 @cha_core 
+
+ssstatus: ready for review
+
 
 Spec is a framework in Pharo for describing user interfaces. 
 It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. 
