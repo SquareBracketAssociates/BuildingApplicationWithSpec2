@@ -1,6 +1,8 @@
 ## A small example
-
 @cha_small_example
+
+status: Stef did a pass but should check the code
+
 
 We will construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will allow you to build basic user interfaces.
 
@@ -22,9 +24,8 @@ All user interfaces in Spec are subclasses of `SpPresenter`, so
 the first step in creating the UI is subclassing it:
 
 ```
-SpPresenter subclass: #CustomerSatisfactionPresenter
-	instanceVariableNames: 'buttonHappy buttonNeutral buttonBad screen'
-	classVariableNames: ''
+SpPresenter << #CustomerSatisfactionPresenter
+	slots: { #buttonHappy . #buttonNeutral . #buttonBad . #screen};
 	package: 'CodeOfSpec20Book'
 ```
 
@@ -136,7 +137,7 @@ The widgets have now been defined and configured, but their placement in the UI 
 ```
 CustomerSatisfactionPresenter >> defaultLayout
 	^ SpBoxLayout newVertical 
-		add: (SpBoxLayout newHorizontal
+		add: (SpBoxLayout newLeftToRight
 				add: buttonHappy;
 				add: buttonNeutral;
 				add: buttonBad;
@@ -152,7 +153,7 @@ In this layout, we add two rows to the UI, one with the buttons and one with the
 
 
 
-Once the class method `defaultSpec` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new openWithSpec`. You should obtain a widget similar to the one shown in Figure *@figFirstCut@*.
+Once the class method `defaultSpec` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new open`. You should obtain a widget similar to the one shown in Figure *@figFirstCut@*.
 
 ![A first version of the customer satisfaction UI.](figures/FirstCut.png width=50&label=figFirstCut)
 
@@ -177,7 +178,7 @@ Of course, you are free to use helper method to return the title and extent of y
 ![A final version of the customer satisfaction UI.](figures/SecondCut.png width=50&label=figSecondCut)
 
 
-To open a UI, an instance of the class needs to be created and it needs to be sent the `openWithSpec` message. This will open a window and return an instance of `SpWindowPresenter`, which allows the window to be closed from code.
+To open a UI, an instance of the class needs to be created and it needs to be sent the `open` message. This will open a window and return an instance of `SpWindowPresenter`, which allows the window to be closed from code.
 
 ```
 	| ui |
