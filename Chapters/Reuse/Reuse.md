@@ -12,7 +12,7 @@ In this chapter, you will learn how we can build a new UI by reusing already def
 ### First requirements
 
 
-![ProtocolCodeBrowser: Browsing the public APIs of widgets.](figures/ProtocolBrowser.png width=80&anchor=figprotocolbrowser)
+![ProtocolCodeBrowser: Browsing the public APIs of widgets.](figures/ProtocolBrowser.png width=80&anchor=figprotocolbrowser&label=figprotocolbrowser)
 
 To show how Spec enables the composition and reuse of user interfaces, in this chapter we build the user interface shown in Figure *@figprotocolbrowser@* as a composition of four parts:
 1. The **WidgetClassListPresenter**: a widget containing a `SpListPresenter` specifically for displaying the subclasses of `SpAbstractWidgetPresenter`.
@@ -76,7 +76,7 @@ Doing `WidgetClassListPresenter new open`, you should obtain UI shown in Figure 
 ### Supporting reuse
 
 
-Since this UI will later be used together with other widgets to provide a more complete user interface, some actions will need to occur when a list item is clicked. However, we cannot know beforehand what all these possible actions will be everywhere that it will be reused. The best solution therefore is to place this responsibility on the reuser of the widget. Every time this UI is reused as a widget, it will be configured by the reuser. To allow this, we add a configuration method named `whenSelectedItemChanged:` :
+Since this UI will later be used together with other widgets to provide a more complete user interface, some actions will need to occur when a list item is clicked. However, we cannot know beforehand what all these possible actions will be everywhere that it will be reused. The best solution therefore is to place this responsibility on the reuser of the widget. Every time this UI is reused as a widget, it will be configured by the reuser. To allow this, we add a configuration method named `whenSelectionChangedDo:` as follows:
 
 ```
 WidgetClassListPresenter >> whenSelectionChangedDo: aBlock
@@ -84,7 +84,7 @@ WidgetClassListPresenter >> whenSelectionChangedDo: aBlock
 ```
 
 
-Now, whoever reuses this widget can parameterize it with a block that will be executed whenever the selected item is changed.
+Now, whoever reuses this widget can parameterize it with a block that will be executed whenever the selection changes.
 
 ### Combining two basic presenters into a reusable UI
 
@@ -376,8 +376,9 @@ Now we can decide to open the viewer with different layouts using the message `o
 
 ```
 ProtocolViewerPresenter class >> exampleHorizontal
-	
-		self new openWithLayout: #horizontalLayout
+	| inst |
+	inst := self new.
+	inst openWithLayout: inst horizontalLayout
 ```
 
 
@@ -413,7 +414,8 @@ ProtocolViewerPresenter >> whenSelectionInEventChanged: aBlock
 ```
 
 
-####Note. These methods add semantic information to the configuration API. They state that they configure what to do when a class, `api` or `api-events` list item has been changed. This arguably communicates the customization API more clearly than just having the subwidgets accessible.
+**Note.**
+These methods add semantic information to the configuration API. They state that they configure what to do when a class, `api` or `api-events` list item has been changed. This arguably communicates the customization API more clearly than just having the subwidgets accessible.
 
 
 ### Changing the layout of a reused widget
@@ -442,7 +444,7 @@ ProtocolCodeBrowserPresenter >> initializePresenters
 ```
 
 ```
-defaultLayout
+ProtocolCodeBrowserPresenter >>defaultLayout
 	
 	^ SpBoxLayout newTopToBottom
 			add: (SpBoxLayout newHorizontal add: #viewer ; yourself);
@@ -457,12 +459,6 @@ defaultLayout
 ProtocolCodeBrowserPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Spec Protocol Browser'
 ```
-
-TO BE CHANGED
-The text field is configured to show source code:
-- `aboutToStyle: true` enables syntax highlighting.
-- `isCodeCompletionAllowed: true` enables code completion.
-
 
 The `connectPresenters` method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
 
@@ -482,8 +478,8 @@ SHOULD Update
 
 ```
 initializePresenters
-
-	self instantiate: ProtocolViewer withL ProtocolViewer horizontalLayout
+	
+	self instantiate: ProtocolViewer withLayout: ProtocolViewer horizontalLayout
 	
 ```
 
@@ -522,6 +518,19 @@ presenter open.
 which means you can do your layout choose without requiring to specify a method that will be executed later.
 
 
+ESTEBAN how I can do
+
+````
+ProtocolCodeBrowserPresenter >> initializePresenters
+	text := self instantiate: SpCodePresenter.
+	viewer := self instantiate: ProtocolViewerPresenter.
+	BUT WITH ANOTHER LAYOUT DEFINED ON PROTOCOLVIEWER PRESENTER
+	self focusOrder
+		add: viewer;
+		add: text
+
+```
+
 ### Considerations about a public configuration API
 
 @sec_public_API
@@ -538,7 +547,7 @@ The presence of the three methods defined there communicates to the user that we
 The same fundamentally also holds for the other examples in this chapter: each method in an `api` protocol communicates an intent to the reuser: this is how we expect that this widget will be configured.
 Without such declared methods, it is less clear to the reuser what can to be done to be able to effectively reuse this widget.
 
-For the latter cost, expecting reusers of the widget to directly send messages to internal objects \(in instance variables\) means breaking encapsulation.
+For the latter cost, expecting reusers of the widget to directly send messages to internal objects (in instance variables) means breaking encapsulation.
 As a consequence, we are no longer free to change the internals of the UI, e.g., by renaming the instance variables to a better name or changing the kind of widget used.
 Such changes may break reusers of the widget and hence severely limits how we can evolve this widget in the future.
 In the end, it is safer to define a public API and ensure in future versions of the widget that the functionality of this API remains the same.
