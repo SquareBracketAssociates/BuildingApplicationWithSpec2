@@ -39,7 +39,13 @@ TodoListPresenter >> todoListContextMenu
 						action: [ self removeSelectedTask ] ]
 ```
 
+### Menu Bar
 
-### MenuBar
+### ToolBar
 
 How to create one that we can resue across components?
+
+Attention un `SpToolBarButton` Family should be contained in a `SpToolBar`
+
+
+Homemade toolbar with SpButton
