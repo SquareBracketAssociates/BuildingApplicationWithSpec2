@@ -170,7 +170,7 @@ SpButtonAndListH >> initializeWindow: aWindowPresenter
 SpButtonAndListH >> defaultLayout 
  
 	^ SpBoxLayout newLeftToRight 
-		  add: buttons; 
+		  add: buttons;
 		  add: list; 
 		  yourself 
 ``` 
@@ -193,10 +193,9 @@ SpButtonAndListH << #TButtonAndListV
 ``` 
  
 THIS DOES NOT WORK ANYMORE 
-ESTEBAN 
-can we build soemthing using replace:with: and subpresenterOrLayoutNamed:of:
-How could we only take one subpresenter of another composer
-How can we select a different layout
+ESTEBAN How can we select a different layout?
+can we build soemthing subpresenterOrLayoutNamed:of:
+
 
  
 ``` 
