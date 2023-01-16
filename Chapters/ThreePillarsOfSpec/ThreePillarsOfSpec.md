@@ -132,26 +132,25 @@ SpTwoButtons >> defaultLayout
 ```
 
 We define also a `defaultLayout` method so that the presenter can be opened without defining a given layout. 
- 
- 
+
+
 This UI can be opened in multiple ways: 
- 
+
 - `SpTwoButtons new openWithLayout: SpTwoButtons buttonRow` places the buttons in a row. 
 - `SpTwoButtons new openWithLayout:  SpTwoButtons buttonCol` places them in a column. 
  
 ### Specifying a layout when reusing a widget 
- 
- 
-Having multiple layouts for a widget implies that there is a way to specify the layout to use when a widget is reused. This is simple we use the method `layout:`. 
+
+Having multiple layouts for a widget implies that there is a way to specify the layout to use when a widget is reused. This is simple we use the method `layout:`.
  
 ``` 
 SpPresenter << #SpButtonAndListH 
 	slots: { #buttons . #list }; 
 	package: 'CodeOfSpec20BookThreePillar'
-``` 
+```
  
  
-``` 
+```
 SpButtonAndListH >> initializePresenters 
 	buttons := self instantiate: SpTwoButtons. 
 	list := self newList. 
@@ -166,24 +165,27 @@ SpButtonAndListH >> initializeWindow: aWindowPresenter
 ``` 
  
  
-``` 
+```
 SpButtonAndListH >> defaultLayout 
  
 	^ SpBoxLayout newLeftToRight 
 		  add: buttons;
 		  add: list; 
 		  yourself 
-``` 
- 
- 
-This `SpButtonAndListH ` class results in a  **SuperWidget** window as shown in Figure *@fig_alternativeButton@*.  
+```
+
+
+This `SpButtonAndListH ` class results in a SuperWidget window as shown in Figure *@fig_alternativeButton@*.  
 It reuses the `SpTwoButtons` widget, and places all three widgets in a horizontal order because the `SpTwoButtons` widget will use the `buttonRow` layout method. 
  
 ![Screen shot of the UI with buttons placed horizontally](figures/alternativeButton.png width=50&label=fig_alternativeButton) 
  
-Alternatively, we can create `TBAndListV` class as a subclass of `SpButtonAndListH ` and only change the `defaultLayout` method as below.  
-It specifies that the reused `buttons` widget should use the `buttonCol` layout method, and hence results in the window shown in Figure *@fig_SuperWidget@*. 
- 
+Alternatively, we can create `TBAndListV` class as a subclass of `SpButtonAndListH ` and only change the `defaultLayout` method as below.
+It specifies that the reused `buttons` widget should use the `buttonCol` layout method, and hence results in the window shown in
+Figure
+*@fig_SuperWidget@*.
+
+
 ![Screen shot of the UI with buttons placed vertically](figures/SuperWidget.png width=50&label=fig_SuperWidget) 
  
  
@@ -224,8 +226,7 @@ In addition to these primitive methods, the basic widgets provide more specific 
  
  
 ### Conclusion 
- 
- 
+
 In this chapter we have given a more detailed description of how the three fundamental methods of Spec: `initializePresenters`, `defaultLayout` and `connectPresenters` are each responsible for a different aspect of the user interface building process. We also discussed in detail the ability to use different layout methods and how the lookup of layout methods is performed. 
- 
+
 Although reuse is fundamental in Spec, we did not explicitly treat it in this chapter. Instead we refer to the next chapter for more information.
