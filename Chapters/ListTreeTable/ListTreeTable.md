@@ -1,4 +1,4 @@
-## Lists, Tables and Trees
+## Lists, tables and trees
 
 status: definitively missing
 
@@ -107,7 +107,8 @@ connectPresenters
 ```
 
 
-### Drag and Drop
+### Drag and drop
+
 Lists and other container structures supports drag and drop.
 The following script shows how to configure two lists to support drag from one and dropping in another.
 
@@ -137,15 +138,22 @@ The following script illustrates the API.
 - `wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ]`. With the message `wantsDrop:` we can specify a predicate to accept a dropped element. 
 - `acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ]`. The message `acceptDrop:` specifies the treatment performed once the dropped item is accepted.
 
-### Activation Clicks
+### Activation clicks
 
-An element on a list can be 'activated', meaning it will trigger an event to execute an action on it. An activation is different than a selection: one can _select_ an element without activating it.
-The messages `activateOnDoubleClick`
+An element on a list can be _'activated'_, meaning it will trigger an event to execute an action on it. 
+Note that an activation is different than a selection: one can _select_ an element without activating it.
+The messages `activateOnDoubleClick` configures the list to react to double click, while its counterpart `activateOnSingleClick`.
 
-Stef here!!!
+
+### Filtering lists
+
+Lists can also be filtered 
 
 
-### Filtering List
+
+### Selectable filtering lists
+
+
 
 
 
