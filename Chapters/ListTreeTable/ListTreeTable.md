@@ -16,7 +16,7 @@ The following script illustrates this and the result is shown in Figure *@figSim
 
 ```
 SpListPresenter new
-	items: self environment allClasses;
+	items: Smalltalk allClasses;
 	open
 ```
 
@@ -50,8 +50,6 @@ SpListPresenter new
 	open
 ```
 
-ESTEBAN how can we have sortable lists? clicking on the bar to order?
-
 ### Decorating elements
 
 We can configure the way items are displayed in a more finer grained way. The following example illustrates it: we can control the icons are associated with the item using the message `displayIcon:`, the item color using the mssage `displayColor:`. The format (bold, italic, underline) can the controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:` (See Figure *@figSimpleListDecorated@*).
@@ -83,7 +81,7 @@ The message `beMultipleSelection` controls such aspect.
 
 ```
 SpListPresenter new
-	items: self environment allClasses;
+	items: Smalltalk allClasses;
 	beMultipleSelection;
 	open
 ```
@@ -147,14 +145,61 @@ The messages `activateOnDoubleClick` configures the list to react to double clic
 
 ### Filtering lists
 
-Lists can also be filtered 
+Lists can also be filtered as shown in Figure *@figFiltering@*.
+The following script shows the use of the `SpFilteringListPresenter`.
 
 
+
+```
+SpFilteringListPresenter new
+	items: Smalltalk allClasses ;
+	open; 
+	withWindowDo: [ :window | 
+		window title: ' SpFilteringListPresenter example' ]
+```
+
+![A filtering list with bottom filter.](figures/FilteringList.png width=60&label=figFiltering)
+
+The following script shows that the filter can be placed on the top. 
+
+```
+SpFilteringListPresenter new
+	items: Smalltalk allClasses ;
+	openWithLayout: SpFilteringListPresenter topLayout ; 
+	open; 
+	withWindowDo: [ :window | 
+		window title: ' SpFilteringListPresenter example' ]
+```
+
+Note that a filter can be declared upfront using the message `applyFilter:`.
+
+```
+SpFilteringListPresenter new
+	items: Smalltalk allClasses ;
+	openWithLayout: SpFilteringListPresenter topLayout ; 
+	applyFilter: 'ZZ';
+	open ; 
+	
+	withWindowDo: [ :window | 
+		window title: 'SpFilteringListPresenter prefiltered example' ]
+```
 
 ### Selectable filtering lists
 
+Often lists are used to select items. This is what the class `SpFilteringSelectableListPresenter` offers. 
+In addition to be able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
 
+![A selectable filtering list with bottom filter.](figures/SelectableList.png width=60&label=figSelectable)
 
+The following script produces the situation describes by 
+```
+SpFilteringSelectableListPresenter new
+	items: Smalltalk allClasses ;
+	openWithLayout: SpFilteringListPresenter topLayout ; 
+	open ; 
+	withWindowDo: [ :window | 
+		window title: 'SpFilteringSelectableListPresenter example' ]
+```
 
 
 ### Component List
