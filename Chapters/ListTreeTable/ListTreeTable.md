@@ -22,6 +22,7 @@ SpListPresenter new
 
 ![A simple list showing class names](figures/List1Simple.png width=60&label=figSimpleList)
 
+###### Controlling item display.
 By default a list item is displayed using the result of the `displayString` message sent to the item.
 We can configure a list to apply a block to control the display of each item using the message `display:`.
 The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `printString`. See Figure *@figSimpleList2@*.
@@ -36,7 +37,6 @@ SpListPresenter
 ![A simple list controlling the way items are displayed](figures/List1Simple2.png width=60&label=figSimpleList2)
 
 ### About multiple/single selection
-
 
 Lists can support multiple selection or not.
 The message `beMultipleSelection` controls such aspect.
