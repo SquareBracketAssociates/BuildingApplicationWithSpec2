@@ -50,6 +50,8 @@ SpListPresenter new
 	open
 ```
 
+ESTEBAN how can we have sortable lists? clicking on the bar to order?
+
 ### Decorating elements
 
 We can configure the way items are displayed in a more finer grained way. The following example illustrates it: we can control the icons are associated with the item using the message `displayIcon:`, the item color using the mssage `displayColor:`. The format (bold, italic, underline) can the controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:` (See Figure *@figSimpleListDecorated@*).
@@ -135,7 +137,12 @@ The following script illustrates the API.
 - `wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ]`. With the message `wantsDrop:` we can specify a predicate to accept a dropped element. 
 - `acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ]`. The message `acceptDrop:` specifies the treatment performed once the dropped item is accepted.
 
+### Activation Clicks
 
+An element on a list can be 'activated', meaning it will trigger an event to execute an action on it. An activation is different than a selection: one can _select_ an element without activating it.
+The messages `activateOnDoubleClick`
+
+Stef here!!!
 
 
 ### Filtering List
