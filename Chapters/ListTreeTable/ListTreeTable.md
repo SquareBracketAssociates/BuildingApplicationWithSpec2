@@ -11,21 +11,65 @@ In this chapter we present some of the functionality of such presenters.
 
 ### Lists
 
+Creating a list is a simple as instantiating a `SpListPresenter` and specifying a list of items that the list should display.
+The following script illustrates this and the result is shown in Figure *@figSimpleList@*.
+
+```
+SpListPresenter new
+	items: self environment allClasses;
+	open
+```
+
+![A simple list showing class names](figures/List1Simple.png width=60&label=figSimpleList)
+
+By default a list item is displayed using the result of the `displayString` message sent to the item.
+We can configure a list to apply a block to control the display of each item using the message `display:`.
+The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `printString`. See Figure *@figSimpleList2@*.
+
+```
+SpListPresenter 
+	items: Point methods;
+	display: [ :item | item selector ];
+	open
+```
+
+![A simple list controlling the way items are displayed](figures/List1Simple2.png width=60&label=figSimpleList2)
+
+### About multiple/single selection
 
 
-### About multiple selection
+Lists can support multiple selection or not.
+The message `beMultipleSelection` controls such aspect.
 
 ```
 SpListPresenter new
 	items: self environment allClasses;
 	beMultipleSelection;
-	open;
-	yourself
+	open
 ```
 
 
 
+Since selection can hold multiple item, there is an impact on the protocol to react to selection changes.
+Indeed, lists, filtering list, trees, and tables offers the `whenSelectionChangedDo:`API and not `whenSelectedItemDo:`.
+The argument of the block is then a selection instance of `SingleSelectionMode` or `MultipleSelectionMode` (`SpSingleSelectionMode`, `SpMultipleSelectionMode`, or `SpTreeMultipleSelectionMode` and `SpTreeSingleSelectionMode`).
+
+
+Here is a typical use case of the method `whenSelectionChangedDo:`.
+
+```
+connectPresenters
+
+	changesTree whenSelectionChangedDo: [ :selection | 
+		selection selectedItem
+			ifNil: [ textArea text: '' ]
+			ifNotNil: [ :item | textArea text: (self buildDiffFor: item) ] ]
+```
+
+
 #### Drag and Drop
+Lists and other container structures supports drag and drop.
+The following script shows how to configure two lists to support drag from one and dropping in another.
 
 ```
 | list1 list2 |
@@ -38,14 +82,18 @@ list2 := SpListPresenter new.
 list2	dropEnabled: true;
 	wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ];
 	acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ].
+```
 
+```
 SpPresenter new
 	layout: (SpBoxLayout newLeftToRight
-			 add: list1;
-			 add: list2;
-			 yourself);
+		 add: list1;
+		 add: list2;
+		 yourself);
 	open
 ```
+
+
 - `dragEnabled:`
 - `dropEnabled:`
 - `wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ]`
@@ -53,6 +101,9 @@ SpPresenter new
 
 
 ### Decorating elements
+
+
+
 
 
 ```
@@ -69,6 +120,10 @@ SpListPresenter new
 	displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
 	open
 ```
+
+### Filtering List
+
+
 
 ### Component List
 
