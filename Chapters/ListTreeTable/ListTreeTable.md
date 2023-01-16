@@ -204,6 +204,17 @@ SpFilteringSelectableListPresenter new
 
 ### Component List
 
+While the lists we saw until now are homogeneous in the sense that they all display strings, Spec offers the possibility to display list of presenters. It means that elements in the list do not have the same size and can contains other presenters. 
+
+This lets developers produce advanced user interface such as the one of the report builder of the ModMoose toolsuite. 
+
+![An example of a component list from the ModMoose platform.](figures/SelectableList.png width=60&label=figModMoose)
+
+
+
+
+
+
 ### Tables
 
 ### Trees
