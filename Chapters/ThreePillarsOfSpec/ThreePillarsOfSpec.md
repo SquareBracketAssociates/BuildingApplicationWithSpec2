@@ -162,10 +162,6 @@ SpTwoButtons new
 	open 
 ```
 
-Note that we can change the layout dynamically from an inspector as shown in *@figTweak@*.
-
-![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak) 
-
 
 
 
@@ -262,6 +258,10 @@ Note the use of the method `add:layout:` with the selector of the method returni
 here #buttonCol. This is normal since we cannot access state of a subcomponent at this moment.
 
 
+
+Note that we can change the layout dynamically from an inspector as shown in *@figTweak@*.
+
+![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak) 
 
 
 
