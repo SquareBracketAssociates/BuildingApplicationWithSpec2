@@ -162,9 +162,9 @@ SpTwoButtons new
 	open 
 ```
 
-Note that we can change the layout dynamically from an inspector 
+Note that we can change the layout dynamically from an inspector as shown in *@figTweak@*.
 
-![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=fig_SuperWidget) 
+![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak) 
 
 
 
