@@ -193,12 +193,13 @@ In addition to be able to filter items, it lets the user select items by ticking
 
 The following script produces the situation describes by 
 ```
-SpFilteringSelectableListPresenter new
+(SpFilteringSelectableListPresenter new
 	items: Smalltalk allClasses ;
-	openWithLayout: SpFilteringListPresenter topLayout ; 
-	open ; 
-	withWindowDo: [ :window | 
-		window title: 'SpFilteringSelectableListPresenter example' ]
+	layout: SpFilteringListPresenter topLayout ; 
+	asWindow)
+		title: 'SpFilteringSelectableListPresenter example';
+		open
+
 ```
 
 
@@ -206,14 +207,34 @@ SpFilteringSelectableListPresenter new
 
 While the lists we saw until now are homogeneous in the sense that they all display strings, Spec offers the possibility to display list of presenters. It means that elements in the list do not have the same size and can contains other presenters. 
 
-This lets developers produce advanced user interface such as the one of the report builder of the ModMoose toolsuite. 
+This lets developers produce advanced user interface such as the one of the report builder of the ModMoose toolsuite shown in Figure *@figModMoose@*.
 
-![An example of a component list from the ModMoose platform.](figures/SelectableList.png width=60&label=figModMoose)
+![An example of a component list from the ModMoose platform.](figures/mooseQDScreenshot.png width=80&label=figModMoose)
 
+The following script shows how to define a `SpComponentListPresenter` as its result is shown in Figure *@figCompo@*
 
+```
+| list |
+list := { 
+        (SpLabelPresenter new
+	         label: 'Test 1';
+	         yourself).
+        (SpImagePresenter new
+	         image: (self iconNamed: #smallOk);
+	         yourself).
+        (SpButtonPresenter new
+	         label: 'A button';
+	         yourself).
+        (SpImagePresenter new
+	         image: PolymorphSystemSettings pharoLogo asForm;
+	         yourself) }.
 
+SpComponentListPresenter new
+	presenters: list;
+	open
+```
 
-
+![A component list with several different presenter: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo)
 
 ### Tables
 
