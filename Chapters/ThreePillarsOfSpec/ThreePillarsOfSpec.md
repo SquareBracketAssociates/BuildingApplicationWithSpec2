@@ -85,30 +85,30 @@ can be specific to one instance and be dynamic.
  
 #### Having multiple layouts for a widget 
  
-For the same UI, multiple layouts can be described, and when the UI is built the use of a specific layout can be indicated. To do this, instead of calling `open` (as we have done until now), use the `openWithLayout:` message with  a layout as argument. For example, consider the following artificial example of a two button UI that has two different layout methods: 
+For the same UI, multiple layouts can be described, and when the UI is built the use of a specific layout can be indicated. To do this, instead of calling `open` (as we have done until now), use the `openWithLayout:` message with  a layout as argument. For example, consider the following artificial example of a two button UI that has two different layouts: horizontal and vertical.
+ 
+ We define a new presenter named `SpTwoButtons`.
  
 ``` 
 SpPresenter << #SpTwoButtons 
 	slots: { #button1 . #button2 }; 
 	package: 'CodeOfSpec20BookThreePillar'
-``` 
- 
- 
-``` 
+```
+
+We define a simple `initializePresenters` method as follows: 
+
+```
 SpTwoButtons >> initializePresenters 
 	button1 := self newButton. 
 	button2 := self newButton. 
- 
-	button1 label: '1'. 
-	button2 label: '2'. 
- 
-	self focusOrder 
-		add: button1; 
-		add: button2 
-``` 
- 
- 
- 
+
+	button1 label: '1'.
+	button2 label: '2'.
+```
+
+We define two class method method returning different layouts.
+Note that we could define such methods on the instance side too and we define them on the class side to be able to get such layouts without an instance of the class.
+
 ``` 
 SpTwoButtons class >> buttonRow 
 	 
@@ -126,6 +126,8 @@ SpTwoButtons class >> buttonCol
  
 Note that when we define the layout at the class level, we use a symbol whose name is the corresponding instance variable. Hence we use `#button2` to refer to the presenter stored in the instance variable `button2`. This mapping can be customized at the level of the presenter but we do not present this because we never got the need for it. 
 
+
+We define a `defaultLayout` merthod just invoking one of the previously defined method.
 ``` 
 SpTwoButtons >> defaultLayout 
 	^ self class buttonRow 
@@ -133,38 +135,69 @@ SpTwoButtons >> defaultLayout
 
 We define also a `defaultLayout` method so that the presenter can be opened without defining a given layout. 
 
-
+##### With openWithLayout:
 This UI can be opened in multiple ways: 
 
 - `SpTwoButtons new openWithLayout: SpTwoButtons buttonRow` places the buttons in a row. 
 - `SpTwoButtons new openWithLayout:  SpTwoButtons buttonCol` places them in a column. 
- 
-### Specifying a layout when reusing a widget 
 
-Having multiple layouts for a widget implies that there is a way to specify the layout to use when a widget is reused. This is simple we use the method `layout:`.
+
+Now we can do better and define two instance level methods to encapsulate the layout configuration. 
+
+```
+SpTwoButtons >> beCol
+	self layout: self class buttonCol
+```
+
+```
+SpTwoButtons >> beRow
+	self layout: self class buttonRow
+```
+
+Now we can write the following script
+
+```
+SpTwoButtons new 
+	beCol;
+	open 
+```
+
+Note that we can change the layout dynamically from an inspector 
+
+![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=fig_SuperWidget) 
+
+
+
+
+
+
+
+### Specifying a layout when reusing a presenter 
+
+Having multiple layouts for a presenter implies that there is a way to specify the layout to use when a presenter is reused. This is simple we use the method `layout:`.
+Here is an example. 
+We create a new presenter named: `SpButtonAndListH`.
  
 ``` 
 SpPresenter << #SpButtonAndListH 
 	slots: { #buttons . #list }; 
 	package: 'CodeOfSpec20BookThreePillar'
 ```
- 
- 
+
+
 ```
 SpButtonAndListH >> initializePresenters 
 	buttons := self instantiate: SpTwoButtons. 
 	list := self newList. 
 	list items: (1 to: 10). 
-	self focusOrder add: buttons; add: list. 
 ``` 
- 
- 
+
 ``` 
 SpButtonAndListH >> initializeWindow: aWindowPresenter 
 	aWindowPresenter title: 'SuperWidget' 
 ``` 
- 
- 
+
+
 ```
 SpButtonAndListH >> defaultLayout 
  
@@ -187,28 +220,53 @@ Figure
 
 
 ![Screen shot of the UI with buttons placed vertically](figures/SuperWidget.png width=50&label=fig_SuperWidget) 
- 
- 
+
+
+
 ``` 
 SpButtonAndListH << #TButtonAndListV 
 	package: 'CodeOfSpec20BookThreePillar'
 ``` 
  
-THIS DOES NOT WORK ANYMORE 
-ESTEBAN How can we select a different layout?
-can we build soemthing subpresenterOrLayoutNamed:of:
+```
+initializePresenters
+
+	super initializePresenters.
+	buttons beCol
+```
 
 
- 
+##### Alternative to declare subcomponent layout choice.
+
+The alternative is to define a new method `defaultLayout` and to use the `add:layout:`. 
+
+We define a different presenter
+
+```
+SpButtonAndListH << #TButtonAndListV2
+	package: 'CodeOfSpec20BookThreePillar'
+```
+
+We define a new `defaultLayout` method as follows: 
+
 ``` 
-SpButtonAndListH >> defaultLayout 
-	^ SpBoxLayout  
-			add: #buttons withSpec: #buttonCol; add: #list; 
-			yourself 
-``` 
- 
- 
- 
+SpButtonAndListV2 >> defaultLayout
+
+	^ SpBoxLayout new
+		add: buttons layout: #buttonCol;
+		add: list;
+		yourself
+```
+
+Note the use of the method `add:layout:` with the selector of the method returning the layout configuration 
+here #buttonCol. This is normal since we cannot access state of a subcomponent at this moment.
+
+
+
+
+
+
+
 ### The _connectPresenters_ method 
  
 @sec_initializePresenter 
