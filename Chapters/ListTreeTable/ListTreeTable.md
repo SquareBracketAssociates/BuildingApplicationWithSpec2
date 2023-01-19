@@ -234,10 +234,72 @@ SpComponentListPresenter new
 	open
 ```
 
-![A component list with several different presenter: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo)
+![A component list with several different presenter: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo).
+
+
+### Trees
+
+Spec offers also trees. 
+The following script shows how to list all the classes of Pharo using inheritance as shown *@figTreeExpanded@*.
+
+![A Tree .](figures/TreeExpanded.png width=50&label=figTreeExpanded)
+
+```
+SpTreePresenter new
+	roots: { Object };
+	children: [ :aClass | aClass subclasses ];
+	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
+	display: [ :aClass | aClass name ];
+	expandPath: #( 1 1 3 );
+	open
+```
+
+The script uses the message `expandPath:` shows that we can expand a specific item by a path.
+
+![A tree with a menu.](figures/TreeExpanded.png width=50&label=figTreemenu)
+
+The following script  shows how to use a dynamic context menu. This is a dynamic menu because 
+its contents is reexecuted.
+The dynamic aspect is expressed by a block `[ ... ]`.
+
+
+```
+| tree | 
+tree := SpTreePresenter new.
+tree roots: { Object };
+	children: [ :aClass | aClass subclasses ];
+	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
+	display: [ :aClass | aClass name ];
+	contextMenu: [ 
+		SpMenuPresenter new
+			addGroup: [ :group | 
+				group addItem: [ :item | item name: tree selectedItem asString ] ] ];
+	open
+```
+
+![A tree with a selected item.](figures/TreeExpanded.png width=50&label=figTreemenu)
+
+
+The following script shows the use of the following messages:
+- `selectPathByItems:` allows one to select elements specifying a group of items.
+- `scrollToSelection:` to ask the tree to scroll to the selection.
+
+
+```
+SpTreePresenter new
+	  roots: { Object };
+	  children: [ :aClass | aClass subclasses ];
+	  displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
+	  display: [ :aClass | aClass name ];
+	  open;
+	  selectPathByItems: SpTreePresenter withAllSuperclasses reversed allButFirst
+	  scrollToSelection: true
+```
+
+
 
 ### Tables
 
-### Trees
+
 
 ### Conclusion
