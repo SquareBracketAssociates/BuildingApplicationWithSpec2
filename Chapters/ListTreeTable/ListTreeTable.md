@@ -297,8 +297,69 @@ SpTreePresenter new
 ```
 
 
-
 ### Tables
+
+### Tree Tables
+
+Spec offers a way to have a tree with extra columns.
+The class `SpTreeTablePresenter` encapsulates this behavior.
+Note that the the first column is interpreted as a tree.
+
+The following script shows that the first colum will be a tree whose element is composed of an icon and a name: `SpCompositeTableColumn`. The resulting widget is shown in *@figTreeTable@*.
+
+
+```
+SpTreeTablePresenter new
+	beResizable;
+	addColumn: (SpCompositeTableColumn new
+				title: 'Classes';
+				addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+							self iconNamed: aClass systemIconName ]);
+				addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
+				yourself);
+	addColumn: (SpStringTableColumn new
+				title: 'Methods';
+				evaluated: [ :class | class methodDictionary size asString ]);
+	roots: { Object };
+	children: [ :aClass | aClass subclasses ];
+	open
+```
+
+![A tree table with two main columns: the first one is a composed one (with icon and string).](figures/TreeTable.png width=50&label=figTreeTable)
+
+Adding the following messages `width:` and `beExpandable` to the `SpCompositeTableColumn` instance fixes the size of the column.
+
+```
+SpCompositeTableColumn new
+	title: 'Classes';
+	addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+				self iconNamed: aClass systemIconName ]);
+	addColumn: (SpStringTableColumn evaluated: #name);
+	width: 150;
+	beExpandable;
+	yourself
+```
+
+You can try the following silly example which results in Figure *@figTreeTableSilly@*.
+
+```
+SpTreeTablePresenter new
+	beResizable;
+	addColumn: (SpStringTableColumn new
+				title: 'Methods';
+				evaluated: [ :class | class methodDictionary size asString ]);
+	addColumn: (SpCompositeTableColumn new
+				title: 'Classes';
+				addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+							self iconNamed: aClass systemIconName ]);
+				addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
+				yourself);
+	roots: { Object };
+	children: [ :aClass | aClass subclasses ];
+	open
+```
+
+![A tree table with two main columns: the first one is a composed one (with icon and string).](figures/TreeTableSilly.png width=50&label=figTreeTableSilly)
 
 
 
