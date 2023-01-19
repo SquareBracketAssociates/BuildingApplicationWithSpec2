@@ -296,8 +296,89 @@ SpTreePresenter new
 	  scrollToSelection: true
 ```
 
-
 ### Tables
+
+Spec offers tables. A table can have multiple columns and a column can be composed of elementary 
+Tables have different kind of columns that can be added to a table. 
+
+- `SpImageTableColumn` offers the possibility to display form (icon, graphics...).
+- `SpStringTableColumn` offers cell items that are strings.
+- `SpCheckBoxTableColumn` lets us have cells with checkbox.
+- `SpDropListTableColumn` lets have drop list in cells.
+- `SpCompositeTableColumn` offers the possibilities to compose a column out of different kinds of column. It allows one to compose a icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
+
+
+##### First Table
+
+The following script shows how to define a simple table with two columns as shown in Figure *@figSimpleTable@*.
+The message `showColumnHeaders` will display the headers.
+
+```
+SpTablePresenter new
+	addColumn: (SpStringTableColumn title: 'Number' evaluated: #yourself);
+	addColumn: (SpStringTableColumn title: 'Hex' evaluated: #hex);
+	showColumnHeaders;
+	items: (1 to: 10) asArray;
+	open
+```
+
+![A simple table with two columns: the first one is a composed one (with icon and string).](figures/Table.png width=50&label=figSimpleTable)
+
+##### Sorting headers.
+
+The following script presents how to define a table with two columns that can be sorted based on as shown in Figure *@figTableSorting@*.
+
+```
+| classNameCompare methodCountSorter |
+classNameCompare := [ :c1 :c2 | c1 name < c2 name ].
+methodCountSorter := [ :c1 :c2 | 
+	c1 methodDictionary size threeWayCompareTo: c2 methodDictionary size ].
+
+SpTablePresenter new
+	addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) 
+				 compareFunction: classNameCompare);
+	addColumn: ((SpStringTableColumn
+			  title: 'Methods'
+			  evaluated: [ :c | c methodDictionary size ]) sortFunction: methodCountSorter);
+	items: Smalltalk globals allClasses;
+	open
+```
+
+![A simple table with two columns: the first one is a composed one (with icon and string).](figures/TableSorting.png width=50&label=figTableSorting)
+
+
+##### Editable Tables
+
+The following script shows that table cells can be editable using the messages `beEditable` and `onAcceptEdition:`. The resulting table is shown in Figure *@figEditableTable@*.
+
+
+```
+| items |
+items := String methods.
+SpTablePresenter new
+	addColumn: 
+		(SpStringTableColumn new
+			title: 'Editable selector name';
+			evaluated: [ :m | m selector ];
+			displayBold: [ :m | m selector isKeyword ];
+			beEditable;
+			onAcceptEdition: [ :m :t | 
+				Transcript
+					nextPutAll: t;
+					cr;
+					endEntry ];
+			 yourself);
+	addColumn:
+		(SpStringTableColumn title: 'Size' evaluated: #size) 
+			beSortable;
+			showColumnHeaders;
+			items: items;
+	open
+```
+
+![A table with an editable column).](figures/EditableTable.png width=50&label=figEditableTable)
+
+
 
 ### Tree Tables
 
@@ -362,5 +443,8 @@ SpTreeTablePresenter new
 ![A tree table with two main columns: the first one is a composed one (with icon and string).](figures/TreeTableSilly.png width=50&label=figTreeTableSilly)
 
 
-
 ### Conclusion
+
+In this chapter, we presented important containers list, component list, table and table presenters. 
+
+
