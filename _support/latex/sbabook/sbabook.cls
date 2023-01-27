@@ -329,7 +329,7 @@
     breakatwhitespace,
     showstringspaces=false,
     mathescape=false,
-    tabsize=2,
+    tabsize=4,
     keywordstyle={},
     stringstyle={},
     commentstyle={},

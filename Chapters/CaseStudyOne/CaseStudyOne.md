@@ -25,7 +25,7 @@ We start to define an application as follows:
 
 ```language=Smalltalk
 SpApplication << #ImdbApp
-	package: 'Spec2-TutorialOne'
+    package: 'Spec2-TutorialOne'
 ```
 
 In this example, we will show how we define which back-end to use and this will allow us to switch between Morphic and GTK.
@@ -36,21 +36,20 @@ Since we will manage films we define a `Film` class as follows: It has a name, a
 
 ```language=Smalltalk
 Object << #ImdbFilm
-	slots: {#name . #year . #director};
-	package: 'Spec2-TutorialOne'
+    slots: {#name . #year . #director};
+    package: 'Spec2-TutorialOne'
 ```
 
 
 We need to have a way to store and query some films. 
-We could use Voyage [https://github.com/pharo-nosql/voyage](https://github.com/pharo-nosql/voyage) since it works without an external Mongo DB. 
-But we want to keep it extremely simple.
-So let's define a kind of singleton (one of the most misunderstood Design Pattern).
+We could use Voyage [https://github.com/pharo-nosql/voyage](https://github.com/pharo-nosql/voyage) since it works without an external Mongo DB. But we want to keep it extremely simple.
+So let's define a kind of singleton.
 
 We define a _class_ instance variable called `films` (you can use the expand menu to get the full definition on class side).
 
 ```language=Smalltalk
 Object class << ImdbFilm class
-	slots: { #films }
+    slots: { #films }
 ```
 
 
@@ -58,7 +57,7 @@ We define a method that lazy initializes the `films` variable to an ordered coll
 
 ```language=Smalltalk
 ImdbFilm class >> films
-	^ films ifNil: [ films := OrderedCollection new ]
+    ^ films ifNil: [ films := OrderedCollection new ]
 ```
 
 
@@ -66,10 +65,10 @@ And to finish we define a way to add a film to the list.
 
 ```language=Smalltalk
 ImdbFilm class >> addFilm: aFilm
-	films add: aFilm
+    films add: aFilm
 ```
 
-Now we are ready to define a first presenter that will manage a list of films.
+Now we are ready to define a first presenter that manages a list of films.
 
 ### List of films
 
@@ -80,8 +79,8 @@ Note that a presenter such that `ImdbFilmListPresenter` can have multiple subpre
 
 ```language=Smalltalk
 SpPresenter << #ImdbFilmListPresenter
-	slots: { #filmList };
-	package: 'Spec2-TutorialOne'
+    slots: { #filmList };
+    package: 'Spec2-TutorialOne'
 ```
 
 
@@ -94,16 +93,16 @@ We are declaring that inside this box layout there is a specific presenter for t
 ```language=Smalltalk
 ImdbFilmListPresenter >> defaultLayout
 
-	^ SpBoxLayout newTopToBottom
-		add: filmList; 
-		yourself
+    ^ SpBoxLayout newTopToBottom
+        add: filmList; 
+        yourself
 ```
 
 When you do not define any other methods to represent layout, `defaultLayout` is the method that is invoked by Spec logic.
 
 A presenter can have subpresenters e.g., `ImdbFilmListPresenter` will contain table presenters and you will see later that 
-- (1) a presenter can have multiple layouts, 
-- (2) that we can get more dynamic situations.
+1.    a presenter can have multiple layouts, 
+2.    that we can get more dynamic situations.
 
 In Spec20, layouts are by default dynamic and are expressed at the instance level. To allow backward compatibility, it is still possible to define a `defaultLayout` _class_ side method that returns a layout instead of using a `defaultLayout` instance side method but it is not the recommanded way.
 
@@ -119,11 +118,14 @@ In fact the list is more a table than a mere list: we describe that we want thre
 ```language=Smalltalk
 ImdbFilmListPresenter >> initializePresenters
 
-	filmList := self newTable
-		addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
-		addColumn: (SpStringTableColumn title: 'Director' evaluated: #director);
-		addColumn: (SpStringTableColumn title: 'Year' evaluated: #year);
-		yourself.
+    filmList := self newTable
+        addColumn: (SpStringTableColumn title: 'Name' 
+            evaluated: #name);
+        addColumn: (SpStringTableColumn title: 'Director'
+            evaluated: #director);
+        addColumn: (SpStringTableColumn title: 'Year' 
+            evaluated: #year);
+        yourself
 ```
 
 At this point `ImdbFilmListPresenter new open` opens an empty list as shown in *@LayoutInitilalizePresenters@*.
@@ -135,8 +137,7 @@ It just queries the domain (`ImdbFilm`) to get the list of the recorded films an
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> updatePresenter
-	
-	filmList items: ImdbFilm films
+    filmList items: ImdbFilm films
 ```
 
 The following expression creates an instance of the film list presenter and open it. You get the widget shown in Figure *@LayoutInitilalizePresenters@*.
@@ -157,7 +158,7 @@ a more canonical way to create a presenter is to ask the application using the m
 ```language=Smalltalk
 | app |
 app := ImdbApp new. 
-(app newPresenter: ImdbFilmListPresenter) open.
+(app newPresenter: ImdbFilmListPresenter) open
 ```
 
 The application is responsible for managing windows and other information, therefore it is important to use it to create presenters that compose the application. 
@@ -174,16 +175,16 @@ The method `initializeWindow:` allows you to define a title, a default size (mes
 ```language=Smalltalk
 ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
 
-	aWindowPresenter 
-		title: 'Mini IMDB';
-		initialExtent: 600@400;
-		toolbar: (self newToolbar
-					add: (self newToolbarButton 
-							label: 'Add film' ;
-							icon: (self iconNamed: #smallAdd);
-							action: [ self addFilm ];
-							yourself);
-						yourself)
+    aWindowPresenter 
+        title: 'Mini IMDB';
+        initialExtent: 600@400;
+        toolbar: (self newToolbar
+                    add: (self newToolbarButton 
+                            label: 'Add film' ;
+                            icon: (self iconNamed: #smallAdd);
+                            action: [ self addFilm ];
+                            yourself);
+                        yourself)
 ```
 
 
@@ -194,7 +195,7 @@ In fact we will define a different presenter to be able to define a film.
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> addFilm
-	"empty for now"
+    "empty for now"
 ```
 
 
@@ -220,8 +221,8 @@ This class has three instance variables: `nameText`, `directorText`, and `yearNu
 
 ```language=Smalltalk
 SpPresenter << #ImdbFilmPresenter
-	slots: { #nameText . #directorText . #yearNumber};
-	package: 'Spec2-TutorialOne'
+    slots: { #nameText . #directorText . #yearNumber};
+    package: 'Spec2-TutorialOne'
 ```
 
 
@@ -230,11 +231,11 @@ This time we use a grid layout. With a simple grid layout you can define the pos
 
 ```language=Smalltalk
 ImdbFilmPresenter >> defaultLayout 
-	^ SpGridLayout new 
-		add: 'Name' at: 1@1; add: nameText at: 2@1;
-		add: 'Director' at: 1@2; add: directorText at: 2@2;
-		add: 'Year' at: 1@3; add: yearNumber at: 2@3;
-		yourself
+    ^ SpGridLayout new 
+        add: 'Name' at: 1@1; add: nameText at: 2@1;
+        add: 'Director' at: 1@2; add: directorText at: 2@2;
+        add: 'Year' at: 1@3; add: yearNumber at: 2@3;
+        yourself
 ```
 
 
@@ -243,24 +244,24 @@ Here we only create getters because we will need them when creating the correspo
 
 ```language=Smalltalk
 ImdbFilmPresenter >> yearNumber
-	^ yearNumber text
+    ^ yearNumber text
 
 ImdbFilmPresenter >> director
-	^ directorText text
+    ^ directorText text
 
 ImdbFilmPresenter >> name
-	^ nameText text
+    ^ nameText text
 ```
 
 For convenience, a GridLayout also comes with a builder that let you add elements to the layout in the order they will appear. The previous layout definition can be rewritten as:
 
 ```language=Smalltalk
 ImdbFilmPresenter >> defaultLayout 
-	^ SpGridLayout build: [ :builder |
-		builder 
-			add: 'Name'; add: nameText; nextRow;
-			add: 'Director'; add: directorText; nextRow;
-			add: 'Year'; add: yearNumber ]
+    ^ SpGridLayout build: [ :builder |
+        builder 
+            add: 'Name'; add: nameText; nextRow;
+            add: 'Director'; add: directorText; nextRow;
+            add: 'Year'; add: yearNumber ]
 ```
 
 Pay attention, do not add a `yourself` message here. Because you would return the class and not the layout instance.
@@ -271,11 +272,11 @@ Here the `nameText` and `directorText` are initialized to a textInput, and `year
 ```language=Smalltalk
 ImdbFilmPresenter >> initializePresenters
 
-	nameText := self newTextInput.
-	directorText := self newTextInput.
-	yearNumber := self newNumberInput 
-				rangeMinimum: 1900 maximum: Year current year;
-				yourself.
+    nameText := self newTextInput.
+    directorText := self newTextInput.
+    yearNumber := self newNumberInput 
+                rangeMinimum: 1900 maximum: Year current year;
+                yourself.
 ```
 
 
@@ -300,13 +301,13 @@ We can solve that by using non homogenous columns and ask the second column to t
 
 ```language=Smalltalk
 ImdbFilmPresenter >> defaultLayout
-	^ SpGridLayout build: [ :builder |
-		builder
-			beColumnNotHomogeneous;
-			column:2 withConstraints: #beExpand;
-			add: 'Name'; add: nameText; nextRow;
-			add: 'Director'; add: directorText; nextRow;
-			add: 'Year'; add: yearNumber ]
+    ^ SpGridLayout build: [ :builder |
+        builder
+            beColumnNotHomogeneous;
+            column:2 withConstraints: #beExpand;
+            add: 'Name'; add: nameText; nextRow;
+            add: 'Director'; add: directorText; nextRow;
+            add: 'Year'; add: yearNumber ]
 ```
 
 
@@ -317,9 +318,9 @@ We now set the window properties by adding the following new `initializeWindow:`
 
 ```language=Smalltalk
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
-	aWindowPresenter
-		title: 'Film';
-		initialExtent: 400 @ 250
+    aWindowPresenter
+        title: 'Film';
+        initialExtent: 400 @ 250
 ```
 
 
@@ -333,10 +334,10 @@ Here we specialize the method `initializeDialogWindow:` to add two buttons that 
 ```language=Smalltalk
 ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 
-	aDialogPresenter centered.
-	aDialogPresenter 
-		addButton: 'Cancel' do: [ :presenter | presenter close ];
-		addButton: 'Save Film' do: [ :presenter | presenter beOk; close ].
+    aDialogPresenter centered.
+    aDialogPresenter 
+        addButton: 'Cancel' do: [ :presenter | presenter close ];
+        addButton: 'Save Film' do: [ :presenter | presenter beOk; close ].
 ```
 
 ![Customizing the dialog window.](figures/FilmList-05-Modal.png width=100&label=Customizeddialog)
@@ -353,18 +354,18 @@ to our little database and we update the list as shown in Figure *@refreshed@*.
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> addFilm
-	| dialog windowPresenter |
-	dialog := ImdbFilmPresenter newApplication: self application.
-	windowPresenter := dialog openModal.
-	windowPresenter isOk
-		ifFalse: [ ^ self ].
-	ImdbFilm
-		addFilm:
-			(ImdbFilm new
-				name: dialog name;
-				director: dialog director;
-				year: dialog yearNumber).
-	self updatePresenter
+    | dialog windowPresenter |
+    dialog := ImdbFilmPresenter newApplication: self application.
+    windowPresenter := dialog openModal.
+    windowPresenter isOk
+        ifFalse: [ ^ self ].
+    ImdbFilm
+        addFilm:
+            (ImdbFilm new
+                name: dialog name;
+                director: dialog director;
+                year: dialog yearNumber).
+    self updatePresenter
 ```
 
 
@@ -389,18 +390,18 @@ Let us proceed. First we add a new instance variable named `detail` to the class
 
 ```language=Smalltalk
 SpPresenter << #ImdbFilmListPresenter
-	slots: { #filmList . #detail};
-	package: 'Spec2-TutorialOne'
+    slots: { #filmList . #detail};
+    package: 'Spec2-TutorialOne'
 ```
 
 We redefine the default layout. We will show later that we can have different layouts.
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> defaultLayout 
-	^ SpBoxLayout newTopToBottom
-		add: filmList; 
-		add: detail;
-		yourself
+    ^ SpBoxLayout newTopToBottom
+        add: filmList; 
+        add: detail;
+        yourself
 ```
 
 We add a little helper method in class `ImdbFilmPresenter` to be able to pass a film
@@ -409,9 +410,9 @@ and populate the presenter accordingly.
 ```language=Smalltalk
 ImdbFilmPresenter >> setModel: aFilm
 
-	nameText text: aFilm name.
-	directorText text: aFilm director.
-	yearNumber number: aFilm year.
+    nameText text: aFilm name.
+    directorText text: aFilm director.
+    yearNumber number: aFilm year.
 ```
 
 Note that we need to define the method `setModel:` is needed only if you do not subclass from `SpPresenterWithModel`. If you subclass from `SpPresenter`, it is the only way to have the model initialized before the setup of the presenter (and avoid errors when opening the presenter).
@@ -421,9 +422,9 @@ Finally, since we are going to use this presenter in different places, we will n
 ```language=Smalltalk
 ImdbFilmPresenter >> editable: aBoolean
 
-	nameText editable: aBoolean.
-	directorText editable: aBoolean.
-	yearNumber editable: aBoolean
+    nameText editable: aBoolean.
+    directorText editable: aBoolean.
+    yearNumber editable: aBoolean
 ```
 
 Now we improve the `initializePresenters` of `ImdbFilmListPresenter`.
@@ -435,17 +436,17 @@ Now we improve the `initializePresenters` of `ImdbFilmListPresenter`.
 ```language=Smalltalk
 ImdbFilmListPresenter >> initializePresenters
 
-	filmList := self newTable
-		addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
-		addColumn: (SpStringTableColumn title: 'Director' evaluated: #director);
-		addColumn: (SpStringTableColumn title: 'Year' evaluated: #year);
-		yourself.
-		
-	detail := self instantiate: ImdbFilmPresenter.
-	detail editable: false.
-	
-	filmList whenSelectionChangedDo: [ :selectedItemMode | 
-		selectedItemMode isEmpty ifFalse: [detail setModel: selectedItemMode selectedItem] ].
+    filmList := self newTable
+        addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
+        addColumn: (SpStringTableColumn title: 'Director' evaluated: #director);
+        addColumn: (SpStringTableColumn title: 'Year' evaluated: #year);
+        yourself.
+        
+    detail := self instantiate: ImdbFilmPresenter.
+    detail editable: false.
+    
+    filmList whenSelectionChangedDo: [ :selectedItemMode | 
+        selectedItemMode isEmpty ifFalse: [detail setModel: selectedItemMode selectedItem] ].
 ```
 
 Definining interactions between presenters is done in the `connectPresenters` method. We will define it to define that, when an element of the list is selected, we should display the information in the detail presenter.
@@ -456,8 +457,8 @@ The `whenSelectionChangedDo:` method expects a block with zero or one argument. 
 ```language=Smalltalk
 ImdbFilmListPresenter >> connectPresenters
 
-	filmList whenSelectionChangedDo: [ :selectedItemMode | 
-		selectedItemMode isEmpty ifFalse: [ detail setModel: selectedItemMode selectedItem ] ].
+    filmList whenSelectionChangedDo: [ :selectedItemMode | 
+        selectedItemMode isEmpty ifFalse: [ detail setModel: selectedItemMode selectedItem ] ].
 ```
 
 
@@ -473,26 +474,26 @@ We define a subclass of `TestCase`.
 
 ```
 TestCase << #FilmListPresenterTest
-	package: 'Spec2-TutorialOne'
+    package: 'Spec2-TutorialOne'
 ```
 
 
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
 
-	| list detail |
-	"Arrange"
-	list := ImdbFilmListPresenter new.
-	list open.
-	detail := list detail.
-	self assert: detail name isEmpty.
+    | list detail |
+    "Arrange"
+    list := ImdbFilmListPresenter new.
+    list open.
+    detail := list detail.
+    self assert: detail name isEmpty.
 
-	"Act"
-	list clickFilmAtIndex: 1.
+    "Act"
+    list clickFilmAtIndex: 1.
 
-	"Assert"
-	self deny: detail name isEmpty.
-	list delete.
+    "Assert"
+    self deny: detail name isEmpty.
+    list delete.
 ```
 
 
@@ -501,10 +502,10 @@ We will categorize them in a `testing - support` category to show they are only 
 
 ```
 ImdbFilmListPresenter >> clickFilmAtIndex: anIndex 
-	filmList clickAtIndex: anIndex
+    filmList clickAtIndex: anIndex
 
 ImdbFilmListPresenter >> detail
-	^ detail
+    ^ detail
 ```
 
 
@@ -515,23 +516,23 @@ We define three helper methods on ImbdFilm to reset the stored films and add E.T
 
 ```
 ImbdFilm class >> reset 
-	films := OrderedCollection new
+    films := OrderedCollection new
 ```
 
 
 ```
 ImbdFilm class >> addET
-	films add: self ET
+    films add: self ET
 ```
 
 
 ```
 ImbdFilm class >> ET
-	^ self new 
-		name: 'E.T.';
-		director: 'Steven Spielberg';
-		year: '1982'; 
-		yourself
+    ^ self new 
+        name: 'E.T.';
+        director: 'Steven Spielberg';
+        year: '1982'; 
+        yourself
 ```
 
 
@@ -539,9 +540,9 @@ So let us fix this:
 
 ```
 FilmListPresenterTest >> setUp
-	super setUp. 
-	ImdbFilm reset. 
-	ImdbFilm addET.
+    super setUp. 
+    ImdbFilm reset. 
+    ImdbFilm addET.
 ```
 
 We will also update the test to keep the opened presenter in an instance variable, allowing us to define a `tearDown` method that will always close the presenter, no matter if the test succeeds or fails.
@@ -549,26 +550,26 @@ We will also update the test to keep the opened presenter in an instance variabl
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
 
-	| detail |
-	"Arrange"
-	presenter := ImdbFilmListPresenter new.
-	presenter open.
-	detail := presenter detail.
-	self assert: detail name isEmpty.
+    | detail |
+    "Arrange"
+    presenter := ImdbFilmListPresenter new.
+    presenter open.
+    detail := presenter detail.
+    self assert: detail name isEmpty.
 
-	"Act"
-	presenter clickFilmAtIndex: 1.
+    "Act"
+    presenter clickFilmAtIndex: 1.
 
-	"Assert"
-	self deny: detail name isEmpty.
+    "Assert"
+    self deny: detail name isEmpty.
 ```
 
 
 
 ```
 FilmListPresenterTest >> tearDown
-	presenter ifNotNil: [ presenter delete ].
-	super tearDown. 
+    presenter ifNotNil: [ presenter delete ].
+    super tearDown. 
 ```
 
 
@@ -584,7 +585,7 @@ Let us add the following method to support our tests.
 
 ```
 ImdbFilmListPresenter >> filmList
-	^ filmList
+    ^ filmList
 ```
 
 Let us test that a list has one film and that if we select a not existing index, the name is still the last valid selected one.
@@ -592,21 +593,21 @@ Let us test that a list has one film and that if we select a not existing index,
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmAndClickingOnEmpty
 
-	| name |
-	"Arrange"
-	presenter := ImdbFilmListPresenter new.
-	presenter open.
+    | name |
+    "Arrange"
+    presenter := ImdbFilmListPresenter new.
+    presenter open.
 
-	"Act"
-	presenter clickFilmAtIndex: 1.
+    "Act"
+    presenter clickFilmAtIndex: 1.
 
-	"Assert"
-	name := presenter detail name.
-	self deny:  name isEmpty. 
-	self assert: presenter filmList listSize equals: 1.
+    "Assert"
+    name := presenter detail name.
+    self deny:  name isEmpty. 
+    self assert: presenter filmList listSize equals: 1.
 
-	presenter clickFilmAtIndex: 2.
-	self assert: presenter detail name equals: name
+    presenter clickFilmAtIndex: 2.
+    self assert: presenter detail name equals: name
 ```
 
 
@@ -615,9 +616,9 @@ Since we do not really understand what would be to set the list as multiple sele
 ```
 FilmListPresenterTest >> testListIsSimpleSelection
 
-	presenter := ImdbFilmListPresenter new.	
-	presenter open.
-	self deny: presenter filmList isMultipleSelection.
+    presenter := ImdbFilmListPresenter new.    
+    presenter open.
+    self deny: presenter filmList isMultipleSelection.
 ```
 
 
@@ -634,10 +635,10 @@ Let us illustrate it, imagine that we prefer to have the list above the film det
 ```language=Smalltalk
 ImdbFilmListPresenter >> listAboveLayout
 
-	^ SpBoxLayout newTopToBottom
-		add: detail;
-		add: filmList; 
-		yourself
+    ^ SpBoxLayout newTopToBottom
+        add: detail;
+        add: filmList; 
+        yourself
 ```
 
 
@@ -657,9 +658,9 @@ Here `listOnlyLayout` only shows the list.
 ```language=Smalltalk
 ImdbFilmListPresenter >> listOnlyLayout 
 
-	^ SpBoxLayout newTopToBottom
-		add: filmList; 
-		yourself
+    ^ SpBoxLayout newTopToBottom
+        add: filmList; 
+        yourself
 ```
 
 
@@ -682,7 +683,7 @@ You can now see that the list only layout is applied dynamically.
 
 ![A presenter can have multiple layouts for its subpresenters.](figures/FilmList-08-embeddedAbove.png width=60&label=embedded)
 
-	
+    
 ### Using transmissions
 
 Spec20 introduces a nice optional concept to propagate selection from one presenter to another, thinking on the "flow" of information more than the implementation details of this propagation, which can change from presenter to presenter.
@@ -693,14 +694,14 @@ The easiest way to declare a transmission is by sending the `transmitTo:` messag
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> connectPresenters
-	"Transmitting from my filmList to detail"
-	
-	filmList transmitTo: detail.
+    "Transmitting from my filmList to detail"
+    
+    filmList transmitTo: detail.
 ```
 
 Here, `filmList` is a table which will transmit its selection to `detail` presenter.
 
-	
+    
 Let us explain a bit. `ImdbFilmPresenter` is a custom presenter. Spec does not know how to "fill" it with input data. 
 We need to tell Spec that `ImdbFilmPresenter` model will be the input port and receive the input data. 
 Therefore we need to define an input port as follows: 
@@ -708,12 +709,12 @@ Therefore we need to define an input port as follows:
 
 ```language=Smalltalk
 ImdbFilmPresenter >> inputModelPort
-	^ SpModelPort newPresenter: self
+    ^ SpModelPort newPresenter: self
 ```
 
 ```language=Smalltalk
 ImdbFilmPresenter >> defaultInputPort
-	^ self inputModelPort
+    ^ self inputModelPort
 ```
 
 
@@ -749,17 +750,17 @@ The configuration itself needs to be declared in your application.
 We create the specific configuration for our application.
 ```
 SpMorphicConfiguration << #ImdbConfiguration
-	package: 'Spec2-TutorialOne'
+    package: 'Spec2-TutorialOne'
 ```
 
 
 ```language=Smalltalk
 ImdbApp >> initialize
 
- 	super initialize.
-	self
-		useBackend: #Morphic 
-		with: ImdbConfiguration new.
+     super initialize.
+    self
+        useBackend: #Morphic 
+        with: ImdbConfiguration new.
 ```
 
 We can now define our custom styles.
@@ -768,9 +769,9 @@ Here we define that an element usingthe tag `customLabel` will be drawn in red.
 
 ```
 ImdbConfiguration >> customStyleSheet
-	^ (SpStyleVariableSTONReader fromString: '
+    ^ (SpStyleVariableSTONReader fromString: '
 .application [ 
-	.customLabel [ Draw { #color: #red } ] ] ')
+    .customLabel [ Draw { #color: #red } ] ] ')
 ```
 
 Pay attention not to forget the '.' in front of `application` and `customLabel`
@@ -779,7 +780,7 @@ We specialize the method `newStyleSheet` so that it includes the custom style as
 ```
 ImdbConfiguration >> newStyleSheet
 
-	^ SpStyle defaultStyleSheet copy, self customStyleSheet
+    ^ SpStyle defaultStyleSheet copy, self customStyleSheet
 ```
 
 We are ready to using the tag for the label.
@@ -787,29 +788,29 @@ We add a `nameLabel` instance variable to `ImdbFilmPresenter` to get a label and
 
 ```language=Smalltalk
 ImdbFilmPresenter >> initializePresenters 
-	nameLabel := self newLabel 
-		label: 'Name'; 
-		addStyle: 'customLabel'; 
-		yourself.
-	nameText := self newTextInput.
-	directorText := self newTextInput.
-	yearNumber := self newNumberInput 
-			rangeMinimum: 1900 maximum: Year current year;
-			yourself.
+    nameLabel := self newLabel 
+        label: 'Name'; 
+        addStyle: 'customLabel'; 
+        yourself.
+    nameText := self newTextInput.
+    directorText := self newTextInput.
+    yearNumber := self newNumberInput 
+            rangeMinimum: 1900 maximum: Year current year;
+            yourself.
 ```
 
 We then update the layout to use the newly defined label presenter.
 
 ```language=Smalltalk
 ImdbFilmPresenter >> defaultLayout
-	
-	^ SpGridLayout build: [ :builder |
-		builder
-			beColumnNotHomogeneous;
-			column:2 withConstraints: #beExpand;
-			add: nameLabel; add: nameText; nextRow;
-			add: 'Director'; add: directorText; nextRow;
-			add: 'Year'; add: yearNumber ]
+    
+    ^ SpGridLayout build: [ :builder |
+        builder
+            beColumnNotHomogeneous;
+            column:2 withConstraints: #beExpand;
+            add: nameLabel; add: nameText; nextRow;
+            add: 'Director'; add: directorText; nextRow;
+            add: 'Year'; add: yearNumber ]
 ```
 
 We can now see that the name label of a film detail has been styled.
