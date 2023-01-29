@@ -7,8 +7,11 @@ status: ready for review
 Spec is a framework in Pharo for describing user interfaces. 
 It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. 
 Indeed most tools in Pharo are written in Spec, e.g., the inspector, spotter, the Pharo debugger, Iceberg, etc. 
- 
- 
+
+
+### Spec architecture overview
+
+![Architecture of Spec.](figures/coreExtended.pdf label=core&width=80) 
  
 ### Spec core principle 
 
@@ -57,7 +60,7 @@ SpButtonPresenter new
 	open
 ``` 
  
-![Presenter, Application, Layout, and Style of Spec.](figures/core.pdf label=core&width=60) 
+
 
  
 To display its elements, a presenter has a layout. 
