@@ -1,11 +1,137 @@
-## The fundamentals of Spec 
+##The dual aspects of presenters: Domain and interaction model 
 @cha_fundamentals_of_spec 
- 
-status: stef did a pass and should discuss with esteban
- 
- 
-In this little chapter we visit the key aspects of Spec and put the important 
+
+
+In this chapter we visit the key aspects of Spec and put the important 
 customization points of its building process in perspective. 
+We start by presenting an important aspect of Presenters: the way they handle communication with domain objects that here we call a model.
+
+### About presenter on a model
+
+It is frequent that you want to open a presenter on a given object.
+In that case you would like that the sub presenters \(list, text,..\) get initialized based on the object that you passed. 
+For example, you may want to get all the items of your basket.
+
+However simply creating a presenter using the message `new` and passing the object will not  work because the messages such as `initializePresenters` will be already sent. 
+
+There are two ways to address this situation in Spec and in particular Spec offers a special presenter called `SpPresenterWithModel`. This small chapter explains how to take advantage of it. 
+
+We will build the simplest example to show the way to do it. We will implement a presenter that lists the method signatures of a class, first using a presenter and second using a presenter with model. 
+
+### With SpPresenter
+
+If you do not need to react to model changes, you can simply inherit from `SpPresenter`, override the `setModelBeforeInitialization:` method to set your domain object and use `YourPresenter on: yourDomainObject` to instantiate it.
+
+This is exactly what we do here after.
+
+First we create a new presenter class.
+
+```
+SpPresenter << #SpMethodLister
+    slots: { #aClass . #list};
+    package: 'Spe2Book'
+```
+
+We define a list presenter and populate it. 
+
+```
+SpMethodLister >> initializePresenters 
+    list := self newList.
+    list items: aClass selectors sorted
+```
+
+We assign the argument of the `on:` message to the internal instance variable `aClass` for future use. 
+```
+SpMethodLister >> setModelBeforeInitialization: aModel
+    aClass := aModel
+```
+
+We define a basic layout of the list presenter.
+
+```
+SpMethodLister >> defaultLayout
+    ^ SpBoxLayout newTopToBottom add: #list ; yourself
+```
+
+The following snippet creates a window with the list of methods of the class `Point` as shown in Figure *@pointselectors@*.
+```
+(SpMethodLister on: Point) open.
+```
+
+![A simple list of sorted selectors of the class Point.](figures/PointSelectors.png label=pointselectors&width=50)
+
+
+### Presenter vs. PresenterWithModel
+
+The key difference with using `SpPresenter` and `SpPresenterWithModel` is 
+if you need to react to changes of the model. If you need, use `SpPresenterWithModel`.
+
+By reacting to model changes, we means that while the presenter is open, an event changes the model 
+that was used to build the UI. 
+The following snippet shows that the change of model is not taken into account in the sense that the list 
+is not refreshed and still display methods of the class `Point`, while the methods of the class `Rectangle should be displayed.
+
+```
+| lister | 
+lister := SpMethodLister on: Point.
+lister open.
+lister class: Rectangle
+```
+
+
+### With SpPresenterWithModel
+
+A presenter may also have a model that is a domain object you need to interact with to display or update data. 
+In this case, you should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object and manages its change.
+As a client of this presenter we use the message `model:` to change the model. 
+
+The corresponding method is inherited from the superclass. This `model:` method implements the following behavior: 
+If the domain object is an instance of `Model`, it is stored as is in the presenter, else a value holder is created to hold the domain object so that you can be notified when the domain object used by the presenter changes. You do not need to define the method `setModelBeforeInitialization:`. 
+
+Let us look at our little example. First we inherit from `SpPresenterWithModel`.
+
+```
+SpPresenterWithModel << #SpMethodListerWithModel
+    slots: { #list };
+    package: 'Spe2Book'
+```
+
+Second we define the specialize the message `initializePresenters`.
+Note that if you plan to react to change it is better to define a part of the initialization in the method `modelChanged` as follows: 
+
+```
+SpMethodListerWithModel >> initializePresenters 
+    list := self newList.
+```
+
+You can then implement the `modelChanged` method to refresh your UI when the model changes. 
+
+```
+SpMethodListerWithModel >> modelChanged
+    list items: aClass selectors sorted
+```
+
+```
+SpMethodListerWithModel >> defaultLayout
+    ^ SpBoxLayout newTopToBottom add: #list ; yourself
+```
+
+
+![A simple list of sorted selectors changing based on its model.](figures/PointThenRectangleSelectors.png label=pointRectangeSelectors&width=100)
+
+Now we can open our widget and as the following script shows it, it will react to change of the model \(see Fig. *@pointRectangeSelectors@*\).
+
+```
+| lister |
+lister := SpMethodListerWithModel on: Point.
+lister open.
+lister model: Rectangle
+```
+
+Now you know that you can easily build application ui populated from a model and reacting to model changes.
+
+
+
  
 ### User interface building: a model of UI presentation 
  
@@ -91,19 +217,19 @@ For the same UI, multiple layouts can be described, and when the UI is built the
  
 ``` 
 SpPresenter << #SpTwoButtons 
-	slots: { #button1 . #button2 }; 
-	package: 'CodeOfSpec20BookThreePillar'
+    slots: { #button1 . #button2 }; 
+    package: 'CodeOfSpec20BookThreePillar'
 ```
 
 We define a simple `initializePresenters` method as follows: 
 
 ```
 SpTwoButtons >> initializePresenters 
-	button1 := self newButton. 
-	button2 := self newButton. 
+    button1 := self newButton. 
+    button2 := self newButton. 
 
-	button1 label: '1'.
-	button2 label: '2'.
+    button1 label: '1'.
+    button2 label: '2'.
 ```
 
 We define two class method method returning different layouts.
@@ -111,17 +237,17 @@ Note that we could define such methods on the instance side too and we define th
 
 ``` 
 SpTwoButtons class >> buttonRow 
-	 
-	^ SpBoxLayout newLeftToRight 
-		add: #button1; add: #button2; 
-		yourself 
+     
+    ^ SpBoxLayout newLeftToRight 
+        add: #button1; add: #button2; 
+        yourself 
 ``` 
  
 ``` 
 SpTwoButtons class >> buttonCol 
-	^ SpBoxLayout newTopToBottom 
-		add: #button1; add: #button2; 
-		yourself 
+    ^ SpBoxLayout newTopToBottom 
+        add: #button1; add: #button2; 
+        yourself 
 ``` 
  
 Note that when we define the layout at the class level, we use a symbol whose name is the corresponding instance variable. Hence we use `#button2` to refer to the presenter stored in the instance variable `button2`. This mapping can be customized at the level of the presenter but we do not present this because we never got the need for it. 
@@ -130,7 +256,7 @@ Note that when we define the layout at the class level, we use a symbol whose na
 We define a `defaultLayout` merthod just invoking one of the previously defined method.
 ``` 
 SpTwoButtons >> defaultLayout 
-	^ self class buttonRow 
+    ^ self class buttonRow 
 ```
 
 We define also a `defaultLayout` method so that the presenter can be opened without defining a given layout. 
@@ -146,20 +272,20 @@ Now we can do better and define two instance level methods to encapsulate the la
 
 ```
 SpTwoButtons >> beCol
-	self layout: self class buttonCol
+    self layout: self class buttonCol
 ```
 
 ```
 SpTwoButtons >> beRow
-	self layout: self class buttonRow
+    self layout: self class buttonRow
 ```
 
 Now we can write the following script
 
 ```
 SpTwoButtons new 
-	beCol;
-	open 
+    beCol;
+    open 
 ```
 
 
@@ -176,31 +302,31 @@ We create a new presenter named: `SpButtonAndListH`.
  
 ``` 
 SpPresenter << #SpButtonAndListH 
-	slots: { #buttons . #list }; 
-	package: 'CodeOfSpec20BookThreePillar'
+    slots: { #buttons . #list }; 
+    package: 'CodeOfSpec20BookThreePillar'
 ```
 
 
 ```
 SpButtonAndListH >> initializePresenters 
-	buttons := self instantiate: SpTwoButtons. 
-	list := self newList. 
-	list items: (1 to: 10). 
+    buttons := self instantiate: SpTwoButtons. 
+    list := self newList. 
+    list items: (1 to: 10). 
 ``` 
 
 ``` 
 SpButtonAndListH >> initializeWindow: aWindowPresenter 
-	aWindowPresenter title: 'SuperWidget' 
+    aWindowPresenter title: 'SuperWidget' 
 ``` 
 
 
 ```
 SpButtonAndListH >> defaultLayout 
  
-	^ SpBoxLayout newLeftToRight 
-		  add: buttons;
-		  add: list; 
-		  yourself 
+    ^ SpBoxLayout newLeftToRight 
+          add: buttons;
+          add: list; 
+          yourself 
 ```
 
 
@@ -221,14 +347,14 @@ Figure
 
 ``` 
 SpButtonAndListH << #TButtonAndListV 
-	package: 'CodeOfSpec20BookThreePillar'
+    package: 'CodeOfSpec20BookThreePillar'
 ``` 
  
 ```
 initializePresenters
 
-	super initializePresenters.
-	buttons beCol
+    super initializePresenters.
+    buttons beCol
 ```
 
 
@@ -240,7 +366,7 @@ We define a different presenter
 
 ```
 SpButtonAndListH << #TButtonAndListV2
-	package: 'CodeOfSpec20BookThreePillar'
+    package: 'CodeOfSpec20BookThreePillar'
 ```
 
 We define a new `defaultLayout` method as follows: 
@@ -248,10 +374,10 @@ We define a new `defaultLayout` method as follows:
 ``` 
 SpButtonAndListV2 >> defaultLayout
 
-	^ SpBoxLayout new
-		add: buttons layout: #buttonCol;
-		add: list;
-		yourself
+    ^ SpBoxLayout new
+        add: buttons layout: #buttonCol;
+        add: list;
+        yourself
 ```
 
 Note the use of the method `add:layout:` with the selector of the method returning the layout configuration 

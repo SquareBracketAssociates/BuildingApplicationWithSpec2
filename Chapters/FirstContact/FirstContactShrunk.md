@@ -1,4 +1,4 @@
-## A small example
+## A 10 min small example
 @cha_small_example
 
 We will construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will allow you to build basic user interfaces.
