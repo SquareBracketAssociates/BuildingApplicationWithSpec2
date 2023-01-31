@@ -215,7 +215,7 @@ MyMiniBrowserPresenter >> defaultLayout
 
 
 
-### Styles
+### Styles and stylesheets
 
 A Spec application always comes with a default style sheet.  
 A style sheet contains style definitions that can be applied to presenters. 
@@ -223,7 +223,7 @@ Chapter *@chastyle@* presents styles in detail.
  
 A style is a property container to “style” components, and define (in a certain degree) its behaviour within the different layouts implemented.
  
-Here is an example of style sheet:
+Here is an example of style sheet for the Morphic back-end:
  
 ```
 '.application [       
@@ -235,7 +235,7 @@ Here is an example of style sheet:
 The styles in Spec format are similar to CSS but expressed in STON.
 Pay attention not to forget the leading periods. 
 
-You can apply it on your Spec application sending the `styleSheet:` method:
+You can apply it on your Spec application sending the `styleSheet:` message to an application:
 
 ``` 
 myStyleSheet := SpStyleVariableSTONReader fromString: 
@@ -247,7 +247,7 @@ myStyleSheet := SpStyleVariableSTONReader fromString:
 application styleSheet: SpStyle defaultStyleSheet, myStyleSheet. 
 ``` 
 
-Then you can style a presenter using the message `addStyle:` as follows:
+Then you can style a presenter using the message `addStyle:` (think about tag your presenter with a class in CSS) as follows:
  
 ```
 presenter label: 'I am a label'.
@@ -256,18 +256,15 @@ presenter addStyle: 'blue'.
 
 ### Navigation between presenters 
  
- 
 Once the definition of your UI components (i.e., your Spec presenters and layouts) done, you will need to define the behaviour of the UI: what happens when you open a new presenter? 
 
 You will probably want to provide some data (a model) to the presenter so that it can use to diplay data. 
 It is called a transmission: you transmit data from a presenter to another presenter.
-Transmissions can be achieved either “manually” by reacting to events or by using the Spec transmission concept.
-
-#### Using presenter events 
+Transmissions are defined by reacting to events.
 
 It is quite easy to define the behaviour of the UI by using widgets predefined events. 
 You can find them in the api-events protocol of the presenters. 
-Most used events are `whenSelectionChangedDo:`, `whenSelectedDo:`, `whenModelChangedDo:`, `whenTextChangedDo:`, `action:`. 
+Most used events are `whenSelectionChangedDo:`, `whenModelChangedDo:`, `whenTextChangedDo:`. 
 Here are some examples: 
  
 ``` 
@@ -279,8 +276,6 @@ messageList
 	addButton action: [ self addDirectory ].
 	filterInput whenTextChangedDo: [ :text | self refreshTable ]. 
 ```
-
-The transmissions using ports are explained in Chapter *@chatransmissions@*.
 
 ### Conclusion
 
