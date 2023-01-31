@@ -3,11 +3,14 @@
 
 status: Currently working on it. 
 
-A key design goal of Spec is to enable the seamless reuse of user interfaces as widgets for the user interface you are building. The reason for this is that it results in a significant productivity boost when creating user interfaces.
+A key design goal of Spec is to enable the seamless reuse of user interfaces. 
+The reason for this is that it results in a significant productivity boost when creating user interfaces.
 
-This focus on reuse was actually already visible in the previous chapters, where we have seen that basic widgets can be used as if they were a complete user interface. In this section we focus on the reuse and composition of widgets, showing that it basically comes for free. The only requirement when building a UI is to consider how the user interface should be parameterized when it is being reused, and there is only one concrete rule that needs to be followed in that respect.
+This focus on reuse was actually already visible in the previous chapters, where we have seen that basic widgets can be used as if they were a complete user interface. In this section we focus on the reuse and composition of presenters, showing that it basically comes for free.
+The only requirement when building a UI is to consider how the user interface should be parameterized when it is being reused.
 
-In this chapter, you will learn how we can build a new UI by reusing already defined elements.
+Said it differently, in this chapter, you will learn how we can build a new UI by reusing already defined elements.
+
 
 ### First requirements
 
