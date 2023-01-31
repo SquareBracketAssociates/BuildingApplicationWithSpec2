@@ -81,8 +81,7 @@ You can use `openWithLayout:` or `openDialogWithLayout:` to open the presenter w
 
 ### Application
 
-A spec application (`SpApplication` or one of its subclasses instance) handles your application initialization, configuration, and resources. 
-`SpApplication` is not a presenter because it does not has a graphical representation: An `SpApplication` defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
+A spec application (`SpApplication` or one of its subclasses instance) handles your application initialization, configuration, and resources. `SpApplication` is not a presenter because it does not has a graphical representation: An `SpApplication` defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
 
 It also keeps the windows you have currently opened.
  
