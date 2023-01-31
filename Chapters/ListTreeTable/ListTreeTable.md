@@ -304,6 +304,7 @@ Tables have different kind of columns that can be added to a table.
 - `SpImageTableColumn` offers the possibility to display form (icon, graphics...).
 - `SpStringTableColumn` offers cell items that are strings.
 - `SpCheckBoxTableColumn` lets us have cells with checkbox.
+- `SpIndexTableColumn` displays the index of the current item. 
 - `SpDropListTableColumn` lets have drop list in cells.
 - `SpCompositeTableColumn` offers the possibilities to compose a column out of different kinds of column. It allows one to compose a icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
 
@@ -323,6 +324,10 @@ SpTablePresenter new
 ```
 
 ![A simple table with two columns: the first one is a composed one (with icon and string).](figures/Table.png width=50&label=figSimpleTable)
+
+Add `SpIndexTableColumn title: 'My index'` to the previous table to see the index column in action.
+
+
 
 ##### Sorting headers.
 
