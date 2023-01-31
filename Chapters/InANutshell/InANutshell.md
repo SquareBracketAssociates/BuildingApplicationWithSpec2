@@ -71,28 +71,25 @@ SpButtonPresenter new
 ```
 
 A presenter may also have a model that is a domain object you need to interact with to display or update data. 
-In this case, your presenter class should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object and gets changed when the model changes (See Chapter @*cha_model *@).
+In this case, your presenter class should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object and gets changed when the model changes (See Chapter *@cha_model@*).
 
 A presenter defines layouts, one is mandatory.
 If you want to display a presenter with the default layout, you can use the `open` or `openDialog` methods.
 The former will open a new window with the presenter while the later will open a blocking dialog with the presenter.
-You can use `openWithLayout:` or `openDialogWithLayout:` to open the presenter with the spec you will provide as argument (you can also provide the name of a selector that returns a spec). 
+You can use `openWithLayout:` or `openDialogWithLayout:` to open the presenter with the layout you will provide as argument.
 
 
 ### Application
 
-A spec application (`SpApplication` or one of its subclasses instance) handles your application initialization, configuration and resources. 
+A spec application (`SpApplication` or one of its subclasses instance) handles your application initialization, configuration, and resources. 
 `SpApplication` is not a presenter because it does not has a graphical representation: An `SpApplication` defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
 
 It also keeps the windows you have currently opened.
-In the application initialization, you can configure the backend you want to use: morphic (default, Gtk).
  
- A Spec application also provides a way to access windows, to access resources like icons, and provide abstractions for interactions with the user (inform, error, file or directory selection). 
+A Spec application also provides a way to access windows, to access resources like icons, and provide abstractions for interactions with the user (inform, error, file or directory selection). 
  
  An application also provides the style used by Spec to style UI elements.  
  A default style is available but you can customize it as shown in Chapter *@Style@*. 
- 
- 
  
 You should also define a method to tell what is the main window / presenter to use when running the application.
 Here we specialize the method `start` as follows: 
@@ -103,19 +100,82 @@ MyApplication >> start
 ```
 
 You can run your application with `MyApplication new run`. It will call the `start` method you defined. 
- 
 
 
-#### Responsibilities
-An application can be configured with a configuration. 
-It is reponsible for icon management, closing sub components and it will be the natural place for localisation. 
+### Application configuration
+
+In the application initialization, you can configure the backend you want to use: morphic (default) or Gtk.
+
+##### Using Morphic
+
+Here is an example using the Film application tutorial. 
+We define a configuration as subclass of `SpMorphicConfiguration`.
+
+```language=Smalltalk
+SpMorphicConfiguration << #ImdbMorphicConfiguration
+	package: 'Spec2-TutorialOne'
+```
+
+Then we define the method `configure:` as follows:. 
+
+```language=Smalltalk
+ImdbMorphicConfiguration >> configure: anApplication
+
+	super configure: anApplication.
+	"There are ways to write/read this from strings or files, but this is how you do 
+	 it programatically"
+	self styleSheet 
+		 addClass: 'header' with: [ :style |
+		 	style 
+				addPropertyFontWith: [ :font | font bold: true ];
+				addPropertyDrawWith: [ :draw | draw color: Color red ] ]
+```
+Note that we could use a style described in a string as shown in the Style chapter (Chapter *@style@*).
+
+Finally in the corresponding application class we declare that the Morphic back-end should use our configuration 
+using the message `useBackend:with:`.
+
+```language=Smalltalk
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Morphic with: ImdbMorphicConfiguration new
+```
+
+
+##### Using GTK theme and settings
+
+For Gtk the process is similar, we define a subclass of `SpGtkConfiguration`.
+
+```language=Smalltalk
+SpGtkConfiguration << #ImdbGtkConfiguration
+	package: 'Spec2-TutorialOne'
+```
+Then we configure it selecting and extending CSS. 
+
+```language=Smalltalk
+ImdbGtkConfiguration >> configure: anApplication
+
+	super configure: anApplication.
+	"This will choose the theme 'Sierra-dark' if it is available"
+	self installTheme: 'Sierra-dark'.
+	"This will add a 'provider' (a stylesheet)"
+	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
+```
+And iun the application initialization we declare that the configuration should be use for Gtk.
+
+```language=Smalltalk
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Gtk with: ImdbGtkConfiguration new
+```
+
+
 
 
 ### Layouts 
 
 To display its elements, a presenter uses a layout. 
 A layout describes how elements are placed on the displayed surface.
-
 To help you build nice user interfaces, several layouts are available: 
  
 - **GridLayout**: choose this layout when you need to create a widget with label, fields that needs to be aligned (form-style). You can specify in which box of the grid you want to place an element. 
@@ -125,32 +185,34 @@ To help you build nice user interfaces, several layouts are available:
 - **MillerLayout**: a layout to implement miller columns ([https://en.wikipedia.org/wiki/Miller\_columns](https://en.wikipedia.org/wiki/Miller_columns)), also known as cascading lists. 
  
 Any layout in Spec is dynamic and composable. 
+In general a layout is define as the presenter instance level, but it can be defined on the class side. 
  
-To define a layout is as simple as defining the following method and getting it called from the `initializePresenters` method. 
+To define a layout is as simple as defining the following `defaultLayout` method. This method is automatically invoked if a layout is not manually set. 
 The following method define two box layouts:
 - one containing a tree and a list and  
 - the second one containing the first one and a code text below.
+Each of the layout refers to presenters accessible (`treeClasses`, `methodsFilteringList`, `codeShower`) from the current one.
  
 Figure *@layout6B@* shows the corresponding result.
- 
- 
+
 ``` 
 MyMiniBrowserPresenter >> defaultLayout
- 
-    | classesAndMethodsLayout |
-    classesAndMethodsLayout := SpBoxLayout newLeftToRight.
-    classesAndMethodsLayout
-        spacing: 10;
-        add: treeClasses;
-        add: methodsFilteringList.
     ^ (SpBoxLayout newTopToBottom
         spacing: 5;
-        add: classesAndMethodsLayout;
+        add: (SpBoxLayout newLeftToRight
+                spacing: 10;
+                add: treeClasses;
+                add: methodsFilteringList;
+                yourself);
         add: codeShower;
         yourself) 
 ```
 
 ![The layout corresponding to the `defaultLayout` method.](figures/layout6Annotated.pdf width=70&label=layout6B)
+
+
+
+
 
 
 ### Styles
