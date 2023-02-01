@@ -19,37 +19,37 @@ We do not show accessor definitions.
 
 ```Smalltalk
 Object << #TodoTask
-	slots: { #done . #title };
-	package: 'CodeOfSpec20BookTodo'
-	
+    slots: { #done . #title };
+    package: 'CodeOfSpec20BookTodo'
+    
 TodoTask >> initialize
-	super initialize.
-	self title: 'Please give me a title'.
-	self done: false
-	
+    super initialize.
+    self title: 'Please give me a title'.
+    self done: false
+    
 TodoTask >> isDone
-	^ self done
+    ^ self done
 ```
 We use the class side to act as a little database.
 
 ```
 Object class << TodoTask class
-	slots: { #tasks }
+    slots: { #tasks }
 ```
 
 ```Smalltalk
 TodoTask class >> tasks
-	^ tasks ifNil: [ tasks := OrderedCollection new ]
+    ^ tasks ifNil: [ tasks := OrderedCollection new ]
 ```
 
 We add two methods to manage the addition and removal
 
 ```Smalltalk
 TodoTask class >> addTask: aTask
-	(tasks includes: aTask) ifFalse: [ tasks add: aTask ]
+    (tasks includes: aTask) ifFalse: [ tasks add: aTask ]
 
 TodoTask class >> deleteTask: aTask
-	tasks remove: aTask ifAbsent: [ nil ]
+    tasks remove: aTask ifAbsent: [ nil ]
 ```
 We made sure that adding a task does not add twice the same task because we can use it for `save` and `accept`. 
 
@@ -57,12 +57,12 @@ At the level of instance, we add a `save` method to register the instances in th
 
 ```
 TodoTask >> save
-	self class addTask: self
+    self class addTask: self
 ```
 
 ```
 TodoTask >> delete
-	self class deleteTask: self
+    self class deleteTask: self
 ```
 
 And let's create a couple of testing tasks: 
@@ -79,7 +79,7 @@ Pharo is a living environment where many things can be executed at same time, an
 
 ```Smalltalk
 SpApplication << #TodoApplication
-	package: 'CodeOfSpec20BookTodo'
+    package: 'CodeOfSpec20BookTodo'
 ```
 
 Note that an application is not a visual element, it manages the application and information that may be displayed visually such as icons but also other concerns such as the backend.
@@ -92,7 +92,7 @@ We create a presenter, named `TodoListPresenter` to represent the logic of manag
 
 ```Smalltalk
 SpPresenter << #TodoListPresenter
-	package: 'CodeOfSpec20BookTodo'
+    package: 'CodeOfSpec20BookTodo'
 ```
 
 This component will contain a list of your Todo tasks and the logic to add, remove, or edit them. Let's define your first presenter contents.   
@@ -104,13 +104,13 @@ While this is not the best way to organise your presenter, for simplicity we wil
 
 ```Smalltalk
 TodoListPresenter >> initializePresenters
-	todoListPresenter := self newTable
-		addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) width: 20);
-		addColumn: (SpStringTableColumn title: 'Title' evaluated: [:task | task title]);
-		yourself.
-	self layout: (SpBoxLayout newTopToBottom 
-		add: todoListPresenter;
-		yourself) 
+    todoListPresenter := self newTable
+        addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) width: 20);
+        addColumn: (SpStringTableColumn title: 'Title' evaluated: [:task | task title]);
+        yourself.
+    self layout: (SpBoxLayout newTopToBottom 
+        add: todoListPresenter;
+        yourself) 
 ```
 
 In general it is better to define a separate method `defaultLayout` whose job is to only describe the layout of the presenter. 
@@ -133,7 +133,7 @@ And now, we need to give our Todo list the tasks to display:
 
 ```Smalltalk
 TodoListPresenter >> updatePresenter
-	todoListPresenter items: TodoTask tasks
+    todoListPresenter items: TodoTask tasks
 ```
 
 ###  How does this look? 
@@ -142,7 +142,7 @@ Now defining the method `start`, we tell the application that when ask to run it
 
 ```
 TodoApplication >> start 
-	TodoListPresenter open
+    TodoListPresenter open
 ```
 
 Now we can open our task list manager as follows and we should get a situation similar to the one displayed in Figure *@firstfig@*.
@@ -162,9 +162,9 @@ To fix this we implement another method `initializeWindow:`, which sets the valu
 ```Smalltalk
 initializeWindow: aWindowPresenter
 
-	aWindowPresenter 
-		title: 'Todo List';
-		initialExtent: 500@500
+    aWindowPresenter 
+        title: 'Todo List';
+        initialExtent: 500@500
 ```
 
 Here we took `aWindowPresenter` (the presenter that contains definition of a window), and we add: 
@@ -187,18 +187,18 @@ To fix this, let's modify `initializePresenters`.
 ```Smalltalk
 TodoListPresenter >> initializePresenters
 
-	todoListPresenter := self newTable
-		addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone] ) 
-			width: 20;
-			onActivation: [ :task | task done: true ];
-			onDeactivation: [ :task | task done: false ];
-			yourself);
-		addColumn: (SpStringTableColumn title: 'Title' evaluated: #title);
-		yourself.
+    todoListPresenter := self newTable
+        addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone] ) 
+            width: 20;
+            onActivation: [ :task | task done: true ];
+            onDeactivation: [ :task | task done: false ];
+            yourself);
+        addColumn: (SpStringTableColumn title: 'Title' evaluated: #title);
+        yourself.
 
-	self layout: (SpBoxLayout newTopToBottom 
-		add: todoListPresenter;
-		yourself)
+    self layout: (SpBoxLayout newTopToBottom 
+        add: todoListPresenter;
+        yourself)
 ```
 
 We added
@@ -220,26 +220,26 @@ Again we define a new subclass of `SpPresenter` named `TodoTaskPresenter`.
 
 ```Smalltalk
 SpPresenter << #TodoTaskPresenter
-	slots: { #task . #titlePresenter };
-	package: 'CodeOfSpec20BookTodo'
+    slots: { #task . #titlePresenter };
+    package: 'CodeOfSpec20BookTodo'
 ```
-```	
+```    
 TodoTaskPresenter >> task: aTask
-	task := aTask.
-	self updatePresenter
+    task := aTask.
+    self updatePresenter
 ```
 
 This is very simple, the only thing that is different is that setting a task will update the presenter (because it needs to show the contents of the title). 
 And now we define initialization and update of our presenter. 
 
-```Smalltalk	
+```Smalltalk    
 TodoTaskPresenter >> initializePresenters
 
-	titlePresenter := self newTextInput.
+    titlePresenter := self newTextInput.
 
-	self layout: (SpBoxLayout newTopToBottom
-				add: titlePresenter expand: false;
-				yourself).
+    self layout: (SpBoxLayout newTopToBottom
+                add: titlePresenter expand: false;
+                yourself).
 ```
 
 
@@ -251,10 +251,10 @@ This is almost equal to our list presenter, but there are a couple of new elemen
 
 
 
-```Smalltalk			
+```Smalltalk            
 TodoTaskPresenter >> updatePresenter
-	task ifNotNil: [
-		titlePresenter text: (task title ifNil: [ '' ])]
+    task ifNotNil: [
+        titlePresenter text: (task title ifNil: [ '' ])]
 ```
 
 The method `updatePresenter` deserves a bit of explanation: 
@@ -270,14 +270,14 @@ But to define a _dialog presenter_ we need to define the method `initializeDialo
 ```Smalltalk
 TodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter
 
-	aDialogWindowPresenter 
-		title: 'New task';
-		initialExtent: 350@120;
-		addButton: 'Accept' do: [ :dialog |
-			self accept.
-			dialog close ];
-		addButton: 'Cancel' do: [ :dialog |
-			dialog close ]
+    aDialogWindowPresenter 
+        title: 'New task';
+        initialExtent: 350@120;
+        addButton: 'Accept' do: [ :dialog |
+            self accept.
+            dialog close ];
+        addButton: 'Cancel' do: [ :dialog |
+            dialog close ]
 ```
 
 Here, along with the already known `title:` and `initialExtent:` we added: 
@@ -289,7 +289,7 @@ How would be the `accept` method? Very simple.
 
 ```Smalltalk
 TodoTaskPresenter >>accept
-	self task title: titlePresenter text; save	
+    self task title: titlePresenter text; save    
 ```
 
 
@@ -297,8 +297,8 @@ TodoTaskPresenter >>accept
 
 ```Smalltalk
 TodoTaskPresenter new
-	task: TodoTask new;
-	openModal.
+    task: TodoTask new;
+    openModal.
 ```
 
 
@@ -310,31 +310,31 @@ We will add a new instance variable named `addButton` to the `TodoListPresenter`
 ```Smalltalk
 TodoListPresenter >> initializePresenters
 
-	| addButton |
-	todoListPresenter := self newTable
-		addColumn: ((SpCheckBoxTableColumn 
-					evaluated: [:task | task isDone]) 
-				width: 20;
-				onActivation: [ :task | task done: true ];
-				onDeactivation: [ :task | task done: false ];
-				yourself);
-		addColumn: (SpStringTableColumn 
-					title: 'Title' evaluated: [:task | task title]);
-		yourself.
+    | addButton |
+    todoListPresenter := self newTable
+        addColumn: ((SpCheckBoxTableColumn 
+                    evaluated: [:task | task isDone]) 
+                width: 20;
+                onActivation: [ :task | task done: true ];
+                onDeactivation: [ :task | task done: false ];
+                yourself);
+        addColumn: (SpStringTableColumn 
+                    title: 'Title' evaluated: [:task | task title]);
+        yourself.
 
-	addButton := self newButton 
-		label: 'Add task';
-		action: [ self addTask ];
-		yourself.
+    addButton := self newButton 
+        label: 'Add task';
+        action: [ self addTask ];
+        yourself.
 
-	self layout: (SpBoxLayout newTopToBottom
-		spacing: 5;
-		add: todoListPresenter;
-		add: (SpBoxLayout newLeftToRight
-				addLast: addButton expand: false;
-				yourself) 
-		expand: false;
-		yourself)
+    self layout: (SpBoxLayout newTopToBottom
+        spacing: 5;
+        add: todoListPresenter;
+        add: (SpBoxLayout newLeftToRight
+                addLast: addButton expand: false;
+                yourself) 
+        expand: false;
+        yourself)
 ```
 
 What have we added here?  
@@ -359,10 +359,10 @@ Finally we create the method `addTask`.
 ```Smalltalk
 TodoListPresenter >> addTask
 
-	(TodoTaskPresenter newApplication: self application) 
-		task: TodoTask new;
-		openModal.
-	self updatePresenter
+    (TodoTaskPresenter newApplication: self application) 
+        task: TodoTask new;
+        openModal.
+    self updatePresenter
 ```
 
 What we did here?
@@ -384,14 +384,14 @@ In Spec you can either define a layout as we have done before using the message 
 ```
 TodoListPresenter >> defaultLayout
 
-	^ SpBoxLayout newTopToBottom
-		spacing: 5;
-		add: todoListPresenter;
-		add: (SpBoxLayout newLeftToRight
-				addLast: addButton expand: false;
-				yourself)
-		expand: false;
-		yourself
+    ^ SpBoxLayout newTopToBottom
+        spacing: 5;
+        add: todoListPresenter;
+        add: (SpBoxLayout newLeftToRight
+                addLast: addButton expand: false;
+                yourself)
+        expand: false;
+        yourself
 ```
 
 Now the method `initialzePresenters` gets a single focus: the one of defining the subcomponents.
@@ -399,22 +399,22 @@ Now the method `initialzePresenters` gets a single focus: the one of defining th
 ```
 TodoListPresenter >> initializePresenters
 
-	todoListPresenter := self newTable
-		addColumn:
-			((SpCheckBoxTableColumn evaluated: [ :task |  task isDone ])
-				width: 20;
-				onActivation: [ :task | task done: true ];
-				onDeactivation: [ :task | task done: false ];
-				yourself);
-		addColumn:
-			(SpStringTableColumn
-				title: 'Title'
-				evaluated: [ :task | task title ]);
-				yourself.
-	addButton := self newButton
-		label: 'Add task';
-		action: [ self addTask ];
-		yourself
+    todoListPresenter := self newTable
+        addColumn:
+            ((SpCheckBoxTableColumn evaluated: [ :task |  task isDone ])
+                width: 20;
+                onActivation: [ :task | task done: true ];
+                onDeactivation: [ :task | task done: false ];
+                yourself);
+        addColumn:
+            (SpStringTableColumn
+                title: 'Title'
+                evaluated: [ :task | task title ]);
+                yourself.
+    addButton := self newButton
+        label: 'Add task';
+        action: [ self addTask ];
+        yourself
 ```
 
 
@@ -426,24 +426,24 @@ Let's add a context menu to table for this, and for it we will always need to mo
 ```Smalltalk
 TodoListPresenter >> initializePresenters
 
-	todoListPresenter := self newTable
-		addColumn:
-			((SpCheckBoxTableColumn evaluated: [ :task | task isDone ])
-				width: 20;
-				onActivation: [ :task | task done: true ];
-				onDeactivation: [ :task | task done: false ];
-				yourself);
-		addColumn:
-			(SpStringTableColumn
-				title: 'Title'
-				evaluated: [ :task | task title ]);
-		yourself.
-	todoListPresenter contextMenu: self todoListContextMenu.
+    todoListPresenter := self newTable
+        addColumn:
+            ((SpCheckBoxTableColumn evaluated: [ :task | task isDone ])
+                width: 20;
+                onActivation: [ :task | task done: true ];
+                onDeactivation: [ :task | task done: false ];
+                yourself);
+        addColumn:
+            (SpStringTableColumn
+                title: 'Title'
+                evaluated: [ :task | task title ]);
+        yourself.
+    todoListPresenter contextMenu: self todoListContextMenu.
 
-	addButton := self newButton
-		label: 'Add task';
-		action: [ self addTask ];
-		yourself
+    addButton := self newButton
+        label: 'Add task';
+        action: [ self addTask ];
+        yourself
 ```
 
 What is added now? 
@@ -454,13 +454,13 @@ What is added now?
 ```Smalltalk
 TodoListPresenter >> todoListContextMenu
 
-	^ self newMenu 
-		addItem: [ :item | item 
-					name: 'Edit...'; 
-					action: [ self editSelectedTask ] ];
-		addItem: [ :item | item 
-					name: 'Remove'; 
-					action: [ self removeSelectedTask ] ]
+    ^ self newMenu 
+        addItem: [ :item | item 
+                    name: 'Edit...'; 
+                    action: [ self editSelectedTask ] ];
+        addItem: [ :item | item 
+                    name: 'Remove'; 
+                    action: [ self removeSelectedTask ] ]
 ```
 
 This method creates a menu to be displayed when pressing right-click on the table. Let's see what it contains: 
@@ -472,16 +472,16 @@ And now let's define the actions
 
 ```Smalltalk
 TodoListPresenter >> editSelectedTask
-	(TodoTaskPresenter newApplication: self application) 
-		task: todoListPresenter selection selectedItem;
-		openModal.
-	self updatePresenter
+    (TodoTaskPresenter newApplication: self application) 
+        task: todoListPresenter selection selectedItem;
+        openModal.
+    self updatePresenter
 ```
 
-```Smalltalk	
+```Smalltalk    
 TodoListPresenter >> removeSelectedTask
-	todoListPresenter selection selectedItem remove.
-	self updatePresenter
+    todoListPresenter selection selectedItem remove.
+    self updatePresenter
 ```
 
 As you see, `editSelectedTask` is almost equal to `addTask` but instead of adding a new task, it takes the selected task in our table by sending `TodoListPresenter selection selectedItem`.  
@@ -497,9 +497,9 @@ You need to load the Gtk backend as follows:
 
 ```Smalltalk
 Metacello new 
-	repository: 'github://pharo-spec/mars-gtk';
-	baseline: 'Mars';
-	load.
+    repository: 'github://pharo-spec/mars-gtk';
+    baseline: 'Mars';
+    load.
 ```
 
 (Do not worry if you have a couple of messages asking to "load" or "merge" a Spec2 package, this is because the baseline has Spec2 in its dependencies and it will "touch" the packages while loading the Gtk backend).
@@ -508,8 +508,8 @@ Now, you can execute
 
 ```Smalltalk
 TodoApplication new 
-	useBackend: #Gtk;
-	run.
+    useBackend: #Gtk;
+    run.
 ```
 
 And that's all, you have your Todo application running as shown by Figure *@Todogkt@*.
