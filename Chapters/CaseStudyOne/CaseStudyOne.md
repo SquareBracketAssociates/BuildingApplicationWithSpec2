@@ -752,23 +752,23 @@ ImdbApp >> initialize
 ```
 
 We can now define our custom styles.
-The easiest way is to create a style from a String and then use the appropriate reader to convert it into a style sheet object.
-Here we define that an element usingthe tag `customLabel` will be drawn in red.
+The easiest way is to create a style from a String. Here we define that an element usingthe tag `customLabel` will be drawn in red.
 
 ```
 ImdbConfiguration >> customStyleSheet
-    ^ (SpStyleVariableSTONReader fromString: '
+    ^ '
 .application [ 
     .customLabel [ Draw { #color: #red } ] ] ')
 ```
 
 Pay attention not to forget the '.' in front of `application` and `customLabel`
-We specialize the method `newStyleSheet` so that it includes the custom style as follows: 
+We specialize the method `configure:` so that it includes the custom style as follows: 
 
 ```
-ImdbConfiguration >> newStyleSheet
+ImdbConfiguration >> configure: anApplication
 
-    ^ self customStyleSheet, SpStyle defaultStyleSheet copy
+	super configure: anApplication.
+	self addStyleSheetFromString: self customStyleSheet.
 ```
 
 We are ready to using the tag for the label.
