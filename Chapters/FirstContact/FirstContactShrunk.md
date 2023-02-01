@@ -1,17 +1,16 @@
 ## A 10 min small example
-@cha_small_example
+@chaSmallExample
 
 We will construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will allow you to build basic user interfaces.
 
 After completing this chapter you should read Chapter *@cha_reuse@* about reuse of Spec widgets, which is the key behind the power of Spec. With these two chapters, you should be able to construct Spec user interfaces as intended. You could use the rest of this book just as reference material, but nonetheless we recommend you to at least give a brief look at the other chapters as well.
 
 ### A customer satisfaction UI
+@seccustomersatisfaction
 
-@sec_customer_satisfaction
+![A screen shot of the customer satisfaction UI.](figures/CustomersBasic.png width=50&label=figCustomersBasic)
 
-![A screen shot of the customer satisfaction UI.](figures/Customers_Basic.png width=50&label=fig_Customers_Basic)
-
-We construct a simple customer satisfaction UI, which allow a user to give feedback about a service by clicking on one of three buttons. \(This feedback should be recorded and processed, but this is outside of the scope of this example\). We show a screenshot of the UI in Figure *@fig_Customers_Basic@*.
+We construct a simple customer satisfaction UI, which allow a user to give feedback about a service by clicking on one of three buttons. \(This feedback should be recorded and processed, but this is outside of the scope of this example\). We show a screenshot of the UI in Figure *@figCustomersBasic@*.
 
 
 ### Create the class of the UI 
@@ -71,7 +70,7 @@ Note that the naming may be a bit confusing since we write `newButton` while it
 will create a button _presenter_ and not a button _widget_, which Spec will take 
 care by itself. We do not use `newButtonPresenter` to get an API easier to use.
 
-!!note **Do not** call `new` to instantiate a widget that is part of your UI. An alternative way to instantiate widgets is to use the message `instantiate:` with a presenter's class as argument. For example `screen := self instantiate: SpLabelPresenter.`. This allows one to instantiate standard and non-standard widgets.
+!!note **Do not** call `new` to instantiate a widget that is part of your UI. An alternative way to instantiate widgets is to use the message `instantiate:` with a presenter's class as argument. For example `screen := self instantiate: SpLabelPresenter`. This allows one to instantiate standard and non-standard widgets.
 
 #### Presenter configuration
 

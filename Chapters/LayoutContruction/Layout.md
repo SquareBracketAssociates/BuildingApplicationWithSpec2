@@ -1,4 +1,4 @@
-## Layouts (underway)
+## Layouts
 @cha_layout
 
 status: should check the old LayoutConstruction.md file
@@ -160,3 +160,182 @@ presenter layout: (SpOverlayLayout new
 presenter open.
 
 ```
+
+
+
+### Layout and reuse
+
+For example, consider the following artificial example of a two button UI that has two different layouts: horizontal and vertical.
+ 
+ We define a new presenter named `SpTwoButtons`.
+ 
+``` 
+SpPresenter << #SpTwoButtons 
+    slots: { #button1 . #button2 }; 
+    package: 'CodeOfSpec20BookThreePillar'
+```
+
+We define a simple `initializePresenters` method as follows: 
+
+```
+SpTwoButtons >> initializePresenters 
+    button1 := self newButton. 
+    button2 := self newButton. 
+
+    button1 label: '1'.
+    button2 label: '2'.
+```
+
+We define two class method method returning different layouts.
+Note that we could define such methods on the instance side too and we define them on the class side to be able to get such layouts without an instance of the class.
+
+``` 
+SpTwoButtons class >> buttonRow 
+     
+    ^ SpBoxLayout newLeftToRight 
+        add: #button1; add: #button2; 
+        yourself 
+``` 
+ 
+``` 
+SpTwoButtons class >> buttonCol 
+    ^ SpBoxLayout newTopToBottom 
+        add: #button1; add: #button2; 
+        yourself 
+``` 
+ 
+Note that when we define the layout at the class level, we use a symbol whose name is the corresponding instance variable. Hence we use `#button2` to refer to the presenter stored in the instance variable `button2`. This mapping can be customized at the level of the presenter but we do not present this because we never got the need for it. 
+
+
+We define a `defaultLayout` merthod just invoking one of the previously defined method.
+``` 
+SpTwoButtons >> defaultLayout 
+    ^ self class buttonRow 
+```
+
+We define also a `defaultLayout` method so that the presenter can be opened without defining a given layout. 
+
+##### With openWithLayout:
+This UI can be opened in multiple ways: 
+
+- `SpTwoButtons new openWithLayout: SpTwoButtons buttonRow` places the buttons in a row. 
+- `SpTwoButtons new openWithLayout:  SpTwoButtons buttonCol` places them in a column. 
+
+
+Now we can do better and define two instance level methods to encapsulate the layout configuration. 
+
+```
+SpTwoButtons >> beCol
+    self layout: self class buttonCol
+```
+
+```
+SpTwoButtons >> beRow
+    self layout: self class buttonRow
+```
+
+Now we can write the following script
+
+```
+SpTwoButtons new 
+    beCol;
+    open 
+```
+
+
+### Specifying a layout when reusing a presenter 
+
+Having multiple layouts for a presenter implies that there is a way to specify the layout to use when a presenter is reused. This is simple we use the method `layout:`.
+Here is an example. 
+We create a new presenter named: `SpButtonAndListH`.
+ 
+``` 
+SpPresenter << #SpButtonAndListH 
+    slots: { #buttons . #list }; 
+    package: 'CodeOfSpec20BookThreePillar'
+```
+
+
+```
+SpButtonAndListH >> initializePresenters 
+    buttons := self instantiate: SpTwoButtons. 
+    list := self newList. 
+    list items: (1 to: 10). 
+``` 
+
+``` 
+SpButtonAndListH >> initializeWindow: aWindowPresenter 
+    aWindowPresenter title: 'SuperWidget' 
+``` 
+
+
+```
+SpButtonAndListH >> defaultLayout 
+ 
+    ^ SpBoxLayout newLeftToRight 
+          add: buttons;
+          add: list; 
+          yourself 
+```
+
+
+This `SpButtonAndListH ` class results in a SuperWidget window as shown in Figure *@fig_alternativeButton@*.  
+It reuses the `SpTwoButtons` widget, and places all three widgets in a horizontal order because the `SpTwoButtons` widget will use the `buttonRow` layout method. 
+ 
+![Screen shot of the UI with buttons placed horizontally](figures/alternativeButton.png width=50&label=fig_alternativeButton) 
+ 
+Alternatively, we can create `TBAndListV` class as a subclass of `SpButtonAndListH ` and only change the `defaultLayout` method as below.
+It specifies that the reused `buttons` widget should use the `buttonCol` layout method, and hence results in the window shown in
+Figure
+*@fig_SuperWidget@*.
+
+
+![Screen shot of the UI with buttons placed vertically](figures/SuperWidget.png width=50&label=fig_SuperWidget) 
+
+
+
+``` 
+SpButtonAndListH << #TButtonAndListV 
+    package: 'CodeOfSpec20BookThreePillar'
+``` 
+ 
+```
+initializePresenters
+
+    super initializePresenters.
+    buttons beCol
+```
+
+
+##### Alternative to declare subcomponent layout choice.
+
+The alternative is to define a new method `defaultLayout` and to use the `add:layout:`. 
+
+We define a different presenter
+
+```
+SpButtonAndListH << #TButtonAndListV2
+    package: 'CodeOfSpec20BookThreePillar'
+```
+
+We define a new `defaultLayout` method as follows: 
+
+``` 
+SpButtonAndListV2 >> defaultLayout
+
+    ^ SpBoxLayout new
+        add: buttons layout: #buttonCol;
+        add: list;
+        yourself
+```
+
+Note the use of the method `add:layout:` with the selector of the method returning the layout configuration 
+here #buttonCol. This is normal since we cannot access state of a subcomponent at this moment.
+
+
+
+Note that we can change the layout dynamically from an inspector as shown in *@figTweak@*.
+
+![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak) 
+
+
