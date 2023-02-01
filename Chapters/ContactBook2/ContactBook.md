@@ -24,8 +24,8 @@ The class modeling a contact is defined as follow.
 
 ```
 Object << #EgContact
-	slots: {#name . #phone};
-	package: 'EgContactBook'
+    slots: {#name . #phone};
+    package: 'EgContactBook'
 ```
 
 
@@ -34,25 +34,25 @@ It just defines a `printOn:` method and a couple of accessors (not shown in the 
 ```
 EgContact >> printOn: aStream
 
-		super printOn: aStream.
-		aStream nextPut: $(.
-		aStream nextPutAll: name.
-		aStream nextPut: $).
+        super printOn: aStream.
+        aStream nextPut: $(.
+        aStream nextPutAll: name.
+        aStream nextPut: $).
 ```
 
 ```
 EgContact >> hasMatchingText: aString
-	^ name includesSubstring: aString caseSensitive: false
+    ^ name includesSubstring: aString caseSensitive: false
 ```
 
 
 ```
 EgContact class >> name: aNameString phone: aPhoneString
 
-	^ self new
-		name: aNameString;
-		phone: aPhoneString;
-		yourself
+    ^ self new
+        name: aNameString;
+        phone: aPhoneString;
+        yourself
 ```
 
 
@@ -63,34 +63,34 @@ As for the contact class, it is simple and quite straighforward.
 
 ```
 Object << #EgContactBook
-	slots: { #contacts };
-	package: 'EgContactBook'
+    slots: { #contacts };
+    package: 'EgContactBook'
 ```
 
 ```
 EgContactBook >> initialize
 
-	super initialize.
-	contacts := OrderedCollection new
+    super initialize.
+    contacts := OrderedCollection new
 ```
 
 We add the possibility to add and remove a contact
 
 ```
 EgContactBook >> addContact: aContact
-	contacts add: aContact
+    contacts add: aContact
 ```
 
 
 ```
 EgContactBook >> removeContact: aContact
-	contacts remove: aContact
+    contacts remove: aContact
 ```
 
 
 ```
 EgContactBook >> addContact: newContact after: contactAfter
-	contacts add: newContact after: contactAfter
+    contacts add: newContact after: contactAfter
 ```
 
 
@@ -98,7 +98,7 @@ We add a simple testing method in case one want to write some tests \(which we u
 
 ```
 EgContactBook >> includesContact: aContact
-	^ contacts includes: aContact
+    ^ contacts includes: aContact
 ```
 
 
@@ -106,10 +106,10 @@ And now we add a method to create a contact and add it to the contact book.
 
 ```
 EgContactBook >> add: contactName phone: phone
-	| contact |
-	contact := EgContact new name: contactName; phone: phone.
-	self addContact: contact.
-	^ contact
+    | contact |
+    contact := EgContact new name: contactName; phone: phone.
+    self addContact: contact.
+    ^ contact
 ```
 
 
@@ -117,13 +117,13 @@ Finally some facilities to query the contact book.
 
 ```
 EgContactBook >> findContactsWithText: aText
-	^ contacts select: [ :e | e hasMatchingText: aText ]
+    ^ contacts select: [ :e | e hasMatchingText: aText ]
 ```
 
 
 ```
 EgContactBook >> size
-	^ contacts size
+    ^ contacts size
 ```
 
 
@@ -138,23 +138,23 @@ some class method accessors as follows:
 
 ```
 EgContactBook class >> family
-	^family ifNil: [
-		family := self new
-			add: 'John' phone: '342 345';
-			add: 'Bill' phone: '123 678';
-			add: 'Marry' phone: '789 567';
-			yourself]
+    ^family ifNil: [
+        family := self new
+            add: 'John' phone: '342 345';
+            add: 'Bill' phone: '123 678';
+            add: 'Marry' phone: '789 567';
+            yourself]
 ```
 
 
 ```
 EgContactBook class >> coworkers
-	^coworkers ifNil: [
-		coworkers := self new
-			add: 'Stef' phone: '112 378';
-			add: 'Pavel' phone: '898 678';
-			add: 'Marcus' phone: '444 888';
-			yourself]
+    ^coworkers ifNil: [
+        coworkers := self new
+            add: 'Stef' phone: '112 378';
+            add: 'Pavel' phone: '898 678';
+            add: 'Marcus' phone: '444 888';
+            yourself]
 ```
 
 
@@ -163,9 +163,9 @@ The `<script>` pragma tells the system browser to add a small button to execute 
 
 ```
 EgContactBook class >> reset
-	<script>
-	coworkers := nil.
-	family := nil
+    <script>
+    coworkers := nil.
+    family := nil
 ```
 
 
@@ -183,8 +183,8 @@ It holds a reference to a contact book and it is structured around a table.
 
 ```
 SpPresenter << #EgContactBookPresenter
-	slots: { #table . #contactBook};
-	package: 'EgContactBook'
+    slots: { #table . #contactBook};
+    package: 'EgContactBook'
 ```
 
 
@@ -192,19 +192,19 @@ We define an accessor for the contact book and the table.
 
 ```
 EgContactBookPresenter >> contactBook
-	^ contactBook
+    ^ contactBook
 ```
 
 
 ```
 EgContactBookPresenter >> table: anObject
-	table := anObject
+    table := anObject
 ```
 
 
 ```
 EgContactBookPresenter >> table
-	^ table
+    ^ table
 ```
 
 
@@ -215,8 +215,8 @@ We specialize the method `setModelBeforeInitialization:` that is invoked by the 
 
 ```
 EgContactBookPresenter >> setModelBeforeInitialization: aContactBook
-	super setModelBeforeInitialization: aContactBook.
-	contactBook := aContactBook
+    super setModelBeforeInitialization: aContactBook.
+    contactBook := aContactBook
 ```
 
 
@@ -226,7 +226,7 @@ EgContactBookPresenter >> setModelBeforeInitialization: aContactBook
 ```
 EgContactBookPresenter class >> defaultSpec
 
-	^ SpBoxLayout newVertical add: #table; yourself
+    ^ SpBoxLayout newVertical add: #table; yourself
 ```
 
 
@@ -239,11 +239,11 @@ Finally the table contents is set using the contact book contents.
 
 ```
 EgContactBookPresenter >> initializePresenters
-	table := self newTable.
-	table
-		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
-		addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
-	table items: contactBook contents.
+    table := self newTable.
+    table
+        addColumn: (StringTableColumn title: 'Name' evaluated: #name);
+        addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
+    table items: contactBook contents.
 ```
 
 
@@ -253,8 +253,8 @@ Now we can start opening the UI by executing the following snippet
 We define a class method to be able to easily re-execute the set up.
 ```
 EgContactBookPresenter class >> coworkersExample
-	<example>
-	^ (self on: EgContactBook coworkers) open
+    <example>
+    ^ (self on: EgContactBook coworkers) open
 ```
 
 
@@ -270,26 +270,26 @@ a new contact for the contact book.
 
 ```
 EgContactBookPresenter >> newContact
-	| rawData splitted |
-	rawData := self
-		request: 'Enter new contact name and phone (split by comma)'
-		initialAnswer: ''
-		title: 'Create new contact'.
-	splitted := rawData splitOn: $,.
-	(splitted size = 2 and: [ splitted allSatisfy: #isNotEmpty ])
-		ifFalse: [ SpInvalidUserInput signal: 'Please enter contact name and phone (split by comma)'  ].
+    | rawData splitted |
+    rawData := self
+        request: 'Enter new contact name and phone (split by comma)'
+        initialAnswer: ''
+        title: 'Create new contact'.
+    splitted := rawData splitOn: $,.
+    (splitted size = 2 and: [ splitted allSatisfy: #isNotEmpty ])
+        ifFalse: [ SpInvalidUserInput signal: 'Please enter contact name and phone (split by comma)'  ].
 
-	^ EgContact new
-		name: splitted first;
-		phone: splitted second;
-		yourself
+    ^ EgContact new
+        name: splitted first;
+        phone: splitted second;
+        yourself
 ```
 
 
 To test it, we can get access to the presenter as follows
 ```
 (EgContactBookPresenter on: EgContactBook coworkers)
-	open presenter inspect
+    open presenter inspect
 ```
 
 
@@ -306,13 +306,13 @@ It will help us later to add contact just after the currently selected contact.
 
 ```
 EgContactBookPresenter >> isContactSelected
-	^ self table selectedItems isNotEmpty
+    ^ self table selectedItems isNotEmpty
 ```
 
 
 ```
 EgContactBookPresenter >> selectedContact
-	^ table selection selectedItem
+    ^ table selection selectedItem
 ```
 
 

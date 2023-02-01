@@ -40,35 +40,35 @@ First we create a subclass of `SpPresenter` with one instance variable `list` wh
 
 ```
 SpPresenter << #WidgetClassListPresenter
-	slots: { #list };
-	tag: 'MiniClassBrowser';
-	package: 'CodeOfSpec20Book'
+    slots: { #list };
+    tag: 'MiniClassBrowser';
+    package: 'CodeOfSpec20Book'
 ```
 
 In the method `initializePresenters`, we create the list and populate it with the required classes, in alphabetical order.
 
 ```
 WidgetClassListPresenter >> initializePresenters
-	list := self newList.
-	list items: (AbstractWidgetModel allSubclasses
-		 			sorted: [:a :b | a name < b name ]).
-	self focusOrder add: list.
+    list := self newList.
+    list items: (AbstractWidgetModel allSubclasses
+                     sorted: [:a :b | a name < b name ]).
+    self focusOrder add: list.
 ```
 
 We also add a title for the window.
 
 ```
 WidgetClassListPresenter >> initializeWindow: aWindowPresenter
-	aWindowPresenter title: 'Widgets'
+    aWindowPresenter title: 'Widgets'
 ```
 
 The layout contains only the list:
 
 ```
 WidgetClassListPresenter >> defaultLayout
-	^ SpBoxLayout newLeftToRight 
-		add: #list;
-		yourself
+    ^ SpBoxLayout newLeftToRight 
+        add: #list;
+        yourself
 ```
 
 Doing `WidgetClassListPresenter new open`, you should obtain UI shown in Figure *@fig_WidgetClassList@*.
@@ -83,7 +83,7 @@ Since this UI will later be used together with other widgets to provide a more c
 
 ```
 WidgetClassListPresenter >> whenSelectionChangedDo: aBlock
-	list whenSelectionChangedDo: aBlock
+    list whenSelectionChangedDo: aBlock
 ```
 
 
@@ -100,9 +100,9 @@ Large and complex UIs are reused in the same way as simple widgets.
 
 ```
 SpPresenter << #ProtocolMethodListPresenter
-	slots: { #label . #methods };
-	tag: 'MiniClassBrowser';
-	package: 'CodeOfSpec20Book'
+    slots: { #label . #methods };
+    tag: 'MiniClassBrowser';
+    package: 'CodeOfSpec20Book'
 ```
 
 
@@ -112,11 +112,11 @@ We also give this UI a title.
 
 ```
 ProtocolMethodListPresenter >> initializePresenters
-	methods := self newList.
-	methods displayBlock: [ :m | m selector ].
-	label :=  self newLabel.
-	label label: 'Protocol'.
-	self focusOrder add: methods.
+    methods := self newList.
+    methods displayBlock: [ :m | m selector ].
+    label :=  self newLabel.
+    label label: 'Protocol'.
+    self focusOrder add: methods.
 ```
 
 
@@ -125,7 +125,7 @@ define the method `initializeWindow:`.
 
 ```
 ProtocolMethodListPresenter >> initializeWindow: aWindowPresenter
-	aWindowPresenter title: 'Protocol widget'
+    aWindowPresenter title: 'Protocol widget'
 ```
 
 
@@ -134,10 +134,10 @@ The layout code builds a column with the fixed-height label on top and the list 
 
 ```
 ProtocolMethodListPresenter >> defaultLayout
-	^ SpBoxLayout newTopToBottom 
-			add: #label ;
-			add: #methods ;
-			yourself
+    ^ SpBoxLayout newTopToBottom 
+            add: #label ;
+            add: #methods ;
+            yourself
 ```
 
 
@@ -149,10 +149,10 @@ This is normal since we did not set any items but we should also place better th
 
 ```
 ProtocolMethodListPresenter >> defaultLayout
-	^ SpBoxLayout newVertical
-			add: #label  withConstraints: [:c | c expand: false];
-			add: #methods withConstraints: [:c | c fill];
-			yourself
+    ^ SpBoxLayout newVertical
+            add: #label  withConstraints: [:c | c expand: false];
+            add: #methods withConstraints: [:c | c fill];
+            yourself
 ```
 
 
@@ -165,23 +165,23 @@ Our protocol method list will need to be configured when it is used, for example
 
 ```
 ProtocolMethodListPresenter >> items: aCollection
-	methods items: aCollection
+    methods items: aCollection
 ```
 
 ```
 ProtocolMethodListPresenter >> label: aText
-	label label: aText
+    label label: aText
 ```
 
 ```
 ProtocolMethodListPresenter >> resetSelection
-	methods selection unselectAll
+    methods selection unselectAll
 ```
 
 
 ```
 ProtocolMethodListPresenter >> whenSelectionChangedDo: aBlock
-	methods whenSelectionChangedDo: aBlock
+    methods whenSelectionChangedDo: aBlock
 ```
 
 
@@ -200,7 +200,7 @@ ProtocolMethodListPresenter new open ; inspect
 Then in the inspector we can use the newly created methods to pass a collection of methods:
 
 ```
-	self items: Point methods
+    self items: Point methods
 ```
 
 
@@ -224,26 +224,26 @@ We add an accessor to access the method list.
 
 ```
 ProtocolMethodListPresenter >> methods
-	^ methods
+    ^ methods
 ```
 
 
 ```
 TestCase << #ProtocolMethodListPresenterTest
-	tag: 'MiniClassBrowser';
-	package: 'CodeOfSpec20Book'
+    tag: 'MiniClassBrowser';
+    package: 'CodeOfSpec20Book'
 ```
 
 
 ```
 ProtocolMethodListPresenterTest >> testItems
 
-	| proto methods |
-	methods := Point methods sort: #selector ascending.
-	proto := ProtocolMethodListPresenter new.
-	proto items: methods.
-	self assert: proto methods items first class equals: CompiledMethod.
-	self assert: proto methods items first selector equals: methods first selector
+    | proto methods |
+    methods := Point methods sort: #selector ascending.
+    proto := ProtocolMethodListPresenter new.
+    proto items: methods.
+    self assert: proto methods items first class equals: CompiledMethod.
+    self assert: proto methods items first selector equals: methods first selector
 ```
 
 
@@ -261,9 +261,9 @@ This UI is composed of a `WidgetClassListPresenter` and two `ProtocolMethodListP
 
 ```
 SpPresenter << #ProtocolViewerPresenter
-	slots: { #models . #api . #events };
-	tag: 'MiniClassBrowser';
-	package: 'CodeOfSpec20Book'
+    slots: { #models . #api . #events };
+    tag: 'MiniClassBrowser';
+    package: 'CodeOfSpec20Book'
 ```
 
 
@@ -272,20 +272,20 @@ The `initializePresenters` method shows the use of `instantiate:` to instantiate
 ```
 ProtocolViewerPresenter >> initializePresenters
 
-	models := self instantiate: WidgetClassListPresenter.
-	api := self instantiate: ProtocolMethodListPresenter.
-	events := self instantiate: ProtocolMethodListPresenter.
+    models := self instantiate: WidgetClassListPresenter.
+    api := self instantiate: ProtocolMethodListPresenter.
+    events := self instantiate: ProtocolMethodListPresenter.
 
-	api label: 'api'.
-	events label: 'api-events'.
+    api label: 'api'.
+    events label: 'api-events'.
 
-	self focusOrder add: models; add: api; add: events.
+    self focusOrder add: models; add: api; add: events.
 ```
 
 
 ```
 ProtocolViewerPresenter >> initializeWindow: aWindowPresenter
-	aWindowPresenter title: 'Protocol viewer'
+    aWindowPresenter title: 'Protocol viewer'
 ```
 
 
@@ -295,41 +295,41 @@ Additionally, when a method is selected in one method list, the selection in the
 ```
 ProtocolViewerPresenter >> connectPresenters
 
-	models whenSelectionChangedDo: [ :selection |
-		| class |
-		api resetSelection.
-		events resetSelection.
-		class := selection selectedItem.
-		class
-			ifNil: [ 
-				api items: #(). 
-				events items: #() ]
-			ifNotNil: [
-				api items: (self methodsIn: class for: 'api').
-				events items: (self methodsIn: class for: 'api - events') ] ].
+    models whenSelectionChangedDo: [ :selection |
+        | class |
+        api resetSelection.
+        events resetSelection.
+        class := selection selectedItem.
+        class
+            ifNil: [ 
+                api items: #(). 
+                events items: #() ]
+            ifNotNil: [
+                api items: (self methodsIn: class for: 'api').
+                events items: (self methodsIn: class for: 'api - events') ] ].
 
-	api whenSelectionChangedDo: [ :selection |
- 		selection selectedItem ifNotNil: [ events resetSelection ] ].
-	events whenSelectionChangedDo: [ :selection |
-		selection selectedItem ifNotNil: [ api resetSelection ] ]
+    api whenSelectionChangedDo: [ :selection |
+         selection selectedItem ifNotNil: [ events resetSelection ] ].
+    events whenSelectionChangedDo: [ :selection |
+        selection selectedItem ifNotNil: [ api resetSelection ] ]
 ```
 
 
 ```
 ProtocolViewerPresenter >> methodsIn: class for: protocol
-	^ (class methodsInProtocol: protocol) sorted:
-			 [ :a :b | a selector < b selector ]
+    ^ (class methodsInProtocol: protocol) sorted:
+             [ :a :b | a selector < b selector ]
 ```
 
 Lastly, the layout puts the sub widgets in one column, with all sub widgets taking the same amount of space.
 
 ```
 ProtocolViewerPresenter >> defaultLayout
-	^ SpBoxLayout newTopToBottom
-		add: #models; 
-		add: #api; 
-		add: #events;
-		yourself
+    ^ SpBoxLayout newTopToBottom
+        add: #models; 
+        add: #api; 
+        add: #events;
+        yourself
 ```
 
 
@@ -352,36 +352,36 @@ We can do better. Let us define three methods as follows:
 
 ```
 ProtocolViewerPresenter >> horizontalLayout
-	^ SpBoxLayout newLeftToRight 
-		add: #models; 
-		add: #api; 
-		add: #events;
-		yourself
+    ^ SpBoxLayout newLeftToRight 
+        add: #models; 
+        add: #api; 
+        add: #events;
+        yourself
 ```
 
 
 ```
 ProtocolViewerPresenter >> verticalLayout
-	^ SpBoxLayout newTopToBottom 
-		add: #models; 
-		add: #api; 
-		add: #events;
-		yourself
+    ^ SpBoxLayout newTopToBottom 
+        add: #models; 
+        add: #api; 
+        add: #events;
+        yourself
 ```
 
 
 ```
 ProtocolViewerPresenter >> defaultLayout
-	^ self verticalLayout
+    ^ self verticalLayout
 ```
 
 Now we can decide to open the viewer with different layouts using the message `openWithSpec:` as follows (as shown in Figure *@figProtocolViewerHorizontal@*):
 
 ```
 ProtocolViewerPresenter class >> exampleHorizontal
-	| inst |
-	inst := self new.
-	inst openWithLayout: inst horizontalLayout
+    | inst |
+    inst := self new.
+    inst openWithLayout: inst horizontalLayout
 ```
 
 
@@ -403,17 +403,17 @@ Similar to the second user interface, when this UI is reused it will probably ne
 
 ```
 ProtocolViewerPresenter >> whenSelectionInAPIChanged: aBlock
-	api whenSelectionChangedDo: aBlock
+    api whenSelectionChangedDo: aBlock
 ```
 
 ```
 ProtocolViewerPresenter >> whenSelectionInClassChanged: aBlock
-	models whenSelectionChangedDo: aBlock
+    models whenSelectionChangedDo: aBlock
 ```
 
 ```
 ProtocolViewerPresenter >> whenSelectionInEventChanged: aBlock
-	events whenSelectionChangedDo: aBlock
+    events whenSelectionChangedDo: aBlock
 ```
 
 
@@ -431,28 +431,28 @@ Our last user interface reuses the `ProtocolViewerPresenter` with a different la
 
 ```
 SpPresenter << #ProtocolCodeBrowserPresenter
-	slots: { #text . #viewer };
-	tag: 'MiniClassBrowser';
-	package: 'CodeOfSpec20Book'
+    slots: { #text . #viewer };
+    tag: 'MiniClassBrowser';
+    package: 'CodeOfSpec20Book'
 ```
 
 ```
 ProtocolCodeBrowserPresenter >> initializePresenters
-	text := self instantiate: SpCodePresenter.
-	viewer := self instantiate: ProtocolViewerPresenter.
-	text syntaxHighlight: true.
-	self focusOrder
-		add: viewer;
-		add: text
+    text := self instantiate: SpCodePresenter.
+    viewer := self instantiate: ProtocolViewerPresenter.
+    text syntaxHighlight: true.
+    self focusOrder
+        add: viewer;
+        add: text
 ```
 
 ```
 ProtocolCodeBrowserPresenter >>defaultLayout
-	
-	^ SpBoxLayout newTopToBottom
-			add: (SpBoxLayout newHorizontal add: #viewer ; yourself);
-			add: #text;
-			yourself
+    
+    ^ SpBoxLayout newTopToBottom
+            add: (SpBoxLayout newHorizontal add: #viewer ; yourself);
+            add: #text;
+            yourself
 ```
 
 
@@ -460,7 +460,7 @@ ProtocolCodeBrowserPresenter >>defaultLayout
 
 ```
 ProtocolCodeBrowserPresenter >> initializeWindow: aWindowPresenter
-	aWindowPresenter title: 'Spec Protocol Browser'
+    aWindowPresenter title: 'Spec Protocol Browser'
 ```
 
 The `connectPresenters` method is used to make the text zone react to a selection in the lists. When a method is selected, the text zone updates its contents to show the source code of the selected method.
@@ -468,22 +468,22 @@ The `connectPresenters` method is used to make the text zone react to a selectio
 ```
 ProtocolCodeBrowserPresenter >> connectPresenters
 
-	viewer whenSelectionInClassChanged: [ :selection | text behavior: selection selectedItem ].
-	viewer whenSelectionInAPIChanged: [ :selection |
-		selection selectedItem
-			ifNotNil: [ :item | text text: item sourceCode ] ].
-	viewer whenSelectionInEventChanged: [ :selection |
-		selection selectedItem
-			ifNotNil: [ :item | text text: item sourceCode ] ]
+    viewer whenSelectionInClassChanged: [ :selection | text behavior: selection selectedItem ].
+    viewer whenSelectionInAPIChanged: [ :selection |
+        selection selectedItem
+            ifNotNil: [ :item | text text: item sourceCode ] ].
+    viewer whenSelectionInEventChanged: [ :selection |
+        selection selectedItem
+            ifNotNil: [ :item | text text: item sourceCode ] ]
 ```
 
 SHOULD Update 
 
 ```
 initializePresenters
-	
-	self instantiate: ProtocolViewer withLayout: ProtocolViewer horizontalLayout
-	
+    
+    self instantiate: ProtocolViewer withLayout: ProtocolViewer horizontalLayout
+    
 ```
 
 
@@ -525,12 +525,12 @@ ESTEBAN how I can do
 
 ````
 ProtocolCodeBrowserPresenter >> initializePresenters
-	text := self instantiate: SpCodePresenter.
-	viewer := self instantiate: ProtocolViewerPresenter.
-	BUT WITH ANOTHER LAYOUT DEFINED ON PROTOCOLVIEWER PRESENTER
-	self focusOrder
-		add: viewer;
-		add: text
+    text := self instantiate: SpCodePresenter.
+    viewer := self instantiate: ProtocolViewerPresenter.
+    BUT WITH ANOTHER LAYOUT DEFINED ON PROTOCOLVIEWER PRESENTER
+    self focusOrder
+        add: viewer;
+        add: text
 
 ```
 
@@ -565,20 +565,20 @@ In Spec 1.0 list presenters were exposing a different API namely `whenSelectedIt
 ```
 initializePresenters
 
-	models := self instantiate: WidgetClassListPresenter.
-	api := self instantiate: ProtocolMethodListPresenter.
-	events := self instantiate: ProtocolMethodListPresenter.
+    models := self instantiate: WidgetClassListPresenter.
+    api := self instantiate: ProtocolMethodListPresenter.
+    events := self instantiate: ProtocolMethodListPresenter.
 
-	api label: 'api'.
-	events label: 'api-events’.
+    api label: 'api'.
+    events label: 'api-events’.
 
 
 connectPresenters
 …
-	api whenSelectedItemChanged: [ :method |
-		method ifNotNil: [ events resetSelection ] ].
-	events whenSelectedItemChanged: [ :method |
-		method ifNotNil: [ api resetSelection ] ].
+    api whenSelectedItemChanged: [ :method |
+        method ifNotNil: [ events resetSelection ] ].
+    events whenSelectedItemChanged: [ :method |
+        method ifNotNil: [ api resetSelection ] ].
 ```
 
 In Spec2 list presenters and friends are exposing a different one exposing the selection of the list itself. 
@@ -586,10 +586,10 @@ The design rationale is that a selection is a complex object (multi selection...
 So we have 
 
 ```
-	api whenSelectionChangedDo: [ :selection |
-		selection selectedItem ifNotNil: [ events resetSelection ] ].
-	events whenSelectionChangedDo: [ :selection |
-		selection selectedItem ifNotNil: [ api resetSelection ] ].
+    api whenSelectionChangedDo: [ :selection |
+        selection selectedItem ifNotNil: [ events resetSelection ] ].
+    events whenSelectionChangedDo: [ :selection |
+        selection selectedItem ifNotNil: [ api resetSelection ] ].
 ```
 
 Now the question for your presenter definers is what is the API that you should expose to your users. 
@@ -597,8 +597,8 @@ We would say that it does not matter because exposing a API similar to the one o
 
 ```
 whenSelectedItemChangedDo: aBlock
-	methods whenSelectionChangedDo: [ :selection |
-		selection selectedItem ifNotNil: [ :i | aBlock value: i ] ]
+    methods whenSelectionChangedDo: [ :selection |
+        selection selectedItem ifNotNil: [ :i | aBlock value: i ] ]
 ```
 
 

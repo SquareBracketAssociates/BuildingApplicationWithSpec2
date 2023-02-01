@@ -16,8 +16,8 @@ The following script illustrates this and the result is shown in Figure *@figSim
 
 ```
 SpListPresenter new
-	items: Smalltalk allClasses;
-	open
+    items: Smalltalk allClasses;
+    open
 ```
 
 ![A simple list showing class names.](figures/List1Simple.png width=60&label=figSimpleList)
@@ -33,9 +33,9 @@ The following script configures a list presenter to display the name of the meth
 
 ```
 SpListPresenter new
-	items: Point methods;
-	display: [ :item | item selector ];
-	open
+    items: Point methods;
+    display: [ :item | item selector ];
+    open
 ```
 
 ![A simple list controlling the way items are displayed.](figures/List1SimpleDisplay.png width=60&label=figSimpleList2)
@@ -44,10 +44,10 @@ We can sort the items using the message `sortingBlock:`.
 
 ```
 SpListPresenter new
-	items: Point methods;
-	display: [ :item | item selector ];
-	sortingBlock: [ :a :b | a selector < b selector];
-	open
+    items: Point methods;
+    display: [ :item | item selector ];
+    sortingBlock: [ :a :b | a selector < b selector];
+    open
 ```
 
 ### Decorating elements
@@ -58,17 +58,17 @@ We can configure the way items are displayed in a more finer grained way. The fo
 
 ```
 SpListPresenter new
-	items: self environment allClasses;
-	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
-	displayColor: [ :aClass | 
-		(aClass name endsWith: 'Test')
-			  ifTrue: [ Color green ]
-			  ifFalse: [ Smalltalk ui theme textColor ] ];
-	displayItalic: [ :aClass | 
-		aClass name includesSubstring: 'abstract' caseSensitive: false ];
-	displayBold: [ :aClass | aClass hasSubclasses ];
-	displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
-	open
+    items: self environment allClasses;
+    displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
+    displayColor: [ :aClass | 
+        (aClass name endsWith: 'Test')
+              ifTrue: [ Color green ]
+              ifFalse: [ Smalltalk ui theme textColor ] ];
+    displayItalic: [ :aClass | 
+        aClass name includesSubstring: 'abstract' caseSensitive: false ];
+    displayBold: [ :aClass | aClass hasSubclasses ];
+    displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
+    open
 ```
 
 ![A decorated list: icons, text styling and color.](figures/List1Decorated.png width=60&label=figSimpleListDecorated)
@@ -81,9 +81,9 @@ The message `beMultipleSelection` controls such aspect.
 
 ```
 SpListPresenter new
-	items: Smalltalk allClasses;
-	beMultipleSelection;
-	open
+    items: Smalltalk allClasses;
+    beMultipleSelection;
+    open
 ```
 
 
@@ -98,10 +98,10 @@ Here is a typical use case of the method `whenSelectionChangedDo:`.
 ```
 connectPresenters
 
-	changesTree whenSelectionChangedDo: [ :selection | 
-		selection selectedItem
-			ifNil: [ textArea text: '' ]
-			ifNotNil: [ :item | textArea text: (self buildDiffFor: item) ] ]
+    changesTree whenSelectionChangedDo: [ :selection | 
+        selection selectedItem
+            ifNil: [ textArea text: '' ]
+            ifNotNil: [ :item | textArea text: (self buildDiffFor: item) ] ]
 ```
 
 
@@ -113,21 +113,21 @@ The following script shows how to configure two lists to support drag from one a
 ```
 | list1 list2 |
 list1 := SpListPresenter new
-list	
-	items: #( 'abc' 'def' 'xyz' );
-	dragEnabled: true.
+list    
+    items: #( 'abc' 'def' 'xyz' );
+    dragEnabled: true.
 
 list2 := SpListPresenter new.
-list2	dropEnabled: true;
-	wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ];
-	acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ].
+list2    dropEnabled: true;
+    wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ];
+    acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ].
 
 SpPresenter new
-	layout: (SpBoxLayout newLeftToRight
-		 add: list1;
-		 add: list2;
-		 yourself);
-	open
+    layout: (SpBoxLayout newLeftToRight
+         add: list1;
+         add: list2;
+         yourself);
+    open
 ```
 
 The following script illustrates the API.
@@ -152,10 +152,10 @@ The following script shows the use of the `SpFilteringListPresenter`.
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk allClasses ;
-	open; 
-	withWindowDo: [ :window | 
-		window title: ' SpFilteringListPresenter example' ]
+    items: Smalltalk allClasses ;
+    open; 
+    withWindowDo: [ :window | 
+        window title: ' SpFilteringListPresenter example' ]
 ```
 
 ![A filtering list with bottom filter.](figures/FilteringList.png width=60&label=figFiltering)
@@ -164,24 +164,24 @@ The following script shows that the filter can be placed on the top.
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk allClasses ;
-	openWithLayout: SpFilteringListPresenter topLayout ; 
-	open; 
-	withWindowDo: [ :window | 
-		window title: ' SpFilteringListPresenter example' ]
+    items: Smalltalk allClasses ;
+    openWithLayout: SpFilteringListPresenter topLayout ; 
+    open; 
+    withWindowDo: [ :window | 
+        window title: ' SpFilteringListPresenter example' ]
 ```
 
 Note that a filter can be declared upfront using the message `applyFilter:`.
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk allClasses ;
-	openWithLayout: SpFilteringListPresenter topLayout ; 
-	applyFilter: 'ZZ';
-	open ; 
-	
-	withWindowDo: [ :window | 
-		window title: 'SpFilteringListPresenter prefiltered example' ]
+    items: Smalltalk allClasses ;
+    openWithLayout: SpFilteringListPresenter topLayout ; 
+    applyFilter: 'ZZ';
+    open ; 
+    
+    withWindowDo: [ :window | 
+        window title: 'SpFilteringListPresenter prefiltered example' ]
 ```
 
 ### Selectable filtering lists
@@ -194,11 +194,11 @@ In addition to be able to filter items, it lets the user select items by ticking
 The following script produces the situation describes by 
 ```
 (SpFilteringSelectableListPresenter new
-	items: Smalltalk allClasses ;
-	layout: SpFilteringListPresenter topLayout ; 
-	asWindow)
-		title: 'SpFilteringSelectableListPresenter example';
-		open
+    items: Smalltalk allClasses ;
+    layout: SpFilteringListPresenter topLayout ; 
+    asWindow)
+        title: 'SpFilteringSelectableListPresenter example';
+        open
 
 ```
 
@@ -217,21 +217,21 @@ The following script shows how to define a `SpComponentListPresenter` as its res
 | list |
 list := { 
         (SpLabelPresenter new
-	         label: 'Test 1';
-	         yourself).
+             label: 'Test 1';
+             yourself).
         (SpImagePresenter new
-	         image: (self iconNamed: #smallOk);
-	         yourself).
+             image: (self iconNamed: #smallOk);
+             yourself).
         (SpButtonPresenter new
-	         label: 'A button';
-	         yourself).
+             label: 'A button';
+             yourself).
         (SpImagePresenter new
-	         image: PolymorphSystemSettings pharoLogo asForm;
-	         yourself) }.
+             image: PolymorphSystemSettings pharoLogo asForm;
+             yourself) }.
 
 SpComponentListPresenter new
-	presenters: list;
-	open
+    presenters: list;
+    open
 ```
 
 ![A component list with several different presenter: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo).
@@ -246,12 +246,12 @@ The following script shows how to list all the classes of Pharo using inheritanc
 
 ```
 SpTreePresenter new
-	roots: { Object };
-	children: [ :aClass | aClass subclasses ];
-	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
-	display: [ :aClass | aClass name ];
-	expandPath: #( 1 1 3 );
-	open
+    roots: { Object };
+    children: [ :aClass | aClass subclasses ];
+    displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
+    display: [ :aClass | aClass name ];
+    expandPath: #( 1 1 3 );
+    open
 ```
 
 The script uses the message `expandPath:` shows that we can expand a specific item by a path.
@@ -267,14 +267,14 @@ The dynamic aspect is expressed by a block `[ ... ]`.
 | tree | 
 tree := SpTreePresenter new.
 tree roots: { Object };
-	children: [ :aClass | aClass subclasses ];
-	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
-	display: [ :aClass | aClass name ];
-	contextMenu: [ 
-		SpMenuPresenter new
-			addGroup: [ :group | 
-				group addItem: [ :item | item name: tree selectedItem asString ] ] ];
-	open
+    children: [ :aClass | aClass subclasses ];
+    displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
+    display: [ :aClass | aClass name ];
+    contextMenu: [ 
+        SpMenuPresenter new
+            addGroup: [ :group | 
+                group addItem: [ :item | item name: tree selectedItem asString ] ] ];
+    open
 ```
 
 ![A tree with a selected item.](figures/TreeExpanded.png width=50&label=figTreemenu)
@@ -287,13 +287,13 @@ The following script shows the use of the following messages:
 
 ```
 SpTreePresenter new
-	  roots: { Object };
-	  children: [ :aClass | aClass subclasses ];
-	  displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
-	  display: [ :aClass | aClass name ];
-	  open;
-	  selectPathByItems: SpTreePresenter withAllSuperclasses reversed allButFirst
-	  scrollToSelection: true
+      roots: { Object };
+      children: [ :aClass | aClass subclasses ];
+      displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
+      display: [ :aClass | aClass name ];
+      open;
+      selectPathByItems: SpTreePresenter withAllSuperclasses reversed allButFirst
+      scrollToSelection: true
 ```
 
 ### Tables
@@ -301,7 +301,45 @@ SpTreePresenter new
 Spec offers tables. A table can have multiple columns and a column can be composed of elementary 
 Tables have different kind of columns that can be added to a table. 
 
-- `SpImageTableColumn` offers the possibility to display form (icon, graphics...).
+- `SpImageTableColumn` offers the possibility to display form (icon, graphics...).```Smalltalk
+TodoListPresenter >> initializePresenters
+
+    todoListPresenter := self newTable
+        addColumn:
+            ((SpCheckBoxTableColumn evaluated: [ :task | task isDone ])
+                width: 20;
+                onActivation: [ :task | task done: true ];
+                onDeactivation: [ :task | task done: false ];
+                yourself);
+        addColumn:
+            (SpStringTableColumn
+                title: 'Title'
+                evaluated: [ :task | task title ]);
+        yourself.
+    todoListPresenter contextMenu: self todoListContextMenu.
+
+    addButton := self newButton
+        label: 'Add task';
+        action: [ self addTask ];
+        yourself
+```
+
+What is added now? 
+ 
+- `contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
+
+
+```Smalltalk
+TodoListPresenter >> todoListContextMenu
+
+    ^ self newMenu 
+        addItem: [ :item | item 
+                    name: 'Edit...'; 
+                    action: [ self editSelectedTask ] ];
+        addItem: [ :item | item 
+                    name: 'Remove'; 
+                    action: [ self removeSelectedTask ] ]
+```
 - `SpStringTableColumn` offers cell items that are strings.
 - `SpCheckBoxTableColumn` lets us have cells with checkbox.
 - `SpIndexTableColumn` displays the index of the current item. 
@@ -316,11 +354,11 @@ The message `showColumnHeaders` will display the headers.
 
 ```
 SpTablePresenter new
-	addColumn: (SpStringTableColumn title: 'Number' evaluated: #yourself);
-	addColumn: (SpStringTableColumn title: 'Hex' evaluated: #hex);
-	showColumnHeaders;
-	items: (1 to: 10) asArray;
-	open
+    addColumn: (SpStringTableColumn title: 'Number' evaluated: #yourself);
+    addColumn: (SpStringTableColumn title: 'Hex' evaluated: #hex);
+    showColumnHeaders;
+    items: (1 to: 10) asArray;
+    open
 ```
 
 ![A simple table with two columns: the first one is a composed one (with icon and string).](figures/Table.png width=50&label=figSimpleTable)
@@ -337,16 +375,16 @@ The following script presents how to define a table with two columns that can be
 | classNameCompare methodCountSorter |
 classNameCompare := [ :c1 :c2 | c1 name < c2 name ].
 methodCountSorter := [ :c1 :c2 | 
-	c1 methodDictionary size threeWayCompareTo: c2 methodDictionary size ].
+    c1 methodDictionary size threeWayCompareTo: c2 methodDictionary size ].
 
 SpTablePresenter new
-	addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) 
-				 compareFunction: classNameCompare);
-	addColumn: ((SpStringTableColumn
-			  title: 'Methods'
-			  evaluated: [ :c | c methodDictionary size ]) sortFunction: methodCountSorter);
-	items: Smalltalk globals allClasses;
-	open
+    addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) 
+                 compareFunction: classNameCompare);
+    addColumn: ((SpStringTableColumn
+              title: 'Methods'
+              evaluated: [ :c | c methodDictionary size ]) sortFunction: methodCountSorter);
+    items: Smalltalk globals allClasses;
+    open
 ```
 
 ![A simple table with two columns: the first one is a composed one (with icon and string).](figures/TableSorting.png width=50&label=figTableSorting)
@@ -361,24 +399,24 @@ The following script shows that table cells can be editable using the messages `
 | items |
 items := String methods.
 SpTablePresenter new
-	addColumn: 
-		(SpStringTableColumn new
-			title: 'Editable selector name';
-			evaluated: [ :m | m selector ];
-			displayBold: [ :m | m selector isKeyword ];
-			beEditable;
-			onAcceptEdition: [ :m :t | 
-				Transcript
-					nextPutAll: t;
-					cr;
-					endEntry ];
-			 yourself);
-	addColumn:
-		(SpStringTableColumn title: 'Size' evaluated: #size) 
-			beSortable;
-			showColumnHeaders;
-			items: items;
-	open
+    addColumn: 
+        (SpStringTableColumn new
+            title: 'Editable selector name';
+            evaluated: [ :m | m selector ];
+            displayBold: [ :m | m selector isKeyword ];
+            beEditable;
+            onAcceptEdition: [ :m :t | 
+                Transcript
+                    nextPutAll: t;
+                    cr;
+                    endEntry ];
+             yourself);
+    addColumn:
+        (SpStringTableColumn title: 'Size' evaluated: #size) 
+            beSortable;
+            showColumnHeaders;
+            items: items;
+    open
 ```
 
 ![A table with an editable column).](figures/EditableTable.png width=50&label=figEditableTable)
@@ -396,19 +434,19 @@ The following script shows that the first colum will be a tree whose element is 
 
 ```
 SpTreeTablePresenter new
-	beResizable;
-	addColumn: (SpCompositeTableColumn new
-				title: 'Classes';
-				addColumn: (SpImageTableColumn evaluated: [ :aClass | 
-							self iconNamed: aClass systemIconName ]);
-				addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
-				yourself);
-	addColumn: (SpStringTableColumn new
-				title: 'Methods';
-				evaluated: [ :class | class methodDictionary size asString ]);
-	roots: { Object };
-	children: [ :aClass | aClass subclasses ];
-	open
+    beResizable;
+    addColumn: (SpCompositeTableColumn new
+                title: 'Classes';
+                addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+                            self iconNamed: aClass systemIconName ]);
+                addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
+                yourself);
+    addColumn: (SpStringTableColumn new
+                title: 'Methods';
+                evaluated: [ :class | class methodDictionary size asString ]);
+    roots: { Object };
+    children: [ :aClass | aClass subclasses ];
+    open
 ```
 
 ![A tree table with two main columns: the first one is a composed one (with icon and string).](figures/TreeTable.png width=50&label=figTreeTable)
@@ -417,32 +455,32 @@ Adding the following messages `width:` and `beExpandable` to the `SpCompositeTab
 
 ```
 SpCompositeTableColumn new
-	title: 'Classes';
-	addColumn: (SpImageTableColumn evaluated: [ :aClass | 
-				self iconNamed: aClass systemIconName ]);
-	addColumn: (SpStringTableColumn evaluated: #name);
-	width: 150;
-	beExpandable;
-	yourself
+    title: 'Classes';
+    addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+                self iconNamed: aClass systemIconName ]);
+    addColumn: (SpStringTableColumn evaluated: #name);
+    width: 150;
+    beExpandable;
+    yourself
 ```
 
 You can try the following silly example which results in Figure *@figTreeTableSilly@*.
 
 ```
 SpTreeTablePresenter new
-	beResizable;
-	addColumn: (SpStringTableColumn new
-				title: 'Methods';
-				evaluated: [ :class | class methodDictionary size asString ]);
-	addColumn: (SpCompositeTableColumn new
-				title: 'Classes';
-				addColumn: (SpImageTableColumn evaluated: [ :aClass | 
-							self iconNamed: aClass systemIconName ]);
-				addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
-				yourself);
-	roots: { Object };
-	children: [ :aClass | aClass subclasses ];
-	open
+    beResizable;
+    addColumn: (SpStringTableColumn new
+                title: 'Methods';
+                evaluated: [ :class | class methodDictionary size asString ]);
+    addColumn: (SpCompositeTableColumn new
+                title: 'Classes';
+                addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+                            self iconNamed: aClass systemIconName ]);
+                addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
+                yourself);
+    roots: { Object };
+    children: [ :aClass | aClass subclasses ];
+    open
 ```
 
 ![A tree table with two main columns: the first one is a composed one (with icon and string).](figures/TreeTableSilly.png width=50&label=figTreeTableSilly)

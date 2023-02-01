@@ -177,7 +177,7 @@ Here is an example that we will explain steps by steps below.
     .lightBlue [ Draw { #color: #lightBlue } ] ]'
 ```
 
-	
+    
 We will go by steps.
 
 `SpPropertyStyle` has 5 subclasses: `SpContainerStyle`, `SpDrawStyle`, `SpFontStyle`, `SpTextStyle`, and `SpGeometryStyle`. These subclasses define the 5 types of properties that exist. On the class side, the method `stonName` that indicates the name that we must put in the STON file.
@@ -220,7 +220,7 @@ We can put by default all the letters in bold.
 
 ```
 '.application [
-	Font { #bold: true }
+    Font { #bold: true }
 ]'
 ```
 
@@ -240,12 +240,12 @@ presenter := SpPresenter new.
 presenter application: (app := SpApplication new).
 
 styleSheet := SpStyle defaultStyleSheet, 
-	(SpStyleVariableSTONReader fromString: 
-	'.application [
-	     Font { #bold: true },
+    (SpStyleVariableSTONReader fromString: 
+    '.application [
+         Font { #bold: true },
             .lightGreen [ Draw { #color: #B3E6B5 } ],
             .bgBlack [ Draw { #backgroundColor: #black } ],
-	    .blue [ Draw { #color: #blue } ]
+        .blue [ Draw { #color: #blue } ]
 ]' ).
 
 app styleSheet: styleSheet.
@@ -256,8 +256,8 @@ Now, we can add one or more styles to a presenter, as follows and whose result i
 
 ```
 presenter layout: (SpBoxLayout newTopToBottom
-	add: (label := presenter newLabel);
-	yourself).
+    add: (label := presenter newLabel);
+    yourself).
 
 label label: 'I am a label'.
 label addStyle: 'lightGreen'.
@@ -293,8 +293,8 @@ To properly use styles, it is better to define a custom application as a subclas
 
 ```
 SpApplication << #CustomStylesApplication
-	slots: {};
-	package: 'Spec-workshop'
+    slots: {};
+    package: 'Spec-workshop'
 ```
 
 
@@ -303,24 +303,24 @@ In the class we need to override the method `styleSheet` to return our custom st
 ```
 CustomStylesApplication >> styleSheet
 
-	^ SpStyle defaultStyleSheet, 
-		(SpStyleVariableSTONReader fromString:
-	'.application [
-		Font { #bold: true },
-		.lightGreen [ Draw { #color: #B3E6B5 } ],
-		.lightBlue [ Draw { #color: #lightBlue } ],
-		.container [ Container { #padding: 4, #borderWidth: 2 } ],
-		.bgOpaque [ Draw { #backgroundColor: EnvironmentColor(#base) } ],
-		.codeFont [ Font { #name: EnvironmentFont(#code) } ],
-		.textFont [ Font { #name: EnvironmentFont(#default) } ],
-		.bigFontSize [ Font { #size: 20 } ],
-		.smallFontSize [ Font { #size: 14 } ],
-		.icon [ Geometry { #width: 30 } ],
-		.buttonStyle [ Geometry { #width: 110 } ],
-		.labelStyle [ 
-			Geometry { #height: 25 },
-			Font { #size: 12 }	]
-	]')
+    ^ SpStyle defaultStyleSheet, 
+        (SpStyleVariableSTONReader fromString:
+    '.application [
+        Font { #bold: true },
+        .lightGreen [ Draw { #color: #B3E6B5 } ],
+        .lightBlue [ Draw { #color: #lightBlue } ],
+        .container [ Container { #padding: 4, #borderWidth: 2 } ],
+        .bgOpaque [ Draw { #backgroundColor: EnvironmentColor(#base) } ],
+        .codeFont [ Font { #name: EnvironmentFont(#code) } ],
+        .textFont [ Font { #name: EnvironmentFont(#default) } ],
+        .bigFontSize [ Font { #size: 20 } ],
+        .smallFontSize [ Font { #size: 14 } ],
+        .icon [ Geometry { #width: 30 } ],
+        .buttonStyle [ Geometry { #width: 110 } ],
+        .labelStyle [ 
+            Geometry { #height: 25 },
+            Font { #size: 12 }    ]
+    ]')
 ```
 
 
@@ -334,8 +334,8 @@ For the main presenter, we will build a mini-text-viewer in which we will be abl
 
 ```
 SpPresenter << #CustomStylesPresenter
-	slots: { #text . #label . #zoomOutButton . #textFontButton . #codeFontButton . #zoomInButton };
-	package: 'Spec-workshop'
+    slots: { #text . #label . #zoomOutButton . #textFontButton . #codeFontButton . #zoomInButton };
+    package: 'Spec-workshop'
 ```
 
 
@@ -344,54 +344,54 @@ In the `initializePresenters` method we will first initialise the presenters, th
 ```
 CustomStylesPresenter >> initializePresenters
 
-	self instantiatePresenters.
-	self initializeStyles.
-	self initializeLayout
+    self instantiatePresenters.
+    self initializeStyles.
+    self initializeLayout
 ```
 
 
 ```
 CustomStylesPresenter >> instantiatePresenters
 
-	zoomInButton := self newButton.
-	zoomInButton icon: (self iconNamed: #glamorousZoomIn).
-	zoomOutButton := self newButton.
-	zoomOutButton icon: (self iconNamed: #glamorousZoomOut).
+    zoomInButton := self newButton.
+    zoomInButton icon: (self iconNamed: #glamorousZoomIn).
+    zoomOutButton := self newButton.
+    zoomOutButton icon: (self iconNamed: #glamorousZoomOut).
 
-	codeFontButton := self newButton.
-	codeFontButton
-		icon: (self iconNamed: #smallObjects);
-		label: 'Code font'.
-	textFontButton := self newButton.
-	textFontButton
-		icon: (self iconNamed: #smallFonts);
-		label: 'Text font'.
+    codeFontButton := self newButton.
+    codeFontButton
+        icon: (self iconNamed: #smallObjects);
+        label: 'Code font'.
+    textFontButton := self newButton.
+    textFontButton
+        icon: (self iconNamed: #smallFonts);
+        label: 'Text font'.
 
-	text := self newText.
-	text
-		beNotEditable
-		clearSelection;
-		text: String loremIpsum.
+    text := self newText.
+    text
+        beNotEditable
+        clearSelection;
+        text: String loremIpsum.
 
-	label := self newLabel.
-	label label: 'Lorem ipsum'
+    label := self newLabel.
+    label label: 'Lorem ipsum'
 ```
 
 
 ```
 CustomStylesPresenter >> initializeLayout
-	
-	self layout: (SpBoxLayout newTopToBottom
-		add: label expand: false;
-		add: (SpBoxLayout newLeftToRight
-			add: textFontButton expand: false;
-			add: codeFontButton expand: false;
-			addLast: zoomOutButton expand: false;		
-			addLast: zoomInButton expand: false;
-			yourself)
-		expand: false;
-		add: text;
-		yourself)
+    
+    self layout: (SpBoxLayout newTopToBottom
+        add: label expand: false;
+        add: (SpBoxLayout newLeftToRight
+            add: textFontButton expand: false;
+            add: codeFontButton expand: false;
+            addLast: zoomOutButton expand: false;        
+            addLast: zoomInButton expand: false;
+            yourself)
+        expand: false;
+        add: text;
+        yourself)
 ```
 
 
@@ -400,9 +400,9 @@ Finally, we change the window title and size:
 ```
 CustomStylesPresenter>> initializeWindow: aWindowPresenter
 
-	aWindowPresenter
-		title: 'Using styles';
-		initialExtent: 600 @ 400
+    aWindowPresenter
+        title: 'Using styles';
+        initialExtent: 600 @ 400
 ```
 
 
@@ -423,23 +423,23 @@ CustomStylesPresenter >> initializeStyles
     label addStyle: 'lightGreen'.
 
     "The default font of the text will be the code font and 
-	the font size will be the small one."
+    the font size will be the small one."
     text addStyle: 'codeFont'.
     text addStyle: 'smallFontSize'.
-	
+    
     "Change the background color."
     text addStyle: 'bgOpaque'.
 
     "But a smaller width for the zoom buttons"
     zoomInButton addStyle: 'icon'.
     zoomOutButton addStyle: 'icon'.
-	
+    
     codeFontButton addStyle: 'buttonStyle'.
     textFontButton addStyle: 'buttonStyle'.
 
     "As this presenter is the container, set to self the container
     style to add a padding and border width."
-	
+    
     self addStyle: 'container'
 ```
 
@@ -451,7 +451,7 @@ Finally, we have to override the `start` method in the application. With this, w
 ```
 CustomStylesApplication >> start
 
-	(self new: CustomStylesPresenter) openWithSpec
+    (self new: CustomStylesPresenter) openWithSpec
 ```
 
 
@@ -472,19 +472,19 @@ This is what to do in the `connectPresenters` method defined below:
 ```
 CustomStylesPresenter >> connectPresenters
 
-	zoomInButton action: [
-		text removeStyle: 'smallFontSize'.
-		text addStyle: 'bigFontSize' ].
-	zoomOutButton action: [ 
-		text removeStyle: 'bigFontSize'.
-		text addStyle: 'smallFontSize'].
+    zoomInButton action: [
+        text removeStyle: 'smallFontSize'.
+        text addStyle: 'bigFontSize' ].
+    zoomOutButton action: [ 
+        text removeStyle: 'bigFontSize'.
+        text addStyle: 'smallFontSize'].
 
-	codeFontButton action: [
-		text removeStyle: 'textFont'.
-		text addStyle: 'codeFont' ].
-	textFontButton action: [ 
-		text removeStyle: 'codeFont'.
-		text addStyle: 'textFont']
+    codeFontButton action: [
+        text removeStyle: 'textFont'.
+        text addStyle: 'codeFont' ].
+    textFontButton action: [ 
+        text removeStyle: 'codeFont'.
+        text addStyle: 'textFont']
 ```
 
 

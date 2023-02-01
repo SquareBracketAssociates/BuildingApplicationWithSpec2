@@ -100,7 +100,7 @@ SpPresenter < #MyMiniBrowserPresenter
     package: 'MiniBrowser'
 ```
 
-	
+    
 Now, we need to override the `initializePresenters` method in which we are going to 
 initialize the presenters and the layout of our mini browser.
 
@@ -136,7 +136,7 @@ methodsFilteringList listPresenter
     sortingBlock: [ :method | method selector ] ascending.
 ```
 
-	
+    
 We said that, initially, the code is going to be in “Read-Only” mode. So, the label of the button is going to be “Edit” so say that is we click on the button we will change to edition mode. Also we want to have a nice icon.
 
 ```
@@ -217,7 +217,7 @@ MyMiniBrowserPresenter >> initializeLayout
         yourself)
 ```
 
-	
+    
 So far, so good… but we did not add any behaviour to the presenters. To do that we can either do it in the initializePresenters method of override the connectPresenters method. To clearly separate the intention of the methods, we favor overriding connectPresenters.
 
 ### Connecting the flow

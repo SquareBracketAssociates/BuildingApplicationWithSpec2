@@ -13,30 +13,30 @@ Soon in the best theater...
 
 ``
 TodoListPresenter >> initializePresenters
-	| addButton |
-	todoListPresenter := self newTable
-	addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) 
-			width: 20;
-			onActivation: [ :task | task done: true ];
-			onDeactivation: [ :task | task done: false ];
-			yourself);
-	addColumn: (SpStringTableColumn 
-			title: 'Title' 
-			evaluated: [:task | task title);
-	contextMenu: self todoListContextMenu;
-	yourself.
+    | addButton |
+    todoListPresenter := self newTable
+    addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) 
+            width: 20;
+            onActivation: [ :task | task done: true ];
+            onDeactivation: [ :task | task done: false ];
+            yourself);
+    addColumn: (SpStringTableColumn 
+            title: 'Title' 
+            evaluated: [:task | task title);
+    contextMenu: self todoListContextMenu;
+    yourself.
 ```
 
 ```
 TodoListPresenter >> todoListContextMenu
 
-	^ self newMenu 
-		addItem: [ :item | item 
-						name: 'Edit...'; 
-						action: [ self editSelectedTask ] ];
-		addItem: [ :item | item 
-						name: 'Remove'; 
-						action: [ self removeSelectedTask ] ]
+    ^ self newMenu 
+        addItem: [ :item | item 
+                        name: 'Edit...'; 
+                        action: [ self editSelectedTask ] ];
+        addItem: [ :item | item 
+                        name: 'Remove'; 
+                        action: [ self removeSelectedTask ] ]
 ```
 
 ### Menu Bar

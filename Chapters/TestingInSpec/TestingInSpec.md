@@ -58,8 +58,8 @@ Finally, it has a string morph and a button. When the button is pressed, the col
 We will first define a test class.
 ```
 TestCase << #ClassVisualizerPresenterTest
-	slots: { #presenter };
-	package: 'Spec2-Testing'
+    slots: { #presenter };
+    package: 'Spec2-Testing'
 ```
 
 #### Correct initialization
@@ -72,26 +72,26 @@ So, when we instantiate the spec application of Figure *@fig:SpecApp@*, all the 
 ```
 ClassVisualizerPresenterTest >> testInitialization
 
-	| model |
-	model := String.
-	presenter := ClassVisualizerPresenter on: model.
-	
-	self assert: presenter model equals: model.
-	self assert: presenter codeText equals: model definitionString.
-	self
-		assert: presenter stringMorphContent
-		equals: model name
+    | model |
+    model := String.
+    presenter := ClassVisualizerPresenter on: model.
+    
+    self assert: presenter model equals: model.
+    self assert: presenter codeText equals: model definitionString.
+    self
+        assert: presenter stringMorphContent
+        equals: model name
 ```
 
 We will need to create a few methods on ==ClassVisualizerPresenter== to allow a proper testing.
 ```
 ClassVisualizerPresenter >> selectPath: aCollection 
-	tree selectPath: aCollection
+    tree selectPath: aCollection
 ```
 
 ```
 ClassVisualizerPresenter >> stringMorphContent
-	^ morphPresenter morph contents
+    ^ morphPresenter morph contents
 ```
 
 
@@ -106,31 +106,31 @@ The morph must change as well.
 ```
 ClassVisualizerPresenterTest >> testSelectItemOnTreePresenter
 
-	"We have initialized the tree with Object as its roots. The class OrderedCollection is a subclass of Object. We would simulate that a user selects OrderedCollection from the tree presenter."
+    "We have initialized the tree with Object as its roots. The class OrderedCollection is a subclass of Object. We would simulate that a user selects OrderedCollection from the tree presenter."
 
-	presenter := ClassVisualizerPresenter on: Object.
-	
-	presenter selectClass: OrderedCollection.
-	
-	self
-		assert: presenter selectedClass
-		equals: OrderedCollection.
-	self
-		assert: presenter codeText
-		equals: OrderedCollection definitionString.
-	self
-		assert: presenter stringMorphContent
-		equals: OrderedCollection name
-```
-
-```
-ClassVisualizerPresenter >> selectClass: aClass 
-	tree selectItem: aClass
+    presenter := ClassVisualizerPresenter on: Object.
+    
+    presenter selectClass: OrderedCollection.
+    
+    self
+        assert: presenter selectedClass
+        equals: OrderedCollection.
+    self
+        assert: presenter codeText
+        equals: OrderedCollection definitionString.
+    self
+        assert: presenter stringMorphContent
+        equals: OrderedCollection name
 ```
 
 ```
 ClassVisualizerPresenter >> selectClass: aClass 
-	tree selectItem: aClass
+    tree selectItem: aClass
+```
+
+```
+ClassVisualizerPresenter >> selectClass: aClass 
+    tree selectItem: aClass
 ```
 
 
@@ -143,23 +143,23 @@ When the button is clicked the morph must change its colour.
 ```
 ClassVisualizerPresenterTest >> testButtonChangesMorph
 
-	| previousColor |
-	spApplication := ClassVisualizerPresenter on: Object.
-	previousColor := spApplication morphPresenter morph color.
-	spApplication colorButton click.
-	self
-		deny: spApplication morphPresenter morph color
-		equals: previousColor
+    | previousColor |
+    spApplication := ClassVisualizerPresenter on: Object.
+    previousColor := spApplication morphPresenter morph color.
+    spApplication colorButton click.
+    self
+        deny: spApplication morphPresenter morph color
+        equals: previousColor
 ```
 
 ```
 ClassVisualizerPresenter >> clickOnColorButton
-	button click
+    button click
 ```
 
 ```
 ClassVisualizerPresenter >> stringMorphColor
-	^ morphPresenter morph color
+    ^ morphPresenter morph color
 ```
 
 
@@ -173,13 +173,13 @@ We do not want the user to be able to edit it.
 ```
 testTextPresenterIsNotEditable
 
-	spApplication := ClassVisualizerPresenter on: Object.
-	self deny: spApplication textPresenter isEditable
+    spApplication := ClassVisualizerPresenter on: Object.
+    self deny: spApplication textPresenter isEditable
 ```
 
 ```
 ClassVisualizerPresenter >> codePresenter
-	^ codePresenter
+    ^ codePresenter
 ```
 
 #### Checking window
@@ -191,14 +191,14 @@ Also, we will test if the window were built correctly.
 ```
 testInitializeWindow
 
-	presenter := ClassVisualizerPresenter on: Object.
-	
-	[ window := presenter open.
-	
-	self assert: window isBuilt.
-	self assert: window title equals: 'Class visualizer'.
-	self assert: window initialExtent equals: 600 @ 500. ]
-		ensure: [ window close ]
+    presenter := ClassVisualizerPresenter on: Object.
+    
+    [ window := presenter open.
+    
+    self assert: window isBuilt.
+    self assert: window title equals: 'Class visualizer'.
+    self assert: window initialExtent equals: 600 @ 500. ]
+        ensure: [ window close ]
 ```
 
 ### Known limitations and conclusion

@@ -44,8 +44,8 @@ SD: is the method called trasmitTo:transform: or juts transmitTo:
 
 ``` 
 list 
-	transmitTo: detail 
-	transform: [ :aValue | aValue asString ]. 
+    transmitTo: detail 
+    transform: [ :aValue | aValue asString ]. 
 ``` 
  
  
@@ -71,10 +71,10 @@ The `postTransmission:` protocol allows you to handle that situation.
  
 ``` 
 list 
-	transmitTo: detail 
-	postTransmission: [ :fromPresenter :toPresenter :value | 
-		"something to do here"
-		toPresenter enabled: value isEmptyOrNil not ]. 
+    transmitTo: detail 
+    postTransmission: [ :fromPresenter :toPresenter :value | 
+        "something to do here"
+        toPresenter enabled: value isEmptyOrNil not ]. 
 ``` 
  
  
@@ -88,31 +88,25 @@ list
 ![A simple class browser.](figures/SimpleClassBrowser.png width=80&label=figSimpleClassBrowser) 
  
 ### Presenter definition 
- 
- 
+
+
 ``` 
 SpPresenter << #SpClassMethodBrowserPresenter
-	slots: {#methodListPresenter . #textPresenter . #classListPresenter};
-	package: 'Spec2-Examples-Standalone' 
+    slots: {#methodListPresenter . #textPresenter . #classListPresenter};
+    package: 'Spec2-Examples-Standalone' 
 ``` 
  
  
  
 ### Initializing the presenters 
- 
 ``` 
 SpClassMethodBrowserPresenter >> initializeWidgets
-	classListPresenter := self newList.
-	methodListPresenter := self newList.
-	textPresenter := self newCode.
-	
-	textPresenter acceptBlock: [ :t | methodListPresenter selectedItem inspect ].
-	methodListPresenter displayBlock: #selector.
-
-	self focusOrder
-		add: classListPresenter;
-		add: methodListPresenter;
-		add: textPresenter 
+    classListPresenter := self newList.
+    methodListPresenter := self newList.
+    textPresenter := self newCode.
+    
+    textPresenter acceptBlock: [ :t | methodListPresenter selectedItem inspect ].
+    methodListPresenter displayBlock: #selector.
 ``` 
  
  
@@ -125,17 +119,16 @@ Notice that the `transform:` block get the selectors from the selected class ite
  
 ``` 
 SpClassMethodBrowserPresenter >> initializePresenter
+    classListPresenter 
+        transmitTo: methodListPresenter 
+        transform: [ :class | class methods sort: #selector descending ] 
+        postTransmission: [ :destination :origin :transmited | destination selectIndex: 1 ].
 
-	classListPresenter 
-		transmitTo: methodListPresenter 
-		transform: [ :class | class methods sort: #selector descending ] 
-		postTransmission: [ :destination :origin :transmited | destination selectIndex: 1 ].
-
-	methodListPresenter
-		transmitTo: textPresenter
-		transform: [ :method | method ifNil: [ '' ] ifNotNil: [:m | m sourceCode ] ]
-		postTransmission: [ :destination :origin :transmited | 
-			transmited ifNotNil: [ destination behavior: transmited methodClass ] ] 
+    methodListPresenter
+        transmitTo: textPresenter
+        transform: [ :method | method ifNil: [ '' ] ifNotNil: [:m | m sourceCode ] ]
+        postTransmission: [ :destination :origin :transmited | 
+            transmited ifNotNil: [ destination behavior: transmited methodClass ] ] 
 ``` 
  
  
@@ -146,14 +139,14 @@ SpClassMethodBrowserPresenter >> initializePresenter
  
 ``` 
 SpClassMethodBrowserPresenter class >> defaultSpec
-	^ SpPanedLayout newVertical
-		add:
-			(SpPanedLayout newHorizontal
-				add: #classListPresenter;
-				add: #methodListPresenter;
-				yourself);
-		add: #textPresenter;
-		yourself 
+    ^ SpPanedLayout newVertical
+        add:
+            (SpPanedLayout newHorizontal
+                add: #classListPresenter;
+                add: #methodListPresenter;
+                yourself);
+        add: #textPresenter;
+        yourself 
 ``` 
  
  
@@ -166,45 +159,36 @@ It will be called to pass the classes that we want to display as in the followin
 | example |
 example := SpClassMethodBrowserPresenter new.
 example
-	classes: self environment allClasses;
-	open. 
+    classes: self environment allClasses;
+    open. 
 ``` 
  
  
  
 ``` 
 SpClassMethodBrowserPresenter >> classes: aList
+    classListPresenter items = aList 
+        ifTrue: [ ^ self ].
+    classListPresenter
+        items: aList;
+        selectIndex: 1
+```
 
-	classListPresenter items = aList 
-		ifTrue: [ ^ self ].
-	classListPresenter
-		items: aList;
-		selectIndex: 1 
-``` 
- 
- 
+
 ### Questions for esteban 
- 
- 
 - What kind of event can trigger a transmission? 
- 
- 
 - I need an example with ports. 
- 
- 
 - How can we define ports for a given new component? 
  
 ``` 
 defineOutputPorts 
-
-	^ { SpListSelectionPort new } 
+    ^ { SpListSelectionPort new } 
 ``` 
  
  
 ``` 
 defineInputPorts 
-
-	^ { SpRootsPresenterPort new } 
+    ^ { SpRootsPresenterPort new } 
 ``` 
  
  

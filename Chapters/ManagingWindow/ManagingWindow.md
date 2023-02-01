@@ -88,9 +88,9 @@ The `SpDialogWindowPresenter` instance \(`diag` in the example above\) can also 
 | we diag |
 we := WindowExamplePresenter new. 
 diag := we openDialog
-		okAction: [Transcript show: 'okAction'];
-		cancelAction: [Transcript show: 'cancelAction'];
-		whenClosedDo: [ Transcript show: 'whenClosedDo']	
+        okAction: [Transcript show: 'okAction'];
+        cancelAction: [Transcript show: 'cancelAction'];
+        whenClosedDo: [ Transcript show: 'whenClosedDo']    
 ```
 
 
@@ -139,7 +139,7 @@ When you want to get notified that a window is closed, you should redefine the `
 ```
 WindowExamplePresenter >> initializeWindow: aWindowPresenter
 
-	aWindowPresenter whenClosedDo: [ UIManager default inform: 'When closed' ]
+    aWindowPresenter whenClosedDo: [ UIManager default inform: 'When closed' ]
 ```
 
 
@@ -163,9 +163,9 @@ When you want the same behavior with a dialog window you can either use the mech
 we := WindowExamplePresenter new. 
 diag := we openDialog.
 diag
-	okAction: [Transcript show: 'okAction'];
-	cancelAction: [Transcript show: 'cancelAction'].
-	whenClosedDo: [ UIManager default inform: 'Bye bye!' ]
+    okAction: [Transcript show: 'okAction'];
+    cancelAction: [Transcript show: 'cancelAction'].
+    whenClosedDo: [ UIManager default inform: 'Bye bye!' ]
 ```
 
 
@@ -277,7 +277,7 @@ to send the message `title:` to the `windowPresenter` as follows:
 
 ```
 WindowExamplePresenter >> initializeWindow: aWindowPresenter 
-  	 aWindowPresenter title: 'Click to grow or shrink.'
+       aWindowPresenter title: 'Click to grow or shrink.'
 ```
 
 

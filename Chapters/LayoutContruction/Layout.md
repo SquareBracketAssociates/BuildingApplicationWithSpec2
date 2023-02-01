@@ -27,10 +27,10 @@ WindowExamplePresenter >> initializePresenters
   button2 label: '-'.
   
 WindowExamplePresenter >> defaultLayout
- 	^ SpBoxLayout newLeftToRight
-		add: button1; 
-		add: button2; 
-		yourself
+     ^ SpBoxLayout newLeftToRight
+        add: button1; 
+        add: button2; 
+        yourself
 ```
 
 
@@ -54,10 +54,10 @@ padding  - extra space in pixels to put between this child and its neighbors, ov
 
 ```smalltalk
 SpBoxLayout newTopToBottom 
-	spacing: 15;
-	add: button1 expand: false fill: true padding: 5;
-	add: button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];
-	addLast: button3 expand: false fill: true padding: 5;
+    spacing: 15;
+    add: button1 expand: false fill: true padding: 5;
+    add: button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];
+    addLast: button3 expand: false fill: true padding: 5;
  yourself
 ```
 
@@ -105,58 +105,58 @@ be a percentage (e.g. 30 percent)
 
 ```smalltalk
 SpPanedLayout newHorizontal position: 80 percent;
-	add: acceptButton;
-	add: cancelButton;
-	yourself.
+    add: acceptButton;
+    add: cancelButton;
+    yourself.
 ```
 
-		
-		
+        
+        
 ### Overlay
 
 
 ```
 app := SpApplication new.
 app addStyleSheetFromString: '.application [
-		.green [ 
-			Draw {
-				#backgroundColor: #16A085
-			}
-		],
-		.redOverlay [
-			Draw { #backgroundColor: #C0392BBB },
-			Geometry { #height: 150, #width: 150 }
-		],
-		.title [ Font { #size: 40, #bold: true },
-			Geometry { #height: Reset, #width: Reset } ]
+        .green [ 
+            Draw {
+                #backgroundColor: #16A085
+            }
+        ],
+        .redOverlay [
+            Draw { #backgroundColor: #C0392BBB },
+            Geometry { #height: 150, #width: 150 }
+        ],
+        .title [ Font { #size: 40, #bold: true },
+            Geometry { #height: Reset, #width: Reset } ]
 ]'.
 
 presenter := SpPresenter newApplication: app.
-	
+    
 child := presenter newPresenter
- 	layout: (SpBoxLayout new
- 		hAlignCenter;
- 		vAlignCenter;
-		add: ('I AM THE CHILD' asPresenter
-  				addStyle: 'title';
-				yourself);
-			yourself);
-  		addStyle: 'green';
-		yourself.
-		
+     layout: (SpBoxLayout new
+         hAlignCenter;
+         vAlignCenter;
+        add: ('I AM THE CHILD' asPresenter
+                  addStyle: 'title';
+                yourself);
+            yourself);
+          addStyle: 'green';
+        yourself.
+        
 overlay := presenter newPresenter
-	layout: SpBoxLayout newVertical;
-	addStyle: 'redOverlay';
-	yourself.
+    layout: SpBoxLayout newVertical;
+    addStyle: 'redOverlay';
+    yourself.
 
 presenter layout: (SpOverlayLayout new
-	 child: child;
-	 addOverlay: overlay withConstraints: [ :c | 
-		 c
-			 vAlignCenter;
-			 hAlignCenter ];
-	 yourself).
-			
+     child: child;
+     addOverlay: overlay withConstraints: [ :c | 
+         c
+             vAlignCenter;
+             hAlignCenter ];
+     yourself).
+            
 presenter open.
 
 ```

@@ -66,8 +66,8 @@ You can easily instantiate a new presenter and display it:
  
 ``` 
 SpButtonPresenter new 
-	label: 'ok';
-	open
+    label: 'ok';
+    open
 ```
 
 A presenter may also have a model that is a domain object you need to interact with to display or update data. 
@@ -95,7 +95,7 @@ Here we specialize the method `start` as follows:
 
 ``` 
 MyApplication >> start
-	(MyMainPresenter newApplication: self) open
+    (MyMainPresenter newApplication: self) open
 ```
 
 You can run your application with `MyApplication new run`. It will call the `start` method you defined. 
@@ -112,7 +112,7 @@ We define a configuration as subclass of `SpMorphicConfiguration`.
 
 ```language=Smalltalk
 SpMorphicConfiguration << #ImdbMorphicConfiguration
-	package: 'Spec2-TutorialOne'
+    package: 'Spec2-TutorialOne'
 ```
 
 Then we define the method `configure:` as follows:. 
@@ -120,14 +120,14 @@ Then we define the method `configure:` as follows:.
 ```language=Smalltalk
 ImdbMorphicConfiguration >> configure: anApplication
 
-	super configure: anApplication.
-	"There are ways to write/read this from strings or files, but this is how you do 
-	 it programatically"
-	self styleSheet 
-		 addClass: 'header' with: [ :style |
-		 	style 
-				addPropertyFontWith: [ :font | font bold: true ];
-				addPropertyDrawWith: [ :draw | draw color: Color red ] ]
+    super configure: anApplication.
+    "There are ways to write/read this from strings or files, but this is how you do 
+     it programatically"
+    self styleSheet 
+         addClass: 'header' with: [ :style |
+             style 
+                addPropertyFontWith: [ :font | font bold: true ];
+                addPropertyDrawWith: [ :draw | draw color: Color red ] ]
 ```
 Note that we could use a style described in a string as shown in the Style chapter (Chapter *@style@*).
 
@@ -136,8 +136,8 @@ using the message `useBackend:with:`.
 
 ```language=Smalltalk
 ImdbApp >> initialize
-	super initialize.
-	self useBackend: #Morphic with: ImdbMorphicConfiguration new
+    super initialize.
+    self useBackend: #Morphic with: ImdbMorphicConfiguration new
 ```
 
 
@@ -147,25 +147,25 @@ For Gtk the process is similar, we define a subclass of `SpGtkConfiguration`.
 
 ```language=Smalltalk
 SpGtkConfiguration << #ImdbGtkConfiguration
-	package: 'Spec2-TutorialOne'
+    package: 'Spec2-TutorialOne'
 ```
 Then we configure it selecting and extending CSS. 
 
 ```language=Smalltalk
 ImdbGtkConfiguration >> configure: anApplication
 
-	super configure: anApplication.
-	"This will choose the theme 'Sierra-dark' if it is available"
-	self installTheme: 'Sierra-dark'.
-	"This will add a 'provider' (a stylesheet)"
-	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
+    super configure: anApplication.
+    "This will choose the theme 'Sierra-dark' if it is available"
+    self installTheme: 'Sierra-dark'.
+    "This will add a 'provider' (a stylesheet)"
+    self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
 ```
 And iun the application initialization we declare that the configuration should be use for Gtk.
 
 ```language=Smalltalk
 ImdbApp >> initialize
-	super initialize.
-	self useBackend: #Gtk with: ImdbGtkConfiguration new
+    super initialize.
+    self useBackend: #Gtk with: ImdbGtkConfiguration new
 ```
 
 
@@ -238,10 +238,10 @@ You can apply it on your Spec application sending the `styleSheet:` message to a
 
 ``` 
 myStyleSheet := SpStyleVariableSTONReader fromString: 
-	'.application [
-	    Font { #bold: true },
-	.bgBlack [ Draw { #backgroundColor: #black } ],
-	    .blue [ Draw { #color: #blue } ]
+    '.application [
+        Font { #bold: true },
+    .bgBlack [ Draw { #backgroundColor: #black } ],
+        .blue [ Draw { #color: #blue } ]
 ]'
 application styleSheet: SpStyle defaultStyleSheet, myStyleSheet. 
 ``` 
@@ -268,12 +268,12 @@ Here are some examples:
  
 ``` 
 messageList 
-	whenSelectionChangedDo: [ :selection | 
-		messageDetail model: selection selectedItem ];
-	whenModelChangedDo: [ self updateTitle ].
-	textModel whenSubmitDo: [ :text | self accept: text ].
-	addButton action: [ self addDirectory ].
-	filterInput whenTextChangedDo: [ :text | self refreshTable ]. 
+    whenSelectionChangedDo: [ :selection | 
+        messageDetail model: selection selectedItem ];
+    whenModelChangedDo: [ self updateTitle ].
+    textModel whenSubmitDo: [ :text | self accept: text ].
+    addButton action: [ self addDirectory ].
+    filterInput whenTextChangedDo: [ :text | self refreshTable ]. 
 ```
 
 ### Conclusion

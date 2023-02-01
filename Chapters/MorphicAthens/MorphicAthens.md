@@ -52,23 +52,23 @@ It will be the class we'll use after for all our experiment.
 First, we define a class, which inherit from `Morph`:
 ```language=Smalltalk
 Morph << #AthensHello
-	slots: { #surface };
-	package: 'CodeOfSpec20BookAthens'
+    slots: { #surface };
+    package: 'CodeOfSpec20BookAthens'
 ```
 
 
 During the initialization phase, we'll create our Athens surface:
 ```language=Smalltalk
 AthensHello >> initialize
-	super initialize.
-	self extent: self defaultExtent.
-	surface := AthensCairoSurface extent: self extent
+    super initialize.
+    self extent: self defaultExtent.
+    surface := AthensCairoSurface extent: self extent
 ```
 
 where `defaultExtent` is simply defined as
 ```language=Smalltalk
 AthensHello >> defaultExtent
-	^ 400@400
+    ^ 400@400
 ```
 
 
@@ -78,8 +78,8 @@ pictures)
 
 ```language=Smalltalk
 AthensHello >> drawOn: aCanvas
-	self renderAthens.
-	surface displayOnMorphicCanvas: aCanvas at: bounds origin
+    self renderAthens.
+    surface displayOnMorphicCanvas: aCanvas at: bounds origin
 ```
 
 
@@ -88,16 +88,16 @@ stored in the surface instance variable.
 
 ```language=Smalltalk
 AthensHello >> renderAthens
-	| font |
-	font := LogicalFont familyName: 'Arial' pointSize: 10.
-	surface drawDuring: [:canvas | 
-		surface clear. 
-		canvas setPaint: ((LinearGradientPaint from: 0@0  to: self extent) colorRamp: {  0 -> Color white. 1 -> Color black }).
-		canvas drawShape: (0@0 extent: self extent). 
-		canvas setFont: font. 
-		canvas setPaint: Color pink.
-		canvas pathTransform translateX: 20 Y: 20 + (font getPreciseAscent); scaleBy: 2; rotateByDegrees: 25.
-		canvas drawString: 'Hello Athens in Pharo/Morphic' ]
+    | font |
+    font := LogicalFont familyName: 'Arial' pointSize: 10.
+    surface drawDuring: [:canvas | 
+        surface clear. 
+        canvas setPaint: ((LinearGradientPaint from: 0@0  to: self extent) colorRamp: {  0 -> Color white. 1 -> Color black }).
+        canvas drawShape: (0@0 extent: self extent). 
+        canvas setFont: font. 
+        canvas setPaint: Color pink.
+        canvas pathTransform translateX: 20 Y: 20 + (font getPreciseAscent); scaleBy: 2; rotateByDegrees: 25.
+        canvas drawString: 'Hello Athens in Pharo/Morphic' ]
 ```
 Note that recreating the paint and the font is not the best way to have efficient code, but this is not the purpose of this example. 
 
@@ -107,7 +107,7 @@ script instruction.
 
 ```language=Smalltalk
 AthensHello >> open
-	<script: 'self new openInWindow'>
+    <script: 'self new openInWindow'>
 ```
 
 
@@ -122,14 +122,14 @@ Athens content is not resized. To fix this, we'll need one last method.
 
 ```language=Smalltalk
 AthensHello >> extent: aPoint
-	| newExtent |
-	newExtent := aPoint rounded.
-	(bounds extent closeTo: newExtent)
-		ifTrue: [ ^ self ].
-	bounds := bounds topLeft extent: newExtent.
-	surface := AthensCairoSurface extent: newExtent.
-	self layoutChanged.
-	self changed
+    | newExtent |
+    newExtent := aPoint rounded.
+    (bounds extent closeTo: newExtent)
+        ifTrue: [ ^ self ].
+    bounds := bounds topLeft extent: newExtent.
+    surface := AthensCairoSurface extent: newExtent.
+    self layoutChanged.
+    self changed
 ```
 
 
@@ -143,24 +143,24 @@ First we create a presenter to illustrate it but you could do it in one of yours
 
 ```
 SpPresenter << #SpAthensHelloPresenter
-	slots: { #morphPresenter };
-	package: 'CodeOfSpec20BookAthens'
+    slots: { #morphPresenter };
+    package: 'CodeOfSpec20BookAthens'
 ```
 
 We define a basic layout so that Spec knows where to place it. 
 
 ```
 SpAthensHelloPresenter >> defaultLayout
-	^ SpBoxLayout newTopToBottom
-		  add: morphPresenter;
-		  yourself
+    ^ SpBoxLayout newTopToBottom
+          add: morphPresenter;
+          yourself
 ```
 
 ```
 SpAthensHelloPresenter >> initializePresenters
 
-	morphPresenter := self instantiate: SpMorphPresenter.
-	morphPresenter morph: AthensHello new
+    morphPresenter := self instantiate: SpMorphPresenter.
+    morphPresenter morph: AthensHello new
 ```
 
 Now we are done. When we open the component it will display the morph:
@@ -177,26 +177,26 @@ This is this presenter that will support the actual rendering drawn using Athens
 
 ```
 SpPresenter << #SpAthensExamplePresenter
-	slots: { #paintPresenter };
-	package: 'CodeOfSpec20BookAthens'
+    slots: { #paintPresenter };
+    package: 'CodeOfSpec20BookAthens'
 ```
 We define a simple layout to place the painPresenter.
 
 ```language=Smalltalk
 SpAthensExamplePresenter >> idefaultLayout
 
-	^ SpBoxLayout newTopToBottom
-		  add: paintPresenter;
-		  yourself
+    ^ SpBoxLayout newTopToBottom
+          add: paintPresenter;
+          yourself
 ```
 
 This presenter wraps an `SpAthensPresenter` as follows: 
 ```language=Smalltalk
 SpAthensExamplePresenter >> initializePresenters
 
-	paintPresenter := self instantiate: SpAthensPresenter.
-	paintPresenter surfaceExtent: 600 @ 400.
-	paintPresenter drawBlock: [ :canvas | self render: canvas ]
+    paintPresenter := self instantiate: SpAthensPresenter.
+    paintPresenter surfaceExtent: 600 @ 400.
+    paintPresenter drawBlock: [ :canvas | self render: canvas ]
 ```
 It configures the `SpAthensPresenter` to call draw the `render:` message. 
 

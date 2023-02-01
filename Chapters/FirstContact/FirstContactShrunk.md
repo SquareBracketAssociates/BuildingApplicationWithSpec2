@@ -22,8 +22,8 @@ the first step in creating the UI is subclassing it:
 
 ```
 SpPresenter << #CustomerSatisfactionPresenter
-	slots: { #buttonHappy . #buttonNeutral . #buttonBad . #screen};
-	package: 'CodeOfSpec20Book'
+    slots: { #buttonHappy . #buttonNeutral . #buttonBad . #screen};
+    package: 'CodeOfSpec20Book'
 ```
 
 
@@ -49,10 +49,10 @@ their intent.
 
 ```
 CustomerSatisfactionPresenter >> initializePresenters
-	screen := self newLabel.
-	buttonHappy := self newButton.
-	buttonNeutral := self newButton.
-	buttonBad := self newButton.
+    screen := self newLabel.
+    buttonHappy := self newButton.
+    buttonNeutral := self newButton.
+    buttonBad := self newButton.
 ```
 
 
@@ -63,7 +63,7 @@ The following method shows how `newButton` is defined.
 
 ```
 SpPresenter >> newButton
-	^ self instantiate: SpButtonPresenter
+    ^ self instantiate: SpButtonPresenter
 ```
 
 
@@ -79,17 +79,17 @@ Second, we configure the buttons of our UI. The message `label:` defines their l
 
 ```
 CustomerSatisfactionPresenter >> initializePresenters
-	... continued ...
-	screen label: 'Please give us your feedback.'.
-	buttonHappy
-		label: 'Happy';
-		icon: (self iconNamed: #thumbsUp).
-	buttonNeutral
-		label: 'Neutral';
-		icon: (self iconNamed: #user).
-	buttonBad
-		label: 'Bad';
-		icon: (self iconNamed: #thumbsDown).
+    ... continued ...
+    screen label: 'Please give us your feedback.'.
+    buttonHappy
+        label: 'Happy';
+        icon: (self iconNamed: #thumbsUp).
+    buttonNeutral
+        label: 'Neutral';
+        icon: (self iconNamed: #user).
+    buttonBad
+        label: 'Bad';
+        icon: (self iconNamed: #thumbsDown).
 ```
 
 
@@ -101,9 +101,9 @@ We define this in a separate method called `connectPresenters`:
 
 ```
 CustomerSatisfactionPresenter >> connectPresenters
-	buttonHappy action: [ screen label: buttonHappy label ].
-	buttonNeutral action: [ screen label: buttonNeutral label ].
-	buttonBad action: [ screen label: buttonBad label ].
+    buttonHappy action: [ screen label: buttonHappy label ].
+    buttonNeutral action: [ screen label: buttonNeutral label ].
+    buttonBad action: [ screen label: buttonBad label ].
 ```
 
 
@@ -117,14 +117,14 @@ The widgets have now been defined and configured, but their placement in the UI 
 
 ```
 CustomerSatisfactionPresenter >> defaultLayout
-	^ SpBoxLayout newVertical 
-		add: (SpBoxLayout newLeftToRight
-				add: buttonHappy;
-				add: buttonNeutral;
-				add: buttonBad;
-				yourself);
-		add: #screen;
-		yourself
+    ^ SpBoxLayout newVertical 
+        add: (SpBoxLayout newLeftToRight
+                add: buttonHappy;
+                add: buttonNeutral;
+                add: buttonBad;
+                yourself);
+        add: #screen;
+        yourself
 ```
 
 
@@ -142,10 +142,10 @@ Once the class method `defaultLayout` is defined, you can start to open your UI 
 To set the window title and the initial size of your widget, you have to specialize the method `initializeWindow:` as follows: 
 
 ```
-CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter	
-	aWindowPresenter
-		title: 'Customer Satisfaction Survey';
-		initialExtent: 400@100
+CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter    
+    aWindowPresenter
+        title: 'Customer Satisfaction Survey';
+        initialExtent: 400@100
 ```
 
 
