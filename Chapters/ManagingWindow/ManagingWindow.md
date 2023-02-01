@@ -169,11 +169,14 @@ diag
 ```
 
 
-#### Action on opening
+#### Action with Window
 
 
-!!todo not working right now. Add it when it will work.
+```
+withWindowDo: [ :aWindow | aWindow title: 'MyTitle' ]
+```
 
+`withWindowDo:` makes sure that the presenter that scheduled the window still exits or is in a state that makes sense.
 
 
 ### Window size and decoration

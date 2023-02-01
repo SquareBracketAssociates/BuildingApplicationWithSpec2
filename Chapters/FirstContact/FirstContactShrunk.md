@@ -1,8 +1,5 @@
-## A small example
+## A 10 min small example
 @cha_small_example
-
-status: Stef did a pass but should check the code
-
 
 We will construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will allow you to build basic user interfaces.
 
@@ -52,7 +49,6 @@ their intent.
 
 ```
 CustomerSatisfactionPresenter >> initializePresenters
-
 	screen := self newLabel.
 	buttonHappy := self newButton.
 	buttonNeutral := self newButton.
@@ -97,21 +93,7 @@ CustomerSatisfactionPresenter >> initializePresenters
 ```
 
 
-Third and last, you can optionaly change the focus order of your presenters while using tab, which is useful for keyboard navigation.
-
-```
-CustomerSatisfactionPresenter >> initializePresenters
-	... continued ...
-	"specification of order of focus"
-	self focusOrder
-		add: buttonHappy;
-		add: buttonNeutral;
-		add: buttonBad
-```
-
-
 #### Presenter interaction logic
-
 
 Now we should define what will happen when we press a button. 
 We define this in a separate method called `connectPresenters`: 
@@ -119,7 +101,6 @@ We define this in a separate method called `connectPresenters`:
 
 ```
 CustomerSatisfactionPresenter >> connectPresenters
-
 	buttonHappy action: [ screen label: buttonHappy label ].
 	buttonNeutral action: [ screen label: buttonNeutral label ].
 	buttonBad action: [ screen label: buttonBad label ].
@@ -149,11 +130,8 @@ CustomerSatisfactionPresenter >> defaultLayout
 
 In this layout, we add two rows to the UI, one with the buttons and one with the screen of text. Defining widget layout is a complex process with many different possible requirements, hence in this chapter we do not talk in detail about layout specification. For more information we refer to Chapter *@cha_layout_construction@*.
 
-\** The argument of the `add:` messages are symbols representing the name of the variable containing the presenter to display.
 
-
-
-Once the class method `defaultSpec` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new open`. You should obtain a widget similar to the one shown in Figure *@figFirstCut@*.
+Once the class method `defaultLayout` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new open`. You should obtain a widget similar to the one shown in Figure *@figFirstCut@*.
 
 ![A first version of the customer satisfaction UI.](figures/FirstCut.png width=50&label=figFirstCut)
 
@@ -164,8 +142,7 @@ Once the class method `defaultSpec` is defined, you can start to open your UI as
 To set the window title and the initial size of your widget, you have to specialize the method `initializeWindow:` as follows: 
 
 ```
-CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
-	
+CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter	
 	aWindowPresenter
 		title: 'Customer Satisfaction Survey';
 		initialExtent: 400@100
@@ -181,10 +158,10 @@ Of course, you are free to use helper method to return the title and extent of y
 To open a UI, an instance of the class needs to be created and it needs to be sent the `open` message. This will open a window and return an instance of `SpWindowPresenter`, which allows the window to be closed from code.
 
 ```
-	| ui |
-	ui := CustomerSatisfactionPresenter new open.
-	[ ... do a lot of stuff until the UI needs to be closed ...]
-	ui close.
+| ui |
+ui := CustomerSatisfactionPresenter new open.
+[ ... do a lot of stuff until the UI needs to be closed ...]
+ui close.
 ```
 
 

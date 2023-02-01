@@ -7,12 +7,8 @@ status: ready for review
 Spec is a framework in Pharo for describing user interfaces. 
 It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. 
 Indeed most tools in Pharo are written in Spec, e.g., the inspector, spotter, the Pharo debugger, Iceberg, etc. 
+In this short chapter we place the key architectural elements of Spec in the context.
 
-
-### Spec architecture overview
-
-![Architecture of Spec.](figures/coreExtended.pdf label=core&width=80) 
- 
 ### Spec core principle 
 
 The fundamental principle behind Spec is the reuse of user interface logic and visual composition. 
@@ -20,23 +16,36 @@ User interfaces are built by reusing and composing existing user interfaces, con
 This principle starts from the most primitive elements of the UI: widgets such as buttons and labels are in themselves complete UIs that can be reused, configured, and opened in their own window. 
 These elements can be combined to form more complex UIs that again can be reused as part of a bigger UI, and so on. 
  
-To allow such a reuse, Spec is influenced by Dolphin Smalltalks’ Model View Presenter (MVP) pattern.  
-Spec recognizes the need for a Presenter or ApplicationModel class (in Spec called `SpPresenter`) that manages the logic and the link between widgets and domain objects. 
+To allow such a reuse, Spec is influenced by the Model View Presenter (MVP) pattern.  
+Spec recognizes the need for a Presenter or ApplicationModel class (in Spec represented by the abstract superclass `SpPresenter`) that manages the logic and the link between widgets and domain objects. 
 Fundamentally, when writing Spec code, the developer does ‘‘not’’ come into contact with UI widgets, instead one subclass of `SpPresenter` is programmed that holds the UI logic. 
 When the UI is opened this model will then instantiate the appropriate widgets. 
 
 Spec offers different backends to render the presenters: Morphic (the default backend) and Gtk. It means than, without modiying your UI described as presenters with Spec, you can render your application in the Pharo image with Morphic or as a native application with external Windows thanks to the Gtk backend. 
  
-Spec is a standard UI framework in Pharo and differs from the other UI frameworks present: Morphic. Morphic is a general-purpose graphics system originally built for the Self language. Morphic provides standard UI widgets, and as such is used by Spec to render UI’s, but can also be used to build any kind of graphical shape and allows for their direct manipulation. Spec is more restricted than Morphic in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists et cetera. 
+
+### Spec architecture overview
+
+Figure *@coreextended@* presents the general architecture of Spec. Basically Spec is built around 5 elements that we will describe in subsequent section. The most important elements are Presenter, Layout and Application. 
+
+A presenter is representing the UI element logic and it is also the connection with the domain.  The Application is also a place to be in contact with domain objects but generally it is handling application specific resources (icons, windows...).
+
+Based on presenters and layout, Spec builds the actual UI. To do so it internally uses adapters that are specific to each widget and per back-end. 
+This way presenters are totally agnostic about back-ends and are reusable accross them. 
+
+
+![Architecture of Spec.](figures/coreExtended.pdf label=coreextended&width=80) 
  
-### Spec core architecture overview 
+
+ 
+### Spec core architecture overview  
  
 Spec core is composed of the following elements: 
  
 - **Application.** An application is composed of multiple presenters and a stylesheet. 
 - **Presenters.** A presenter is a unit of interactive behavior. It is connected to domain objects and other presenters. Its visual representation is defined via at least one layout. 
 - **Layout.** A layout describes positions of elements and it can be recursive. 
-- **Stylesheet and Styles**. A stylesheet is composed of Styles which describe visual properties such as fonts, colors,.... 
+- **Stylesheet and Styles**. A stylesheet is composed of Styles which describe visual properties such as fonts, colors, .... 
  
  
 ![Presenter, Application, Layout and Style of Spec.](figures/core.pdf label=core&width=60) 
@@ -44,48 +53,42 @@ Spec core is composed of the following elements:
  
 We detail now each of the main elements. 
  
+ 
 ### Presenters 
- 
- 
-A Spec presenter (an instance of `SpPresenter` or one of its subclasses), is an essential part of the Spec framework. 
-It represents the logic of a UI element. 
-It could be a simple UI widget such as a button as well as a complex UI widget composed of many others presenters (either simple or complex).
+
+A Spec presenter (an instance of `SpPresenter` subclass), is an essential part of the Spec framework. 
+It represents the logic of a UI element. It can be the model of a simple UI widget such as a button as well as of a complex UI widget composed by many others presenters (either simple or complex).
 To build your User Interface, you compose presenters. 
-Spec already comes with a predefined set of basic presenters (widgets) ready to use in your presenters. You can find them in scripting - widgets category of the `SpPresenter` class. You will find buttons, labels, check boxes, text input, drop lists, lists, tables, trees, toolbar, action bars, but also more complex widgets like diff presenters or notebooks. 
+
+Spec already comes with a predefined set of basic presenters (widgets) ready to use in your presenters. 
+You can find them in scripting - widgets category of the `SpPresenter` class. You will find buttons, labels, check boxes, text input, drop lists, lists, menus, tables, trees, toolbar, action bars, but also more complex widgets like diff presenters or notebooks. 
 You can easily instantiate a new presenter and display it: 
  
 ``` 
 SpButtonPresenter new 
 	label: 'ok';
 	open
-``` 
- 
+```
 
-
- 
-To display its elements, a presenter has a layout. 
-A layout describes how elements should be placed on the displayed surface. 
- 
 A presenter may also have a model that is a domain object you need to interact with to display or update data. 
-In this case, your presenter class should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object.
-If the domain object is an instance of `Model`, it is stored as is in the presenter, else a value holder is created to hold the domain object so that you can be notified when the domain object used by the presenter changes.
-You can then implement the method `modelChanged` to refresh your UI when the model changes. 
- 
-If you do not need to react to model changes, you can simply inherit from `SpPresenter`, override the `setModelBeforeInitialization:` method to set your domain object and use `MyPresenter on: myDomainObject` to instantiate it. 
-A presenter also has a reference to its Spec application.
- 
-If you want to display a presenter with the default spec, you can use the `open` or `openDialog` methods.
+In this case, your presenter class should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object and gets changed when the model changes (See Chapter *@cha_model@*).
+
+A presenter defines layouts, one is mandatory.
+If you want to display a presenter with the default layout, you can use the `open` or `openDialog` methods.
 The former will open a new window with the presenter while the later will open a blocking dialog with the presenter.
-You can use `openWithLayout:` or `openDialogWithLayout:` to open the presenter with the spec you will provide as argument (you can also provide the name of a selector that returns a spec). 
+You can use `openWithLayout:` or `openDialogWithLayout:` to open the presenter with the layout you will provide as argument.
 
 
 ### Application
 
-A spec application (`SpApplication` or one of its subclasses instance) handles your application initialization, configuration and resources. 
-`SpApplication` is not a presenter because it does not has a graphical representation: An `SpApplication` defines your application \(keeping the backend, theme, icons, other graphical resources\), keeps the flow of windows \(and the opened windows that belongs to that application\) but it is not shown itself.
+A spec application (`SpApplication` or one of its subclasses instance) handles your application initialization, configuration, and resources. `SpApplication` is not a presenter because it does not has a graphical representation: An `SpApplication` defines your application (keeping the backend, theme, icons, other graphical resources), keeps the flow of windows (and the opened windows that belongs to that application) but it is not shown itself.
 
 It also keeps the windows you have currently opened.
-In the application initialization, you can configure the backend you want to use: morphic (default, Gtk).
+ 
+A Spec application also provides a way to access windows, to access resources like icons, and provide abstractions for interactions with the user (inform, error, file or directory selection). 
+ 
+ An application also provides the style used by Spec to style UI elements.  
+ A default style is available but you can customize it as shown in Chapter *@Style@*. 
  
 You should also define a method to tell what is the main window / presenter to use when running the application.
 Here we specialize the method `start` as follows: 
@@ -95,31 +98,82 @@ MyApplication >> start
 	(MyMainPresenter newApplication: self) open
 ```
 
-
 You can run your application with `MyApplication new run`. It will call the `start` method you defined. 
- 
-A Spec application also provides a way to access windows, to access resources like icons, and provide abstractions for interactions with the user (inform, error, file or directory selection). 
- 
-An application also provides the style used by Spec to style UI elements.  
-A default style is available but you can customize it as shown in Chapter *@Style@*. 
+
+
+### Application configuration
+
+In the application initialization, you can configure the backend you want to use: morphic (default) or Gtk.
+
+##### Using Morphic
+
+Here is an example using the Film application tutorial. 
+We define a configuration as subclass of `SpMorphicConfiguration`.
+
+```language=Smalltalk
+SpMorphicConfiguration << #ImdbMorphicConfiguration
+	package: 'Spec2-TutorialOne'
+```
+
+Then we define the method `configure:` as follows:. 
+
+```language=Smalltalk
+ImdbMorphicConfiguration >> configure: anApplication
+
+	super configure: anApplication.
+	"There are ways to write/read this from strings or files, but this is how you do 
+	 it programatically"
+	self styleSheet 
+		 addClass: 'header' with: [ :style |
+		 	style 
+				addPropertyFontWith: [ :font | font bold: true ];
+				addPropertyDrawWith: [ :draw | draw color: Color red ] ]
+```
+Note that we could use a style described in a string as shown in the Style chapter (Chapter *@style@*).
+
+Finally in the corresponding application class we declare that the Morphic back-end should use our configuration 
+using the message `useBackend:with:`.
+
+```language=Smalltalk
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Morphic with: ImdbMorphicConfiguration new
+```
+
+
+##### Using GTK theme and settings
+
+For Gtk the process is similar, we define a subclass of `SpGtkConfiguration`.
+
+```language=Smalltalk
+SpGtkConfiguration << #ImdbGtkConfiguration
+	package: 'Spec2-TutorialOne'
+```
+Then we configure it selecting and extending CSS. 
+
+```language=Smalltalk
+ImdbGtkConfiguration >> configure: anApplication
+
+	super configure: anApplication.
+	"This will choose the theme 'Sierra-dark' if it is available"
+	self installTheme: 'Sierra-dark'.
+	"This will add a 'provider' (a stylesheet)"
+	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
+```
+And iun the application initialization we declare that the configuration should be use for Gtk.
+
+```language=Smalltalk
+ImdbApp >> initialize
+	super initialize.
+	self useBackend: #Gtk with: ImdbGtkConfiguration new
+```
 
 
 
-
-An application can be configured with a configuration \(more to come\).
-
-- icons
-- closing subelements
-- localisation
-
-#### Responsibilities
-An application can be configured with a configuration. 
-It is reponsible for icon management, closing sub components and it will be the natural place for localisation. 
-
-SD: More?
 
 ### Layouts 
 
+To display its elements, a presenter uses a layout. 
 A layout describes how elements are placed on the displayed surface.
 To help you build nice user interfaces, several layouts are available: 
  
@@ -130,27 +184,25 @@ To help you build nice user interfaces, several layouts are available:
 - **MillerLayout**: a layout to implement miller columns ([https://en.wikipedia.org/wiki/Miller\_columns](https://en.wikipedia.org/wiki/Miller_columns)), also known as cascading lists. 
  
 Any layout in Spec is dynamic and composable. 
+In general a layout is define as the presenter instance level, but it can be defined on the class side. 
  
-To define a layout is as simple as defining the following method and getting it called from the `initializePresenters` method. 
+To define a layout is as simple as defining the following `defaultLayout` method. This method is automatically invoked if a layout is not manually set. 
 The following method define two box layouts:
 - one containing a tree and a list and  
 - the second one containing the first one and a code text below.
+Each of the layout refers to presenters accessible (`treeClasses`, `methodsFilteringList`, `codeShower`) from the current one.
  
 Figure *@layout6B@* shows the corresponding result.
- 
- 
+
 ``` 
 MyMiniBrowserPresenter >> defaultLayout
- 
-    | classesAndMethodsLayout |
-    classesAndMethodsLayout := SpBoxLayout newLeftToRight.
-    classesAndMethodsLayout
-        spacing: 10;
-        add: treeClasses;
-        add: methodsFilteringList.
     ^ (SpBoxLayout newTopToBottom
         spacing: 5;
-        add: classesAndMethodsLayout;
+        add: (SpBoxLayout newLeftToRight
+                spacing: 10;
+                add: treeClasses;
+                add: methodsFilteringList;
+                yourself);
         add: codeShower;
         yourself) 
 ```
@@ -158,7 +210,11 @@ MyMiniBrowserPresenter >> defaultLayout
 ![The layout corresponding to the `defaultLayout` method.](figures/layout6Annotated.pdf width=70&label=layout6B)
 
 
-### Styles
+
+
+
+
+### Styles and stylesheets
 
 A Spec application always comes with a default style sheet.  
 A style sheet contains style definitions that can be applied to presenters. 
@@ -166,7 +222,7 @@ Chapter *@chastyle@* presents styles in detail.
  
 A style is a property container to “style” components, and define (in a certain degree) its behaviour within the different layouts implemented.
  
-Here is an example of style sheet:
+Here is an example of style sheet for the Morphic back-end:
  
 ```
 '.application [       
@@ -178,7 +234,7 @@ Here is an example of style sheet:
 The styles in Spec format are similar to CSS but expressed in STON.
 Pay attention not to forget the leading periods. 
 
-You can apply it on your Spec application sending the `styleSheet:` method:
+You can apply it on your Spec application sending the `styleSheet:` message to an application:
 
 ``` 
 myStyleSheet := SpStyleVariableSTONReader fromString: 
@@ -190,7 +246,7 @@ myStyleSheet := SpStyleVariableSTONReader fromString:
 application styleSheet: SpStyle defaultStyleSheet, myStyleSheet. 
 ``` 
 
-Then you can style a presenter using the message `addStyle:` as follows:
+Then you can style a presenter using the message `addStyle:` (think about tag your presenter with a class in CSS) as follows:
  
 ```
 presenter label: 'I am a label'.
@@ -199,18 +255,15 @@ presenter addStyle: 'blue'.
 
 ### Navigation between presenters 
  
- 
 Once the definition of your UI components (i.e., your Spec presenters and layouts) done, you will need to define the behaviour of the UI: what happens when you open a new presenter? 
 
 You will probably want to provide some data (a model) to the presenter so that it can use to diplay data. 
 It is called a transmission: you transmit data from a presenter to another presenter.
-Transmissions can be achieved either “manually” by reacting to events or by using the Spec transmission concept.
-
-#### Using presenter events 
+Transmissions are defined by reacting to events.
 
 It is quite easy to define the behaviour of the UI by using widgets predefined events. 
 You can find them in the api-events protocol of the presenters. 
-Most used events are `whenSelectionChangedDo:`, `whenSelectedDo:`, `whenModelChangedDo:`, `whenTextChangedDo:`, `action:`. 
+Most used events are `whenSelectionChangedDo:`, `whenModelChangedDo:`, `whenTextChangedDo:`. 
 Here are some examples: 
  
 ``` 
@@ -222,8 +275,6 @@ messageList
 	addButton action: [ self addDirectory ].
 	filterInput whenTextChangedDo: [ :text | self refreshTable ]. 
 ```
-
-The transmissions using ports are explained in Chapter *@chatransmissions@*.
 
 ### Conclusion
 
