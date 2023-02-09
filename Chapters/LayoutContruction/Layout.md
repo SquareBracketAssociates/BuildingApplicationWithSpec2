@@ -45,8 +45,18 @@ SpTwoButtons >> initializePresenters
     button2 label: '2'.
 ```
 
+
+
+### BoxLayout (SpBoxLayout and SpBoxConstraints)
+
+The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. 
+A box can be horizontal or vertical and presenters are ordered top to down or left to right following the direction decided. A box layout can be composed of other layouts.
+
+
 ![Two buttons placed horizontally from left to right.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight) 
 
+Let us defined a first simple layout as follows and whose result is displayed in  Fig. *@TwoButtonsLeftToRight@*.
+What we see is that by default a presenter expand its size to fit the space of its container. 
 ```
 SpTwoButtons >> defaultLayout
      ^ SpBoxLayout newLeftToRight
@@ -54,6 +64,8 @@ SpTwoButtons >> defaultLayout
         add: button2; 
         yourself
 ```
+
+We can refine this layout to indicate that the subpresenters should not expand to their container using the message `add:expand:`. The result is shown in Figure *@TwoButtonsLeftToRightExpanded@*.
 
 ```
 SpTwoButtons >> defaultLayout
@@ -63,18 +75,34 @@ SpTwoButtons >> defaultLayout
 		yourself
 ```
 
-![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight) 
+![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded) 
 
 
-### BoxLayout (SpBoxLayout and SpBoxConstraints)
 
-The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. 
-A box can be horizontal or vertical and presenters are ordered top to down or left to right following the direction decided. A box layout can be composed of other layouts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 The basic message to add presenters is: #add:expand:fill:padding:
 - expand - true if the new child is to be given extra space allocated to box . The extra space will be divided evenly between all children that use this option
 - fill - true if space given to child by the expand option is actually allocated to child, rather than just padding it. This parameter has no effect if expand is set to false.
 - padding  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If child is a widget at one of the reference ends of box , then padding pixels are also put between child and the reference edge of box"
+
+
+
+
+
 
 ```smalltalk
 SpBoxLayout newTopToBottom 
