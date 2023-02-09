@@ -303,14 +303,15 @@ Tables have different kind of columns that can be added to a table:
 - `SpCompositeTableColumn` offers the possibilities to compose a column out of different kinds of column. It allows one to compose a icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
 
 
-For example, in the snippet below `SpImageTableColumn` offers the possibility to display form (icon, graphics...).
+For example, in the snippet below `SpImageTableColumn` offers the possibility to display form (icon, graphics...). 
 `contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
 
 ```Smalltalk
 TodoListPresenter >> initializePresenters
     todoListPresenter := self newTable
         addColumn:
-            ((SpCheckBoxTableColumn evaluated: [ :task | task isDone ])
+            ((SpCheckBoxTableColumn 
+                              evaluated: [ :task | task isDone ])
                 width: 20;
                 onActivation: [ :task | task done: true ];
                 onDeactivation: [ :task | task done: false ];
@@ -361,7 +362,7 @@ Add `SpIndexTableColumn title: 'My index'` to the previous table to see the inde
 
 
 
-##### Sorting headers.
+##### Sorting headers
 
 The following script presents how to define a table with two columns that can be sorted based on as shown in Figure *@figTableSorting@*.
 
