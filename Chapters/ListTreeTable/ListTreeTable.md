@@ -414,7 +414,7 @@ SpTablePresenter new
     open
 ```
 
-![A table with an editable column).](figures/EditableTable.png width=50&label=figEditableTable)
+![A table with an editable column.](figures/EditableTable.png width=50&label=figEditableTable)
 
 
 ### Tree Tables
