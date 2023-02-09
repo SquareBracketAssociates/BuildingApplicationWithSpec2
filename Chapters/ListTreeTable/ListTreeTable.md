@@ -1,17 +1,15 @@
 ## Lists, tables and trees
 
-status: definitively missing
-
 An important part of user interfaces is about displaying lists of data. 
 Such lists can be structured as tables, plain lists but also trees supporting nesting of data.
 
-Spec proposes three main presenters: `SpListPresenter`, `SpTreePresenter` and `SpTablePresenter`. 
-In addition it offers `SpComponentListPresenter` which allows one to embedd any presenter in a list. 
+Spec proposes three main presenters: `SpListPresenter`, `SpTreePresenter`, and `SpTablePresenter`. 
+In addition it offers `SpComponentListPresenter` which allows one to embed any presenter in a list. 
 In this chapter we present some of the functionality of such presenters.
 
 ### Lists
 
-Creating a list is a simple as instantiating a `SpListPresenter` and specifying a list of items that the list should display.
+Creating a list is as simple as instantiating a `SpListPresenter` and specifying a list of items that the list should display.
 The following script illustrates this and the result is shown in Figure *@figSimpleList@*.
 
 ```
@@ -29,7 +27,7 @@ The header title can be hidden using the message `hideHeaderTitle`.
 ###### Controlling item display.
 By default a list item is displayed using the result of the `displayString` message sent to the item.
 We can configure a list to apply a block to control the display of each item using the message `display:`.
-The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `printString`. See Figure *@figSimpleList2@*.
+The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `printString` (See Figure *@figSimpleList2@*).
 
 ```
 SpListPresenter new
@@ -97,7 +95,6 @@ Here is a typical use case of the method `whenSelectionChangedDo:`.
 
 ```
 connectPresenters
-
     changesTree whenSelectionChangedDo: [ :selection | 
         selection selectedItem
             ifNil: [ textArea text: '' ]
@@ -118,7 +115,7 @@ list
     dragEnabled: true.
 
 list2 := SpListPresenter new.
-list2    dropEnabled: true;
+list2 dropEnabled: true;
     wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ];
     acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ].
 
@@ -148,11 +145,9 @@ The messages `activateOnDoubleClick` configures the list to react to double clic
 Lists can also be filtered as shown in Figure *@figFiltering@*.
 The following script shows the use of the `SpFilteringListPresenter`.
 
-
-
 ```
 SpFilteringListPresenter new
-    items: Smalltalk allClasses ;
+    items: Smalltalk allClasses;
     open; 
     withWindowDo: [ :window | 
         window title: ' SpFilteringListPresenter example' ]
@@ -164,8 +159,8 @@ The following script shows that the filter can be placed on the top.
 
 ```
 SpFilteringListPresenter new
-    items: Smalltalk allClasses ;
-    openWithLayout: SpFilteringListPresenter topLayout ; 
+    items: Smalltalk allClasses;
+    openWithLayout: SpFilteringListPresenter topLayout;
     open; 
     withWindowDo: [ :window | 
         window title: ' SpFilteringListPresenter example' ]
@@ -175,27 +170,26 @@ Note that a filter can be declared upfront using the message `applyFilter:`.
 
 ```
 SpFilteringListPresenter new
-    items: Smalltalk allClasses ;
-    openWithLayout: SpFilteringListPresenter topLayout ; 
+    items: Smalltalk allClasses;
+    openWithLayout: SpFilteringListPresenter topLayout;
     applyFilter: 'ZZ';
-    open ; 
-    
-    withWindowDo: [ :window | 
+    open;
+    withWindowDo: [ :window |
         window title: 'SpFilteringListPresenter prefiltered example' ]
 ```
 
 ### Selectable filtering lists
 
 Often lists are used to select items. This is what the class `SpFilteringSelectableListPresenter` offers. 
-In addition to be able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
+In addition to be able to filter items, it lets the user select items by ticking them as shown by Fig. *@figSelectable@*.
 
 ![A selectable filtering list with bottom filter.](figures/SelectableList.png width=60&label=figSelectable)
 
 The following script produces the situation describes by 
 ```
 (SpFilteringSelectableListPresenter new
-    items: Smalltalk allClasses ;
-    layout: SpFilteringListPresenter topLayout ; 
+    items: Smalltalk allClasses;
+    layout: SpFilteringListPresenter topLayout;
     asWindow)
         title: 'SpFilteringSelectableListPresenter example';
         open
