@@ -13,51 +13,50 @@ Spec expects to get layouts objects, instances of the layout classes, associated
 Contrary to Spec1.0 where layouts were only defined at the class level, in Spec2.0
 to define the layout of a presenter you can: 
 - Define the `defaultLayout` method on the instance side.
-- Or use `layout:` in your `initializePresenters` method.
+- Or use the message`layout:` in your `initializePresenters` method to set an instance of layout in the current presenter.
 
 Both layout methods should return a layout for example instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
 
-Note that class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
+Note the possibility to define a class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
 
 This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare upfront sub presenters in instance variable and then use their names as it was done in Spec1.0.
-It is, however, possible that there are cases where you want the layout "template" instead the layout instantiated... so you still can do it.
+It is, however, possible that there are cases where you want a layout "template"... so you still can do it.
+
+
+
+
+
+
 
 
 ### How can we get normal button
 
 ```
 WindowExamplePresenter >> initializePresenters
+    button1 := self newButton.
+    button2 := self newButton.
+    button1 label: '+'.
+    button2 label: '-'.
 
-  button1 := self newButton.
-  button2 := self newButton.
-  button1 label: '+'.
-  button2 label: '-'.
-  
 WindowExamplePresenter >> defaultLayout
      ^ SpBoxLayout newLeftToRight
         add: button1; 
         add: button2; 
         yourself
 ```
-
-
 This produces a large window....
 
 
 
 ### BoxLayout (SpBoxLayout and SpBoxConstraints)
 
-It show presenters in an ordered box. Box can be horizontal or vertical and
-presenters will be ordered top to down or left to right following direction decided.
+The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. 
+A box can be horizontal or vertical and presenters are ordered top to down or left to right following the direction decided. A box layout can be composed of other layouts.
+
 The basic message to add presenters is: #add:expand:fill:padding:
-expand   - true if the new child is to be given extra space allocated to box .
-     The extra space will be divided evenly between all children that use this option
-fill   - true if space given to child by the expand option is actually allocated to child ,
-     rather than just padding it. This parameter has no effect if expand is set to false.
-padding  - extra space in pixels to put between this child and its neighbors, over and above
-     the global amount specified by “spacing” property. If child is a widget at one of
-     the reference ends of box , then padding pixels are also put between child and the
-     reference edge of box"
+- expand - true if the new child is to be given extra space allocated to box . The extra space will be divided evenly between all children that use this option
+- fill - true if space given to child by the expand option is actually allocated to child, rather than just padding it. This parameter has no effect if expand is set to false.
+- padding  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If child is a widget at one of the reference ends of box , then padding pixels are also put between child and the reference edge of box"
 
 ```smalltalk
 SpBoxLayout newTopToBottom 
@@ -68,10 +67,10 @@ SpBoxLayout newTopToBottom
  yourself
 ```
 
-Element in a vertical box will use all available horizontal space, and fill
-vertical space according to the rules. This will be inverted with horizontal box.
+An element in a vertical box will use all available horizontal space, and fill
+vertical space according to the rules. This is inversed in an horizontal box.
 
-Box layout can be composed, we can add a box to an existing one.
+
 
 ### GridLayout (SpGridLayout, SpGridConstraints and SpGridAxisConstraints)
 
