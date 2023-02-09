@@ -293,14 +293,21 @@ SpTreePresenter new
 
 ### Tables
 
-Spec offers tables. A table can have multiple columns and a column can be composed of elementary 
-Tables have different kind of columns that can be added to a table. 
+Spec offers tables. A table can have multiple columns and a column can be composed of elementary elements.
+Tables have different kind of columns that can be added to a table:
 
-- `SpImageTableColumn` offers the possibility to display form (icon, graphics...).
+- `SpStringTableColumn` offers cell items that are strings.
+- `SpCheckBoxTableColumn` lets us have cells with checkbox.
+- `SpIndexTableColumn` displays the index of the current item. 
+- `SpDropListTableColumn` lets have drop list in cells.
+- `SpCompositeTableColumn` offers the possibilities to compose a column out of different kinds of column. It allows one to compose a icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
+
+
+For example, in the snippet below `SpImageTableColumn` offers the possibility to display form (icon, graphics...).
+`contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
 
 ```Smalltalk
 TodoListPresenter >> initializePresenters
-
     todoListPresenter := self newTable
         addColumn:
             ((SpCheckBoxTableColumn evaluated: [ :task | task isDone ])
@@ -321,11 +328,6 @@ TodoListPresenter >> initializePresenters
         yourself
 ```
 
-What is added now? 
- 
-- `contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
-
-
 ```Smalltalk
 TodoListPresenter >> todoListContextMenu
 
@@ -337,11 +339,6 @@ TodoListPresenter >> todoListContextMenu
                     name: 'Remove'; 
                     action: [ self removeSelectedTask ] ]
 ```
-- `SpStringTableColumn` offers cell items that are strings.
-- `SpCheckBoxTableColumn` lets us have cells with checkbox.
-- `SpIndexTableColumn` displays the index of the current item. 
-- `SpDropListTableColumn` lets have drop list in cells.
-- `SpCompositeTableColumn` offers the possibilities to compose a column out of different kinds of column. It allows one to compose a icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
 
 
 ##### First Table
@@ -417,7 +414,6 @@ SpTablePresenter new
 ```
 
 ![A table with an editable column).](figures/EditableTable.png width=50&label=figEditableTable)
-
 
 
 ### Tree Tables
