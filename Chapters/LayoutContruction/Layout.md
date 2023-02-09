@@ -23,29 +23,47 @@ This new design reflects the dynamic nature of layouts in Spec2, and the fact th
 It is, however, possible that there are cases where you want a layout "template"... so you still can do it.
 
 
+### A running example
 
+To be able to play with the layouts defined in this chapter, 
+we define a simple presenter named `SpTwoButtons`.
+ 
+``` 
+SpPresenter << #SpTwoButtons 
+    slots: { #button1 . #button2 }; 
+    package: 'CodeOfSpec20BookThreePillar'
+```
 
-
-
-
-
-### How can we get normal button
+We define a simple `initializePresenters` method as follows: 
 
 ```
-WindowExamplePresenter >> initializePresenters
-    button1 := self newButton.
-    button2 := self newButton.
-    button1 label: '+'.
-    button2 label: '-'.
+SpTwoButtons >> initializePresenters 
+    button1 := self newButton. 
+    button2 := self newButton. 
 
-WindowExamplePresenter >> defaultLayout
+    button1 label: '1'.
+    button2 label: '2'.
+```
+
+![Two buttons placed horizontally from left to right.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight) 
+
+```
+SpTwoButtons >> defaultLayout
      ^ SpBoxLayout newLeftToRight
         add: button1; 
         add: button2; 
         yourself
 ```
-This produces a large window....
 
+```
+SpTwoButtons >> defaultLayout
+	^ SpBoxLayout newLeftToRight
+		add: #button1 expand: false ; 
+		add: #button2 expand: false ;
+		yourself
+```
+
+![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight) 
 
 
 ### BoxLayout (SpBoxLayout and SpBoxConstraints)
@@ -173,24 +191,7 @@ presenter open.
 
 For example, consider the following artificial example of a two button UI that has two different layouts: horizontal and vertical.
  
- We define a new presenter named `SpTwoButtons`.
  
-``` 
-SpPresenter << #SpTwoButtons 
-    slots: { #button1 . #button2 }; 
-    package: 'CodeOfSpec20BookThreePillar'
-```
-
-We define a simple `initializePresenters` method as follows: 
-
-```
-SpTwoButtons >> initializePresenters 
-    button1 := self newButton. 
-    button2 := self newButton. 
-
-    button1 label: '1'.
-    button2 label: '2'.
-```
 
 We define two class method method returning different layouts.
 Note that we could define such methods on the instance side too and we define them on the class side to be able to get such layouts without an instance of the class.
