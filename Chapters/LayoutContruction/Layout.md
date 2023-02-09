@@ -1,20 +1,27 @@
 ## Layouts
 @cha_layout
 
-status: should check the old LayoutConstruction.md file
 
-
-In Spec2 layouts are created in instance side. But class-side accessors will remain for those who prefer it.
-This is to reflect the dynamic nature of layouts in spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare them by name before.
-now... it is possible that there are cases where you want the layout "template" instead the layout instantiated... so you still can do it.
+In Spec2 layouts are represented by instances of layout classes. Such layout classes encode different element positioning such as box, paned, or grid layouts.
+This chapter presents the existing layouts, the definition and how layouts take place when 
+a presenter reuses other presenters.
 
 ### Basic principle reminder
 
-To define the layout of a presenter you can: 
-- Define the `defaultLayout` on the instance side.
-- Use `layout:` in your `initlizePresenters` method
+Spec expects to get layouts objects, instances of the layout classes, associated with a presenter. Each presenter should describe the positioning of its sub presenters. 
 
-Both layout methods should return a layout for example instance of `SpBoxLayout` or `SpPanedLayout`.
+Contrary to Spec1.0 where layouts were only defined at the class level, in Spec2.0
+to define the layout of a presenter you can: 
+- Define the `defaultLayout` method on the instance side.
+- Or use `layout:` in your `initializePresenters` method.
+
+Both layout methods should return a layout for example instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
+
+Note that class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
+
+This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare upfront sub presenters in instance variable and then use their names as it was done in Spec1.0.
+It is, however, possible that there are cases where you want the layout "template" instead the layout instantiated... so you still can do it.
+
 
 ### How can we get normal button
 
