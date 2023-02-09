@@ -296,7 +296,9 @@ SpTreePresenter new
 Spec offers tables. A table can have multiple columns and a column can be composed of elementary 
 Tables have different kind of columns that can be added to a table. 
 
-- `SpImageTableColumn` offers the possibility to display form (icon, graphics...).```Smalltalk
+- `SpImageTableColumn` offers the possibility to display form (icon, graphics...).
+
+```Smalltalk
 TodoListPresenter >> initializePresenters
 
     todoListPresenter := self newTable
