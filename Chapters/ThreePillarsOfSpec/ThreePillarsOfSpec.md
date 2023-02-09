@@ -96,6 +96,7 @@ This `model:` method implements the following behavior:
 
 You do not need to define the method `setModelBeforeInitialization:` as we previously showed.
 
+#### Example
 Let us look at our little example. First we inherit from `SpPresenterWithModel`.
 
 ```
@@ -109,7 +110,7 @@ Note that if you plan to react to change it is better to define a part of the in
 
 ```
 SpMethodListerWithModel >> initializePresenters 
-    list := self newList.
+    list := self newList
 ```
 
 You can then implement the `modelChanged` method to refresh your UI when the model changes. 
@@ -188,7 +189,7 @@ The last step is not mandatory since the focus order is by default given by the 
 **Note.** Specifying the method `initializePresenters` is mandatory, as without it the UI would have no widgets.
 
 
-#### Subpresenter instantiation
+#### Sub presenter instantiation
  
 The instantiation of a subpresenter (i.e., the model for a widget composing the UI) can be done in two ways: through the use of a creation method or through the use of the `instantiate:` method.
 
