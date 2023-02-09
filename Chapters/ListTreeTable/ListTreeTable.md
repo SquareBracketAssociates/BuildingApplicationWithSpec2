@@ -175,25 +175,26 @@ SpFilteringListPresenter new
     applyFilter: 'ZZ';
     open;
     withWindowDo: [ :window |
-        window title: 'SpFilteringListPresenter prefiltered example' ]
+       window title: 'SpFilteringListPresenter prefiltered example' ]
 ```
 
 ### Selectable filtering lists
 
 Often lists are used to select items. This is what the class `SpFilteringSelectableListPresenter` offers. 
-In addition to be able to filter items, it lets the user select items by ticking them as shown by Fig. *@figSelectable@*.
+In addition to be able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
 
 ![A selectable filtering list with bottom filter.](figures/SelectableList.png width=60&label=figSelectable)
 
-The following script produces the situation describes by 
+The following script produces the situation described by 
+
 ```
 (SpFilteringSelectableListPresenter new
-    items: Smalltalk allClasses;
-    layout: SpFilteringListPresenter topLayout;
-    asWindow)
-        title: 'SpFilteringSelectableListPresenter example';
-        open
-
+          items: Smalltalk allClasses;
+          layout: SpFilteringListPresenter topLayout;
+          applyFilter: 'ZZ';
+          asWindow)
+              title: 'SpFilteringSelectableListPresenter example';
+              open
 ```
 
 
@@ -205,7 +206,7 @@ This lets developers produce advanced user interface such as the one of the repo
 
 ![An example of a component list from the ModMoose platform.](figures/mooseQDScreenshot.png width=80&label=figModMoose)
 
-The following script shows how to define a `SpComponentListPresenter` as its result is shown in Figure *@figCompo@*
+The following script shows how to define a `SpComponentListPresenter` as its result is shown in Figure *@figCompo@*.
 
 ```
 | list |
@@ -228,15 +229,15 @@ SpComponentListPresenter new
     open
 ```
 
-![A component list with several different presenter: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo).
+![A component list with several different presenter: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo)
 
 
 ### Trees
 
 Spec offers also trees. 
-The following script shows how to list all the classes of Pharo using inheritance as shown *@figTreeExpanded@*.
+The following script shows how to list all the classes of Pharo using inheritance as shown by Figure *@figTreeExpanded@*.
 
-![A Tree .](figures/TreeExpanded.png width=50&label=figTreeExpanded)
+![A Tree.](figures/TreeExpanded.png width=50&label=figTreeExpanded)
 
 ```
 SpTreePresenter new
@@ -250,7 +251,7 @@ SpTreePresenter new
 
 The script uses the message `expandPath:` shows that we can expand a specific item by a path.
 
-![A tree with a menu.](figures/TreeExpanded.png width=50&label=figTreemenu)
+![A tree with a menu.](figures/TreeWithMenu.png width=50&label=figTreemenu)
 
 The following script  shows how to use a dynamic context menu. This is a dynamic menu because 
 its contents is reexecuted.
@@ -271,7 +272,7 @@ tree roots: { Object };
     open
 ```
 
-![A tree with a selected item.](figures/TreeExpanded.png width=50&label=figTreemenu)
+![A tree with a selected item.](figures/TreeSelectedItem.png width=50&label=figTreemenu)
 
 
 The following script shows the use of the following messages:
