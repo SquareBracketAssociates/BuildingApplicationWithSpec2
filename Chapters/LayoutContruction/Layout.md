@@ -2,8 +2,8 @@
 @cha_layout
 
 
-In Spec2 layouts are represented by instances of layout classes. Such layout classes encode different element positioning such as box, paned, or grid layouts.
-This chapter presents the existing layouts, the definition and how layouts take place when 
+In Spec2 layouts are represented by instances of layout classes. Such layout classes encode different positioning of elements such as box, paned, or grid layouts.
+This chapter presents the existing layouts, their definition and how layouts can be reused when 
 a presenter reuses other presenters.
 
 ### Basic principle reminder
@@ -12,10 +12,10 @@ Spec expects to get layouts objects, instances of the layout classes, associated
 
 Contrary to Spec1.0 where layouts were only defined at the class level, in Spec2.0
 to define the layout of a presenter you can: 
-- Define the `defaultLayout` method on the instance side.
-- Or use the message`layout:` in your `initializePresenters` method to set an instance of layout in the current presenter.
+- Define the `defaultLayout` method on the instance side,
+- Or use the message `layout:` in your `initializePresenters` method to set an instance of layout in the current presenter.
 
-Both layout methods should return a layout for example instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
+Both layout methods should return a layout, for example, instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
 
 Note the possibility to define a class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
 
@@ -69,13 +69,13 @@ We can refine this layout to indicate that the subpresenters should not expand t
 
 ```
 SpTwoButtons >> defaultLayout
-	^ SpBoxLayout newLeftToRight
+    ^ SpBoxLayout newLeftToRight
 		add: #button1 expand: false ; 
 		add: #button2 expand: false ;
 		yourself
 ```
 
-![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded) 
+![Two buttons placed horizontally from left to right but not expanded.](figures/ThreeButtons.png width=50&label=ThreeButtons) 
 
 
 
@@ -83,38 +83,31 @@ SpTwoButtons >> defaultLayout
 
 
 
+The full message to add presenters is: `add:expand:fill:padding:`
+- expand - when true, the new child is to be given extra space allocated to box. The extra space is divided evenly between all children that use this option.
+- fill - when true, the space given to child by the expand option is actually allocated to child, rather than just padding it. This parameter has no effect if `expand` is set to `false`.
+- padding  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If a child is a widget at one of the reference ends of box, then padding pixels are also put between child and the reference edge of box.
 
 
-
-
-
-
-
-
-
-
-
-The basic message to add presenters is: #add:expand:fill:padding:
-- expand - true if the new child is to be given extra space allocated to box . The extra space will be divided evenly between all children that use this option
-- fill - true if space given to child by the expand option is actually allocated to child, rather than just padding it. This parameter has no effect if expand is set to false.
-- padding  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If child is a widget at one of the reference ends of box , then padding pixels are also put between child and the reference edge of box"
-
-
-
-
-
+We add another button to the presenter and change the `defaultLayout` method
 
 ```smalltalk
-SpBoxLayout newTopToBottom 
-    spacing: 15;
-    add: button1 expand: false fill: true padding: 5;
-    add: button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];
+SpTwoButtons >> defaultLayout 
+	^ SpBoxLayout newTopToBottom
+    	spacing: 15;
+    	add: button1 expand: false fill: true padding: 5;
+   		add: button2 withConstraints: [ :constraints | constraints
+    width: 30; padding: 5];
     addLast: button3 expand: false fill: true padding: 5;
- yourself
+yourself
 ```
 
 An element in a vertical box will use all available horizontal space, and fill
 vertical space according to the rules. This is inversed in an horizontal box.
+
+
+![Three buttons placed from top to bottom.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded) 
+
 
 
 
