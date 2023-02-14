@@ -65,6 +65,9 @@ SpTwoButtons >> defaultLayout
         yourself
 ```
 
+An element in a vertical box will use all available horizontal space, and fill
+vertical space according to the rules. This is inversed in an horizontal box.
+
 We can refine this layout to indicate that the subpresenters should not expand to their container using the message `add:expand:`. The result is shown in Figure *@TwoButtonsLeftToRightExpanded@*.
 
 ```
@@ -77,33 +80,27 @@ SpTwoButtons >> defaultLayout
 
 ![Two buttons placed horizontally from left to right but not expanded.](figures/ThreeButtons.png width=50&label=ThreeButtons) 
 
-
-
-
-
-
-
 The full message to add presenters is: `add:expand:fill:padding:`
 - expand - when true, the new child is to be given extra space allocated to box. The extra space is divided evenly between all children that use this option.
 - fill - when true, the space given to child by the expand option is actually allocated to child, rather than just padding it. This parameter has no effect if `expand` is set to `false`.
 - padding  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If a child is a widget at one of the reference ends of box, then padding pixels are also put between child and the reference edge of box.
 
 
-We add another button to the presenter and change the `defaultLayout` method
+To illustrate a bit this API, we add another button to the presenter and change the `defaultLayout` method as follows. The result
+is shown in Fig *@TwoButtonsLeftToRightExpanded@*. 
+We want to stress however that it is better not to use a fixed width or a padding.
 
 ```smalltalk
 SpTwoButtons >> defaultLayout 
-	^ SpBoxLayout newTopToBottom
-    	spacing: 15;
-    	add: button1 expand: false fill: true padding: 5;
-   		add: button2 withConstraints: [ :constraints | constraints
-    width: 30; padding: 5];
-    addLast: button3 expand: false fill: true padding: 5;
-yourself
+    ^ SpBoxLayout newTopToBottom
+        spacing: 15;
+        add: button1 expand: false fill: true padding: 5;
+        add: button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];
+        addLast: button3 expand: false fill: true padding: 5;
+    yourself
 ```
 
-An element in a vertical box will use all available horizontal space, and fill
-vertical space according to the rules. This is inversed in an horizontal box.
+
 
 
 ![Three buttons placed from top to bottom.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded) 
