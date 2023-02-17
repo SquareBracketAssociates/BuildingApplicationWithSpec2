@@ -78,7 +78,7 @@ SpTwoButtons >> defaultLayout
         yourself
 ```
 
-![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRightExpanded.png width=50&label=TwoButtonsLeftToRightExpanded) 
+![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded) 
 
 The full message to add presenters is: `add:expand:fill:padding:`
 - `expand:` argument - when true, the new child is to be given extra space allocated to box. The extra space is divided evenly between all children that use this option.
