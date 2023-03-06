@@ -507,10 +507,9 @@ You can ask an adapter for its style name using the message `styleName`
 ```
  SpMorphicLabelAdapter styleName 
  > Label
- ```
+```
 
 
 ### Conclusion
-
 
 Using styles in Spec is great. It make easier to have a consistent design as we can add the same style to several presenters. If we want to change some style, we only edit the styles sheet. Also, the styles automatically scale if we change the font size of all the image. They are one of the main reason why in Spec we have the notion of an application. We can dynamically change how a presenter looks.
