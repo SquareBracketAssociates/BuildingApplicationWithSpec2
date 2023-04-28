@@ -1,5 +1,14 @@
 !! Tips and how tos 
 
+!!! Registering to focus event
+
+A presenter does not offer a specific API to get  access to event registration on focus. 
+What you should do instead is to do it via the presenter eventHandler as follows:
+
+[[[
+aPresenter eventHandler whenFocusReceivedDo: [ :anEvent | ... ]
+]]]
+
 !!! Table with sorting 
 
 [[[
