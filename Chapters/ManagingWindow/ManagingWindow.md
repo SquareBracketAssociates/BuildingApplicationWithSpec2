@@ -10,6 +10,9 @@ In this book so far we have talked about reuse of `SpPresenter`s, discussed the 
 In this chapter we provide a more complete overview of how Spec allows for the managing of windows. We show opening and closing, the built-in dialog box facility, sizing of windows and all kinds of window decoration.
 
 
+
+
+
 ### A working example
 
 
@@ -168,6 +171,9 @@ diag
     whenClosedDo: [ UIManager default inform: 'Bye bye!' ]
 ```
 
+
+			
+			
 
 #### Action with Window
 
@@ -336,7 +342,105 @@ To set the about text of a window, either override the `aboutText` method of the
 
 A modal window is a window that takes control of the entire Pharo user interface, making it impossible for the user to select another window while it is open. This is especially useful for dialog boxes, but may also be needed for other kinds of windows.
 
-SD: More here
+### Getting values from a dialog window
+
+By default the `openModal` sent to a dialog window will return the dialog window itself
+so you can easily ask it `isOk` 
+
+You can also define  in your presenter how it will behave when it is open in a dialog window
+```
+initializeDialogWindow: aDialogWindowPresenter
+	"Used to initialize the model in the case of the use into a dialog window.
+	 Override this to set buttons other than the default (Ok, Cancel)."
+	
+	aDialogWindowPresenter
+		addButton: 'Ok' do: [ :presenter | 
+			self accept.
+			presenter close ];
+		addButton: 'Cancel' do: [ :presenter | 
+			presenter close ]	
+```
+
+### Little dialog presenters
+
+Spec supports some little predefined dialogs to inform or request information from the users.
+Most of them inherit from `SpDialogPresenter`. 
+They offer a builder API to configure them.
+
+The simplest dialog is an inform one. 
+
+```
+SpInformDialog new
+	title: 'Inform example';
+	label: 'You are seeing an inform dialog!';
+	acceptLabel: 'Close this!';
+	openDialog
+```
+
+Confirm dialog are created as follows:
+
+```
+SpConfirmDialog new 
+	title: 'Confirm example';
+	label: 'Are you sure?';
+	acceptLabel: 'Sure!';
+	cancelLabel: 'No, forget it';
+	label: 'Are you sure?';
+	onAccept: [ self inform: 'Yes!' ];
+	onCancel: [ self inform: 'No!' ];
+	openDialog
+```
+
+
+The following example is not working becaise
+- openModal does not return the dialog
+- second the dialog does not offer `isOk`
+
+```
+| ok |
+ok := SpConfirmDialog new.
+ok
+	title: 'Confirm modal example';
+	label: 'Are you sure?';
+	acceptLabel: 'Sure!';
+	cancelLabel: 'No, forget it';
+	openModal.
+
+ok application newInform (ok 
+	ifTrue: [ 'Yes!' ]
+	ifFalse: [ 'No!' ])
+```
+
+
+So we can do it with 
+
+```
+| ok |
+ok := SpConfirmDialog new
+	title: 'Confirm modal example';
+	label: 'Are you sure?';
+	acceptLabel: 'Sure!';
+	cancelLabel: 'No, forget it';
+	openModal.
+
+SpInformDialog new title: (ok 
+	ifTrue: [ 'Yes!' ]
+	ifFalse: [ 'No!' ]);
+	openModal 
+```
+
+The idiomatic way to use them is to 
+access them via the application doing 
+
+```
+	...
+	self application newInform 
+	...
+	
+```
+
+`SpApplication` offers the following API: `newConfirm`, `newInform`, `newJobList`, `newRequest`, `newSelect`, `newRequestText`.
+
 
 ### Conclusion
 
