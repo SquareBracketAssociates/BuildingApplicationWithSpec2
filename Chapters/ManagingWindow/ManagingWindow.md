@@ -347,19 +347,7 @@ A modal window is a window that takes control of the entire Pharo user interface
 By default the `openModal` sent to a dialog window will return the dialog window itself
 so you can easily ask it `isOk` 
 
-You can also define  in your presenter how it will behave when it is open in a dialog window
-```
-initializeDialogWindow: aDialogWindowPresenter
-	"Used to initialize the model in the case of the use into a dialog window.
-	 Override this to set buttons other than the default (Ok, Cancel)."
-	
-	aDialogWindowPresenter
-		addButton: 'Ok' do: [ :presenter | 
-			self accept.
-			presenter close ];
-		addButton: 'Cancel' do: [ :presenter | 
-			presenter close ]	
-```
+
 
 ### Little dialog presenters
 
@@ -415,18 +403,20 @@ ok application newInform (ok
 So we can do it with 
 
 ```
-| ok |
-ok := SpConfirmDialog new
+| app ok inform dialog |
+app := SpApplication new.
+inform := app newConfirm.
+inform
 	title: 'Confirm modal example';
 	label: 'Are you sure?';
 	acceptLabel: 'Sure!';
-	cancelLabel: 'No, forget it';
-	openModal.
+	cancelLabel: 'No, forget it'.
 
-SpInformDialog new title: (ok 
+dialog := inform asModalWindow.
+dialog title: (dialog isOk
 	ifTrue: [ 'Yes!' ]
-	ifFalse: [ 'No!' ]);
-	openModal 
+	ifFalse: [ 'No!' ]).
+dialog open.
 ```
 
 The idiomatic way to use them is to 
@@ -440,6 +430,27 @@ access them via the application doing
 ```
 
 `SpApplication` offers the following API: `newConfirm`, `newInform`, `newJobList`, `newRequest`, `newSelect`, `newRequestText`.
+
+
+### Placing a presenter inside a dialog window
+
+Any presenter can be placed in a dialog window by specializing the method `initializeDialogWindow:`.
+
+Here is a simple example showing how the default buttons are set. 
+```
+You can also define  in your presenter how it will behave when it is open in a dialog window
+```
+initializeDialogWindow: aDialogWindowPresenter
+	"Used to initialize the model in the case of the use into a dialog window.
+	 Override this to set buttons other than the default (Ok, Cancel)."
+	
+	aDialogWindowPresenter
+		addButton: 'Ok' do: [ :presenter | 
+			self accept.
+			presenter close ];
+		addButton: 'Cancel' do: [ :presenter | 
+			presenter close ]	
+```
 
 
 ### Conclusion
