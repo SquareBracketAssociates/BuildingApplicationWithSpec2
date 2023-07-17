@@ -201,6 +201,29 @@ testInitializeWindow
         ensure: [ window close ]
 ```
 
+### Testing your application
+
+In Spec, an application is responsible to run and gather the windows of your application.
+The pattern is to override the `start` method of your application. The method `start` is a hook method that is invoked when you execute your application using the `run` message as in `MyApplication new run`.
+
+It is important to see that in the `start` method you should configure the presenter you are opening so that it knows its application. This is important so that the application knows the windows it is opening. 
+
+```
+MyApplication >> start
+    MyPresenter new 
+          application: self;
+          open
+````
+
+This will let you define a `tearDown` that will automatically close your application windows, for example as follows.
+
+```
+MyApplicationTest>>tearDown
+
+	application ifNotNil: [ application closeAllWindows ].
+	super tearDown
+```
+
 ### Known limitations and conclusion
 
 We show in this chapter that you can take advantage of Spec to define tests that will help you to evolve the visual part of your application.
