@@ -37,6 +37,8 @@ Object class << TodoTask class
     slots: { #tasks }
 ```
 
+We use lazy initialization to initialize the tasks collection.
+
 ```Smalltalk
 TodoTask class >> tasks
     ^ tasks ifNil: [ tasks := OrderedCollection new ]
@@ -46,10 +48,10 @@ We add two methods to manage the addition and removal
 
 ```Smalltalk
 TodoTask class >> addTask: aTask
-    (tasks includes: aTask) ifFalse: [ tasks add: aTask ]
+    (self tasks includes: aTask) ifFalse: [ self tasks add: aTask ]
 
 TodoTask class >> deleteTask: aTask
-    tasks remove: aTask ifAbsent: [ nil ]
+    self tasks remove: aTask ifAbsent: [ nil ]
 ```
 We made sure that adding a task does not add twice the same task because we can use it for `save` and `accept`. 
 
