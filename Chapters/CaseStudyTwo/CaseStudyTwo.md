@@ -101,8 +101,8 @@ This component will contain a list of your Todo tasks and the logic to add, remo
 
 ### Showing tasks
 
-A presenter needs to define a _layout_ (how the component and its subcomponents will be displayed) and which _widgets_ it will show.  
-While this is not the best way to organise your presenter, for simplicity we will add all needed behavior in just a single method that you need to implement: `initializePresenters`.
+A presenter needs to define a _layout_ (how the component and its subcomponents will be displayed) and which _widgets_ it will show.
+While this is not the best way to organise your presenter, for simplicity you can add all needed behavior in just a single method that you need to implement: `initializePresenters`.
 
 ```Smalltalk
 TodoListPresenter >> initializePresenters
@@ -110,12 +110,14 @@ TodoListPresenter >> initializePresenters
         addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) width: 20);
         addColumn: (SpStringTableColumn title: 'Title' evaluated: [:task | task title]);
         yourself.
+		
     self layout: (SpBoxLayout newTopToBottom 
         add: todoListPresenter;
         yourself) 
 ```
 
-In general it is better to define a separate method `defaultLayout` whose job is to only describe the layout of the presenter. 
+In general it is better to define a separate method `defaultLayout` whose job is to only describe the layout of the presenter as we will show later when we will refactor the code. 
+
 
 Even if we want to manage a list of tasks, we use a table because we want to display multiple information side by side.
 In this case, you are adding to your presenter a table widget, which is a very complex component by itself. Let us explain what each part of it means: 
@@ -487,7 +489,7 @@ TodoListPresenter >> removeSelectedTask
 ```
 
 As you see, `editSelectedTask` is almost equal to `addTask` but instead of adding a new task, it takes the selected task in our table by sending `TodoListPresenter selection selectedItem`.  
-Remove simply takes the selected item and send the `remove` message.
+Remove simply takes the selected item and sends the `remove` message.
 
 ![First full version of the Task List Manager.](figures/figure4.png width=80&label=fig4)
 
@@ -519,7 +521,7 @@ And that's all, you have your Todo application running as shown by Figure *@Todo
 ![Task Manager running in GTK.](figures/figure5.png label=Todogtk&width=80)
 
 ### Conclusion
-In this tutorial we show that with Spec presenters are responsible of defining
+In this tutorial, we show that Spec presenters are responsible for defining:
 - their subcomponents
 - their layouts (how such components are displayed)
 - how such components interact
