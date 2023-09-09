@@ -67,6 +67,10 @@ The following snippet creates a window with the list of methods of the class `Po
 ![A simple list of sorted selectors of the class Point.](figures/PointSelectors.png label=pointselectors&width=50)
 
 
+
+
+
+
 ### SpPresenter vs. SpPresenterWithModel
 
 The key difference with using `SpPresenter` and `SpPresenterWithModel` is  if you need to react to changes of the model.
@@ -117,8 +121,11 @@ You can then implement the `modelChanged` method to refresh your UI when the mod
 
 ```
 SpMethodListerWithModel >> modelChanged
-    list items: aClass selectors sorted
+    list items: announcingObject selectors sorted
 ```
+SD: check if announcingObject is correct
+
+
 We define the same layout method as follows: 
 ```
 SpMethodListerWithModel >> defaultLayout
@@ -136,6 +143,31 @@ lister := SpMethodListerWithModel on: Point.
 lister open.
 lister model: Rectangle
 ```
+
+Note that the right way to create a presenter is to use the method `newApplication: anApplication` 
+because it ensures that the application knows its constituents. 
+
+So the code above should be 
+
+```
+| lister app |
+app := SpApplication new 
+lister := SpMethodListerWithModel newApplication: app.
+```
+
+There is then a problem because we want to specify the model also. 
+The correct and idiomatic way is to use the method `newApplication:model:` and the final code
+version is the following one: 
+
+```
+| lister |
+app := SpApplication new.
+lister := SpMethodListerWithModel newApplication: app model: Point.
+lister open.
+lister model: Rectangle
+```
+
+
 
 You saw that you can easily build application user interface populated from a model and reacting to model changes.
 
