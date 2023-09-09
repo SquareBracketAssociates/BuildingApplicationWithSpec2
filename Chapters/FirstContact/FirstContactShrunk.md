@@ -91,13 +91,9 @@ CustomerSatisfactionPresenter >> initializePresenters
         icon: (self iconNamed: #thumbsDown).
 ```
 
-You can browse the default icons available in Pharo by executing the following line:
+You can browse the Spec icon provider by looking at the following classes: `SpPharoThemeIconProvider` subclass of `SpIconProvider`.
+Each application is able to define its own icon provider by defining a subclass of `SpIconProvider`.
 
-```
-Smalltalk ui icons inspect.
-```
-
-Feel free to add your own icons as well.
 
 
 #### Presenter interaction logic
