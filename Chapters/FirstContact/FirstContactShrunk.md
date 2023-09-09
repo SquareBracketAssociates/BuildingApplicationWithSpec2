@@ -10,7 +10,7 @@ After completing this chapter you should read Chapter *@cha_reuse@* about reuse 
 
 ![A screen shot of the customer satisfaction UI.](figures/CustomersBasic.png width=50&label=figCustomersBasic)
 
-We construct a simple customer satisfaction UI, which allow a user to give feedback about a service by clicking on one of three buttons. \(This feedback should be recorded and processed, but this is outside of the scope of this example\). We show a screenshot of the UI in Figure *@figCustomersBasic@*.
+We construct a simple customer satisfaction UI, which allows a user to give feedback about a service by clicking on one of three buttons. \(This feedback should be recorded and processed, but this is outside of the scope of this example\). We show a screenshot of the UI in Figure *@figCustomersBasic@*.
 
 
 ### Create the class of the UI 
@@ -68,7 +68,7 @@ SpPresenter >> newButton
 
 Note that the naming may be a bit confusing since we write `newButton` while it
 will create a button _presenter_ and not a button _widget_, which Spec will take 
-care by itself. We do not use `newButtonPresenter` to get an API easier to use.
+care by itself. We do not use `newButtonPresenter` to make the API easier to use.
 
 !!note **Do not** call `new` to instantiate a widget that is part of your UI. An alternative way to instantiate widgets is to use the message `instantiate:` with a presenter's class as argument. For example `screen := self instantiate: SpLabelPresenter`. This allows one to instantiate standard and non-standard widgets.
 
@@ -91,6 +91,10 @@ CustomerSatisfactionPresenter >> initializePresenters
         icon: (self iconNamed: #thumbsDown).
 ```
 
+You can browse the Spec icon provider by looking at the following classes: `SpPharoThemeIconProvider` subclass of `SpIconProvider`.
+Each application is able to define its own icon provider by defining a subclass of `SpIconProvider`.
+
+
 
 #### Presenter interaction logic
 
@@ -106,9 +110,12 @@ CustomerSatisfactionPresenter >> connectPresenters
 ```
 
 
-We use the message `action:` to specify the action that is performed when the buttons are clicked. In this case, we change the content of what is shown on the screen, to provide feedback that the choice has been registered. Note that the message `action:` is part of the button API. In other situations, you will specify that when a given event occurs, another message should be sent to a widget subpart.
+We use the message `action:` to specify the action that is performed when the button is clicked. In this case, we change the content of what is shown on the screen, to inform the user that the choice has been registered. Note that the message `action:` is part of the button API. In other situations, you will specify that when a given event occurs, another message should be sent to a widget subpart.
 
-!!note To summarize: specialize `initializePresenters` to define and configure and `connectPresenters` connect your presenters together.
+!!note To summarize:
+
+- specialize `initializePresenters` to define and configure the presenters that are the elements of your UI;
+- speciallize `connectPresenters` to connect those presenters together and specify their interaction.
 
 #### Specifying the widget layout
 
@@ -148,7 +155,7 @@ CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
 ```
 
 
-Of course, you are free to use helper method to return the title and extent of your widget. Now reopening your widget you should get the one displayed in Fig. *@figSecondCut@*.
+You are free to use helper method to return the title and extent of your widget. Now if you reopen your widget, you should get the one displayed in Fig. *@figSecondCut@*.
 
 
 ![A final version of the customer satisfaction UI.](figures/SecondCut.png width=50&label=figSecondCut)
