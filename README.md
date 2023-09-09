@@ -1,6 +1,7 @@
 # BuildingApplicationWithSpec2
 
-This project contains the new documentation for Spec20. 
+This project contains the forth coming book for Spec20: the UI builder framework of Pharo. 
+The release date for the book is December 2023.
 
 [Latest build](https://github.com/SquareBracketAssociates/BuildingApplicationWithSpec2/releases/download/latest/Spec2-wip.pdf)
 
