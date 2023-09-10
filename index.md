@@ -36,7 +36,7 @@
 
 <!inputFile|path=Chapters/Style/Style.md!>
 
-%<!inputFile|path=Chapters/Transmissions/Transmission.md!>
+<!inputFile|path=Chapters/Transmissions/Transmission.md!>
 
 <!inputFile|path=Chapters/MorphicAthens/MorphicAthens.md!>
 
