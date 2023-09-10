@@ -1,4 +1,4 @@
-## Reuse and composition at Work
+## Reuse and composition at work
 @cha_reuse
 
 status: Currently working on it. 
