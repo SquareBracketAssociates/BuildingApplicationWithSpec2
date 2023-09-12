@@ -2,11 +2,11 @@
 
 status: Ready for review - should publish the code
 
-In this chapter we develop a simple model for a contact book.
+In this chapter, we develop a simple model for a contact book.
 Then we define a user interface.
-This example will be used later in the book as an example to explain concepts such as commands, applications, windows.
+This example will be used later in the book as an example to explain concepts such as commands, applications, and windows.
 
-Now it is more a replay of the concept previously mentioned.
+Now it is more of a replay of the concept previously mentioned.
 We start by implementing classes modeling the domain and then we will add a basic graphical user interface to obtain a little application as shown in Figure *@overview@*.
 
 
@@ -20,7 +20,7 @@ The model for the domain of our example is composed of two classes: Contact and 
 
 #### Contact
 
-The class modeling a contact is defined as follow.
+The class modeling a contact is defined as follows.
 
 ```
 Object << #EgContact
@@ -59,7 +59,7 @@ EgContact class >> name: aNameString phone: aPhoneString
 #### ContactBook
 
 Now we define the class modeling the contact book.
-As for the contact class, it is simple and quite straighforward.
+As for the contact class, it is simple and quite straightforward.
 
 ```
 Object << #EgContactBook
@@ -94,7 +94,7 @@ EgContactBook >> addContact: newContact after: contactAfter
 ```
 
 
-We add a simple testing method in case one want to write some tests \(which we urge you to do\).
+We add a simple testing method in case one wants to write some tests \(which we urge you to do\).
 
 ```
 EgContactBook >> includesContact: aContact
@@ -113,7 +113,7 @@ EgContactBook >> add: contactName phone: phone
 ```
 
 
-Finally some facilities to query the contact book.
+Finally, some facilities to query the contact book.
 
 ```
 EgContactBook >> findContactsWithText: aText
@@ -133,7 +133,7 @@ EgContactBook >> size
 Since we want to have some contacts and we way to keep them without resorting
 to a database or file we set some class instance variables.
 
-We defined two class instance variables: `family` and `coworkers` and define
+We define two class instance variables: `family` and `coworkers` and define
 some class method accessors as follows:
 
 ```
@@ -235,7 +235,7 @@ EgContactBookPresenter class >> defaultSpec
 
 We initialize the table to display two columns for the name and the phone.
 The respective accessor messages will be sent to the elements to fill up the columns.
-Finally the table contents is set using the contact book contents.
+Finally, the table content is set using the contact book contents.
 
 ```
 EgContactBookPresenter >> initializePresenters
@@ -270,18 +270,18 @@ a new contact for the contact book.
 
 ```
 EgContactBookPresenter >> newContact
-    | rawData splitted |
+    | rawData split |
     rawData := self
         request: 'Enter new contact name and phone (split by comma)'
         initialAnswer: ''
         title: 'Create new contact'.
-    splitted := rawData splitOn: $,.
-    (splitted size = 2 and: [ splitted allSatisfy: #isNotEmpty ])
+    split := rawData splitOn: $,.
+    (split size = 2 and: [ split allSatisfy: #isNotEmpty ])
         ifFalse: [ SpInvalidUserInput signal: 'Please enter contact name and phone (split by comma)'  ].
 
     ^ EgContact new
-        name: splitted first;
-        phone: splitted second;
+        name: split first;
+        phone: split second;
         yourself
 ```
 
