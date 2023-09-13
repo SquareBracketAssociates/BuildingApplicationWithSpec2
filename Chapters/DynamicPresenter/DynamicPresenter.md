@@ -4,9 +4,9 @@
 
 status: should do a pass before review
 
-Contrary to Spec1, in Spec2 all the layouts are dynamic. It means that you can change on the fly the elements displayed. It is a radical improvement from Spec1 where most of the layout were static and building dynamic widgets was cumbersome.
+Contrary to Spec1, in Spec2 all the layouts are dynamic. It means that you can change on the fly the elements displayed. It is a radical improvement from Spec1 where most of the layouts were static and building dynamic widgets was cumbersome.
 
-In this chapter we will show that presenters can be dynamically composed using layouts. We will show a little interactive section. Then we will build a little code editor with dynamic aspects. Note that In this post, we are going to use simply Spec, to refer to Spec2 when we do not need to stress a difference.
+In this chapter, we will show that presenters can be dynamically composed using layouts. We will show a little interactive section. Then we will build a little code editor with dynamic aspects. Note that In this post, we are going to use simply Spec, to refer to Spec2 when we do not need to stress a difference.
 
 ### Layouts as simple as objects
 
@@ -21,7 +21,7 @@ presenter application: SpApplication new.
 ```
 
 
-There are three principal layouts in Spec: SpPanedLayout, SpBoxLayout and SpGridLayout. For this presenter we will use the SpPanedLayout, which can receive two presenters \(or layouts\) and places them in one half of the window.
+There are three principal layouts in Spec: `SpPanedLayout`, `SpBoxLayout`, and `SpGridLayout`. For this presenter, we will use the `SpPanedLayout` which can receive two presenters \(or layouts\) and place them in one half of the window.
 
 ```
 presenter layout: SpPanedLayout newTopToBottom.
@@ -45,7 +45,7 @@ button1 label: 'I am a button'.
 ![Paned layout with one button.](figures/layout2.png width=60&label=layout2)
 
 
-Now, we can add another button. There is no need to close and reopen the window, everything updates dynamically and without the need of rebuilding the window. As we instantiate the layout with newTopToBottom, the presenters will align vertically.
+Now, we can add another button. There is no need to close and reopen the window, everything updates dynamically and without the need of rebuilding the window. As we instantiate the layout with `newTopToBottom`, the presenters will align vertically.
 
 ```
 presenter layout add: (button2 := presenter newButton).
@@ -73,7 +73,7 @@ presenter layout remove: button2.
 
 ![Removing a button.](figures/layout5.png width=60&label=layout5)
 
-!!note What we should see here is that all the changes happens simply by creating a new instance of a given layout and sending messages to it.  It means that programs can create simply complex logic of the dynamic behavior of a widget.
+!!note What we should see here is that all the changes happen simply by creating a new instance of a given layout and sending messages to it.  It means that programs can create simply complex logic of the dynamic behavior of a widget.
 
 ### Building a little dynamic browser
 
@@ -82,10 +82,10 @@ Now, with all of this knowledge, we are going to build a new mini version of the
 
 - A tree that shows all the system classes.
 - A list that shows all methods in the selected class.
-- A text presenter that show the code of a selected method and a button.
+- A text presenter that shows the code of a selected method and a button.
 
 
-Initially the code of the method will be in “Read-Only” mode. When we press the button, we are going to pass to “Edit” mode.
+Initially, the code of the method will be in “Read-Only” mode. When we press the button, we are going to pass to “Edit” mode.
 
 
 ![A little code browser.](figures/layout6.png width=60&label=layout6)
@@ -104,16 +104,16 @@ SpPresenter < #MyMiniBrowserPresenter
 Now, we need to override the `initializePresenters` method in which we are going to 
 initialize the presenters and the layout of our mini browser.
 
-First we are going to instantiate the tree presenter.
+First, we are going to instantiate the tree presenter.
 We want the tree presenter to show all the classes that are presented in the Pharo image. 
-We know that all subclasses \(almost\) inherit from Object. 
+We know that all subclasses (almost) inherit from `Object`. 
 So, that is going to be the only root of the tree. 
 To get the subclasses of a class we can send the message subclasses, 
 that is what we need to get the children of a node. 
-We want to each of the nodes \(clases\) have a nice icon, we can get the icon of a class with the message systemIcon. 
+We want each of the nodes (clases) to have a nice icon, we can get the icon of a class with the message `systemIcon`. 
 Finally, we want to “activate” the presenter with only one click instead of two. 
 
-The code will be:
+The code is:
 
 ```
 MyMiniBrowserPresenter >> initializePresenters
@@ -137,7 +137,8 @@ methodsFilteringList listPresenter
 ```
 
     
-We said that, initially, the code is going to be in “Read-Only” mode. So, the label of the button is going to be “Edit” so say that is we click on the button we will change to edition mode. Also we want to have a nice icon.
+We said that, initially, the code is going to be in “Read-Only” mode. 
+So, the label of the button is going to be “Edit” to say that if we click on the button we will change to edition mode. Also we want to have a nice icon.
 
 ```
 button := self newButton.
@@ -147,7 +148,7 @@ button
 ```
 
 
-As the initial behaviour will be read-only mode, the code shower will be only a text presenter that is not editable.
+As the initial behavior will be read-only mode, the code shower will be only a text presenter that is not editable.
 
 ```
 codeShower := self newText.
@@ -155,7 +156,7 @@ codeShower beNotEditable.
 ```
 
 
-And finally we want to intialize the layout of our presenter.
+And finally, we want to initialize the layout of our presenter.
 
 ```
 self initializeLayout
@@ -195,10 +196,11 @@ MyMiniBrowserPresenter >> initializePresenters
 ### Placing elements visually
 
 
-We want in the upper part of the layout to have the classes and the methods shown in a horizontal way, like in the System Browser \(a.k.a. Calypso\). 
-So, what we will do is to create another left to right layout, with an spacing of 10 pixels, the classes and the methods.
+We want the upper part of the layout to have the classes and the methods shown in a horizontal way, like in the System Browser \(a.k.a. Calypso\). 
+So, what we will do is to create another left-to-right layout, with a spacing of 10 pixels, the classes, and the methods.
 
-Then, we will add that layout to our main layout. the main layout is going to be a top to bottom layout. After, we want the code shower and then the button. We do not want the code to expand and also we want a separarion of 5 pixels for this layout.
+Then, we will add that layout to our main layout. the main layout is going to be a top-to-bottom layout. After, we want the code shower and then the button. 
+We do not want the code to expand. In addition, we want a separation of 5 pixels for this layout.
 
 ```
 MyMiniBrowserPresenter >> initializeLayout
@@ -218,12 +220,11 @@ MyMiniBrowserPresenter >> initializeLayout
 ```
 
     
-So far, so good… but we did not add any behaviour to the presenters. To do that we can either do it in the initializePresenters method of override the connectPresenters method. To clearly separate the intention of the methods, we favor overriding connectPresenters.
+So far, so good… but we did not add any behavior to the presenters. To do that we can either do it in the `initializePresenters` method or override the `connectPresenters` method. To clearly separate the intention of the methods, we favor overriding `connectPresenters`.
 
 ### Connecting the flow
 
-
-When we click on a class of the tree, we want to update the items of the methods list with the methods of the selected class. When we click on a method, we want to update the text of the code shower with the source code of the method.
+When we click on a class of the tree, we want to update the items of the methods list with the methods of the selected class. When we click on a method, we should update the text of the code shower with the source code of the method.
 
 ```
 MyMiniBrowserPresenter >> connectPresenters
@@ -239,7 +240,7 @@ MyMiniBrowserPresenter >> connectPresenters
 ```
 
 
-For now we define the method `buttonAction` to do nothing.
+For now, we define the method `buttonAction` to do nothing.
 
 ```
 MyMiniBrowserPresenter >> buttonAction
@@ -249,12 +250,11 @@ MyMiniBrowserPresenter >> buttonAction
 
 ### Toggling Edit/Readonly mode
 
-
 When we click on the button we want several things. 
-That is why it is better to create a separated method. 
+That is why it is better to create a separate method. 
 
 - First, we want to change to label to the button to alternate between “Edit” and “Read-Only”. 
-- Then, we want to change the presenter of the code shower. If the Mini Browser is on read only mode we want to have a text presenter that is not editable. And if the Mini Browser is on edit mode we want to have a code presenter that highlights the code and show the number of lines of code. But always the code shower is going to have the same text \(the code of the methods\).
+- Then, we want to change the presenter of the code shower. If the Mini Browser is on read-only mode we want to have a text presenter that is not editable. And if the Mini Browser is on edit mode we want to have a code presenter that highlights the code and shows the number of lines of code. But always the code shower is going to have the same text \(the code of the methods\).
 
 
 ```
@@ -277,7 +277,7 @@ MyMiniBrowserPresenter >> buttonAction
 
 
 
-As a last detail, because we love details, we do not want the “Untitled window” as the window title and also we want a default extent. We override initializeWindow:method.
+As a last detail, because we love details, we do not want the “Untitled window” as the window title and also we want a default extent. We override `initializeWindow:` method.
 
 ```
 MyMiniBrowserPresenter >> initializeWindow: aWindowPresenter
@@ -294,5 +294,9 @@ Voilà! We have a new version minimal version of the System Browser with a read-
 
 ### Conclusion
 
+With Spec we can build from simple applications to very sophisticated ones. 
+The dynamic layout are simply nice. 
+Layouts can be configured in multiple ways, so have a look at their classes and the examples available.
+Spec has lots of presenters that are ready to be used. 
+Start digging into the code to see with presenters are available, what it is their API and start experimenting, and playing! 
 
-With Spec we can build from simple applications to very sophisticated ones. The dynamic properties are simply nice. Spec has lots of presenters that are ready to be used. Start digging into the code to see with presenters are available, what it is their API and start experimenting and playing! Layouts can be configured in multiple ways, so have a look at their classes and the example available.

@@ -1,6 +1,7 @@
 ## A Simple Contact Book
 
 status: Ready for review - should publish the code
+status: spellchecked
 
 In this chapter, we develop a simple model for a contact book.
 Then we define a user interface.
@@ -250,7 +251,7 @@ EgContactBookPresenter >> initializePresenters
 Now we can start opening the UI by executing the following snippet
 `(EgContactBookPresenter on: EgContactBook coworkers) open`
 
-We define a class method to be able to easily re-execute the set up.
+We define a class method to be able to easily re-execute the setup.
 ```
 EgContactBookPresenter class >> coworkersExample
     <example>
@@ -276,7 +277,7 @@ EgContactBookPresenter >> newContact
         initialAnswer: ''
         title: 'Create new contact'.
     split := rawData splitOn: $,.
-    (split size = 2 and: [ split allSatisfy: #isNotEmpty ])
+    (split size = 2 and: [ split allSatisfy: [ :each | each isNotEmpty ]])
         ifFalse: [ SpInvalidUserInput signal: 'Please enter contact name and phone (split by comma)'  ].
 
     ^ EgContact new
