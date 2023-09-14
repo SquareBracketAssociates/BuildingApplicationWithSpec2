@@ -1,13 +1,14 @@
 ## Integration of Athens in Spec
 
 status: Did a first pass on the material of renaud
+status: spellchecked
 
-This chapter has been originally written by renaud villemeur. We thank him for this contribution. It shows how you can integrate vector graphic drawing within Spec component.
+This chapter has been originally written by renaud villemeur. We thank him for this contribution. It shows how you can integrate vector graphic drawing within Spec components.
 
 ### Introduction
 
 There are two different computer graphics: vector and raster graphics. 
-Raster graphics represents images as a collection of pixels. Vector graphics 
+Raster graphics represent images as a collection of pixels. Vector graphics 
 is the use of geometric primitives such as points, lines, curves, or polygons 
 to represent images. These primitives are created using mathematical equations.
 
@@ -17,47 +18,47 @@ The advantages of vector graphics over raster are:
 - ability to zoom indefinitely, 
 - moving, scaling, filling, and rotating do not degrade the quality of an image.
 
-Ultimately, picture on a computer are displayed on a screen with a specific 
+Ultimately, pictures on a computer are displayed on a screen with a specific 
 display dimension. However, while raster graphic doesn't scale very well when
-the resolution differ too much from the picture resolution, vector graphics
+the resolution differs too much from the picture resolution, vector graphics
 are rasterized to fit the display they will appear on. Rasterization is the 
 technique of taking an image described in a vector graphics format and 
-transform it into a set of pixels for output on a screen.
+transforming it into a set of pixels for output on a screen.
 
 ###### Note. 
-You have the same concept when doing 3D programming with an API like openGL. You describe your scene with point, vertices, etc..., and in the end, you rasterize your scene to display it on your screen.
+You have the same concept when doing 3D programming with an API like OpenGL. You describe your scene with points, vertices, etc, and in the end, you rasterize your scene to display it on your screen.
 
 Morphic is the way to do graphics with Pharo.
-However, most existing canvas are pixel based, and not vector based. 
-This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc...)
+However, most existing canvases are pixel based, and not vector based. 
+This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc)
 
-Enter Athens, a vector based graphic API. Under the scene, it can either use
-balloon Canvas, or the cairo graphic library for the rasterization phase.
+Enter Athens, a vector-based graphic API. Under the scene, it can either use
+balloon Canvas, or the Cairo graphic library for the rasterization phase.
 
 When you integrate Athens with Spec, you'll use its rendering engine to 
 create your picture. 
-It's then transformed in a `Form` and displayed on the screen.
+It's then transformed into a `Form` and displayed on the screen.
 
 ### Hello-world in Athens
 
 We'll see how to use Athens directly integrated with Morphic. 
 This is why we first start to create a `Morph` subclass. 
 Figure *@figathens@* shows the display of such a morph.
-It will be the class we'll use after for all our experiment.
+It will be the class we'll use after for all our experiments.
 
 ![AthensHello new openInWindow](figures/athens.png width=80&label=figathens)
 
 
 
-First, we define a class, which inherit from `Morph`:
+First, we define a class, which inherits from `Morph`:
 ```language=Smalltalk
 Morph << #AthensHello
     slots: { #surface };
     package: 'CodeOfSpec20BookAthens'
 ```
 
+During the initialization phase, we create our Athens surface:
 
-During the initialization phase, we'll create our Athens surface:
 ```language=Smalltalk
 AthensHello >> initialize
     super initialize.
@@ -66,14 +67,14 @@ AthensHello >> initialize
 ```
 
 where `defaultExtent` is simply defined as
+
 ```language=Smalltalk
 AthensHello >> defaultExtent
     ^ 400@400
 ```
 
-
 The `drawOn:` method, mandatory in Morph subclasses, asks Athens to render
-its drawing, and it'll then display it in a Morphic canvas as a Form (a bitmap 
+its drawing and it'll then display it in a Morphic canvas as a Form (a bitmap 
 pictures)
 
 ```language=Smalltalk
@@ -83,7 +84,7 @@ AthensHello >> drawOn: aCanvas
 ```
 
 
-Our actual Athens code is located into `renderAthens` method:, and the result is
+Our actual Athens code is located into `renderAthens` method, and the result is
 stored in the surface instance variable.
 
 ```language=Smalltalk
@@ -101,7 +102,7 @@ AthensHello >> renderAthens
 ```
 Note that recreating the paint and the font is not the best way to have efficient code, but this is not the purpose of this example. 
 
-To test your code, let's add an helper method. This will add a button on the left
+To test your code, let's add a helper method. This will add a button on the left
 of the method name. When you click on it, it'll execute the content of the 
 script instruction.
 
@@ -139,7 +140,7 @@ is rendered using Athens.
 
 ### Using your morph with Spec
 
-First we create a presenter to illustrate it but you could do it in one of yours. 
+First, we create a presenter to illustrate it but you could do it in one of yours. 
 
 ```
 SpPresenter << #SpAthensHelloPresenter
@@ -172,7 +173,7 @@ Now we are done. When we open the component it will display the morph:
 We can also get a direct integration without relying on a specific Morph creation. 
 
 We first create a presenter named `SpAthensExamplePresenter`.
-This is this presenter that will support the actual rendering drawn using Athens. 
+This is the presenter that will support the actual rendering drawn using Athens. 
 
 
 ```
@@ -180,7 +181,7 @@ SpPresenter << #SpAthensExamplePresenter
     slots: { #paintPresenter };
     package: 'CodeOfSpec20BookAthens'
 ```
-We define a simple layout to place the painPresenter.
+We define a simple layout to place the `paintPresenter`.
 
 ```language=Smalltalk
 SpAthensExamplePresenter >> idefaultLayout
@@ -190,7 +191,8 @@ SpAthensExamplePresenter >> idefaultLayout
           yourself
 ```
 
-This presenter wraps an `SpAthensPresenter` as follows: 
+This presenter wraps a `SpAthensPresenter` as follows: 
+
 ```language=Smalltalk
 SpAthensExamplePresenter >> initializePresenters
 
@@ -201,7 +203,7 @@ SpAthensExamplePresenter >> initializePresenters
 It configures the `SpAthensPresenter` to call draw the `render:` message. 
 
 
-Now we define `render:` method:
+Now we define the `render:` method:
 
 ```language=Smalltalk
 MyPresenter >> render: canvas
@@ -225,7 +227,6 @@ This example is simple because the rendering may have to be invalidated if somet
 
 ### Conclusion
 
-This chapter illustrates clearly that Spec can take advantage of canvas related operations such as proposed by Athens to open 
-the door to specific visuals. 
+This chapter illustrates clearly that Spec can take advantage of canvas-related operations such as those proposed by Athens to open the door to specific visuals. 
 
 
