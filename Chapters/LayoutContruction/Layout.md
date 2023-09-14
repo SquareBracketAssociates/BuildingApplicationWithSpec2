@@ -1,14 +1,16 @@
 ## Layouts
 @cha_layout
 
+status: to be finished
+status: spellchecker
 
 In Spec2 layouts are represented by instances of layout classes. Such layout classes encode different positioning of elements such as box, paned, or grid layouts.
-This chapter presents the existing layouts, their definition and how layouts can be reused when 
+This chapter presents the existing layouts, their definition, and how layouts can be reused when 
 a presenter reuses other presenters.
 
 ### Basic principle reminder
 
-Spec expects to get layouts objects, instances of the layout classes, associated with a presenter. Each presenter should describe the positioning of its sub presenters. 
+Spec expects to get layouts objects, instances of the layout classes, associated with a presenter. Each presenter should describe the positioning of its sub-presenters. 
 
 Contrary to Spec1.0 where layouts were only defined at the class level, in Spec2.0
 to define the layout of a presenter you can: 
@@ -17,9 +19,9 @@ to define the layout of a presenter you can:
 
 Both layout methods should return a layout, for example, instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
 
-Note the possibility to define a class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
+Note the possibility of defining a class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
 
-This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare upfront sub presenters in instance variable and then use their names as it was done in Spec1.0.
+This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using directly presenter instances, not forcing you to declare upfront sub-presenters in instance variables and then use their names as it was done in Spec1.0.
 It is, however, possible that there are cases where you want a layout "template"... so you still can do it.
 
 
@@ -55,8 +57,8 @@ A box can be horizontal or vertical and presenters are ordered top to down or le
 
 ![Two buttons placed horizontally from left to right.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight) 
 
-Let us defined a first simple layout as follows and whose result is displayed in  Fig. *@TwoButtonsLeftToRight@*.
-What we see is that by default a presenter expand its size to fit the space of its container. 
+Let us define a first simple layout whose result is displayed in  Fig. *@TwoButtonsLeftToRight@* as follows.
+
 ```
 SpTwoButtons >> defaultLayout
      ^ SpBoxLayout newLeftToRight
@@ -65,10 +67,12 @@ SpTwoButtons >> defaultLayout
         yourself
 ```
 
-An element in a vertical box will use all available horizontal space, and fill
-vertical space according to the rules. This is inversed in an horizontal box.
+What we see is that by default a presenter expands its size to fit the space of its container. 
 
-We can refine this layout to indicate that the subpresenters should not expand to their container using the message `add:expand:`. The result is shown in Figure *@TwoButtonsLeftToRightExpanded@*.
+An element in a vertical box will use all available horizontal space, and fill
+vertical space according to the rules. This is inversed in a horizontal box.
+
+We can refine this layout to indicate that the sub-presenters should not expand to their container using the message `add:expand:`. The result is shown in Figure *@TwoButtonsLeftToRightExpanded@*.
 
 ```
 SpTwoButtons >> defaultLayout
@@ -81,14 +85,14 @@ SpTwoButtons >> defaultLayout
 ![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded) 
 
 The full message to add presenters is: `add:expand:fill:padding:`
-- `expand:` argument - when true, the new child is to be given extra space allocated to box. The extra space is divided evenly between all children that use this option.
-- `fill:` argument - when true, the space given to child by the expand option is actually allocated to child, rather than just padding it. This parameter has no effect if `expand` is set to `false`.
-- `padding:` argument  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If a child is a widget at one of the reference ends of box, then padding pixels are also put between child and the reference edge of box.
+- `expand:` argument - when true, the new child is to be given extra space allocated to the box. The extra space is divided evenly between all children that use this option.
+- `fill:` argument - when true, the space given to a child by the expand option is actually allocated to the child, rather than just padding it. This parameter has no effect if `expand` is set to `false`.
+- `padding:` argument  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If a child is a widget at one of the reference ends of the box, then padding pixels are also put between the child and the reference edge of the box.
 
 
 To illustrate a bit this API, we add another button to the presenter and change the `defaultLayout` method as follows. 
 The result is shown in Fig *@ThreeButtons@*. 
-We want to stress however that it is better not to use a fixed width or a padding.
+We want to stress however that it is better not to use a fixed width or padding.
 
 ```smalltalk
 SpTwoButtons >> defaultLayout 
@@ -107,10 +111,10 @@ SpTwoButtons >> defaultLayout
 
 ### Example setup for layout reuse
 
-Before presenting some of the other layouts, we show an important aspect of Spec presenter composition: a composite can declare that it wants to reuse a presenter using a specific layout of such presenter. 
+Before presenting some of the other layouts, we show an important aspect of Spec presenter composition: a composite can declare that it wants to reuse a presenter using a specific layout of such a presenter. 
 
-Consider our artificial example of a two button UI. Let us define two layouts as follows:
-We define two class method method returning different layouts. Note that we could define such methods on the instance side too and we define them on the class side to be able to get such layouts without an instance of the class.
+Consider our artificial example of a two-button UI. Let us define two layouts as follows:
+We define two class methods returning different layouts. Note that we could define such methods on the instance side too and we define them on the class side to be able to get such layouts without an instance of the class.
 
 ``` 
 SpTwoButtons class >> buttonRow 
@@ -138,7 +142,7 @@ Here are some examples:
 
 
 
-We define a `defaultLayout` method just invoking one of the previously defined method.
+We define a `defaultLayout` method just invoking one of the previously defined methods.
 ``` 
 SpTwoButtons >> defaultLayout 
     ^ self class buttonRow 
@@ -206,7 +210,7 @@ SpButtonAndListH >> defaultLayout
 
 
 This `SpButtonAndListH ` class results in a SuperWidget window as shown in Figure *@fig_alternativeButton@*.  
-It reuses the `SpTwoButtons` widget, and places all three widgets in a horizontal order because the `SpTwoButtons` widget will use the `buttonRow` layout method. 
+It reuses the `SpTwoButtons` widget and places all three widgets in a horizontal order because the `SpTwoButtons` widget will use the `buttonRow` layout method. 
  
 ![Screen shot of the UI with buttons placed horizontally](figures/alternativeButton.png width=50&label=fig_alternativeButton) 
  
@@ -248,10 +252,10 @@ SpButtonAndListV2 >> defaultLayout
 ```
 
 Note the use of the method `add:layout:` with the selector of the method returning the layout configuration 
-here #buttonCol. This is normal since we cannot access state of a subcomponent at this moment.
+here #buttonCol. This is normal since we cannot access the state of a subcomponent at this moment.
 
 ##### Dynamically changing a layout
-It is possible to change the layout of a presenter dynamically for example from the inspector  as shown in *@figTweak@*.
+It is possible to change the layout of a presenter dynamically for example from the inspector as shown in *@figTweak@*.
 
 ![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak) 
 
@@ -259,10 +263,10 @@ It is possible to change the layout of a presenter dynamically for example from 
 
 ### GridLayout 
 
-The class `SpGridLayout` arrange sub-presenters in a grid according to its properties (position and
-span), and according certain layout properties such as:
-- a position is mandatory (`columnNumber@rowNumber`)
-- a span can be added if desired (`columnExtension@rowExtension`)
+The class `SpGridLayout` arranges sub-presenters in a grid according to its properties (position and
+span), and according to certain layout properties such as:
+- A position is mandatory (`columnNumber@rowNumber`)
+- A span can be added if desired (`columnExtension@rowExtension`)
 
 The following example 
 
@@ -299,19 +303,19 @@ SpGridExample >> defaultLayout
 ![An ugly example .](figures/grid.png width=90&label=grid) 
 
 Here is a list of options: 
-- `columnHomogeneous`: whether a columns will have same size.
-- `rowHomogeneous`: whether a row will have same size.
-- `colSpacing:`: the column space between cells
-- `rowSpacing:`: the row space between cells
+- `columnHomogeneous`: Whether a column will have the same size.
+- `rowHomogeneous`: Whether a row will have the same size.
+- `colSpacing:`: The column space between cells.
+- `rowSpacing:`: The row space between cells.
 
 
 
 ### Paned layout (SpPanedLayout and SpPanedConstraints)
 
-A paned layout is like a Box Layout (it places childen in vertical or horizontal
-fashion), but it will add a splitter in between, that user can drag to resize the panel.
-In exchange, a paned layout can have just two children. Position Indicates
-original position of splitter. It can be nil (then it defaults to 50%) or It can
+A paned layout is like a Box Layout (it places children in a vertical or horizontal
+fashion), but it will add a splitter in between, that the user can drag to resize the panel.
+In exchange, a paned layout can have just two children. Position indicates
+the original position of the splitter. It can be nil (then it defaults to 50%) or It can
 be a percentage (e.g. 30 percent)
 
 ```smalltalk
@@ -372,5 +376,10 @@ presenter open.
 
 ```
 
+### Conclusion
+
+Spec offers several predefined layouts. New ones will probably be added but in compatible way.
+An important closing point is that layouts can be dynamically composed. It means that you will  be able to 
+design applications that can adapt to specific conditions.
 
 
