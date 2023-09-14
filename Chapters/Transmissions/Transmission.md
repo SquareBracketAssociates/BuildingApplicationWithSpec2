@@ -6,11 +6,11 @@ Transmissions are more compact way to connect presenters than events as shown in
 ### What are transmissions? 
  
 Transmissions are a way to connect presenters, thinking on the “flow” of information more than the way it is displayed. 
-Each presenter defines **output ports** \(ports to send information\) and **input ports** \(ports to receive information\). 
+Each presenter defines **output ports** (ports to send information) and **input ports** (ports to receive information). 
 There are at least one default input port and one default output port. 
 A transmission connects a presenter’s output port with a presenter’s input port. 
  
-For example, think on a overview-detail \(O->D\) relationship, when you navigate the elements in the overview O, you want to see the detail D. This is typically solved by showing a list with list elements and a form with the detail of an element. 
+For example, think on a overview-detail (O->D) relationship, when you navigate the elements in the overview O, you want to see the detail D. This is typically solved by showing a list with list elements and a form with the detail of an element. 
 In Spec, this will be declared more or less like this: 
  
 ``` 

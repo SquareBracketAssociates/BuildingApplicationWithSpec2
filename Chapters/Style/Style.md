@@ -1,10 +1,11 @@
 ## Styling Applications
-
 @cha_style
 
-In this chapter we will see how to use custom styles in Spec applications. We will start to present styles and then build a little editor as the one displayed hereafter.
+status: spellchecked
 
-We will show that an application in Spec manages styles and let you adapt the look of a presenter as shown in Figure *@style1@*.
+In this chapter, we will see how to use custom styles in Spec applications. We will start to present styles and then build a little editor like the one displayed hereafter.
+
+We will show that an application in Spec manages styles and lets you adapt the look of a presenter as shown in Figure *@style1@*.
 
 ![Building a little styling editor.](figures/style1.png width=80&label=style1)
 
@@ -12,22 +13,22 @@ We give some basis before showing how to effectively use styles to enhance the l
 
 ### How do styles work?
 
-status: integrated some material from renaud. Now should do another pass. 
+
 
 Styles in Spec work like CSS. They are style sheets in which the properties for presenting a presenter are defined. Properties such as colors, width, height, font, and others.
-As a general principle it is better to use styles instead of fixed constraints, because your application will be more responsive.
+As a general principle, it is better to use styles instead of fixed constraints, because your application will be more responsive.
 
 For example, you want a button to have a specific width and height.
-You can do it using constraints with the method add:withConstraints: or using styles. In both cases the result will be as shown in Figure *@style2@*:
+You can do it using constraints with the method add:withConstraints: or using styles. In both cases, the result will be as shown in Figure *@style2@*:
 
 ![Untitled window.](figures/style2.png width=50&label=style2)
 
 But, if you change the size of the fonts of the Pharo image using Settings/Appearance/Standard Fonts/Huge, using fixed constraints, you will obtain the following result shown in Figure *@@*.
-You will for example do not be able to see the icons because the size is not recomputed correctly.
+You will for example not be able to see the icons because the size is not recomputed correctly.
 
 ![Badly scaled untitled window.](figures/style3.png width=50&label=style3)
 
-While using styles,the size of the button will also scale as shown by Figure *@style4@*.
+While using styles, the size of the button will also scale as shown by Figure *@style4@*.
 
 ![Nicely scaled untitled window.](figures/style4.png width=50&label=style4)
 
@@ -38,7 +39,7 @@ Spec first collects the style for the presenter, then collects style for its
  sub-components. 'application' is the default root level, there is no
 'application' adapter.
 
-A defined stylesheet has to have always a root element, and this root element
+A defined stylesheet has to always have a root element, and this root element
 needs to be called `'.application'`.
 
 So each style follows a cascading style, starting from `.application` like
@@ -165,11 +166,11 @@ styleSheet
 ### Anatomy of a style
 
 The styles in Spec format are similar to CSS. 
-Style style sheets are written using STON as format.
-STON, the smalltalk textutal object notation is described in a dedicated chapter in the _Enterprise Pharo_ book available at [http://books.pharo.org](http://books.pharo.org).
+Style sheets are written using STON as a format.
+STON, this  textual object notation is described in a dedicated chapter in the _Enterprise Pharo_ book available at [http://books.pharo.org](http://books.pharo.org).
 We need to write the styles as a string and then parse it as a STON file.
 
-Here is an example that we will explain steps by steps below.
+Here is an example that we will explain step by step below.
 
 ```
 '.application [
@@ -180,7 +181,7 @@ Here is an example that we will explain steps by steps below.
     
 We will go by steps.
 
-`SpPropertyStyle` has 5 subclasses: `SpContainerStyle`, `SpDrawStyle`, `SpFontStyle`, `SpTextStyle`, and `SpGeometryStyle`. These subclasses define the 5 types of properties that exist. On the class side, the method `stonName` that indicates the name that we must put in the STON file.
+`SpPropertyStyle` has 5 subclasses: `SpContainerStyle`, `SpDrawStyle`, `SpFontStyle`, `SpTextStyle`, and `SpGeometryStyle`. These subclasses define the 5 types of properties that exist. On the class side, the method `stonName` indicates the name that we must put in the STON file.
 
 !!todo stonName above is unclear
 
@@ -231,7 +232,7 @@ We can put by default all the letters in bold.
 ### Defining an Application
 
 
-To use styles we need to associate the main presenter with an application. The class `SpApplication` already has default styles. To not redefine all the properties for all the presenters, we can concatenate the default styles \(`SpStyle defaultStyleSheet`\) with our own. As said above, the styles are actually STON files that need to be parsed.
+To use styles we need to associate the main presenter with an application. The class `SpApplication` already has default styles. To not redefine all the properties for all the presenters, we can concatenate the default styles \(`SpStyle defaultStyleSheet`\) with our own. As said above, the styles are STON files that need to be parsed.
 
 To parse the string into a STON we can use the class `SpStyleVariableSTONReader`.
 
@@ -298,7 +299,7 @@ SpApplication << #CustomStylesApplication
 ```
 
 
-In the class we need to override the method `styleSheet` to return our custom style sheet concatenated with the default one.
+In the class, we need to override the method `styleSheet` to return our custom style sheet concatenated with the default one.
 
 ```
 CustomStylesApplication >> styleSheet
@@ -324,13 +325,13 @@ CustomStylesApplication >> styleSheet
 ```
 
 
-We can use different properties in the same style. For example, in `labelStyle` we are setting the height of the presenter to 25 scaled pixels and the font size to 12 scaled pixels. Also, we are using `EnvironmentColor(#base)` for obtaining the default background colour according to the current theme. Because the colour will change according to the theme that used in the image.
+We can use different properties in the same style. For example, in `labelStyle` we are setting the height of the presenter to 25 scaled pixels and the font size to 12 scaled pixels. Also, we are using `EnvironmentColor(#base)` for obtaining the default background color according to the current theme. Because the color will change according to the theme that is used in the image.
 
 
-### Defining a presenter for the Editor
+### Defining a presenter for the editor
 
 
-For the main presenter, we will build a mini-text-viewer in which we will be able to change the size and the font of the text that we are viewing.
+For the main presenter, we will build a mini-text viewer in which we will be able to change the size and font of the text that we are viewing.
 
 ```
 SpPresenter << #CustomStylesPresenter
@@ -338,8 +339,7 @@ SpPresenter << #CustomStylesPresenter
     package: 'Spec-workshop'
 ```
 
-
-In the `initializePresenters` method we will first initialise the presenters, then set the styles for the presenters and finally initialise the layout.
+In the `initializePresenters` method we will first initialize the presenters, then set the styles for the presenters and finally initialize the layout.
 
 ```
 CustomStylesPresenter >> initializePresenters
@@ -413,7 +413,7 @@ Without setting the custom styles nor using our custom application in the presen
 ### Initializing styles
 
 
-We do not want the black background color for the text presenter. We will like to have a sort of muti-line label. We want the zoom buton to be smaller as they only have icons. We want to have the option to change the size and font of the text inside the text presenter. Finally, why not, we want to change the color of the label, change the height and make it a little bit bigger.
+We do not want the black background color for the text presenter. We would like to have a sort of muti-line label. We want the zoom button to be smaller as they only have icons. We want to have the option to change the size and font of the text inside the text presenter. Finally, we want to change the color of the label, change its height and make it a little bit bigger.
 
 ```
 CustomStylesPresenter >> initializeStyles
@@ -463,9 +463,9 @@ Now, when we run `CustomStylesApplication new start` we will obtain Figure *@sty
 ### Wiring buttons
 
 
-The only thing missing is to add the behaviour when pressing the buttons.
+The only thing missing is to add the behavior when pressing the buttons.
 
-For example, if we click on the zoom in button we want to remove the `smallFontStyle` and add the `bigFontSize`. When we click on the text font button, we should remove the style codeFont and add the textFont style. 
+For example, if we click on the zoom-in button we want to remove the `smallFontStyle` and add the `bigFontSize`. When we click on the text font button, we should remove the style `codeFont` and add the `textFont` style. 
 
 This is what to do in the `connectPresenters` method defined below:
 
@@ -512,4 +512,4 @@ You can ask an adapter for its style name using the message `styleName`
 
 ### Conclusion
 
-Using styles in Spec is great. It make easier to have a consistent design as we can add the same style to several presenters. If we want to change some style, we only edit the styles sheet. Also, the styles automatically scale if we change the font size of all the image. They are one of the main reason why in Spec we have the notion of an application. We can dynamically change how a presenter looks.
+Using styles in Spec is great. It makes it easier to have a consistent design as we can add the same style to several presenters. If we want to change some style, we only edit the styles sheet. Also, the styles automatically scale if we change the font size of all the images. They are one of the main reasons why in Spec we have the notion of an application. We can dynamically change how a presenter looks.

@@ -2,15 +2,16 @@
 @cha_testing
 
 status: ready for review. Looking for some source of already written tests - may be the launcher so that people can have a look
+status: spellchecked
 
 Developers often think that testing UI is difficult. This is true that fully testing the placement and layout of widgets can be tedious. 
 However, testing the logic of an application and in particular the interaction logic is possible and this is what we will show in this chapter. 
-We show that testing Spec application is simple and effective.
+We show that testing a Spec application is simple and effective.
 
 
 ### Testing presenters
 
-Tests are key to ensure that everything works correctly. In addition, they free us from the fear to break something without being warned about it. Tests support refactorings. While such facts are general and applicable to many domains, they also true for user interfaces.
+Tests are key to ensuring that everything works correctly. In addition, they free us from the fear of breaking something without being warned about it. Tests support refactorings. While such facts are general and applicable to many domains, they are also true for user interfaces.
 
 
 
@@ -18,7 +19,7 @@ Tests are key to ensure that everything works correctly. In addition, they free 
 
 
 Spec is based on an architecture with three different layers as shown in Figure *@fig:Architecture@*: 
-- **Presenters:** Presenters defined the interaction logic and manipulate domain objects. They access back-end widgets but via an API that is specified by Adapters.
+- **Presenters:** Presenters define the interaction logic and manipulate domain objects. They access back-end widgets but via an API that is specified by Adapters.
 - **Adapters:** Adapters are objects exposing low-level back-end widgets. They are a bridge between presenters and low-level widgets.
 - **Back-end widgets**. Back-end widgets are plain widgets that can be used without Spec.
 
@@ -27,11 +28,11 @@ Spec is based on an architecture with three different layers as shown in Figure 
 
 #### Three roles and concerns
 
-To help you understand the different possibilities of testing that you can engage, we identify the following roles and their related concerns.
+To help you understand the different possibilities of testing that you can engage in, we identify the following roles and their related concerns.
 
-- **Spec Users.**Spec users are developers that build a new application. They define the logic of the application by assembling together presenters and domain objects. We believe that this is in this role that you will play most of the time.
+- **Spec Users.**Spec users are developers that build a new application. They define the logic of the application by assembling together presenters and domain objects. We believe that this is in the role that you will play most of the time.
 - **Spec Developers.** Spec developers are more concerned with the development of new Spec presenter and their link with the adapter.
-- **Widget Developers.** Widget developers are concerned about the logic and working of a given widget is a given back-end.
+- **Widget Developers.** Widget developers are concerned about the logic and working of a given widget for a given back-end.
 
 
 % +UI elements under test.>file://figures/UI.png|width=75|label=fig:UI+
@@ -40,7 +41,7 @@ To help you understand the different possibilities of testing that you can engag
 
 We will focus on the first role. For the reader interested in the second role, the class `SpAbstractBackendForTest` is a good starting place.
 
-As a Spec user, you should consider that the back-ends are working and your responsibilities is to test the logic of the user interface components.
+As a Spec user, you should consider that the back-ends are working and your responsibility is to test the logic of the user interface components.
 We should make sure that when the model changes, the user interface components reflect the changes.
 Inversely when the user interface components change, we should ensure that the model is updated.
 But let us check an example.
@@ -67,7 +68,7 @@ TestCase << #ClassVisualizerPresenterTest
 
 The tool will be instantiated with a model.
 In this case, we will use `Object` because it is the root of almost all classes.
-So, when we instantiate the spec application of Figure *@fig:SpecApp@*, all the sub presenters of the application must show the data of the model.
+So, when we instantiate the spec application of Figure *@fig:SpecApp@*, all the sub-presenters of the application must show the data of the model.
 
 ```
 ClassVisualizerPresenterTest >> testInitialization
@@ -137,7 +138,7 @@ ClassVisualizerPresenter >> selectClass: aClass
 #### Triggering the button action
 
 
-The action of the colour button changes the colour of the morph randomly.
+The action of the color button changes the color of the morph randomly.
 When the button is clicked the morph must change its colour.
 
 ```
@@ -167,7 +168,7 @@ ClassVisualizerPresenter >> stringMorphColor
 #### The text presenter should not be editable
 
 
-For this application, we only want that the text presenter shows the class definition.
+For this application, we only want the text presenter to show the class definition.
 We do not want the user to be able to edit it.
 
 ```
@@ -186,7 +187,7 @@ ClassVisualizerPresenter >> codePresenter
 
 Now we want to check that the window is built correctly.
 Here, we will test that the title and the initial extent of the window are correct.
-Also, we will test if the window were built correctly.
+Also, we will test if the window was built correctly.
 
 ```
 testInitializeWindow
@@ -230,5 +231,5 @@ We show in this chapter that you can take advantage of Spec to define tests that
 This is really key for modern software development and to lower your stress in the future. 
 So take advantage of agile development.
 
-Currently Spec does not offer a way to script and control popup windows. It is not possible to script a button that opens a dialog for a value.
+Currently, Spec does not offer a way to script and control popup windows. It is not possible to script a button that opens a dialog for a value.
 Future versions of Spec20 should cover this missing feature.

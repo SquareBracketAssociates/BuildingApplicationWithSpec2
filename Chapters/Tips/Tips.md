@@ -166,7 +166,7 @@ iconNamed: aSymbol
 
 
 The `initializePresenters` hook method is called in the `initialize` phase of the presenter. 
-It means that you may have problem to pass the values of your contructors before.  
+It means that you may have a problem passing the values of your contructors before.  
 Your code may be as follows:  
 
 ```
@@ -177,7 +177,7 @@ PRExportPresenter class >> withParser: aParser
 ```
 
 
-The problem with above is that your `initializeWidgets` method may want to use the value passed \(`withParser:`\) when  
+The problem with above is that your `initializeWidgets` method may want to use the value passed (`withParser:`) when  
 creating your presenter 
  
 For example something like that:  
@@ -273,7 +273,7 @@ Another way that is a bit more low-level is to use the `ImageForm` directly.
 
 You can. You have two possibilities:
 - you do a morph and you use `SpMorphPresenter` 
-- you draw it with athens and you use `SpAthensPresenter` 
+- you draw it with Athens and you use `SpAthensPresenter` 
  
 Maybe (2) needs some work to be really usable, it was never tried. Also, it needs a rename to `SpAthensPresenter` 
 
@@ -294,7 +294,7 @@ Some of the hook methods got renamed to convey better what they are doing:
 - `initializeWidgets` is renamed to `initializePresenters` 
 - `initializePresenter` is renamed to `connectPresenters` 
 
-There is not need to define a `defaultSpec` class side method. You can now simply define an `initializeLayout` method and call it. 
+There is no need to define a `defaultSpec` class side method. You can now simply define an `initializeLayout` method and call it. 
 The method `defaultSpec` is now called `defaultLayout`.
 
 
