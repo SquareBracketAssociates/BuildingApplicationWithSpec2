@@ -1,6 +1,6 @@
 ## Customizing your Inspector
 
-status: should do a pass
+status: should do another pass
 status: spellchecked
 
 
