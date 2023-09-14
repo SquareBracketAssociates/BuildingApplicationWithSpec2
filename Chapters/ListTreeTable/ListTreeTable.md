@@ -1,11 +1,14 @@
 ## Lists, tables and trees
 
+status: should review
+status: spellchecked
+
 An important part of user interfaces is about displaying lists of data. 
-Such lists can be structured as tables, plain lists but also trees supporting nesting of data.
+Such lists can be structured as tables, plain lists but also trees supporting the nesting of data.
 
 Spec proposes three main presenters: `SpListPresenter`, `SpTreePresenter`, and `SpTablePresenter`. 
-In addition it offers `SpComponentListPresenter` which allows one to embed any presenter in a list. 
-In this chapter we present some of the functionality of such presenters.
+In addition, it offers `SpComponentListPresenter` which allows one to embed any presenter in a list. 
+In this chapter, we present some of the functionality of such presenters.
 
 ### Lists
 
@@ -50,7 +53,7 @@ SpListPresenter new
 
 ### Decorating elements
 
-We can configure the way items are displayed in a more finer grained way. The following example illustrates it: we can control the icons are associated with the item using the message `displayIcon:`, the item color using the mssage `displayColor:`. The format (bold, italic, underline) can the controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:` (See Figure *@figSimpleListDecorated@*).
+We can configure the way items are displayed in a more finer-grained way. The following example illustrates it: we can control the icons are associated with the item using the message `displayIcon:`, and the item color using the message `displayColor:`. The format (bold, italic, underline) can the controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:` (See Figure *@figSimpleListDecorated@*).
 
 
 
@@ -74,8 +77,8 @@ SpListPresenter new
 
 ### About multiple/single selection
 
-Lists can support multiple selection or not.
-The message `beMultipleSelection` controls such aspect.
+Lists can support multiple selections or not.
+The message `beMultipleSelection` controls such an aspect.
 
 ```
 SpListPresenter new
@@ -86,8 +89,8 @@ SpListPresenter new
 
 
 
-Since selection can hold multiple item, there is an impact on the protocol to react to selection changes.
-Indeed, lists, filtering list, trees, and tables offers the `whenSelectionChangedDo:`API and not `whenSelectedItemDo:`.
+Since selection can hold multiple items, there is an impact on the protocol to react to selection changes.
+Indeed, lists, filtering lists, trees, and tables offer the `whenSelectionChangedDo:`API and not `whenSelectedItemDo:`.
 The argument of the block is then a selection instance of `SingleSelectionMode` or `MultipleSelectionMode` (`SpSingleSelectionMode`, `SpMultipleSelectionMode`, or `SpTreeMultipleSelectionMode` and `SpTreeSingleSelectionMode`).
 
 
@@ -104,8 +107,8 @@ connectPresenters
 
 ### Drag and drop
 
-Lists and other container structures supports drag and drop.
-The following script shows how to configure two lists to support drag from one and dropping in another.
+Lists and other container structures support drag and drop.
+The following script shows how to configure two lists to support dragging from one and dropping in another.
 
 ```
 | list1 list2 |
@@ -137,7 +140,7 @@ The following script illustrates the API.
 
 An element on a list can be _'activated'_, meaning it will trigger an event to execute an action on it. 
 Note that an activation is different than a selection: one can _select_ an element without activating it.
-The messages `activateOnDoubleClick` configures the list to react to double click, while its counterpart `activateOnSingleClick`.
+The message `activateOnDoubleClick` configures the list to react to double click, while its counterpart `activateOnSingleClick`.
 
 
 ### Filtering lists
@@ -181,7 +184,7 @@ SpFilteringListPresenter new
 ### Selectable filtering lists
 
 Often lists are used to select items. This is what the class `SpFilteringSelectableListPresenter` offers. 
-In addition to be able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
+In addition to being able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
 
 ![A selectable filtering list with bottom filter.](figures/SelectableList.png width=60&label=figSelectable)
 
@@ -198,11 +201,12 @@ The following script produces the situation described by
 ```
 
 
+
 ### Component List
 
-While the lists we saw until now are homogeneous in the sense that they all display strings, Spec offers the possibility to display list of presenters. It means that elements in the list do not have the same size and can contains other presenters. 
+While the lists we saw until now are homogeneous in the sense that they all display strings, Spec offers the possibility to display list of presenters. It means that elements in the list do not have the same size and can contain other presenters. 
 
-This lets developers produce advanced user interface such as the one of the report builder of the ModMoose toolsuite shown in Figure *@figModMoose@*.
+This lets developers produce advanced user interfaces such as the one of the report builder of the ModMoose tool suite shown in Figure *@figModMoose@*.
 
 ![An example of a component list from the ModMoose platform.](figures/mooseQDScreenshot.png width=80&label=figModMoose)
 
@@ -253,8 +257,8 @@ The script uses the message `expandPath:` shows that we can expand a specific it
 
 ![A tree with a menu.](figures/TreeWithMenu.png width=50&label=figTreemenu)
 
-The following script  shows how to use a dynamic context menu. This is a dynamic menu because 
-its contents is reexecuted.
+The following script shows how to use a dynamic context menu. This is a dynamic menu because 
+its content is reexecuted.
 The dynamic aspect is expressed by a block `[ ... ]`.
 
 
@@ -276,8 +280,8 @@ tree roots: { Object };
 
 
 The following script shows the use of the following messages:
-- `selectPathByItems:` allows one to select elements specifying a group of items.
-- `scrollToSelection:` to ask the tree to scroll to the selection.
+- `selectPathByItems:` Allows one to select elements specifying a group of items.
+- `scrollToSelection:` To ask the tree to scroll to the selection.
 
 
 ```
@@ -294,13 +298,13 @@ SpTreePresenter new
 ### Tables
 
 Spec offers tables. A table can have multiple columns and a column can be composed of elementary elements.
-Tables have different kind of columns that can be added to a table:
+Tables have different kinds of columns that can be added to a table:
 
 - `SpStringTableColumn` offers cell items that are strings.
-- `SpCheckBoxTableColumn` lets us have cells with checkbox.
+- `SpCheckBoxTableColumn` lets us have cells with a checkbox.
 - `SpIndexTableColumn` displays the index of the current item. 
-- `SpDropListTableColumn` lets have drop list in cells.
-- `SpCompositeTableColumn` offers the possibilities to compose a column out of different kinds of column. It allows one to compose a icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
+- `SpDropListTableColumn` let's have a drop list in cells.
+- `SpCompositeTableColumn` offers the possibility to compose a column out of different kinds of columns. It allows one to compose an icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
 
 
 For example, in the snippet below `SpImageTableColumn` offers the possibility to display form (icon, graphics...). 
@@ -421,9 +425,9 @@ SpTablePresenter new
 
 Spec offers a way to have a tree with extra columns.
 The class `SpTreeTablePresenter` encapsulates this behavior.
-Note that the the first column is interpreted as a tree.
+Note that the first column is interpreted as a tree.
 
-The following script shows that the first colum will be a tree whose element is composed of an icon and a name: `SpCompositeTableColumn`. The resulting widget is shown in *@figTreeTable@*.
+The following script shows that the first column will be a tree whose element is composed of an icon and a name: `SpCompositeTableColumn`. The resulting widget is shown in *@figTreeTable@*.
 
 
 ```
@@ -482,6 +486,6 @@ SpTreeTablePresenter new
 
 ### Conclusion
 
-In this chapter, we presented important containers list, component list, table and table presenters. 
+In this chapter, we presented important container lists, component lists, and table presenters. 
 
 
