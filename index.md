@@ -53,3 +53,9 @@
 <!inputFile|path=Chapters/CaseStudyTwo/CaseStudyTwo.md!> 
 %Reviewed by stef
 
+
+
+## TODO
+
+- check Smalltalk icons
+- check UIManager reference
