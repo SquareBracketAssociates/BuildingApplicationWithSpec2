@@ -295,8 +295,8 @@ Voilà! We have a new version minimal version of the System Browser with a read-
 ### Conclusion
 
 With Spec we can build from simple applications to very sophisticated ones. 
-The dynamic layout are simply nice. 
+The dynamic layouts are simply nice. 
 Layouts can be configured in multiple ways, so have a look at their classes and the examples available.
 Spec has lots of presenters that are ready to be used. 
-Start digging into the code to see with presenters are available, what it is their API and start experimenting, and playing! 
+Start digging into the code to see which presenters are available, what are their API.
 
