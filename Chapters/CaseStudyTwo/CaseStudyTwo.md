@@ -1,4 +1,4 @@
-## Todo Application: a 15min tutorial
+## A Todo application in 15min
 
 status: Ready for review
 
@@ -97,12 +97,12 @@ SpPresenter << #TodoListPresenter
     package: 'CodeOfSpec20BookTodo'
 ```
 
-This component will contain a list of your Todo tasks and the logic to add, delete, or edit them. Let's define your first presenter's contents.   
+This component will contain a list of your Todo tasks and the logic to add, delete, or edit them. Let's define your first presenter's content.   
 
 ### Showing tasks
 
 A presenter needs to define a _layout_ (how the component and its subcomponents will be displayed) and which _widgets_ it will show.
-While this is not the best way to organize your presenter, for simplicity you can add all needed behavior in just a single method that you need to implement: `initializePresenters`.
+While this is not the best way to organize your presenter, for simplicity you can add all needed behavior in just two little methods: `initializePresenters` and `defaultLayout` as defined below.
 
 ```Smalltalk
 TodoListPresenter >> initializePresenters
@@ -110,13 +110,14 @@ TodoListPresenter >> initializePresenters
         addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) width: 20);
         addColumn: (SpStringTableColumn title: 'Title' evaluated: [ :task | task title]);
         yourself.
-		
-    self layout: (SpBoxLayout newTopToBottom 
+```
+
+```
+TodoListPresenter >> defaultLayout
+    ^ (SpBoxLayout newTopToBottom 
         add: todoListPresenter;
         yourself) 
 ```
-
-In general, it is better to define a separate method `defaultLayout` whose job is to only describe the layout of the presenter as we will show later when we refactor the code. 
 
 
 Even if we want to manage a list of tasks, we use a table because we want to display multiple information side by side.
@@ -128,7 +129,9 @@ In this case, you are adding to your presenter a table widget, which is a very c
 - `width: 20` is to avoid the column taking all available space (otherwise, the table component will distribute the available space proportionally by column).
 - `SpStringTableColumn title: 'Title' evaluated: [:aTask | aTask title])` is the same as `SpCheckBoxTableColumn` but it creates a column that has a title and it will show the title of the task as a string.
 
-And about the layout definition: 
+### About the layout definition
+
+Let us go over the layout definition to explain it:
 
 - `SpBoxLayout newTopToBottom` creates a box layout that distributes elements in a vertical arrangement.
 - `add: todoListPresenter` adds the list as a subcomponent of our presenter. Here we only have one but you can have as many subcomponents as you want. Note that by default, the box layout distributes all elements in a proportional way (since this is the only element for the moment, it will take 100% of the available space.
@@ -140,7 +143,7 @@ TodoListPresenter >> updatePresenter
     todoListPresenter items: TodoTask tasks
 ```
 
-###  How does this look? 
+###  Opening the application 
 
 Now defining the method `start`, we tell the application that when ask to run it should open the todo list presenter.
 
@@ -157,8 +160,11 @@ TodoApplication new run.
 
 ![A draft version of our task manager.](figures/figure1.png width=60&label=firstfig)
 
+
+### Improving the window
+
 Not bad as a start, isn't it?
-But you will see the window has "Untitled window" as the title, and maybe its size is not right.  
+But the window has "Untitled window" as the title, and its size is not optimal.  
 
 To fix this we implement another method `initializeWindow:`, which sets the values we want.  
 
@@ -183,6 +189,28 @@ Figure *@fig2@* shows how the task manager looks like now.
 
 ![Task Manager is a better window title.](figures/figure2.png width=60&label=fig2)
 
+
+
+### Alternate initializePresenters method
+
+In general, it is better to define a separate method `defaultLayout` whose job is to only describe the layout of the presenter, now Spec allows you to define the layout as part of the `initializePresenters` method, you just have to set the layout using the method `layout:` as follows. 
+
+
+```Smalltalk
+TodoListPresenter >> initializePresenters
+    todoListPresenter := self newTable
+        addColumn: ((SpCheckBoxTableColumn evaluated: [:task | task isDone]) width: 20);
+        addColumn: (SpStringTableColumn title: 'Title' evaluated: [ :task | task title]);
+        yourself.
+		
+    self layout: (SpBoxLayout newTopToBottom 
+        add: todoListPresenter;
+        yourself) 
+```
+
+
+
+
 ### Making checkbox columns actionable
 
 If you play a little bit with your newly created presenter, you will notice that if you enable the task checkbox and you re-execute the application (reopen the window), nothing changes in the task, it is still marked as not done. This is because no action is yet associated to the checkbox column!  
@@ -199,10 +227,6 @@ TodoListPresenter >> initializePresenters
             yourself);
         addColumn: (SpStringTableColumn title: 'Title' evaluated: #title);
         yourself.
-
-    self layout: (SpBoxLayout newTopToBottom 
-        add: todoListPresenter;
-        yourself)
 ```
 
 We added
@@ -234,18 +258,19 @@ TodoTaskPresenter >> task: aTask
 ```
 
 This is very simple, the only thing that is different is that setting a task will update the presenter (because it needs to show the contents of the title). 
-And now we define initialization and update of our presenter. 
+Now we define the initialization and layout of our new presenter. 
 
 ```Smalltalk    
 TodoTaskPresenter >> initializePresenters
 
     titlePresenter := self newTextInput.
-
-    self layout: (SpBoxLayout newTopToBottom
+```
+```
+ TodoTaskPresenter >> defaultLayout
+ 	 ^ (SpBoxLayout newTopToBottom
                 add: titlePresenter expand: false;
                 yourself).
 ```
-
 
 
 This is almost equal to our list presenter, but there are a couple of new elements.
@@ -266,6 +291,9 @@ The method `updatePresenter` deserves a bit of explanation:
 - indeed it is necessary to check that the task is not nil because the method is executed just after the instance creation and we did not initialize the task with a default task. The alternative to this ifNotNil: is to initialize the instance variable task to a kind of NullObject, here a null task.
 
 - `titlePresenter text: (aTask title ifNil: [ '' ])` changes the contents of our text input presenter.
+
+
+### Introducing a dialog
 
 Now, we need to define this presenter to act as a dialog.  
 And we do it in the same way (almost) we defined `TodoListPresenter` as window. 
@@ -330,8 +358,25 @@ TodoListPresenter >> initializePresenters
         label: 'Add task';
         action: [ self addTask ];
         yourself.
+```
 
-    self layout: (SpBoxLayout newTopToBottom
+
+
+What have we added here?  
+First, we added a button.
+
+- `newButton` creates a button presenter. 
+- `label:` sets the label of the button.
+- `action:` sets the action block to execute when we press the button.
+
+
+
+Second, we modify our layout by adding a new layout! **Yes, layouts can be composed!**. 
+
+```
+TodoListPresenter >> defaultLayout
+
+    ^ (SpBoxLayout newTopToBottom
         spacing: 5;
         add: todoListPresenter;
         add: (SpBoxLayout newLeftToRight
@@ -341,15 +386,7 @@ TodoListPresenter >> initializePresenters
         yourself)
 ```
 
-What have we added here?  
-First, we added a button.
-
-- `newButton` creates a button presenter. 
-- `label:` sets the label of the button.
-- `action:` sets the action block to execute when we press the button.
-
-Second, we modify our layout by adding a new layout! **Yes, layouts can be composed!**. 
-
+Let us explain it: 
 - `spacing: 5` is used to set the space between presenters, otherwise they will appear stick 
 together and this is not visually good.
 - `SpBoxLayout newLeftToRight` creates a box layout that will be arranged horizontally.
@@ -381,49 +418,8 @@ Figure *@fig3@* shows how the task manager looks like.
 
 ![Task Manager with a button to add tasks.s](figures/figure3.png width=80&label=fig3)
 
-### Refactoring initializePresenters
 
-
-In Spec you can either define a layout as we have done before using the message `layout:` or define a separate method named `defaultLayout` and this is what we are doing now to avoid having too long methods with different concerns.
-
-```
-TodoListPresenter >> defaultLayout
-
-    ^ SpBoxLayout newTopToBottom
-        spacing: 5;
-        add: todoListPresenter;
-        add: (SpBoxLayout newLeftToRight
-                addLast: addButton;
-                yourself)
-        expand: false;
-        yourself
-```
-
-Now the method `initialzePresenters` gets a single focus: the one of the defining the subcomponents.
-
-```
-TodoListPresenter >> initializePresenters
-
-    todoListPresenter := self newTable
-        addColumn:
-            ((SpCheckBoxTableColumn evaluated: [ :task |  task isDone ])
-                width: 20;
-                onActivation: [ :task | task done: true ];
-                onDeactivation: [ :task | task done: false ];
-                yourself);
-        addColumn:
-            (SpStringTableColumn
-                title: 'Title'
-                evaluated: [ :task | task title ]);
-                yourself.
-    addButton := self newButton
-        label: 'Add task';
-        action: [ self addTask ];
-        yourself
-```
-
-
-### Add edit and delete
+### Add edit and delete menu items
 
 But a task list is not just adding tasks. Sometimes we want to edit a task or even delete it.
 Let's add a context menu to table for this, and for it we will always need to modify `initializePresenters`. 
@@ -494,32 +490,32 @@ delete simply takes the selected item and sends the `delete` message.
 
 ![First full version of the Task List Manager.](figures/figure4.png width=80&label=fig4)
 
-### Switching the backend to Gtk
+%### Switching the backend to Gtk
 
-Since we are developing a Spec2 application, we can decide to use Gtk as a backend instead of Morphic. How do we do this?
+%%Since we are developing a Spec2 application, we can decide to use Gtk as a backend instead of Morphic. How do we do this?
 
-You need to load the Gtk backend as follows:
+%You need to load the Gtk backend as follows:
 
-```Smalltalk
-Metacello new 
-    repository: 'github://pharo-spec/mars-gtk';
-    baseline: 'Mars';
-    load.
-```
+%```Smalltalk
+%Metacello new 
+%    repository: 'github://pharo-spec/mars-gtk';
+%    baseline: 'Mars';
+%    load.
+%```
 
-(Do not worry if you have a couple of messages asking to "load" or "merge" a Spec2 package, this is because the baseline has Spec2 in its dependencies and it will "touch" the packages while loading the Gtk backend).
+%(Do not worry if you have a couple of messages asking to "load" or "merge" a Spec2 package, this is because the baseline has Spec2 in its dependencies and it will "touch" the packages while loading the Gtk backend).
 
-Now, you can execute
+%Now, you can execute
 
-```Smalltalk
-TodoApplication new 
-    useBackend: #Gtk;
-    run.
-```
+%```Smalltalk
+%TodoApplication new 
+%    useBackend: #Gtk;
+%    run.
+%```
 
-And that's all, you have your Todo application running as shown by Figure *@Todogkt@*.
+%And that's all, you have your Todo application running as shown by Figure *@Todogkt@*.
 
-![Task Manager running in GTK.](figures/figure5.png label=Todogtk&width=80)
+%![Task Manager running in GTK.](figures/figure5.png label=Todogtk&width=80)
 
 ### Conclusion
 In this tutorial, we show that Spec presenters are responsible for defining:
