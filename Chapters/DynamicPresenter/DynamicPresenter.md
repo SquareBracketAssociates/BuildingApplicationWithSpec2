@@ -1,15 +1,12 @@
-## Dynamic Presenters (Draft)
+## Dynamic Presenters
 
 @cha_dynamic_presenter
-
-status: should do a pass before review
 
 Contrary to Spec1, in Spec2 all the layouts are dynamic. It means that you can change on the fly the elements displayed. It is a radical improvement from Spec1 where most of the layouts were static and building dynamic widgets was cumbersome.
 
 In this chapter, we will show that presenters can be dynamically composed using layouts. We will show a little interactive section. Then we will build a little code editor with dynamic aspects. Note that In this post, we are going to use simply Spec, to refer to Spec2 when we do not need to stress a difference.
 
 ### Layouts as simple as objects
-
 
 Building dynamic applications using Spec is simple. In fact, any layout in Spec is dynamic and composable. For example, let me show you the following code snippet:
 
@@ -20,8 +17,8 @@ presenter := SpPresenter new.
 presenter application: SpApplication new.
 ```
 
-
 There are three principal layouts in Spec: `SpPanedLayout`, `SpBoxLayout`, and `SpGridLayout`. For this presenter, we will use the `SpPanedLayout` which can receive two presenters \(or layouts\) and place them in one half of the window.
+If you want to see all the available layouts on Spec, you can check the package `Spec2-Layout`.
 
 ```
 presenter layout: SpPanedLayout newTopToBottom.
@@ -75,6 +72,119 @@ presenter layout remove: button2.
 
 !!note What we should see here is that all the changes happen simply by creating a new instance of a given layout and sending messages to it.  It means that programs can create simply complex logic of the dynamic behavior of a widget.
 
+### Creating a presenter that dynamically adds buttons with random numbers
+
+We will create a presenter in which we will add and remove dynamically buttons. We will create a new class called `DynamicButtonsPresenter`.
+
+![A presenter that dynamically adds buttons](figures/layout8.png width=60&label=layout8)
+
+```
+SpPresenter << #DynamicButtonsPresenter
+	slots: { #addPresenterButton . #removePreseterButton . #textPresenter . #canRemovePresenter };
+	package: 'DynamicButtons'
+```
+
+Now, we need to initialize the presenters. For doing so, we need to override the method `initializePresenters`. We want to have a button that when we click on it, it adds a new button into the layout.
+
+```
+addPresenterButton := self newButton.
+	addPresenterButton
+		action: [ self addToLayout ];
+		label: 'Add a presenter to the layout';
+		icon: (self iconNamed: #smallAdd).
+```
+
+We also want a button that will remove the last button that was added, if any, of the layout.
+
+```
+removePreseterButton := self newButton.
+	removePreseterButton
+		action: [ self removeFromLayout ];
+		label: 'Remove a presenter from the layout';
+		icon: (self iconNamed: #smallDelete);
+		disable.
+```
+
+And finally, let's add a text presenter that will cannot be removed.
+
+```
+textPresenter := self newText.
+	textPresenter
+		text: 'I am a text presenter.
+		I will not be removed';
+		beNotEditable
+```
+
+Here is the full code for the `initializePresenters` method.
+
+```
+initializePresenters
+
+	addPresenterButton := self newButton.
+	addPresenterButton
+		action: [ self addToLayout ];
+		label: 'Add a presenter to the layout';
+		icon: (self iconNamed: #smallAdd).
+		
+	removePreseterButton := self newButton.
+	removePreseterButton
+		action: [ self removeFromLayout ];
+		label: 'Remove a presenter from the layout';
+		icon: (self iconNamed: #smallDelete);
+		disable.
+		
+	textPresenter := self newText.
+	textPresenter
+		text: 'I am a text presenter.
+		I will not be removed';
+		beNotEditable
+```
+
+Now, we need to implement the methods `addToLayout` and `removeFromLayout`. Those methods, as they name indicate, add and remove presenters dynamically from the layout.
+
+Let's start with the `addToLayout` method. We will enable the remove presenter button. Because as we are adding a new presenter, that means that we can remove it.
+
+```
+addToLayout
+
+    | randomButtonName newButton |
+	removePreseterButton enable.
+
+	randomButtonName := 'Random number: ', (Random new nextInteger: 1000) asString.
+
+	newButton := self newButton
+		label: randomButtonName;
+		icon: (self iconNamed: #smallObjects);
+        yourself
+
+	self layout add: newButton expand: false
+```
+
+For removing a button of the layout, we will first check if there is a button that we can remove. If true, we will just remove the last button. Then, if there is no more buttons left to remove, we will disable the remove button.
+
+```
+removeFromLayout
+
+	self layout remove: self layout presenters last.
+
+	self layout presenters last = textPresenter
+		ifTrue: [ removePreseterButton disable ]
+```
+
+The last thing that is missing to implement is to specify the default layout. For that, we need to override the method `defaultLayout`.
+
+```
+defaultLayout
+
+	^ SpBoxLayout newTopToBottom
+		add: addPresenterButton expand: false;
+		add: removePreseterButton expand: false;
+		add: textPresenter;
+		yourself		
+```
+
+![Adding random buttons](figures/layout9.png width=60&label=layout9)
+
 ### Building a little dynamic browser
 
 
@@ -121,7 +231,7 @@ MyMiniBrowserPresenter >> initializePresenters
     treeClasses := self newTree.
     treeClasses
        activateOnSingleClick;
-       roots: Object asOrderedCollection;
+       roots: { Object };
        children: [ :each | each subclasses ];
        displayIcon: [ :each | each systemIcon ]
 ```
@@ -155,14 +265,6 @@ codeShower := self newText.
 codeShower beNotEditable.
 ```
 
-
-And finally, we want to initialize the layout of our presenter.
-
-```
-self initializeLayout
-```
-
-
 Here the complete code of the method is:
 
 ```
@@ -186,15 +288,13 @@ MyMiniBrowserPresenter >> initializePresenters
         icon: (self iconNamed: #smallConfiguration).
  
     codeShower := self newText.
-    codeShower beNotEditable.
- 
-    self initializeLayout
+    codeShower beNotEditable
 ```
-
 
 
 ### Placing elements visually
 
+We initialized our presenter but we did not indicate how they need to be displayed. For doing so, we need to override the method `defaultLayout` and return a layout.
 
 We want the upper part of the layout to have the classes and the methods shown in a horizontal way, like in the System Browser \(a.k.a. Calypso\). 
 So, what we will do is to create another left-to-right layout, with a spacing of 10 pixels, the classes, and the methods.
@@ -203,7 +303,7 @@ Then, we will add that layout to our main layout. the main layout is going to be
 We do not want the code to expand. In addition, we want a separation of 5 pixels for this layout.
 
 ```
-MyMiniBrowserPresenter >> initializeLayout
+MyMiniBrowserPresenter >> defaultLayout
  
     | classesAndMethodsLayout |
     classesAndMethodsLayout := SpBoxLayout newLeftToRight.
@@ -211,15 +311,15 @@ MyMiniBrowserPresenter >> initializeLayout
         spacing: 10;
         add: treeClasses;
         add: methodsFilteringList.
-    self layout: (SpBoxLayout newTopToBottom
+    ^ SpBoxLayout newTopToBottom
         spacing: 5;
         add: classesAndMethodsLayout;
         add: codeShower;
         add: button expand: false;
-        yourself)
+        yourself
 ```
 
-    
+
 So far, so good… but we did not add any behavior to the presenters. To do that we can either do it in the `initializePresenters` method or override the `connectPresenters` method. To clearly separate the intention of the methods, we favor overriding `connectPresenters`.
 
 ### Connecting the flow
@@ -260,19 +360,23 @@ That is why it is better to create a separate method.
 ```
 MyMiniBrowserPresenter >> buttonAction
  
-    | newShower |
-    button label = 'Edit'
-        ifTrue: [ 
-            button label: 'Read only'.
-            newShower := self newCode ]
-        ifFalse: [ 
-            button label: 'Edit'.
-            newShower := self newText beNotEditable ]
- 
-    newShower text: methodsFilteringList selectedItem ast formattedCode.
- 
-    self layout replace: codeShower with: newShower.
-    codeShower := newShower
+   | newShower |
+	button label = 'Edit'
+		ifTrue: [
+			button label: 'Read only'.
+			newShower := self newCode
+				beForMethod: methodsFilteringList selectedItem;
+				text: methodsFilteringList selectedItem ast formattedCode;
+				yourself ]
+		ifFalse: [
+			button label: 'Edit'.
+			newShower := self newText
+				text: methodsFilteringList selectedItem ast formattedCode;
+				beNotEditable;
+				yourself ].
+	
+	self layout replace: codeShower with: newShower.
+	codeShower := newShower
 ```
 
 
@@ -299,4 +403,3 @@ The dynamic layouts are simply nice.
 Layouts can be configured in multiple ways, so have a look at their classes and the examples available.
 Spec has lots of presenters that are ready to be used. 
 Start digging into the code to see which presenters are available, what are their API.
-
