@@ -8,6 +8,7 @@
 <!inputFile|path=Chapters/CaseStudyOne/CaseStudyOne.md!>
 %Reviewed by stef
 
+<!inputFile|path=Chapters/TrafficLights/TrafficLights.md!>
 
 # Spec 2.0 Essentials
 
