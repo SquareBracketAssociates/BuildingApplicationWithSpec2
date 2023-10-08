@@ -1,4 +1,4 @@
-## Most of Spec20 in one example
+## Most of Spec in one example
 @chacasestudyone
 
 status: ready for review I got an error with ports so should check with esteban
@@ -38,7 +38,7 @@ Since we will manage films we define a `Film` class as follows: It has a name, a
 ```language=Smalltalk
 Object << #ImdbFilm
     slots: {#name . #year . #director};
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 
 
@@ -81,7 +81,7 @@ Note that a presenter such as `ImdbFilmListPresenter` can have multiple subprese
 ```language=Smalltalk
 SpPresenter << #ImdbFilmListPresenter
     slots: { #filmList };
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 
 
@@ -104,7 +104,7 @@ A presenter can have subpresenters e.g., `ImdbFilmListPresenter` will contain ta
 1.    a presenter can have multiple layouts and
 2.    that layouts can be defined dynamically.
 
-In Spec20, layouts are by default dynamic and are expressed at the instance level. To allow backward compatibility, it is still possible to define a `defaultLayout` _class_ side method that returns a layout instead of using a `defaultLayout` instance side method but it is not the recommended way.
+In Spec 20, layouts are by default dynamic and are expressed at the instance level. To allow backward compatibility, it is still possible to define a `defaultLayout` _class_ side method that returns a layout instead of using a `defaultLayout` instance side method but it is not the recommended way.
 
 #### initializePresenters
 
@@ -228,7 +228,7 @@ This class has three instance variables: `nameText`, `directorText`, and `yearNu
 ```language=Smalltalk
 SpPresenter << #ImdbFilmPresenter
     slots: { #nameText . #directorText . #yearNumber};
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 
 
@@ -393,7 +393,7 @@ Let us proceed. First, we add a new instance variable named `detail` to the clas
 ```language=Smalltalk
 SpPresenter << #ImdbFilmListPresenter
     slots: { #filmList . #detail};
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 
 We redefine the default layout. We will show later that we can have different layouts.
@@ -454,7 +454,7 @@ Note that we need to define the method `setModel:` is needed only if you do not 
 Defining interactions between presenters is done in the `connectPresenters` method. We implement it to define that, when an element of the list is selected, we should display the information in the detail presenter.
 It is worth taking some time to look at `whenSelectionChangedDo:` message.
 
-The `whenSelectionChangedDo:` method expects a block with zero or one argument. Such an argument is not the selected item directly but a more complex object that represents the selection. Indeed a selection is different in a single item selection list and a multiple selection list. Therefore Spec2.0 defines the notion of selection mode under the form of subclasses of `SpAbstractSelectionMode`.
+The `whenSelectionChangedDo:` method expects a block with zero or one argument. Such an argument is not the selected item directly but a more complex object that represents the selection. Indeed a selection is different in a single item selection list and a multiple selection list. Therefore Spec 20 defines the notion of selection mode under the form of subclasses of `SpAbstractSelectionMode`.
 
 ```language=Smalltalk
 ImdbFilmListPresenter >> connectPresenters
@@ -476,7 +476,7 @@ We define a subclass of `TestCase`.
 
 ```
 TestCase << #FilmListPresenterTest
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 
 
@@ -671,7 +671,7 @@ You can now see that the layout showing only one list has been applied dynamical
     
 ### Using transmissions
 
-Spec20 introduces a nice optional concept to propagate selection from one presenter to another, thinking on the "flow" of information more than the implementation details of this propagation, which can change from presenter to presenter.
+Spec 20 introduces a nice optional concept to propagate selection from one presenter to another, thinking on the "flow" of information more than the implementation details of this propagation, which can change from presenter to presenter.
 
 With transmissions, each presenter can define a set of output ports (ports to transmit information) and input ports (ports to receive information). Widget presenters already have defined the output/input ports you can use with them, but you can add your own ports to your presenters.
 
@@ -740,7 +740,7 @@ So let us start, we create the specific configuration for our application.
 
 ```
 SpMorphicConfiguration << #ImdbConfiguration
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 
 

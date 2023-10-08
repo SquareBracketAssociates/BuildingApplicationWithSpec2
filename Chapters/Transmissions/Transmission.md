@@ -1,16 +1,16 @@
 ## Using transmissions and ports (Draft)
  
  
-Transmissions are more compact way to connect presenters than events as shown in Chapter *@chacore@*. 
+Transmissions are a more compact way to connect presenters than events as shown in Chapter *@chacore@*. 
  
 ### What are transmissions? 
  
-Transmissions are a way to connect presenters, thinking on the “flow” of information more than the way it is displayed. 
+Transmissions are a way to connect presenters, thinking about the “flow” of information more than the way it is displayed. 
 Each presenter defines **output ports** (ports to send information) and **input ports** (ports to receive information). 
 There are at least one default input port and one default output port. 
 A transmission connects a presenter’s output port with a presenter’s input port. 
  
-For example, think on a overview-detail (O->D) relationship, when you navigate the elements in the overview O, you want to see the detail D. This is typically solved by showing a list with list elements and a form with the detail of an element. 
+For example, think on an overview-detail (O->D) relationship, when you navigate the elements in the overview O, you want to see the detail D. This is typically solved by showing a list with list elements and a form with the detail of an element. 
 In Spec, this will be declared more or less like this: 
  
 ``` 
@@ -20,13 +20,13 @@ detail := self newText.
  
  
 - Input ports define the transmission destination points of a presenter. They handle an incoming transmission and transmit them properly to the target presenter. 
-- An output port defines origin actions \(and the possible data associated to such action\) to transmit to a destination \(input\) port. It also defines the transformations to apply to the output data before give them to the input port. 
+- An output port defines origin actions \(and the possible data associated to such action\) to transmit to a destination \(input\) port. It also defines the transformations to apply to the output data before giving them to the input port. 
  
  
 ### Transmitting from an output port to an input port 
  
  
-A transmission connects a presenter’s output port with a presenter’s input port as shown by the following example: 
+A transmission connects a presenter’s output port with a presenter’s input port as shown in the following example: 
 ``` 
 list transmitTo: detail. 
 ``` 
@@ -93,7 +93,7 @@ list
 ``` 
 SpPresenter << #SpClassMethodBrowserPresenter
     slots: {#methodListPresenter . #textPresenter . #classListPresenter};
-    package: 'Spec2-Examples-Standalone' 
+    package: 'Spec-Examples-Standalone' 
 ``` 
  
  
@@ -113,9 +113,9 @@ SpClassMethodBrowserPresenter >> initializeWidgets
 ### Now the logic as transmissions 
  
  
-In Spec20, the wiring between presenters can be expressed at a higher level than the simple low-level dependency and change notification. For this we use transmissions.  
+In Spec, the wiring between presenters can be expressed at a higher level than the simple low-level dependency and change notification. For this we use transmissions.  
 In the following method, we state that when a class list item is selected, it should transmit the list of methods of the selected class sorted.  
-Notice that the `transform:` block get the selectors from the selected class item.  
+Notice that the `transform:` block gets the selectors from the selected class item.  
  
 ``` 
 SpClassMethodBrowserPresenter >> initializePresenter
@@ -132,7 +132,7 @@ SpClassMethodBrowserPresenter >> initializePresenter
 ``` 
  
  
- Esteban can you explain transmited ifNotNil: \[ destination behavior: transmited methodClass \]? 
+ Esteban can you explain transmitted ifNotNil: \[ destination behavior: transmitted methodClass \]? 
  
 ### Layout 
  

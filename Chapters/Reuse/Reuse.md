@@ -43,7 +43,7 @@ First, we create a subclass of `SpPresenter` with one instance variable `list` w
 SpPresenter << #WidgetClassListPresenter
     slots: { #list };
     tag: 'MiniClassBrowser';
-    package: 'CodeOfSpec20Book'
+    package: 'CodeOfSpecBook'
 ```
 
 In the method `initializePresenters`, we create the list and populate it with the required classes, in alphabetical order.
@@ -102,7 +102,7 @@ Large and complex UIs are reused in the same way as simple widgets.
 SpPresenter << #ProtocolMethodListPresenter
     slots: { #label . #methods };
     tag: 'MiniClassBrowser';
-    package: 'CodeOfSpec20Book'
+    package: 'CodeOfSpecBook'
 ```
 
 
@@ -231,7 +231,7 @@ ProtocolMethodListPresenter >> methods
 ```
 TestCase << #ProtocolMethodListPresenterTest
     tag: 'MiniClassBrowser';
-    package: 'CodeOfSpec20Book'
+    package: 'CodeOfSpecBook'
 ```
 
 
@@ -263,7 +263,7 @@ This UI is composed of a `WidgetClassListPresenter` and two `ProtocolMethodListP
 SpPresenter << #ProtocolViewerPresenter
     slots: { #models . #api . #events };
     tag: 'MiniClassBrowser';
-    package: 'CodeOfSpec20Book'
+    package: 'CodeOfSpecBook'
 ```
 
 
@@ -425,7 +425,7 @@ Our last user interface reuses the `ProtocolViewerPresenter` with a different la
 SpPresenter << #ProtocolCodeBrowserPresenter
     slots: { #text . #viewer };
     tag: 'MiniClassBrowser';
-    package: 'CodeOfSpec20Book'
+    package: 'CodeOfSpecBook'
 ```
 
 ```
@@ -563,7 +563,7 @@ initializePresenters
 
 
 connectPresenters
-…
+
     api whenSelectedItemChanged: [ :method |
         method ifNotNil: [ events resetSelection ] ].
     events whenSelectedItemChanged: [ :method |

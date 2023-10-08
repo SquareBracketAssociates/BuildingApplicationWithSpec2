@@ -492,7 +492,7 @@ delete simply takes the selected item and sends the `delete` message.
 
 %### Switching the backend to Gtk
 
-%%Since we are developing a Spec2 application, we can decide to use Gtk as a backend instead of Morphic. How do we do this?
+%%Since we are developing a Spec application, we can decide to use Gtk as a backend instead of Morphic. How do we do this?
 
 %You need to load the Gtk backend as follows:
 

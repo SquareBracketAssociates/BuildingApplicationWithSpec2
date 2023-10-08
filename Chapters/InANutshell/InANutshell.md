@@ -112,7 +112,7 @@ We define a configuration as a subclass of `SpMorphicConfiguration`.
 
 ```language=Smalltalk
 SpMorphicConfiguration << #ImdbMorphicConfiguration
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 
 Then we define the method `configure:` as follows:. 
@@ -147,7 +147,7 @@ For Gtk the process is similar, we define a subclass of `SpGtkConfiguration`.
 
 ```language=Smalltalk
 SpGtkConfiguration << #ImdbGtkConfiguration
-    package: 'Spec2-TutorialOne'
+    package: 'Spec-TutorialOne'
 ```
 Then we configure it by selecting and extending CSS. 
 
@@ -160,7 +160,7 @@ ImdbGtkConfiguration >> configure: anApplication
     "This will add a 'provider' (a stylesheet)"
     self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
 ```
-And in the application initialization we declare that the configuration should be use for Gtk.
+And in the application initialization, we declare that the configuration should be used for Gtk.
 
 ```language=Smalltalk
 ImdbApp >> initialize
@@ -279,7 +279,7 @@ messageList
 ### Conclusion
 
 
-As we started to see it, the class `SpPresenter` is a central class that as the following responsibilities:
+As we started to see it, the class `SpPresenter` is a central class that has the following responsibilities:
 
 - Initialization of presenter part and state. 
 - Definition of application layout.
