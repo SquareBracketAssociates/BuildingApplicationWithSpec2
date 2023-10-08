@@ -1,7 +1,7 @@
 ## Dynamic Presenters
 @cha_dynamic_presenter
 
-Contrary to Spec 1, in Spec 20 all the layouts are dynamic. It means that you can change on the fly the elements displayed. It is a radical improvement from Spec1 where most of the layouts were static and building dynamic widgets was cumbersome.
+Contrary to Spec 1, in Spec 2.0 all the layouts are dynamic. It means that you can change on the fly the elements displayed. It is a radical improvement from Spec1 where most of the layouts were static and building dynamic widgets was cumbersome.
 
 In this chapter, we will show that presenters can be dynamically composed using layouts. We will show a little interactive section. Then we will build a little code editor with dynamic aspects. Note that In this post, we are going to use simply Spec, to refer to Spec 20 when we do not need to stress a difference.
 
