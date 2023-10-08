@@ -24,9 +24,8 @@ In this first example, we construct a simple customer satisfaction UI, which all
 All user interfaces in Spec are subclasses of `SpPresenter`, so the first step in creating the UI is subclassing it:
 
 ```
-SpPresenter subclass: #CustomerSatisfactionPresenter
-	instanceVariableNames: 'buttonHappy buttonNeutral buttonBad screen'
-	classVariableNames: ''
+SpPresenter << #CustomerSatisfactionPresenter
+	slots: { #buttonHappy . #buttonNeutral . #buttonBad . #screen};
 	package: 'CodeOfSpec20Book'
 ```
 

@@ -2,7 +2,7 @@
  
 @cha_layout_construction 
  
-Placing and describing the behavior of widgets on resizing of their container is an important yet complex issue. In this chapter we present the different ways to express layouts with Spec. 
+Placing and describing the behavior of widgets on resizing their container is an important yet complex issue. In this chapter, we present the different ways to express layouts with Spec. 
  
 ### About layouts 
  
@@ -10,26 +10,25 @@ Layout of widgets in a window or in their reusing UI is a nontrivial problem.
 This is because there are many factors at play in determining where a widget should be placed in its container \(the container can be a window or another widget\). 
  
 A straightforward solution is to place widgets at absolute coordinates of the enclosing container, but this breaks when the container is resized: widgets do not grow or shrink together with the container. 
-However, if the window is never resized this is not really an issue either, and absolute positioning allows for pixel-perfect placing of every widget. 
+However, if the window is never resized this is not really an issue either, and absolute positioning allows for pixel-perfect placement of every widget. 
  
 Since there are multiple usage scenarios, multiple ways for widgets to be laid out need to be provided. 
 Spec provides various options to perform layouts and these are visible as methods in the `SpLayout` class. 
-Up until now, as layouts go we have only seen the use of rows and columns, and the adding of a single widget to the container. 
-Furthermore, in all of these results, a row, column or a single widget always took up all available space in its container, which is the default behavior. 
+Up until now, as layouts go we have only seen the use of rows and columns, and the addition of a single widget to the container. 
+Furthermore, in all of these results, a row, column, or a single widget always took up all available space in its container, which is the default behavior. 
  
 The `add:` method on `SpLayout` only allows one widget to be added, so if you want more than one widget in your user interface you will need to specify one of the layouts we present in this chapter. 
 We discuss in depth two broad strategies for laying out widgets: first the various options for specifying rows and columns, and second the diverse ways in which widgets can be laid out freely. 
-Each of them has their advantages and disadvantages depending on the kind of UI that is being constructed so it is best to know all of them well enough to be able to make the tradeoff. 
+Each of them has its advantages and disadvantages depending on the kind of UI that is being constructed so it is best to know all of them well enough to be able to make the tradeoff. 
  
  
 ### A working example 
  
-To illustrate these layouts, we use an example class that has two buttons, a list and a text field, the non-layout code of which is below: 
+To illustrate these layouts, we use an example class that has two buttons, a list, and a text field, the non-layout code of which is below: 
  
 ``` 
-SpPresenter subclass: #LayoutExample
-    instanceVariableNames: 'list button button2 text'
-    classVariableNames: ''
+SpPresenter << #LayoutExample
+    slots: { #list . #button . #button2 . #text};
     package: 'Spec-BuildUIWithSpec' 
 ``` 
  
