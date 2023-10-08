@@ -6,7 +6,7 @@
 ``` 
 SpPresenter << #SpClassPresenter
     slots: { #table };
-    package: 'Spec2-TutorialThree' 
+    package: 'Spec-TutorialThree' 
 ```
 
 
@@ -205,7 +205,7 @@ PRExportPresenter class >> withParser: aParser
 ``` 
  
  
-This is not really nice because if you forget to call `initialize` you may break Spec2 logic.  
+This is not really nice because if you forget to call `initialize` you may break Spec logic.  
 A better solution is the following one. 
  
 #### Use on: and setModelBeforeInitialization:
@@ -269,7 +269,7 @@ Another way that is a bit more low-level is to use the `ImageForm` directly.
        icon: (newIcons at: #iconFileName). 
 ```
 
-### Can we draw custom widgets with spec 
+### Can we draw custom widgets with Spec 
 
 You can. You have two possibilities:
 - you do a morph and you use `SpMorphPresenter` 
