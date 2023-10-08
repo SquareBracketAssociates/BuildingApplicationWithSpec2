@@ -60,7 +60,7 @@ We will first define a test class.
 ```
 TestCase << #ClassVisualizerPresenterTest
     slots: { #presenter };
-    package: 'Spec2-Testing'
+    package: 'Spec-Testing'
 ```
 
 #### Correct initialization
@@ -232,4 +232,4 @@ This is really key for modern software development and to lower your stress in t
 So take advantage of agile development.
 
 Currently, Spec does not offer a way to script and control popup windows. It is not possible to script a button that opens a dialog for a value.
-Future versions of Spec20 should cover this missing feature.
+Future versions of Spec should cover this missing feature.
