@@ -358,7 +358,7 @@ to our little database and we update the list as shown in Figure *@refreshed@*.
 ImdbFilmListPresenter >> addFilm
     | presenter windowPresenter |
     presenter := ImdbFilmPresenter newApplication: self application.
-    windowPresenter := dialog openModal.
+    windowPresenter := presenter openModal.
     windowPresenter isOk
         ifFalse: [ ^ self ].
     ImdbFilm
@@ -449,7 +449,7 @@ ImdbFilmPresenter >> setModel: aFilm
     yearNumber number: aFilm year.
 ```
 
-Note that we need to define the method `setModel:` is needed only if you do not subclass from `SpPresenterWithModel`. If you subclass from `SpPresenter`, it is the only way to have the model initialized before the setup of the presenter (and avoid errors when opening the presenter).
+Note that the method `setModel:` is needed only if you do not subclass from `SpPresenterWithModel`. If you subclass from `SpPresenter`, it is the only way to have the model initialized before the setup of the presenter (and avoid errors when opening the presenter).
 
 Defining interactions between presenters is done in the `connectPresenters` method. We implement it to define that, when an element of the list is selected, we should display the information in the detail presenter.
 It is worth taking some time to look at `whenSelectionChangedDo:` message.
@@ -483,19 +483,19 @@ TestCase << #FilmListPresenterTest
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
 
-    | list detail |
+    | presenter detail |
     "Prepare the context"
-    list := ImdbFilmListPresenter new.
-    list open.
-    detail := list detail.
+    presenter := ImdbFilmListPresenter new.
+    presenter open.
+    detail := presenter detail.
     self assert: detail name isEmpty.
 
     "Act"
-    list clickFilmAtIndex: 1.
+    presenter clickFilmAtIndex: 1.
 
     "Assert"
     self deny: detail name isEmpty.
-    list delete
+    presenter delete
 ```
 
 
@@ -513,22 +513,22 @@ ImdbFilmListPresenter >> detail
 This test is a bit poor because we do not test explicit the value of the name of the film in the detailled component. 
 We did this to keep the test set up simple, partly because `ImdbFilm` stores globally the current films (Singletons are ugly and they also make testing more complex).
 
-We define three helper methods on ImbdFilm to reset the stored films and add E.T. film.
+We define three helper methods on ImdbFilm to reset the stored films and add E.T. film.
 
 ```
-ImbdFilm class >> reset 
+ImdbFilm class >> reset 
     films := OrderedCollection new
 ```
 
 
 ```
-ImbdFilm class >> addET
+ImdbFilm class >> addET
     films add: self ET
 ```
 
 
 ```
-ImbdFilm class >> ET
+ImdbFilm class >> ET
     ^ self new 
         name: 'E.T.';
         director: 'Steven Spielberg';
@@ -714,6 +714,7 @@ app := ImdbApp new.
 ```
 
 ""Esteban"" I do not understand why this is not working. I get an error with the ports.
+""Enzo"" I think the error comes from the fact `setModel:` is called when the presenter is initialized and so there is no selection, thus a nil parameter. I managed to deal with it by adding a nil guard clause in `setModel:` but I wonder if we could make a "default selection" that would be the first film so that the presenter starts with a film to display details.
 
 ### Styling the application
 
@@ -810,6 +811,7 @@ ImdbFilmPresenter >> defaultLayout
 
 We can now see that the name label of a film detail has been styled.
 ""esteban"" I get a grey not read label. No idea why.
+""Enzo"" Personally I don't have any problem, the label is red
 
 ![Styled film description](figures/FilmList-styling.png width=100&label=FilmListPresenterStyled)
 
