@@ -30,8 +30,8 @@ Figure *@coreextended@* presents the general architecture of Spec. Basically, Sp
 
 A presenter represents the UI element logic and it is also the connection with the domain.  The Application is also a place to be in contact with domain objects but generally, it handles application-specific resources (icons, windows...).
 
-Based on presenters and layout, Spec builds the actual UI. To do so it internally uses adapters that are specific to each widget and per back-end. 
-This way presenters are totally agnostic about back-ends and are reusable across them. 
+Based on presenters and layout, Spec builds the actual UI. To do so it internally uses adapters that are specific to each widget and per backend. 
+This way presenters are totally agnostic about backends and are reusable across them. 
 
 
 ![Architecture of Spec.](figures/coreExtended.pdf label=coreextended&width=80) 
@@ -131,7 +131,7 @@ ImdbMorphicConfiguration >> configure: anApplication
 ```
 Note that we could use a style described in a string as shown in the Style chapter (Chapter *@style@*).
 
-Finally, in the corresponding application class, we declare that the Morphic back-end should use our configuration 
+Finally, in the corresponding application class, we declare that the Morphic backend should use our configuration 
 using the message `useBackend:with:`.
 
 ```language=Smalltalk
@@ -222,7 +222,7 @@ Chapter *@chastyle@* presents styles in detail.
  
 A style is a property container to “style” components, and defines (in a certain degree) its behavior within the different layouts implemented.
  
-Here is an example of a style sheet for the Morphic back-end:
+Here is an example of a style sheet for the Morphic backend:
  
 ```
 '.application [       

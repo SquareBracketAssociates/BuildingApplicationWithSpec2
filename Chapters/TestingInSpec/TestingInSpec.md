@@ -19,12 +19,12 @@ Tests are key to ensuring that everything works correctly. In addition, they fre
 
 
 Spec is based on an architecture with three different layers as shown in Figure *@fig:Architecture@*: 
-- **Presenters:** Presenters define the interaction logic and manipulate domain objects. They access back-end widgets but via an API that is specified by Adapters.
-- **Adapters:** Adapters are objects exposing low-level back-end widgets. They are a bridge between presenters and low-level widgets.
-- **Back-end widgets**. Back-end widgets are plain widgets that can be used without Spec.
+- **Presenters:** Presenters define the interaction logic and manipulate domain objects. They access backend widgets but via an API that is specified by Adapters.
+- **Adapters:** Adapters are objects exposing low-level backend widgets. They are a bridge between presenters and low-level widgets.
+- **Backend widgets**. Backend widgets are plain widgets that can be used without Spec.
 
 
-![Spec Architecture: three layers Presenters - Adapters - Back-ends.](figures/ArchitectureSpec2.pdf width=95&label=fig:Architecture)
+![Spec Architecture: three layers Presenters - Adapters - Backends.](figures/ArchitectureSpec2.pdf width=95&label=fig:Architecture)
 
 #### Three roles and concerns
 
@@ -32,7 +32,7 @@ To help you understand the different possibilities of testing that you can engag
 
 - **Spec Users.**Spec users are developers that build a new application. They define the logic of the application by assembling together presenters and domain objects. We believe that this is in the role that you will play most of the time.
 - **Spec Developers.** Spec developers are more concerned with the development of new Spec presenter and their link with the adapter.
-- **Widget Developers.** Widget developers are concerned about the logic and working of a given widget for a given back-end.
+- **Widget Developers.** Widget developers are concerned about the logic and working of a given widget for a given backend.
 
 
 % +UI elements under test.>file://figures/UI.png|width=75|label=fig:UI+
@@ -41,7 +41,7 @@ To help you understand the different possibilities of testing that you can engag
 
 We will focus on the first role. For the reader interested in the second role, the class `SpAbstractBackendForTest` is a good starting place.
 
-As a Spec user, you should consider that the back-ends are working and your responsibility is to test the logic of the user interface components.
+As a Spec user, you should consider that the backends are working and your responsibility is to test the logic of the user interface components.
 We should make sure that when the model changes, the user interface components reflect the changes.
 Inversely when the user interface components change, we should ensure that the model is updated.
 But let us check an example.
