@@ -32,7 +32,7 @@ Since Spec 2.0, different widget sets can be used to render your applications. A
 Spec 2.0 represents a large iteration over Spec 1. Many enhancements have been introduced: the way user interface layouts are expressed, the API has been revisited, new widgets are supported, and integration with other projects, such as `Commander`, has been added.
 
 
-Pharo’s objective is to use Spec to build all its own GUIs. This ensures strong support of Spec over time and improves the standardization of Pharo's interfaces as well as their portability to new graphical systems.
+Pharo's objective is to use Spec to build all its own GUIs. This ensures strong support of Spec over time and improves the standardization of Pharo's interfaces as well as their portability to new graphical systems.
 Using Spec2 provides back-end independence and logic reuse.
 This means that a UI written in Spec will be rendered on back-ends other than GTK and Morphic. As new back-ends become available, all applications written in Spec will be able to use them.
 
