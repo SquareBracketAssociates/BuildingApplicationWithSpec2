@@ -35,8 +35,8 @@ WindowExamplePresenter >> initializePresenters
 WindowExamplePresenter >> defaultLayout
    ^ SpBoxLayout newLeftToRight
          add: #button1;
-				 add: #button2;
-				 yourself
+         add: #button2;
+         yourself
 ```
 
 ### Opening a window or a dialog box
