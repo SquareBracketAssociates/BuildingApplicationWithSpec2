@@ -10,7 +10,7 @@ After completing this chapter you should read Chapter *@cha_reuse@* about reuse 
 
 ![A screen shot of the customer satisfaction UI.](figures/CustomersBasic.png width=50&label=figCustomersBasic)
 
-We construct a simple customer satisfaction UI, which allows a user to give feedback about a service by clicking on one of three buttons. \(This feedback should be recorded and processed, but this is outside of the scope of this example\). We show a screenshot of the UI in Figure *@figCustomersBasic@*.
+We construct a simple customer satisfaction UI, which allows a user to give feedback about a service by clicking on one of three buttons. This feedback should be recorded and processed, but this is outside of the scope of this example. We show a screenshot of the UI in Figure *@figCustomersBasic@*.
 
 
 ### Create the class of the UI 
@@ -32,15 +32,13 @@ In this case, we have three buttons and a text screen.
 
 The methods of the class provide the initialization and configuration of the presenters, e.g.,
 labels and actions, as well as the logic of their interaction. The
-basic design of our GUI, i.e., how the widgets are laid out, is defined by a method
-at class side.
+basic design of our GUI, i.e., how the widgets are laid out, is defined by the class as well.
 
 ### Instantiate and configure subwidgets
 
 
-A subclass of `SpPresenter` has the responsibility to define the
-`initializePresenters` method, which instantiates and configures the
-widgets used in the user interface. We will now discuss it piece by piece.
+A subclass of `SpPresenter` has the responsibility to define the `initializePresenters` method,
+which instantiates and configures the widgets used in the user interface. We will now discuss it piece by piece.
 Note that since this method may be a bit long we will split it into pieces that represent
 their intent.
 
@@ -56,7 +54,7 @@ CustomerSatisfactionPresenter >> initializePresenters
 
 
 `SpPresenter` defines messages for the creation of standard presenters: `newButton`, `newCheckBox`, `newDropList`, ...
-All of these are defined in the `widgets` protocol. These are shortcuts to create presenter for the associated widgets.
+All of these are defined in the `scripting - widgets` protocol of the `#SpTPresenterBuilder` trait. These are shortcuts to create presenters for the corresponding widgets.
 
 The following method shows how `newButton` is defined.
 
@@ -98,7 +96,7 @@ Each application is able to define its own icon provider by defining a subclass 
 
 #### Presenter interaction logic
 
-Now we should define what will happen when we press a button. 
+Now we define what will happen when the user presses a button. 
 We define this in a separate method called `connectPresenters`: 
 
 
@@ -115,7 +113,7 @@ We use the message `action:` to specify the action that is performed when the bu
 !!note To summarize:
 
 - specialize `initializePresenters` to define and configure the presenters that are the elements of your UI;
-- speciallize `connectPresenters` to connect those presenters together and specify their interaction.
+- specialize `connectPresenters` to connect those presenters together and specify their interaction.
 
 #### Specifying the widget layout
 
@@ -134,10 +132,10 @@ CustomerSatisfactionPresenter >> defaultLayout
 ```
 
 
-In this layout, we add two rows to the UI, one with the buttons and one with the screen of text. Defining widget layout is a complex process with many different possible requirements, hence in this chapter we do not talk in detail about layout specification. For more information we refer to Chapter *@cha_layout_construction@*.
+In this layout, we add two rows to the UI, one with the buttons and one with the screen of text. Defining widget layout is a complex process with many different possible requirements, hence in this chapter we do not talk in detail about layout specification. For more information we refer to Chapter *@cha_layout@*.
 
 
-Once the class method `defaultLayout` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new open`. You should obtain a widget similar to the one shown in Figure *@figFirstCut@*.
+Once the method `defaultLayout` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new open`. You should see a window similar to the one shown in Figure *@figFirstCut@*.
 
 ![A first version of the customer satisfaction UI.](figures/FirstCut.png width=50&label=figFirstCut)
 
@@ -155,13 +153,13 @@ CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
 ```
 
 
-You are free to use helper method to return the title and extent of your widget. Now if you reopen your widget, you should get the one displayed in Fig. *@figSecondCut@*.
+You are free to use helper methods to return the title and extent of your widget. Now if you reopen your widget, you should get the one displayed in Fig. *@figSecondCut@*.
 
 
 ![A final version of the customer satisfaction UI.](figures/SecondCut.png width=50&label=figSecondCut)
 
 
-To open a UI, an instance of the class needs to be created and it needs to be sent the `open` message. This will open a window and return an instance of `SpWindowPresenter`, which allows the window to be closed from code.
+Sending the `open` message to a presenter will open a window and return an instance of `SpWindowPresenter`, which allows the window to be closed from code.
 
 ```
 | ui |
@@ -171,16 +169,16 @@ ui close.
 ```
 
 
-Note that to update the contents of your window once it is open, you have the method `SpPresenter>>withWindowDo:`.
-But we will discuss it later in this book. More information about managing windows: e.g., opening dialog boxes or setting the about text is present in Chapter *@cha_managing_windows@*.
+Note that to update the contents of your window once it is open, you have the method `SpPresenter>>withWindowDo:`,
+but we will discuss it later in this book. More information about managing windows: e.g., opening dialog boxes or setting the about text is present in Chapter *@cha_managing_windows@*.
 
-This concludes our first example of a Spec user interface. We now continue with more examples on how to configure the different widgets that can be used in such a user interface.
+This concludes our first example of a Spec user interface. In the next chapter we continue with more examples on how to configure the different widgets that can be used in such a user interface.
 
 ### Conclusion
 
 
 In this chapter we have given you a little example of Spec user interfaces. We have first shown you what the different steps are to build a user interface with Spec.
 
-More examples of Spec user interfaces are found in the Pharo Image itself. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
+More examples of Spec user interfaces are found in the Pharo image itself. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
 
 We recommend that you at least read Chapter *@cha_reuse@* about reuse of Spec widgets, which is the key reason behind the power of Spec. This knowledge will help you in building UIs faster through better reuse, and also allow your own UIs to be reused. 
