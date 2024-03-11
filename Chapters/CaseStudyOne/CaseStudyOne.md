@@ -20,7 +20,7 @@ https://github.com/SquareBracketAssociates/CodeOfSpec20Book
 ### Application
 
 Spec20 introduces the concept of an application. An _application_ is a small object responsible for keeping the state of your application. 
-It manages, for example, the multiple windows that can compose your application, and its back-end (Morphic or Gtk), and can hold properties shared by the application.
+It manages, for example, the multiple windows that can compose your application, and its backend (Morphic or Gtk), and can hold properties shared by the application.
 
 We start to define an application as follows: 
 
@@ -29,7 +29,7 @@ SpApplication << #ImdbApp
     package: 'Spec2-TutorialOne'
 ```
 
-In this example, we will show how we define which back-end to use and this will allow us to switch between Morphic and GTK.
+In this example, we will show how we define which backend to use and this will allow us to switch between Morphic and GTK.
 
 ### A basic film model
 
