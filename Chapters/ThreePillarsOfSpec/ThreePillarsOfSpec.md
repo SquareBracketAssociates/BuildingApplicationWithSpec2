@@ -3,7 +3,7 @@
 
 status: spellchecked
 
-A presenter has a dual role in Spec. On the one hand, it acts as the glue between domain objects and widgets, and on the other hand, it implements the user interface logic by connecting sub-presenters together.
+A presenter has a dual role in Spec. On the one hand, it acts as the glue between domain objects and widgets, and on the other hand, it implements the user interface logic by connecting subpresenters together.
 These two aspects compose the core of a presenter and this is what this chapter describes.
 
 We start by presenting an important aspect of Presenters: the way they handle communication with domain objects that here we call a model.
@@ -13,7 +13,7 @@ In this chapter, we visit the key aspects of Spec and put the important customiz
 ### About presenter on a model
 
 It is frequent that you want to open a presenter on a given object such as your list of todo items.
-In that case, you would like the sub-presenters (list, text,..) get initialized based on the object that you passed. 
+In that case, you would like the subpresenters (list, text,..) get initialized based on the object that you passed. 
 For example, you may want to get all the items in your basket.
 
 However, simply instantiating a presenter using the message `new` and passing the object will not work because the messages such as `initializePresenters` will be already sent.
@@ -213,15 +213,15 @@ In general, the `initializePresenters` method should follow the pattern:
 - widget configuration specification
 - specification of focus order
 
-The last step is not mandatory since the focus order is by default given by the order of declaration of the sub-presenters.
+The last step is not mandatory since the focus order is by default given by the order of declaration of the subpresenters.
 
 
 
 **Note.** Specifying the method `initializePresenters` is mandatory, as without it the UI would have no widgets.
 
 
-#### Sub-presenter instantiation
- 
+#### Subpresenter instantiation
+
 The instantiation of a subpresenter (i.e., the model for a widget composing the UI) can be done in two ways: through the use of a creation method or through the use of the `instantiate:` method.
 
 - Considering the first option, the framework provides unary messages for the creation of all basic widgets. The format of these messages is `new[Widget]`, for example, `newButton` creates a button widget, and `newList` creates a list widget. The complete list of available widget creation methods can be found in the class `SpPresenter` in the protocol `widgets`.

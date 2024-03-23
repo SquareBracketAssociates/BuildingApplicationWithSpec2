@@ -9,7 +9,7 @@ This chapter presents the available layouts, their definition, and how layouts c
 
 ### Basic principle reminder
 
-Spec expects that layouts objects, instances of the layout classes, are associated with a presenter. Each presenter should describe the positioning of its sub-presenters.
+Spec expects that layouts objects, instances of the layout classes, are associated with a presenter. Each presenter should describe the positioning of its subpresenters.
 
 Contrary to Spec1.0 where layouts were only defined at the class level, in Spec2.0
 to define the layout of a presenter you can:
@@ -20,7 +20,7 @@ to define the layout of a presenter you can:
 
 Note that the possibility of defining a class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
 
-This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using presenter instances directly, not forcing you to declare sub-presenters in instance variables upfront and then use their names as it was done in Spec1.0.
+This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using presenter instances directly, not forcing you to declare subpresenters in instance variables upfront and then use their names as it was done in Spec1.0.
 It is, however, possible that there are cases where you want a layout "template"... so you still can do it.
 
 
@@ -69,7 +69,7 @@ What we see is that by default a presenter expands its size to fit the space of 
 An element in a vertical box will use all available horizontal space, and fill
 vertical space according to the rules. This is inversed in a horizontal box.
 
-We can refine this layout to indicate that the sub-presenters should not expand to their container using the message `add:expand:`. The result is shown in Figure *@TwoButtonsLeftToRightExpanded@*.
+We can refine this layout to indicate that the subpresenters should not expand to their container using the message `add:expand:`. The result is shown in Figure *@TwoButtonsLeftToRightExpanded@*.
 
 ```
 TwoButtons >> defaultLayout
@@ -251,7 +251,7 @@ It is possible to change the layout of a presenter dynamically for example from 
 
 ### Grid layout
 
-The class `SpGridLayout` arranges sub-presenters in a grid according to certain layout properties such as:
+The class `SpGridLayout` arranges subpresenters in a grid according to certain layout properties such as:
 - A position is mandatory (`columnNumber@rowNumber`)
 - A span can be added if desired (`columnExtension@rowExtension`)
 

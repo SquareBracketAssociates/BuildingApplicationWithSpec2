@@ -60,7 +60,7 @@ TestCase << #ClassVisualizerPresenterTest
 #### Correct initialization
 
 
-The tool will be instantiated with a model. In this case, we will use `Object` because it is the root of almost all classes. When we instantiate the spec application of Figure *@fig:SpecApp@*, all the sub-presenters of the application must show the data of the model.
+The tool will be instantiated with a model. In this case, we will use `Object` because it is the root of almost all classes. When we instantiate the spec application of Figure *@fig:SpecApp@*, all the subpresenters of the application must show the data of the model.
 
 ```
 ClassVisualizerPresenterTest >> testInitialization
