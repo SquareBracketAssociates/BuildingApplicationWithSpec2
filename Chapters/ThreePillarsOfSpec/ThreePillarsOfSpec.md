@@ -30,7 +30,7 @@ First, we create a new presenter class.
 
 ```
 SpPresenter << #MethodLister
-    slots: { #aClass . #list};
+    slots: { #sourceClass . #list};
     package: 'Spec2Book'
 ```
 
@@ -40,15 +40,15 @@ We define a list presenter and populate it.
 MethodLister >> initializePresenters
 
     list := self newList.
-    list items: aClass selectors sorted
+    list items: sourceClass selectors sorted
 ```
 
-Specializing the method `setModelBeforeInitialization:`, we assign its argument coming from the `on:` message to the instance variable `aClass` for future use.
+Specializing the method `setModelBeforeInitialization:`, we assign its argument coming from the `on:` message to the instance variable `sourceClass` for future use.
 
 ```
 MethodLister >> setModelBeforeInitialization: aModel
 
-    aClass := aModel
+    sourceClass := aModel
 ```
 
 We define a basic layout for the list presenter.
