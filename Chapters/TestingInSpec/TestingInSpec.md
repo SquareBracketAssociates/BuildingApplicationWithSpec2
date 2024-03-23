@@ -79,11 +79,13 @@ ClassVisualizerPresenterTest >> testInitialization
 We have to create a few methods on `ClassVisualizerPresenter` to allow a proper testing.
 ```
 ClassVisualizerPresenter >> selectPath: aCollection
+
     tree selectPath: aCollection
 ```
 
 ```
 ClassVisualizerPresenter >> stringMorphContent
+
     ^ morphPresenter morph contents
 ```
 
@@ -119,11 +121,13 @@ ClassVisualizerPresenterTest >> testSelectItemOnTreePresenter
 
 ```
 ClassVisualizerPresenter >> selectClass: aClass
+
     tree selectItem: aClass
 ```
 
 ```
 ClassVisualizerPresenter >> selectClass: aClass
+
     tree selectItem: aClass
 ```
 
@@ -148,11 +152,13 @@ ClassVisualizerPresenterTest >> testButtonChangesMorph
 
 ```
 ClassVisualizerPresenter >> clickOnColorButton
+
     button click
 ```
 
 ```
 ClassVisualizerPresenter >> stringMorphColor
+
     ^ morphPresenter morph color
 ```
 
@@ -173,6 +179,7 @@ testTextPresenterIsNotEditable
 
 ```
 ClassVisualizerPresenter >> codePresenter
+
     ^ codePresenter
 ```
 
@@ -201,6 +208,7 @@ It is important to see that in the `start` method you should configure the prese
 
 ```
 MyApplication >> start
+
     MyPresenter new
         application: self;
         open
