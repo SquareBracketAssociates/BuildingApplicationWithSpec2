@@ -38,9 +38,9 @@ We define a simple `initializePresenters` method as follows:
 
 ```
 TwoButtons >> initializePresenters
+
     button1 := self newButton.
     button2 := self newButton.
-
     button1 label: '1'.
     button2 label: '2'.
 ```
@@ -58,6 +58,7 @@ Let us define a first simple layout whose result is displayed in  Figure *@TwoBu
 
 ```
 TwoButtons >> defaultLayout
+
      ^ SpBoxLayout newLeftToRight
         add: button1;
         add: button2;
@@ -73,6 +74,7 @@ We can refine this layout to indicate that the subpresenters should not expand t
 
 ```
 TwoButtons >> defaultLayout
+
     ^ SpBoxLayout newLeftToRight
         add: #button1 expand: false;
         add: #button2 expand: false;
@@ -89,8 +91,9 @@ The full message to add presenters is: `add:expand:fill:padding:`
 
 To illustrate this API a bit, we add another button to the presenter and change the `defaultLayout` method as follows. The result is shown in Fig *@ThreeButtons@*. We want to stress however that it is better not to use a fixed width or padding.
 
-```smalltalk
+```
 TwoButtons >> defaultLayout
+
     ^ SpBoxLayout newTopToBottom
         spacing: 15;
         add: button1 expand: false fill: true padding: 5;
@@ -106,13 +109,14 @@ TwoButtons >> defaultLayout
 
 ### Example setup for layout reuse
 
-Before presenting some of the other layouts, we show an important aspect of Spec presenter composition: a composite can declare that it wants to reuse a presenter using a specific layout of such a presenter. 
+Before presenting some of the other layouts, we show an important aspect of Spec presenter composition: a composite can declare that it wants to reuse a presenter using a specific layout of such a presenter.
 
 Consider our artificial example of a two-button UI. Let us define two layouts as follows:
 We define two class methods returning different layouts. Note that we could define such methods on the instance side too and we define them on the class side to be able to get such layouts without an instance of the class.
 
 ```
 TwoButtons class >> buttonRow
+
     ^ SpBoxLayout newLeftToRight
         add: #button1;
         add: #button2;
@@ -121,13 +125,14 @@ TwoButtons class >> buttonRow
 
 ```
 TwoButtons class >> buttonColumn
+
     ^ SpBoxLayout newTopToBottom
         add: #button1;
         add: #button2;
         yourself
 ```
 
-Note that when we define the layout at the class level, we use a symbol whose name is the corresponding instance variable. Hence we use `#button2` to refer to the presenter stored in the instance variable `button2`. This mapping can be customized at the level of the presenter but we do not present this because we never got the need for it. 
+Note that when we define the layout at the class level, we use a symbol whose name is the corresponding instance variable. Hence we use `#button2` to refer to the presenter stored in the instance variable `button2`. This mapping can be customized at the level of the presenter but we do not present this because we never got the need for it.
 
 
 ### Opening with a layout
@@ -142,21 +147,24 @@ Here are some examples:
 We define a `defaultLayout` method just invoking one of the previously defined methods so that the presenter can be opened without defining a given layout.
 ```
 TwoButtons >> defaultLayout
+
     ^ self class buttonRow
 ```
 
 
 ### Better design
 
-Now we can do better and define two instance level methods to encapsulate the layout configuration. 
+Now we can do better and define two instance level methods to encapsulate the layout configuration.
 
 ```
 TwoButtons >> beColumn
+
     self layout: self class buttonColumn
 ```
 
 ```
 TwoButtons >> beRow
+
     self layout: self class buttonRow
 ```
 
@@ -182,6 +190,7 @@ SpPresenter << #ButtonAndListH
 
 ```
 ButtonAndListH >> initializePresenters
+
     buttons := self instantiate: TwoButtons.
     list := self newList.
     list items: (1 to: 10).
@@ -189,11 +198,13 @@ ButtonAndListH >> initializePresenters
 
 ```
 ButtonAndListH >> initializeWindow: aWindowPresenter
+
     aWindowPresenter title: 'SuperWidget'
 ```
 
 ```
 ButtonAndListH >> defaultLayout
+
     ^ SpBoxLayout newLeftToRight
           add: buttons;
           add: list;
@@ -214,6 +225,7 @@ ButtonAndListH << #TButtonAndListV
 
 ```
 TButtonAndListV >> initializePresenters
+
     super initializePresenters.
     buttons beColumn
 ```
@@ -234,6 +246,7 @@ We define a new `defaultLayout` method as follows:
 
 ```
 ButtonAndListV2 >> defaultLayout
+
     ^ SpBoxLayout new
         add: buttons layout: #buttonColumn;
         add: list;
@@ -265,6 +278,7 @@ SpPresenter << #GridExample
 
 ```
 GridExample >> initializePresenters
+
     nameText := self newTextInput.
     passwordText := self newTextInput.
     acceptButton := self newButton.
@@ -276,6 +290,7 @@ GridExample >> initializePresenters
 
 ```
 GridExample >> defaultLayout
+
     ^ SpGridLayout new
         add: 'Name:' at: 1@1;
         add: #nameText at: 2@1;
