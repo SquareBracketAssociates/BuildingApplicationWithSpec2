@@ -100,6 +100,7 @@ The morph must change as well.
 
 ```
 ClassVisualizerPresenterTest >> testSelectItemOnTreePresenter
+
     "We have initialized the tree with Object as its roots.
      The class OrderedCollection is a subclass of Object.
      We would simulate that a user selects OrderedCollection
