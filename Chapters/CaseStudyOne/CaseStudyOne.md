@@ -398,7 +398,7 @@ ImdbFilmPresenter >> editable: aBoolean
 Now we improve the `initializePresenters` of `ImdbFilmListPresenter`.
 - First we instantiate `ImdbFilmPresenter`.
 - Second, we configure it as read-only by sending the `editable: false` message.
-- Third we define that, when an element of the list is selected, we should display the information in the detail presenter. While we can express this in the `initializePresenters` method, we prefer to specify it in the `connectPresenters` method. See section *@section_define_component_communication@*.
+- Third we define that, when an element of the list is selected, we should display the information in the detail presenter. While we can express this in the `initializePresenters` method, we prefer to specify it in the `connectPresenters` method. See Section *@section_define_component_communication@*.
 
 
 ```
