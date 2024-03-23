@@ -153,7 +153,7 @@ In this layout, we add two rows to the UI, one with the buttons and one with the
 
 
 
-Once the class method `defaultSpec` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new openWithSpec`. You should obtain a widget similar to the one shown in Fig. *@figFirstCut@*.
+Once the class method `defaultSpec` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new openWithSpec`. You should obtain a widget similar to the one shown in Figure *@figFirstCut@*.
 
 ![A first version of the customer satisfaction UI.](figures/FirstCut.png width=50&label=figFirstCut)
 
@@ -173,7 +173,7 @@ CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
 
 
 Of course, you are free to use the helper methods to return the title and extent of your widget. 
-Now reopening your widget you should get the one displayed in Fig. *@figSecondCut@*.
+Now reopening your widget you should get the one displayed in Figure *@figSecondCut@*.
 
 
 ![A final version of the customer satisfaction UI.](figures/SecondCut.png width=50&label=figSecondCut)

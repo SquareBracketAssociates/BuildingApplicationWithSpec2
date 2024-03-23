@@ -54,7 +54,7 @@ The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. A b
 
 ![Two buttons placed horizontally from left to right.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight)
 
-Let us define a first simple layout whose result is displayed in  Fig. *@TwoButtonsLeftToRight@* as follows.
+Let us define a first simple layout whose result is displayed in  Figure *@TwoButtonsLeftToRight@* as follows.
 
 ```
 TwoButtons >> defaultLayout
