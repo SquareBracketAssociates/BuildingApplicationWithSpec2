@@ -315,6 +315,6 @@ The following messages of the `SpListModel` API are noteworthy:
 
 In this chapter, we have given you a first contact with Spec user interfaces. We have first shown you what the different steps are to build a user interface with Spec, and then shown you two examples of how to configure existing Spec widgets.
 
-More examples of Spec user interfaces are found in the Pharo Image itself. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
+More examples of Spec user interfaces are found in the Pharo image itself. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
 
 We recommend that you at least read the next chapter about the reuse of Spec widgets, which is the key reason behind the power of Spec. This knowledge will help you in building UIs faster through better reuse, and also allow your own UIs to be reused. The chapter after that on the three pillars of Spec gives a more complete overview of the functioning of Spec and is worthwhile to read in its entirety. Later chapters are intended more as reference material for specific problems or use cases, but can of course be read in full as well.
