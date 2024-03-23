@@ -166,7 +166,7 @@ styleSheet
 ### Anatomy of a style
 
 The styles in Spec format are similar to CSS. 
-Style sheets are written using STON as a format.
+Stylesheets are written using STON as a format.
 STON, this  textual object notation is described in a dedicated chapter in the _Enterprise Pharo_ book available at [http://books.pharo.org](http://books.pharo.org).
 We need to write the styles as a string and then parse it as a STON file.
 
@@ -299,7 +299,7 @@ SpApplication << #CustomStylesApplication
 ```
 
 
-In the class, we need to override the method `styleSheet` to return our custom style sheet concatenated with the default one.
+In the class, we need to override the method `styleSheet` to return our custom stylesheet concatenated with the default one.
 
 ```
 CustomStylesApplication >> styleSheet
