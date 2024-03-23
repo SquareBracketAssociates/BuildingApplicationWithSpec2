@@ -29,7 +29,7 @@ This is exactly what we do hereafter.
 First, we create a new presenter class.
 
 ```
-SpPresenter << #SpMethodLister
+SpPresenter << #MethodLister
     slots: { #aClass . #list};
     package: 'Spec2Book'
 ```
@@ -37,7 +37,7 @@ SpPresenter << #SpMethodLister
 We define a list presenter and populate it.
 
 ```
-SpMethodLister >> initializePresenters
+MethodLister >> initializePresenters
 
     list := self newList.
     list items: aClass selectors sorted
@@ -46,7 +46,7 @@ SpMethodLister >> initializePresenters
 Specializing the method `setModelBeforeInitialization:`, we assign its argument coming from the `on:` message to the instance variable `aClass` for future use.
 
 ```
-SpMethodLister >> setModelBeforeInitialization: aModel
+MethodLister >> setModelBeforeInitialization: aModel
 
     aClass := aModel
 ```
@@ -54,7 +54,7 @@ SpMethodLister >> setModelBeforeInitialization: aModel
 We define a basic layout for the list presenter.
 
 ```
-SpMethodLister >> defaultLayout
+MethodLister >> defaultLayout
 
     ^ SpBoxLayout newTopToBottom add: #list; yourself
 ```
@@ -62,7 +62,7 @@ SpMethodLister >> defaultLayout
 The following snippet creates a window with the list of methods of the class `Point` as shown in Figure *@pointselectors@*.
 
 ```
-(SpMethodLister on: Point) open.
+(MethodLister on: Point) open.
 ```
 
 ![A simple list of sorted selectors of the class Point.](figures/PointSelectors.png label=pointselectors&width=50)
@@ -78,7 +78,7 @@ The following snippet shows that the change of model is not taken into account i
 
 ```
 | lister |
-lister := SpMethodLister on: Point.
+lister := MethodLister on: Point.
 lister open.
 lister class: Rectangle
 ```
@@ -98,7 +98,7 @@ You do not need to define the method `setModelBeforeInitialization:` as we previ
 Let us revisit our little example. First, we inherit from `SpPresenterWithModel`.
 
 ```
-SpPresenterWithModel << #SpMethodListerWithModel
+SpPresenterWithModel << #MethodListerWithModel
     slots: { #list };
     package: 'Spec2Book'
 ```
@@ -106,7 +106,7 @@ SpPresenterWithModel << #SpMethodListerWithModel
 Second, we define `initializePresenters`.
 
 ```
-SpMethodListerWithModel >> initializePresenters
+MethodListerWithModel >> initializePresenters
 
     list := self newList
 ```
@@ -114,7 +114,7 @@ SpMethodListerWithModel >> initializePresenters
 You can then implement the `modelChanged` method to refresh your UI when the model changes. 
 
 ```
-SpMethodListerWithModel >> modelChanged
+MethodListerWithModel >> modelChanged
 
     list items: announcingObject selectors sorted
 ```
@@ -123,7 +123,7 @@ SpMethodListerWithModel >> modelChanged
 We define the same layout method as before:
 
 ```
-SpMethodListerWithModel >> defaultLayout
+MethodListerWithModel >> defaultLayout
 
     ^ SpBoxLayout newTopToBottom add: #list; yourself
 ```
@@ -135,7 +135,7 @@ Now we can open our widget. As the following script shows, it will react to the 
 
 ```
 | lister |
-lister := SpMethodListerWithModel on: Point.
+lister := MethodListerWithModel on: Point.
 lister open.
 lister model: Rectangle
 ```
@@ -147,7 +147,7 @@ So the code above should be:
 ```
 | lister app |
 app := SpApplication new
-lister := SpMethodListerWithModel newApplication: app.
+lister := MethodListerWithModel newApplication: app.
 ```
 
 Then we have is a problem because we want to specify the model too. The correct and idiomatic way is to use the method `newApplication:model:` and the final code version is:
@@ -155,7 +155,7 @@ Then we have is a problem because we want to specify the model too. The correct 
 ```
 | lister |
 app := SpApplication new.
-lister := SpMethodListerWithModel newApplication: app model: Point.
+lister := MethodListerWithModel newApplication: app model: Point.
 lister open.
 lister model: Rectangle
 ```
