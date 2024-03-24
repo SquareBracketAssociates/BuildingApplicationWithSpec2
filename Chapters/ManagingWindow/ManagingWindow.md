@@ -25,6 +25,7 @@ SpPresenter << #WindowExamplePresenter
 
 ```
 WindowExamplePresenter >> initializePresenters
+
    button1 := self newButton.
    button2 := self newButton.
    button1 label: '+'.
@@ -33,6 +34,7 @@ WindowExamplePresenter >> initializePresenters
 
 ```
 WindowExamplePresenter >> defaultLayout
+
    ^ SpBoxLayout newLeftToRight
          add: #button1;
          add: #button2;
@@ -47,8 +49,7 @@ A user interface can be opened as a normal window or opened as a dialog box, i.e
 
 As we have shown in previous chapters, to open a user interface you need to instantiate the `SpPresenter` for that interface and send it the `open` message. This creates an instance of `SpWindowPresenter` which points to the window containing the user interface and shows it in a window on the screen.
 
-We have also seen the `openWithLayout:` method that takes a layout (instance of SpLayout subclasses) as an argument. 
-Instead of using the default layout, the opened UI will use the layout passed as an argument. 
+We have also seen the `openWithLayout:` method that takes a layout (instance of SpLayout subclasses) as an argument. Instead of using the default layout, the opened UI will use the layout passed as an argument.
 
 For example, below we show the two ways we can open a window for our `WindowExamplePresenter`. It will open two identical windows as shown in *@windowExample1@*.
 
@@ -96,6 +97,7 @@ Spec provides for the possibility to check if a window can effectively be closed
 
 ```
 WindowExamplePresenter >> initializePresenters
+
    button1 := self newButton.
    button2 := self newButton.
    button1 label: '+'.
@@ -108,6 +110,7 @@ The behavior of the close button however is still not changed, closing a window 
 
 ```
 WindowExample >> okToChange
+
    ^ false
 ```
 
@@ -249,7 +252,8 @@ to send the message `title:` to the `windowPresenter` as follows:
 
 ```
 WindowExamplePresenter >> initializeWindow: aWindowPresenter
-       aWindowPresenter title: 'Click to grow or shrink.'
+
+    aWindowPresenter title: 'Click to grow or shrink.'
 ```
 
 
@@ -266,7 +270,7 @@ presenter window title: 'I am different!'
 ### Setting the icon
 
 
-!!todo Does not work :\( 
+!!todo Does not work :\(
 
 
 At the bottom of the main Pharo window, there is a window taskbar, allowing the user to switch between windows by clicking on the buttons that represent each window. These buttons also have an icon that is meant to represent the window's kind. This icon can also be configured through Spec, in two different ways.
@@ -288,6 +292,7 @@ Secondly, the icon can be changed by overriding the `windowIcon` message, as bel
 
 ```
 WindowExamplePresenter >> windowIcon
+
    ^ self iconNamed: #thumbsUp
 ```
 
@@ -407,6 +412,7 @@ Here is a simple example showing how the default buttons are set.
 
 ```
 initializeDialogWindow: aDialogWindowPresenter
+
 	"Used to initialize the model in the case of the use into a dialog window.
 	 Override this to set buttons other than the default (Ok, Cancel)."
 

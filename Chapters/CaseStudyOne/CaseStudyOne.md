@@ -55,6 +55,7 @@ We define a method that lazy initializes the `films` variable to an ordered coll
 
 ```
 ImdbFilm class >> films
+
     ^ films ifNil: [ films := OrderedCollection new ]
 ```
 
@@ -63,6 +64,7 @@ And to finish we define a way to add a film to the list.
 
 ```
 ImdbFilm class >> addFilm: aFilm
+
     films add: aFilm
 ```
 
@@ -87,6 +89,7 @@ We define how the information should be presented by defining a method named `de
 
 ```
 ImdbFilmListPresenter >> defaultLayout
+
     ^ SpBoxLayout newTopToBottom
         add: filmList;
         yourself
@@ -110,6 +113,7 @@ In fact, the list is more a table than a mere list: we describe that we want thr
 
 ```
 ImdbFilmListPresenter >> initializePresenters
+
     filmList := self newTable
         addColumn: (SpStringTableColumn title: 'Name'
             evaluated: #name);
@@ -131,6 +135,7 @@ We define the method `updatePresenter` which is automatically invoked after `ini
 
 ```
 ImdbFilmListPresenter >> updatePresenter
+
     filmList items: ImdbFilm films
 ```
 
@@ -173,6 +178,7 @@ The method `initializeWindow:` allows you to define a title, a default size (mes
 
 ```
 ImdbFilmListPresenter >> initializeWindow: aWindowPresenter
+
     aWindowPresenter
         title: 'Mini IMDB';
         initialExtent: 600@400;
@@ -192,6 +198,7 @@ In fact, we will define a different presenter to be able to define a film.
 
 ```
 ImdbFilmListPresenter >> addFilm
+
     "empty for now"
 ```
 
@@ -224,6 +231,7 @@ This time we use a grid layout. With a simple grid layout, you can define the po
 
 ```
 ImdbFilmPresenter >> defaultLayout
+
     ^ SpGridLayout new
         add: 'Name' at: 1@1; add: nameText at: 2@1;
         add: 'Director' at: 1@2; add: directorText at: 2@2;
@@ -237,12 +245,15 @@ Here we only create getters because we will need them when creating the correspo
 
 ```
 ImdbFilmPresenter >> year
+
     ^ yearNumber text
 
 ImdbFilmPresenter >> director
+
     ^ directorText text
 
 ImdbFilmPresenter >> name
+
     ^ nameText text
 ```
 
@@ -250,8 +261,9 @@ For convenience, a `SpGridLayout` also comes with a builder that lets you add el
 
 ```
 ImdbFilmPresenter >> defaultLayout
+
     ^ SpGridLayout build: [ :builder |
-        builder 
+        builder
             add: 'Name'; add: nameText; nextRow;
             add: 'Director'; add: directorText; nextRow;
             add: 'Year'; add: yearNumber ]
@@ -265,6 +277,7 @@ And similarly, as before, we define the method `initializePresenters` to initial
 
 ```
 ImdbFilmPresenter >> initializePresenters
+
     nameText := self newTextInput.
     directorText := self newTextInput.
     yearNumber := self newNumberInput
@@ -277,7 +290,7 @@ Now we can try our little application with the following script and obtain a sit
 
 ```
 | app |
-app := ImdbApp new. 
+app := ImdbApp new.
 (app newPresenter: ImdbFilmPresenter) open.
 ```
 
@@ -291,6 +304,7 @@ We can solve that by using non-homogenous columns and asking the second column t
 
 ```
 ImdbFilmPresenter >> defaultLayout
+
     ^ SpGridLayout build: [ :builder |
         builder
             beColumnNotHomogeneous;
@@ -306,6 +320,7 @@ We now set the window properties by adding the following new `initializeWindow:`
 
 ```
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
+
     aWindowPresenter
         title: 'Film';
         initialExtent: 400 @ 250
@@ -320,6 +335,7 @@ Here we specialize the method `initializeDialogWindow:` to add two buttons that 
 
 ```
 ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
+
     aDialogPresenter centered.
     aDialogPresenter
         addButton: 'Cancel' do: [ :presenter | presenter close ];
@@ -338,6 +354,7 @@ to our little database and we update the list as shown in Figure *@refreshed@*.
 
 ```
 ImdbFilmListPresenter >> addFilm
+
     | presenter windowPresenter |
     presenter := ImdbFilmPresenter newApplication: self application.
     windowPresenter := presenter openModal.
@@ -379,6 +396,7 @@ We redefine the default layout. We will show later that we can have different la
 
 ```
 ImdbFilmListPresenter >> defaultLayout
+
     ^ SpBoxLayout newTopToBottom
         add: filmList;
         add: detail;
@@ -390,6 +408,7 @@ Finally, since we are going to use this presenter in different places, we will n
 
 ```
 ImdbFilmPresenter >> editable: aBoolean
+
     nameText editable: aBoolean.
     directorText editable: aBoolean.
     yearNumber editable: aBoolean
@@ -398,11 +417,12 @@ ImdbFilmPresenter >> editable: aBoolean
 Now we improve the `initializePresenters` of `ImdbFilmListPresenter`.
 - First we instantiate `ImdbFilmPresenter`.
 - Second, we configure it as read-only by sending the `editable: false` message.
-- Third we define that, when an element of the list is selected, we should display the information in the detail presenter. While we can express this in the `initializePresenters` method, we prefer to specify it in the `connectPresenters` method. See section *@section_define_component_communication@*.
+- Third we define that, when an element of the list is selected, we should display the information in the detail presenter. While we can express this in the `initializePresenters` method, we prefer to specify it in the `connectPresenters` method. See Section *@section_define_component_communication@*.
 
 
 ```
 ImdbFilmListPresenter >> initializePresenters
+
     filmList := self newTable
         addColumn: (SpStringTableColumn title: 'Name'
              evaluated: #name);
@@ -424,6 +444,7 @@ and populate the presenter accordingly. We will use this method in the following
 
 ```
 ImdbFilmPresenter >> setModel: aFilm
+
     nameText text: aFilm name.
     directorText text: aFilm director.
     yearNumber number: aFilm year.
@@ -437,6 +458,7 @@ The `whenSelectionChangedDo:` method expects a block with zero or one argument. 
 
 ```
 ImdbFilmListPresenter >> connectPresenters
+
     filmList whenSelectionChangedDo: [ :selectedItemMode |
         selectedItemMode isEmpty
              ifFalse: [ detail setModel: selectedItemMode selectedItem ] ].
@@ -483,9 +505,11 @@ We categorize them in a `testing - support` protocol to show they are only usefu
 
 ```
 ImdbFilmListPresenter >> clickFilmAtIndex: anIndex
+
     filmList clickAtIndex: anIndex
 
 ImdbFilmListPresenter >> detail
+
     ^ detail
 ```
 
@@ -495,18 +519,21 @@ We define three helper methods on ImdbFilm to reset the stored films and add the
 
 ```
 ImdbFilm class >> reset
+
     films := OrderedCollection new
 ```
 
 
 ```
 ImdbFilm class >> addET
+
     films add: self ET
 ```
 
 
 ```
 ImdbFilm class >> ET
+
     ^ self new
         name: 'E.T.';
         director: 'Steven Spielberg';
@@ -519,6 +546,7 @@ Now we can define a method `setUp`.
 
 ```
 FilmListPresenterTest >> setUp
+
     super setUp.
     ImdbFilm reset.
     ImdbFilm addET
@@ -528,6 +556,7 @@ Now we update the test to keep the opened presenter in an instance variable. Thi
 
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
+
     | detail |
     "Prepare"
     presenter := ImdbFilmListPresenter new.
@@ -545,6 +574,7 @@ FilmListPresenterTest >> testWhenSelectingOneFilmThenDetailIsUpdated
 
 ```
 FilmListPresenterTest >> tearDown
+
     presenter delete.
     super tearDown
 ```
@@ -558,6 +588,7 @@ Let us add the following getter method to support our tests.
 
 ```
 ImdbFilmListPresenter >> filmList
+
     ^ filmList
 ```
 
@@ -565,6 +596,7 @@ Let us test that a list has one film and that if we select a non-existent index,
 
 ```
 FilmListPresenterTest >> testWhenSelectingOneFilmAndClickingOnEmpty
+
     | name |
     "Prepare"
     presenter := ImdbFilmListPresenter new.
@@ -587,6 +619,7 @@ Since we do not really understand what would be to set the list as multiple sele
 
 ```
 FilmListPresenterTest >> testListIsSimpleSelection
+
     presenter := ImdbFilmListPresenter new.
     presenter open.
     self deny: presenter filmList isMultipleSelection
@@ -602,6 +635,7 @@ With Spec, a presenter can have multiple layouts and even layouts that are creat
 
 ```
 ImdbFilmListPresenter >> listAboveLayout
+
     ^ SpBoxLayout newTopToBottom
         add: detail;
         add: filmList;
@@ -622,6 +656,7 @@ Here `listOnlyLayout` only shows the list.
 
 ```
 ImdbFilmListPresenter >> listOnlyLayout
+
     ^ SpBoxLayout newTopToBottom
         add: filmList;
         yourself
@@ -657,6 +692,7 @@ The easiest way to declare a transmission is by sending the `transmitTo:` messag
 
 ```
 ImdbFilmListPresenter >> connectPresenters
+
     filmList transmitTo: detail.
 ```
 
@@ -667,11 +703,13 @@ Let us explain a bit. `ImdbFilmPresenter` is a custom presenter. Spec does not k
 
 ```
 ImdbFilmPresenter >> inputModelPort
+
     ^ SpModelPort newPresenter: self
 ```
 
 ```
 ImdbFilmPresenter >> defaultInputPort
+
     ^ self inputModelPort
 ```
 
@@ -681,6 +719,7 @@ Note that we could have inlined `inputModelPort` definition into the `defaultInp
 The input data will be set by using the `setModel:` method we already defined on `ImdbFilmPresenter`.
 
 You can now open the application and see that it still behaves as expected.
+
 ```
 | app |
 app := ImdbApp new.
@@ -712,7 +751,7 @@ SpMorphicConfiguration << #ImdbConfiguration
 ```
 ImdbApp >> initialize
 
-     super initialize.
+    super initialize.
     self
         useBackend: #Morphic
         with: ImdbConfiguration new.
@@ -722,6 +761,7 @@ We can now define our custom styles. The easiest way is to create a style from a
 
 ```
 ImdbConfiguration >> customStyleSheet
+
     ^ '
 .application [
     .customLabel [ Font { #color: #red } ] ]'
@@ -745,6 +785,7 @@ We add a `nameLabel` instance variable to `ImdbFilmPresenter` to get a label and
 
 ```
 ImdbFilmPresenter >> initializePresenters
+
     nameLabel := self newLabel
         label: 'Name';
         addStyle: 'customLabel';
@@ -780,5 +821,5 @@ We can now see that the name label of a film detail has been styled.
 
 ### Conclusion
 
-We saw that with Spec the developer defines how a visual element (a presenter) is composed of other visual elements. 
+We saw that with Spec the developer defines how a visual element (a presenter) is composed of other visual elements.
 Such a presenter has the responsibility to describe the interaction with other presenters but also with the domain objects. It has also the responsibility to describe its visual aspect.

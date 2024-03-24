@@ -8,3 +8,4 @@ Here are some guidelines about writing style and spelling that resulted from dis
 * Do not use protocol references because they are not useful and may change.
 * Write "Section 6.1", not "section 6.1".
 * Write "Figure 6-2", not "figure 6-2".
+* Do not use a prefix "Sp" for example class names because the prefix is reserved for Spec classes.

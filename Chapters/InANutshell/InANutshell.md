@@ -77,10 +77,11 @@ Here we specialize the method `start` as follows:
 
 ```
 MyApplication >> start
+
     (MyMainPresenter newApplication: self) open
 ```
 
-You can run your application with `MyApplication new run`. It will call the `start` method you defined. 
+You can run your application with `MyApplication new run`. It will call the `start` method you defined.
 
 
 ### Application configuration
@@ -101,6 +102,7 @@ Then we define the method `configure:` as follows:
 
 ```
 ImdbMorphicConfiguration >> configure: anApplication
+
     super configure: anApplication.
     "There are ways to write/read this from strings or files,
      but this is how you do it programatically."
@@ -117,6 +119,7 @@ Finally, in the corresponding application class, we declare that the Morphic bac
 
 ```
 ImdbApp >> initialize
+
     super initialize.
     self useBackend: #Morphic with: ImdbMorphicConfiguration new
 ```
@@ -134,6 +137,7 @@ Then we configure it by selecting and extending CSS.
 
 ```
 ImdbGtkConfiguration >> configure: anApplication
+
     super configure: anApplication.
     "This will choose the theme 'Sierra-dark' if it is available"
     self installTheme: 'Sierra-dark'.
@@ -144,6 +148,7 @@ And in the application initialization, we declare that the configuration should 
 
 ```
 ImdbApp >> initialize
+
     super initialize.
     self useBackend: #Gtk with: ImdbGtkConfiguration new
 ```
@@ -170,6 +175,7 @@ Figure *@layout6B@* shows the corresponding result.
 
 ```
 MyMiniBrowserPresenter >> defaultLayout
+
     ^ (SpBoxLayout newTopToBottom
         spacing: 5;
         add: (SpBoxLayout newLeftToRight

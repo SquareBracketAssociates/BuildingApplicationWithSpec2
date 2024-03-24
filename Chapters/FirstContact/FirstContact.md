@@ -153,7 +153,7 @@ In this layout, we add two rows to the UI, one with the buttons and one with the
 
 
 
-Once the class method `defaultSpec` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new openWithSpec`. You should obtain a widget similar to the one shown in Fig. *@figFirstCut@*.
+Once the class method `defaultSpec` is defined, you can start to open your UI as follows: `CustomerSatisfactionPresenter new openWithSpec`. You should obtain a widget similar to the one shown in Figure *@figFirstCut@*.
 
 ![A first version of the customer satisfaction UI.](figures/FirstCut.png width=50&label=figFirstCut)
 
@@ -173,7 +173,7 @@ CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
 
 
 Of course, you are free to use the helper methods to return the title and extent of your widget. 
-Now reopening your widget you should get the one displayed in Fig. *@figSecondCut@*.
+Now reopening your widget you should get the one displayed in Figure *@figSecondCut@*.
 
 
 ![A final version of the customer satisfaction UI.](figures/SecondCut.png width=50&label=figSecondCut)
@@ -315,6 +315,6 @@ The following messages of the `SpListModel` API are noteworthy:
 
 In this chapter, we have given you a first contact with Spec user interfaces. We have first shown you what the different steps are to build a user interface with Spec, and then shown you two examples of how to configure existing Spec widgets.
 
-More examples of Spec user interfaces are found in the Pharo Image itself. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
+More examples of Spec user interfaces are found in the Pharo image itself. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
 
 We recommend that you at least read the next chapter about the reuse of Spec widgets, which is the key reason behind the power of Spec. This knowledge will help you in building UIs faster through better reuse, and also allow your own UIs to be reused. The chapter after that on the three pillars of Spec gives a more complete overview of the functioning of Spec and is worthwhile to read in its entirety. Later chapters are intended more as reference material for specific problems or use cases, but can of course be read in full as well.

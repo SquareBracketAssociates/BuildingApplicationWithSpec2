@@ -13,7 +13,7 @@ After completing this chapter you should read Chapter *@cha_reuse@* about reuse 
 We construct a simple customer satisfaction UI, which allows a user to give feedback about a service by clicking on one of three buttons. This feedback should be recorded and processed, but this is outside of the scope of this example. We show a screenshot of the UI in Figure *@figCustomersBasic@*.
 
 
-### Create the class of the UI 
+### Create the class of the UI
 
 
 All user interfaces in Spec are subclasses of `SpPresenter`, so
@@ -46,6 +46,7 @@ their intent.
 
 ```
 CustomerSatisfactionPresenter >> initializePresenters
+
     screen := self newLabel.
     buttonHappy := self newButton.
     buttonNeutral := self newButton.
@@ -60,13 +61,12 @@ The following method shows how `newButton` is defined.
 
 ```
 SpPresenter >> newButton
+
     ^ self instantiate: SpButtonPresenter
 ```
 
 
-Note that the naming may be a bit confusing since we write `newButton` while it
-will create a button _presenter_ and not a button _widget_, which Spec will take 
-care by itself. We do not use `newButtonPresenter` to make the API easier to use.
+Note that the naming may be a bit confusing since we write `newButton` while it will create a button _presenter_ and not a button _widget_, which Spec will take care by itself. We do not use `newButtonPresenter` to make the API easier to use.
 
 !!note **Do not** call `new` to instantiate a widget that is part of your UI. An alternative way to instantiate widgets is to use the message `instantiate:` with a presenter's class as argument. For example `screen := self instantiate: SpLabelPresenter`. This allows one to instantiate standard and non-standard widgets.
 
@@ -76,6 +76,7 @@ Second, we configure the buttons of our UI. The message `label:` defines their l
 
 ```
 CustomerSatisfactionPresenter >> initializePresenters
+
     ... continued ...
     screen label: 'Please give us your feedback.'.
     buttonHappy
@@ -96,12 +97,13 @@ Each application is able to define its own icon provider by defining a subclass 
 
 #### Presenter interaction logic
 
-Now we define what will happen when the user presses a button. 
-We define this in a separate method called `connectPresenters`: 
+Now we define what will happen when the user presses a button.
+We define this in a separate method called `connectPresenters`:
 
 
 ```
 CustomerSatisfactionPresenter >> connectPresenters
+
     buttonHappy action: [ screen label: buttonHappy label ].
     buttonNeutral action: [ screen label: buttonNeutral label ].
     buttonBad action: [ screen label: buttonBad label ].
@@ -121,7 +123,8 @@ The widgets have now been defined and configured, but their placement in the UI 
 
 ```
 CustomerSatisfactionPresenter >> defaultLayout
-    ^ SpBoxLayout newVertical 
+
+    ^ SpBoxLayout newVertical
         add: (SpBoxLayout newLeftToRight
                 add: buttonHappy;
                 add: buttonNeutral;
@@ -143,10 +146,11 @@ Once the method `defaultLayout` is defined, you can start to open your UI as fol
 ### Define a title and window size, open and close the UI
 
 
-To set the window title and the initial size of your widget, you have to specialize the method `initializeWindow:` as follows: 
+To set the window title and the initial size of your widget, you have to specialize the method `initializeWindow:` as follows:
 
 ```
-CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter    
+CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
+
     aWindowPresenter
         title: 'Customer Satisfaction Survey';
         initialExtent: 400@100
@@ -181,4 +185,4 @@ In this chapter we have given you a little example of Spec user interfaces. We h
 
 More examples of Spec user interfaces are found in the Pharo image itself. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with widgets and user interfaces is made easy because all widgets can be opened as standalone windows.
 
-We recommend that you at least read Chapter *@cha_reuse@* about reuse of Spec widgets, which is the key reason behind the power of Spec. This knowledge will help you in building UIs faster through better reuse, and also allow your own UIs to be reused. 
+We recommend that you at least read Chapter *@cha_reuse@* about reuse of Spec widgets, which is the key reason behind the power of Spec. This knowledge will help you in building UIs faster through better reuse, and also allow your own UIs to be reused.

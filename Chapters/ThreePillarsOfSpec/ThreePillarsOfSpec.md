@@ -16,8 +16,7 @@ In this chapter, we visit the key aspects of Spec and put the important customiz
 
 
 It is frequent that you want to open a presenter on a given object such as your list of todo items.
-In that case, you would like the subpresenters (list, text,..) get initialized based on the object that you passed. 
-For example, you may want to get all the items in your basket.
+In that case, you would like the subpresenters (list, text,..) get initialized based on the object that you passed. For example, you may want to get all the items in your basket.
 
 
 However, simply instantiating a presenter using the message `new` and passing the object will not work because the messages such as `initializePresenters` will be already sent.
@@ -118,7 +117,7 @@ MethodListerWithModel >> initializePresenters
     list := self newList
 ```
 
-You can then implement the `modelChanged` method to refresh your UI when the model changes. 
+You can then implement the `modelChanged` method to refresh your UI when the model changes.
 
 ```
 MethodListerWithModel >> modelChanged
