@@ -394,7 +394,7 @@ together and this is not visually good.
 - finally, the layout itself was added with `expand` set to `false` to prevent the button from taking half the size vertically. 
 - `add:expand: false` The `expand` property indicates the layout will not resize the button to take the whole available space.
 
-**NOTE:** The expand property is important to place your elements correctly, but it does not do magic: when this property is set the layout will take the default size of the added presenter to determine its place. But it may happen that the defaults are not good and there are different things you can do (like define your own style), but this will not covered in this tutorial (we will work on that later).  
+**Note.** The expand property is important to place your elements correctly, but it does not do magic: when this property is set the layout will take the default size of the added presenter to determine its place. But it may happen that the defaults are not good and there are different things you can do (like define your own style), but this will not covered in this tutorial (we will work on that later).  
 
 Finally, we create the method `addTask`.
 
@@ -523,4 +523,3 @@ In this tutorial, we show that Spec presenters are responsible for defining:
 - their layouts (how such components are displayed)
 - how such components interact
 - and the logic of the application (here we just added and deleted elements from a list).
-

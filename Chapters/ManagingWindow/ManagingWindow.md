@@ -297,7 +297,7 @@ WindowExamplePresenter >> windowIcon
 ```
 
 
-**NOTE:** Changing the `windowIcon` method will affect all open windows, as the taskbar is periodically refreshed. This refreshing is also why `windowIcon:` can be sent before or after the window has been opened.
+**Note.** Changing the `windowIcon` method will affect all open windows, as the taskbar is periodically refreshed. This refreshing is also why `windowIcon:` can be sent before or after the window has been opened.
 
 ### Setting the about text
 
