@@ -3,12 +3,9 @@
 status: should review
 status: spellchecked
 
-An important part of user interfaces is about displaying lists of data. 
-Such lists can be structured as tables, plain lists but also trees supporting the nesting of data.
+An important part of user interfaces is displaying lists of data. Such lists can be structured as tables, plain lists but also trees supporting the nesting of data.
 
-Spec proposes three main presenters: `SpListPresenter`, `SpTreePresenter`, and `SpTablePresenter`. 
-In addition, it offers `SpComponentListPresenter` which allows one to embed any presenter in a list. 
-In this chapter, we present some of the functionality of such presenters.
+Spec proposes three main presenters: `SpListPresenter`, `SpTreePresenter`, and `SpTablePresenter`. In addition, it offers `SpComponentListPresenter` which allows one to embed any presenter in a list. In this chapter, we present some of the functionality of such presenters.
 
 ### Lists
 
@@ -23,14 +20,14 @@ SpListPresenter new
 
 ![A simple list showing class names.](figures/List1Simple.png width=60&label=figSimpleList)
 
-We can change the header title of the list using the message `headerTitle:`. 
-The header title can be hidden using the message `hideHeaderTitle`.
+We can change the header title of the list using the message `headerTitle:`. The header title can be hidden using the message `hideHeaderTitle`.
 
 
-###### Controlling item display.
+### Controlling item display
+
 By default a list item is displayed using the result of the `displayString` message sent to the item.
 We can configure a list to apply a block to control the display of each item using the message `display:`.
-The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `printString` (See Figure *@figSimpleList2@*).
+The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `displayString` (See Figure *@figSimpleList2@*).
 
 ```
 SpListPresenter new
@@ -61,11 +58,11 @@ We can configure the way items are displayed in a more finer-grained way. The fo
 SpListPresenter new
     items: self environment allClasses;
     displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
-    displayColor: [ :aClass | 
+    displayColor: [ :aClass |
         (aClass name endsWith: 'Test')
               ifTrue: [ Color green ]
               ifFalse: [ Smalltalk ui theme textColor ] ];
-    displayItalic: [ :aClass | 
+    displayItalic: [ :aClass |
         aClass name includesSubstring: 'abstract' caseSensitive: false ];
     displayBold: [ :aClass | aClass hasSubclasses ];
     displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
@@ -77,8 +74,7 @@ SpListPresenter new
 
 ### About multiple/single selection
 
-Lists can support multiple selections or not.
-The message `beMultipleSelection` controls such an aspect.
+Lists can support multiple selection. The message `beMultipleSelection` controls that aspect.
 
 ```
 SpListPresenter new
@@ -89,16 +85,15 @@ SpListPresenter new
 
 
 
-Since selection can hold multiple items, there is an impact on the protocol to react to selection changes.
-Indeed, lists, filtering lists, trees, and tables offer the `whenSelectionChangedDo:`API and not `whenSelectedItemDo:`.
-The argument of the block is then a selection instance of `SingleSelectionMode` or `MultipleSelectionMode` (`SpSingleSelectionMode`, `SpMultipleSelectionMode`, or `SpTreeMultipleSelectionMode` and `SpTreeSingleSelectionMode`).
+Since selection can hold multiple items, there is an impact on the protocol to react to selection changes. Indeed, lists, filtering lists, trees, and tables offer the `whenSelectionChangedDo:` API and not `whenSelectedItemDo:`. The argument of the block is then an instance of `SingleSelectionMode` or `MultipleSelectionMode` (`SpSingleSelectionMode`, `SpMultipleSelectionMode`, or `SpTreeMultipleSelectionMode` and `SpTreeSingleSelectionMode`).
 
 
 Here is a typical use case of the method `whenSelectionChangedDo:`.
 
 ```
 connectPresenters
-    changesTree whenSelectionChangedDo: [ :selection | 
+
+    changesTree whenSelectionChangedDo: [ :selection |
         selection selectedItem
             ifNil: [ textArea text: '' ]
             ifNotNil: [ :item | textArea text: (self buildDiffFor: item) ] ]
@@ -113,7 +108,7 @@ The following script shows how to configure two lists to support dragging from o
 ```
 | list1 list2 |
 list1 := SpListPresenter new
-list    
+list
     items: #( 'abc' 'def' 'xyz' );
     dragEnabled: true.
 
@@ -133,14 +128,12 @@ SpPresenter new
 The following script illustrates the API.
 - `dragEnabled:` configures the receiver to be dragged.
 - `dropEnabled:` configures the receiver to accept dropped items.
-- `wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ]`. With the message `wantsDrop:` we can specify a predicate to accept a dropped element. 
+- `wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ]`. With the message `wantsDrop:` we can specify a predicate to accept a dropped element.
 - `acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ]`. The message `acceptDrop:` specifies the treatment performed once the dropped item is accepted.
 
 ### Activation clicks
 
-An element on a list can be _'activated'_, meaning it will trigger an event to execute an action on it. 
-Note that an activation is different than a selection: one can _select_ an element without activating it.
-The message `activateOnDoubleClick` configures the list to react to double click, while its counterpart `activateOnSingleClick`.
+An element on a list can be _'activated'_, meaning it will trigger an event to execute an action on it. Note that an activation is different than a selection: one can _select_ an element without activating it. The message `activateOnDoubleClick` configures the list to react to double click, while its counterpart is `activateOnSingleClick`.
 
 
 ### Filtering lists
@@ -151,22 +144,22 @@ The following script shows the use of the `SpFilteringListPresenter`.
 ```
 SpFilteringListPresenter new
     items: Smalltalk allClasses;
-    open; 
-    withWindowDo: [ :window | 
-        window title: ' SpFilteringListPresenter example' ]
+    open;
+    withWindowDo: [ :window |
+        window title: 'SpFilteringListPresenter example' ]
 ```
 
 ![A filtering list with bottom filter.](figures/FilteringList.png width=60&label=figFiltering)
 
-The following script shows that the filter can be placed on the top. 
+The following script shows that the filter can be placed at the top.
 
 ```
 SpFilteringListPresenter new
     items: Smalltalk allClasses;
     openWithLayout: SpFilteringListPresenter topLayout;
-    open; 
-    withWindowDo: [ :window | 
-        window title: ' SpFilteringListPresenter example' ]
+    open;
+    withWindowDo: [ :window |
+        window title: 'SpFilteringListPresenter example' ]
 ```
 
 Note that a filter can be declared upfront using the message `applyFilter:`.
@@ -186,9 +179,9 @@ SpFilteringListPresenter new
 Often lists are used to select items. This is what the class `SpFilteringSelectableListPresenter` offers. 
 In addition to being able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
 
-![A selectable filtering list with bottom filter.](figures/SelectableList.png width=60&label=figSelectable)
+![A selectable filtering list with a filter at the top.](figures/SelectableList.png width=60&label=figSelectable)
 
-The following script produces the situation described by 
+The following script produces this situation.
 
 ```
 (SpFilteringSelectableListPresenter new
@@ -202,19 +195,19 @@ The following script produces the situation described by
 
 
 
-### Component List
+### Component lists
 
-While the lists we saw until now are homogeneous in the sense that they all display strings, Spec offers the possibility to display list of presenters. It means that elements in the list do not have the same size and can contain other presenters. 
+While the lists we saw until now are homogeneous in the sense that they all display strings, Spec offers the possibility to display list of presenters. It means that elements in the list do not have the same size and can contain other presenters.
 
 This lets developers produce advanced user interfaces such as the one of the report builder of the ModMoose tool suite shown in Figure *@figModMoose@*.
 
 ![An example of a component list from the ModMoose platform.](figures/mooseQDScreenshot.png width=80&label=figModMoose)
 
-The following script shows how to define a `SpComponentListPresenter` as its result is shown in Figure *@figCompo@*.
+The following script shows how to define a `SpComponentListPresenter` as shown in Figure *@figCompo@*.
 
 ```
 | list |
-list := { 
+list := {
         (SpLabelPresenter new
              label: 'Test 1';
              yourself).
@@ -233,13 +226,12 @@ SpComponentListPresenter new
     open
 ```
 
-![A component list with several different presenter: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo)
+![A component list with several different presenters: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo)
 
 
 ### Trees
 
-Spec offers also trees. 
-The following script shows how to list all the classes of Pharo using inheritance as shown by Figure *@figTreeExpanded@*.
+Spec offers also trees. The following script shows how to list all the classes of Pharo using inheritance as shown by Figure *@figTreeExpanded@*.
 
 ![A Tree.](figures/TreeExpanded.png width=50&label=figTreeExpanded)
 
@@ -253,100 +245,59 @@ SpTreePresenter new
     open
 ```
 
-The script uses the message `expandPath:` shows that we can expand a specific item by a path.
+The message `expandPath:` shows that we can expand a specific item by a path.
 
 ![A tree with a menu.](figures/TreeWithMenu.png width=50&label=figTreemenu)
 
-The following script shows how to use a dynamic context menu. This is a dynamic menu because 
-its content is reexecuted.
-The dynamic aspect is expressed by a block `[ ... ]`.
+The following script shows how to use a dynamic context menu. This is a dynamic menu because its content is recalculated.
+The dynamic aspect is expressed by a block `[ ... ]`. Figure *@figTreemenu@* shows the result.
 
 
 ```
-| tree | 
+| tree |
 tree := SpTreePresenter new.
 tree roots: { Object };
     children: [ :aClass | aClass subclasses ];
     displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
     display: [ :aClass | aClass name ];
-    contextMenu: [ 
+    contextMenu: [
         SpMenuPresenter new
-            addGroup: [ :group | 
+            addGroup: [ :group |
                 group addItem: [ :item | item name: tree selectedItem asString ] ] ];
     open
 ```
 
-![A tree with a selected item.](figures/TreeSelectedItem.png width=50&label=figTreemenu)
 
-
-The following script shows the use of the following messages:
-- `selectPathByItems:` Allows one to select elements specifying a group of items.
-- `scrollToSelection:` To ask the tree to scroll to the selection.
+The following script shows the use of the message `selectPathByItems:scrollToSelection:`, which allows selecting elements by specifying a group of items and asking the tree to scroll to the selection. Figure *@figTreeselect@* shows the result.
 
 
 ```
+| pathToSpPresenter |
+pathToSpPresenter := SpTreePresenter withAllSuperclasses reversed allButFirst.
 SpTreePresenter new
       roots: { Object };
       children: [ :aClass | aClass subclasses ];
       displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
       display: [ :aClass | aClass name ];
       open;
-      selectPathByItems: SpTreePresenter withAllSuperclasses reversed allButFirst
-      scrollToSelection: true
+      selectPathByItems: pathToSpPresenter scrollToSelection: true
 ```
+
+![A tree with a selected item.](figures/TreeSelectedItem.png width=50&label=figTreeselect)
 
 ### Tables
 
-Spec offers tables. A table can have multiple columns and a column can be composed of elementary elements.
-Tables have different kinds of columns that can be added to a table:
+Spec offers tables. A table can have multiple columns and a column can be composed of elementary elements. Tables have different kinds of columns that can be added to a table:
 
 - `SpStringTableColumn` offers cell items that are strings.
 - `SpCheckBoxTableColumn` lets us have cells with a checkbox.
-- `SpIndexTableColumn` displays the index of the current item. 
-- `SpDropListTableColumn` let's have a drop list in cells.
-- `SpCompositeTableColumn` offers the possibility to compose a column out of different kinds of columns. It allows one to compose an icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
+- `SpIndexTableColumn` displays the index of the current item.
+- `SpDropListTableColumn` lets us have a drop list in cells.
+- `SpImageTableColumn` offers cell items with forms (icons, graphics, ...).
+- `SpCompositeTableColumn` offers the possibility to compose a column out of different kinds of columns. For instance, it allows one to compose an icon (`SpImageTableColumn`) with a name (`SpStringTableColumn`).
 
 
-For example, in the snippet below `SpImageTableColumn` offers the possibility to display form (icon, graphics...). 
-`contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
-
-```Smalltalk
-TodoListPresenter >> initializePresenters
-    todoListPresenter := self newTable
-        addColumn:
-            ((SpCheckBoxTableColumn 
-                              evaluated: [ :task | task isDone ])
-                width: 20;
-                onActivation: [ :task | task done: true ];
-                onDeactivation: [ :task | task done: false ];
-                yourself);
-        addColumn:
-            (SpStringTableColumn
-                title: 'Title'
-                evaluated: [ :task | task title ]);
-        yourself.
-    todoListPresenter contextMenu: self todoListContextMenu.
-
-    addButton := self newButton
-        label: 'Add task';
-        action: [ self addTask ];
-        yourself
-```
-
-```Smalltalk
-TodoListPresenter >> todoListContextMenu
-
-    ^ self newMenu 
-        addItem: [ :item | item 
-                    name: 'Edit...'; 
-                    action: [ self editSelectedTask ] ];
-        addItem: [ :item | item 
-                    name: 'Remove'; 
-                    action: [ self removeSelectedTask ] ]
-```
-
-
-##### First Table
+### First table
 
 The following script shows how to define a simple table with two columns as shown in Figure *@figSimpleTable@*.
 The message `showColumnHeaders` will display the headers.
@@ -360,24 +311,24 @@ SpTablePresenter new
     open
 ```
 
-![A simple table with two columns: the first one is a composed one (with icon and string).](figures/Table.png width=50&label=figSimpleTable)
+![A simple table with two columns.](figures/Table.png width=50&label=figSimpleTable)
 
 Add `SpIndexTableColumn title: 'My index'` to the previous table to see the index column in action.
 
 
 
-##### Sorting headers
+### Sorting headers
 
-The following script presents how to define a table with two columns that can be sorted based on as shown in Figure *@figTableSorting@*.
+The following script presents how to define a table with two sortable columns. Figure *@figTableSorting@* shows the result after sorting the second column in descending order.
 
 ```
 | classNameCompare methodCountSorter |
 classNameCompare := [ :c1 :c2 | c1 name < c2 name ].
-methodCountSorter := [ :c1 :c2 | 
+methodCountSorter := [ :c1 :c2 |
     c1 methodDictionary size threeWayCompareTo: c2 methodDictionary size ].
 
 SpTablePresenter new
-    addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) 
+    addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
                  compareFunction: classNameCompare);
     addColumn: ((SpStringTableColumn
               title: 'Methods'
@@ -386,10 +337,10 @@ SpTablePresenter new
     open
 ```
 
-![A simple table with two columns: the first one is a composed one (with icon and string).](figures/TableSorting.png width=50&label=figTableSorting)
+![A simple table with two columns that can be sorted.](figures/TableSorting.png width=50&label=figTableSorting)
 
 
-##### Editable Tables
+### Editable tables
 
 The following script shows that table cells can be editable using the messages `beEditable` and `onAcceptEdition:`. The resulting table is shown in Figure *@figEditableTable@*.
 
@@ -398,20 +349,20 @@ The following script shows that table cells can be editable using the messages `
 | items |
 items := String methods.
 SpTablePresenter new
-    addColumn: 
+    addColumn:
         (SpStringTableColumn new
             title: 'Editable selector name';
             evaluated: [ :m | m selector ];
             displayBold: [ :m | m selector isKeyword ];
             beEditable;
-            onAcceptEdition: [ :m :t | 
+            onAcceptEdition: [ :m :t |
                 Transcript
                     nextPutAll: t;
                     cr;
                     endEntry ];
              yourself);
     addColumn:
-        (SpStringTableColumn title: 'Size' evaluated: #size) 
+        (SpStringTableColumn title: 'Size' evaluated: #size)
             beSortable;
             showColumnHeaders;
             items: items;
@@ -421,13 +372,11 @@ SpTablePresenter new
 ![A table with an editable column.](figures/EditableTable.png width=50&label=figEditableTable)
 
 
-### Tree Tables
+### Tree tables
 
-Spec offers a way to have a tree with extra columns.
-The class `SpTreeTablePresenter` encapsulates this behavior.
-Note that the first column is interpreted as a tree.
+Spec offers a way to have a tree with extra columns. The class `SpTreeTablePresenter` encapsulates this behavior. Note that the first column is interpreted as a tree.
 
-The following script shows that the first column will be a tree whose element is composed of an icon and a name: `SpCompositeTableColumn`. The resulting widget is shown in *@figTreeTable@*.
+The following script shows that the first column will be a tree whose element is composed of an icon and a name: `SpCompositeTableColumn`. Figure *@figTreeTable@* shows the window after expanding the root of the tree.
 
 
 ```
@@ -435,7 +384,7 @@ SpTreeTablePresenter new
     beResizable;
     addColumn: (SpCompositeTableColumn new
                 title: 'Classes';
-                addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+                addColumn: (SpImageTableColumn evaluated: [ :aClass |
                             self iconNamed: aClass systemIconName ]);
                 addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
                 yourself);
@@ -447,14 +396,14 @@ SpTreeTablePresenter new
     open
 ```
 
-![A tree table with two main columns: the first one is a composed one (with icon and string).](figures/TreeTable.png width=50&label=figTreeTable)
+![A tree table with two columns: the first one is a composed column with an icon and a string.](figures/TreeTable.png width=50&label=figTreeTable)
 
-Adding the following messages `width:` and `beExpandable` to the `SpCompositeTableColumn` instance fixes the size of the column.
+Sending the messages `width:` and `beExpandable` to the `SpCompositeTableColumn` instance fixes the size of the column.
 
 ```
 SpCompositeTableColumn new
     title: 'Classes';
-    addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+    addColumn: (SpImageTableColumn evaluated: [ :aClass |
                 self iconNamed: aClass systemIconName ]);
     addColumn: (SpStringTableColumn evaluated: #name);
     width: 150;
@@ -472,7 +421,7 @@ SpTreeTablePresenter new
                 evaluated: [ :class | class methodDictionary size asString ]);
     addColumn: (SpCompositeTableColumn new
                 title: 'Classes';
-                addColumn: (SpImageTableColumn evaluated: [ :aClass | 
+                addColumn: (SpImageTableColumn evaluated: [ :aClass |
                             self iconNamed: aClass systemIconName ]);
                 addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
                 yourself);
@@ -481,11 +430,8 @@ SpTreeTablePresenter new
     open
 ```
 
-![A tree table with two main columns: the first one is a composed one (with icon and string).](figures/TreeTableSilly.png width=50&label=figTreeTableSilly)
-
+![A tree table with two columns.](figures/TreeTableSilly.png width=50&label=figTreeTableSilly)
 
 ### Conclusion
 
-In this chapter, we presented important container lists, component lists, and table presenters. 
-
-
+In this chapter, we presented important containers: lists, component lists, and table presenters.
