@@ -3,7 +3,7 @@
 status: Did a first pass on the material of renaud
 status: spellchecked
 
-This chapter has been originally written by Renaud Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components.
+This chapter has been originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components.
 
 ### Introduction
 
