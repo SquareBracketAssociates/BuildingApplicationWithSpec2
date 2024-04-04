@@ -79,7 +79,7 @@ We will create a presenter in which we will add and remove dynamically buttons. 
 
 ```
 SpPresenter << #DynamicButtonsPresenter
-	slots: { #addPresenterButton . #removePreseterButton . #textPresenter . #canRemovePresenter };
+	slots: { #addPresenterButton . #removePresenterButton . #textPresenter . #canRemovePresenter };
 	package: 'DynamicButtons'
 ```
 
@@ -96,8 +96,8 @@ addPresenterButton
 We also want a button that will remove the last button that was added, if any, of the layout.
 
 ```
-removePreseterButton := self newButton.
-removePreseterButton
+removePresenterButton := self newButton.
+removePresenterButton
 	action: [ self removeFromLayout ];
 	label: 'Remove a presenter from the layout';
 	icon: (self iconNamed: #smallDelete);
@@ -125,8 +125,8 @@ initializePresenters
 		label: 'Add a presenter to the layout';
 		icon: (self iconNamed: #smallAdd).
 
-	removePreseterButton := self newButton.
-	removePreseterButton
+	removePresenterButton := self newButton.
+	removePresenterButton
 		action: [ self removeFromLayout ];
 		label: 'Remove a presenter from the layout';
 		icon: (self iconNamed: #smallDelete);
@@ -147,7 +147,7 @@ Let's start with the `addToLayout` method. We will enable the remove presenter b
 addToLayout
 
     | randomButtonName newButton |
-	removePreseterButton enable.
+	removePresenterButton enable.
 
 	randomButtonName := 'Random number: ', (Random new nextInteger: 1000) asString.
 
@@ -166,7 +166,7 @@ removeFromLayout
 
 	self layout remove: self layout presenters last.
 	self layout presenters last = textPresenter
-		ifTrue: [ removePreseterButton disable ]
+		ifTrue: [ removePresenterButton disable ]
 ```
 
 The last thing that is missing to implement is to specify the default layout. For that, we need to override the method `defaultLayout`.
@@ -176,7 +176,7 @@ defaultLayout
 
 	^ SpBoxLayout newTopToBottom
 		add: addPresenterButton expand: false;
-		add: removePreseterButton expand: false;
+		add: removePresenterButton expand: false;
 		add: textPresenter;
 		yourself
 ```
