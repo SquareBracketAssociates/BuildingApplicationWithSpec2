@@ -10,4 +10,5 @@ Here are some guidelines about writing style and spelling that resulted from dis
 * Write "Section 6.1", not "section 6.1".
 * Write "Figure 6-2", not "figure 6-2".
 * Do not use a prefix "Sp" for example class names because the prefix is reserved for Spec classes.
+* Use sentence case for headers, e.g. "Editable tables", not "Editable Tables".
 * Start a note with "**Note.**".
