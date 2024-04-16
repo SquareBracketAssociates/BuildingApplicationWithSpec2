@@ -4,188 +4,163 @@
 status: Ready for review should publish the code
 status: spellchecked
 
-Commander was a library originally developed by Denis Kudriashov. 
-Commander 2.0 is the second iteration of such a library. 
-It was designed and developed by Julien Delplanque and Stéphane Ducasse.
-Note that Commander 2.0 is not compatible with Commander but this is really easy to migrate from Commander to Commander 2.0.
-We describe Commander 2.0 in the context of Spec 2.0, the user interface building framework.
-From then on, when we mention Commander we refer to Commander 2.0.
-In addition, we show how to extend Commander to other needs.
+Commander was a library originally developed by Denis Kudriashov. Commander 2.0 is the second iteration of that library. It was designed and developed by Julien Delplanque and Stéphane Ducasse. Note that Commander 2.0 is not compatible with Commander but it is really easy to migrate from Commander to Commander 2.0. We describe Commander 2.0 in the context of Spec 2.0. From now on, when we mention Commander we refer to Commander 2.0. In addition, we show how to extend Commander to other needs.
 
 
 
 ### Commands
 
 
-Commander models application actions as first-class objects following the Command design pattern.
-With Commander, you can express commands and use them to generate menus, and toolbar but also to script an application from the command line.
+Commander models application actions as first-class objects following the Command design pattern. With Commander, you can express commands and use them to generate menus and toolbars, but also to script applications from the command line.
 
-Every action is implemented as a separate command class \(subclass of `CmCommand`\) with an `execute` method and all states required for execution.
-The superclass defines the context in which the command should be executed. 
-Then the class `CmCommand` introduces the name and description.
+Every action is implemented as a separate command class \(subclass of `CmCommand`\) with an `execute` method and the state required for execution.
 
 ![A simple command and its hierarchy.](figures/BasicCommand.pdf width=35&label=first)
 
-We will show later that for UI framework, we need more information such as an icon and shortcut description.
-In addition, we will present how commands can be decorated with extra functionality in an extensible way.
-
-Note that nothing prevents you from defining commands by creating instances and filling them up with the same information.
-If you do so, you cannot use classes to dispatch and should put in place other mechanisms. 
-In this chapter, we only discuss how to define classes representing commands and use them. 
+We will show later that for a UI framework, we need more information such as an icon and shortcut description. In addition, we will present how commands can be decorated with extra functionality in an extensible way.
 
 ### Defining commands
 
-A command is a simple object instance of a subclass of the class `CmCommand`.
-It has a description, a name \(this name can be either static or dynamic as we will show later on\). 
-In addition, it has a context from which it extracts information to execute itself. 
-In its basic form, there is not much more than that.
+A command is a simple object instance of a subclass of the class `CmCommand`. It has a description, a name \(this name can be either static or dynamic as we will show later on\). In addition, it has a context from which it extracts information to execute itself. In its basic form, there is no more than that.
 
-Let us have a look at examples. 
-We will define some commands for the ContactBook application and illustrate how they can be turned into 
-menu and menubar.
-
-
-Note that we will present how Commander supports Spec menu and menubar creations.
-However such functionalities are not in the core of Commander.
-We show them because first, this is important to illustrate how to build user interface elements with Commander but also 
-because such functionalities show that Commander can be extended in a way that end-users do not have to feel 
-they are using special extensions.
-We will come back to such a point in the last chapter of this book to show potential extenders of Commander that they can get inspiration from the Spec extensions.
+Let us have a look at examples. We will define some commands for the ContactBook application and illustrate how they can be turned into menus and a menubar.
 
 
 ### Adding some convenience methods
 
 
-For convenience reasons, we define a common superclass to all the commands of the contact book application named `EgContactBookCommand`.
+For convenience reasons, we define a common superclass of all the commands of the contact book application named `ContactBookCommand`.
 
 ```
-CmCommand << #EgContactBookCommand
-    package: 'EgContactBook'
+CmCommand << #ContactBookCommand
+    package: 'ContactBook'
 ```
 
 
 
 We define a simple helper method to make the code more readable
 ```
-EgContactBookCommand >> contactBookPresenter
+ContactBookCommand >> contactBookPresenter
+
     ^ self context
 ```
 
 
 For the same reason, we define another helper to access the contact book and the selected item.
 ```
-EgContactBookCommand >> contactBook
+ContactBookCommand >> contactBook
+
     ^ self contactBookPresenter contactBook
 ```
 
 
 ```
-EgContactBookCommand >> selectedContact
+ContactBookCommand >> selectedContact
+
     ^ self contactBookPresenter selectedContact
 ```
 
 
-Using such helper methods we defined the method `hasSelectContract` as follows:
+Using the helper method `isContactSelected` we defined in the previous chapter, the method `hasSelectedContact` can be implemented as:
 
 ```
-EgContactBookCommand >> hasSelectedContact
+ContactBookCommand >> hasSelectedContact
+
     ^ self contactBookPresenter isContactSelected
 ```
 
 
-#### Adding the add contact command
+#### Adding the Add Contact command
 
 
-We define a subclass to define the add a contact command. 
-```
-EgContactBookCommand << #EgAddContactCommand
-    package: 'EgContactBook'
-```
-
+We define a subclass to define the add a contact command.
 
 ```
-CmAddContactCommand >> initialize
+ContactBookCommand << #AddContactCommand
+    package: 'ContactBook'
+```
+
+
+```
+AddContactCommand >> initialize
     super initialize.
     self
-        basicName: 'New contact'; 
-        basicDescription: 'Creates a new contact and add it to the contact book.'
+        basicName: 'New contact';
+        basicDescription: 'Creates a new contact and adds it to the contact book.'
 ```
 
 
 ```
-CmAddContactCommand >> execute
-    
+AddContactCommand >> execute
+
     | contact |
     contact := self contactBookPresenter newContact.
     self hasSelectedContact
         ifTrue: [ self contactBook addContact: contact after: self selectedContact ]
         ifFalse: [ self contactBook addContact: contact ].
-        
     self contactBookPresenter updateView
 ```
 
 
-We should define the method `updateView` to refresh the contents of the table.
+We define the method `updateView` to refresh the contents of the table.
 
 ```
-EgContactBookPresenter >> updateView
+ContactBookPresenter >> updateView
     table items: contactBook contacts
 ```
 
 
-Now in the inspect pane, we can simply execute the command as follows:
+Now in an inspector on an instance of `ContactBookPresenter`, we can simply execute the command as follows:
 
 ```
-(EgAddContactCommand new context: self) execute
+(AddContactCommand new context: self) execute
 ```
 
 
-Executing the command should ask you to give a name and a phone number
-and will get added to the list.
+Executing the command should ask you to give a name and a phone number and the new contact will be added to the list.
 
 We can also execute the following snippet.
 
 ```
-| presenter cmd |
-presenter := EgContactBookPresenter on: EgContactBook coworkers.
-cmd := EgAddContactCommand new context: presenter.
-cmd execute
+| presenter command |
+presenter := ContactBookPresenter on: ContactBook coworkers.
+command := AddContactCommand new context: presenter.
+command execute
 ```
 
 
-### Adding the remove contact command
+### Adding the Remove Contact command
 
 
-We define now another command to remove a command. 
-This example is interesting because it does not involve any UI interaction.
-It shows that a command is not necessarily linked to UI interaction.
+Now we define now another command to remove a contact. This example is interesting because it does not involve any UI interaction. It shows that a command is not necessarily linked to UI interaction.
 
 ```
-EgContactBookCommand << #EgRemoveContactCommand
-    package: 'EgContactBook'
+ContactBookCommand << #RemoveContactCommand
+    package: 'ContactBook'
 ```
 
 
 ```
-EgRemoveContactCommand >> initialize
+RemoveContactCommand >> initialize
     super initialize.
     self
-        name: 'Remove'; 
+        name: 'Remove';
         description: 'Removes the selected contact from the contact book.'
 ```
 
 
-This command definition illustrates how we can control when a command should or not be executed. The method `canBeRun` allows one to specify such a condition.
+This command definition illustrates how we can control when a command should or should not be executed. The method `canBeExecuted` allows specifying such a condition.
 
 ```
-EgRemoveContactCommand >> canBeExecuted
+RemoveContactCommand >> canBeExecuted
     ^ self context isContactSelected
 ```
 
 
 The method `execute` is straightforward.
+
 ```
-EgRemoveContactCommand >> execute
+RemoveContactCommand >> execute
     self contactBook removeContact: self selectedContact.
     self contactBookPresenter updateView
 ```
@@ -194,11 +169,11 @@ EgRemoveContactCommand >> execute
 The following test validates the correct execution of the command.
 
 ```
-EgContactCommandTest >> testRemoveContact
+ContactCommandTest >> testRemoveContact
 
     self assert: presenter contactBook size equals: 3.
     presenter table selectIndex: 1.
-    (EgRemoveContactCommand new context: presenter) execute.
+    (RemoveContactCommand new context: presenter) execute.
     self assert: presenter contactBook size equals: 2
 ```
 
@@ -206,37 +181,30 @@ EgContactCommandTest >> testRemoveContact
 
 ### Turning commands into menu items
 
-Now that we have our commands we would like to reuse them and turn them into menus. 
-In Spec, commands that are transformed into menu items are structured into a tree of command instances. 
-The class method `buildCommandsGroupWith:forRoot:` of `SpPresenter` is a hook to let presenters define the root of the command instance tree.
+Now that we have our commands, we would like to reuse them and turn them into menus. In Spec, commands that are transformed into menu items are structured into a tree of command instances. The class method `buildCommandsGroupWith:forRoot:` of `SpPresenter` is a hook to let presenters define the root of the command instance tree.
 
-A command is transformed into a command for Spec using the message `forSpec`.
-We will show later that we can add UI-specific information to a command such as an icon and a shortcut.
+A command is transformed into a command for Spec using the message `forSpec`.We will show later that we can add UI-specific information to a command such as an icon and a shortcut.
 
-The method `buildCommandsGroupWith:forRoot:` registers commands to which the presenter instance is passed as context. 
-Note that here we just add plain commands, but we can also create groups. 
-This is also in this method that we will specify a toolbar.
+The method `buildCommandsGroupWith:forRoot:` registers commands to which the presenter instance is passed as context. Note that here we just add plain commands, but we can also create groups. Later in this chapter we will also specify a menu bar in this method.
 
 ```
-EgContactBookPresenter class >> 
-    buildCommandsGroupWith: presenter 
+ContactBookPresenter class >>
+    buildCommandsGroupWith: presenter
     forRoot: rootCommandGroup
-    
-    rootCommandGroup 
-        register: (EgAddContactCommand forSpec context: presenter);
-        register: (EgRemoveContactCommand forSpec context: presenter)
+
+    rootCommandGroup
+        register: (AddContactCommand forSpec context: presenter);
+        register: (RemoveContactCommand forSpec context: presenter)
 ```
 
 
-We now have to attach the root of the command tree to the table. 
-This is what we do with the new line in the `initializePresenters` method. 
-Notice that we have full control and as we will show we could select a subpart of the tree \(using the message `/`\) and define it as root for a given component.
+Now we have to attach the root of the command tree to the table. This is what we do with the new line in the `initializePresenters` method. Notice that we have full control and as we will show we could select a subpart of the tree \(using the message `/`\) and define it as root for a given component.
 
 
 ```
-EgContactBookPresenter >> initializePresenters
+ContactBookPresenter >> initializePresenters
     table := self newTable.
-    table 
+    table
         addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
         addColumn: (SpStringTableColumn title: 'Phone' evaluated: #phone).
     table contextMenu: [ self rootCommandsGroup beRoot asMenuPresenter ].
@@ -244,46 +212,45 @@ EgContactBookPresenter >> initializePresenters
 ```
 
 
-Reopening the interface `(EgContactBookPresenter on: EgContactBook coworkers) openWithSpec` you should see the menu items as shown in Figure *@withmenu@*.
-As we will show later we could even replace a menu item with another one, changing its name, or icon in place.
+When reopening the interface with `(ContactBookPresenter on: ContactBook coworkers) open`, you should see the menu items as shown in Figure *@withmenu@*. As we will show later, we could even replace a menu item with another one, changing its name, or icon in place.
 
 ![With two menu items with groups.](figures/withMenus.png width=60&label=withmenu)
 
 ### Introducing groups
 
 
-Commands can be managed in groups and such groups can be turned into corresponding menu item sections.
-The key hook method is the class method named `buildCommandsGroupWith: presenterInstance forRoot:`.
+Commands can be managed in groups and such groups can be turned into corresponding menu item sections. The key hook method is the class method named `buildCommandsGroupWith: presenterInstance forRoot:`.
 
 
-Here we give an example of such grouping. 
-Note that the message `asSpecGroup` sent to a group.
-We create two methods creating each a simple group one for adding and one for removing contracts.
+Here we give an example of such grouping. Note that the message `asSpecGroup` is sent to a group. We create two methods, each creating a simple group, one for adding, and one for removing contracts.
 
 ```
-EgContactBookPresenter class >> buildAddingGroupWith: presenter
+ContactBookPresenter class >> buildAddingGroupWith: presenter
+
     ^ (CmCommandGroup named: 'Adding') asSpecGroup
         description: 'Commands related to contact addition.';
-        register: (EgAddContactCommand forSpec context: presenter);
+        register: (AddContactCommand forSpec context: presenter);
         beDisplayedAsGroup;
         yourself
 ```
 
 
 ```
-EgContactBookPresenter class >> buildRemovingGroupWith: presenter
+ContactBookPresenter class >> buildRemovingGroupWith: presenter
+
     ^ (CmCommandGroup named: 'Removing') asSpecGroup
         description: 'Commands related to contact removal.';
-        register: (EgRemoveContactCommand forSpec context: presenter);
+        register: (RemoveContactCommand forSpec context: presenter);
         beDisplayedAsGroup;
         yourself
 ```
 
 
-We group the previously defined groups together under the contextual menu for example. 
+We group the previously defined groups together under the contextual menu:
 
 ```
-EgContactBookPresenter class >> buildContextualMenuGroupWith: presenter
+ContactBookPresenter class >> buildContextualMenuGroupWith: presenter
+
     ^ (CmCommandGroup named: 'Context Menu') asSpecGroup
         register: (self buildAddingGroupWith: presenter);
         register: (self buildRemovingGroupWith: presenter);
@@ -294,68 +261,53 @@ EgContactBookPresenter class >> buildContextualMenuGroupWith: presenter
 Finally, we revisit the hook `buildCommandsGroupWith:forRoot:` to register the last group to the root command group.
 
 ```
-EgContactBookPresenter class >> 
-    buildCommandsGroupWith: presenter 
+ContactBookPresenter class >>
+    buildCommandsGroupWith: presenter
     forRoot: rootCommandGroup
-    
+
     rootCommandGroup
         register: (self buildContextualMenuGroupWith: presenter)
 ```
 
 
-Reopening the interface `(EgContactBookPresenter on: EgContactBook coworkers) openWithSpec` you should see the menu items inside a `'Context Menu'` as shown in Figure *@withmenuContext@*.
+When reopening the interface with `(ContactBookPresenter on: ContactBook coworkers) open`, you should see the menu items inside a `'Context Menu'` as shown in Figure *@withmenuContext@*.
 
 ![With a context menu.](figures/withmenuContext.png width=60&label=withmenuContext)
 
-To show you that we can also select a part of the command tree we select the `'Context Menu'` group and declare it as the root of the table menu.
-In such case, you will not see the `'Context Menu'` anymore. 
+To show that we can also select part of the command tree, we select the `'Context Menu'` group and declare it as the root of the table menu. Then you will not see the `'Context Menu'` anymore.
 
 ```
-EgContactBookPresenter >> initializePresenters
+ContactBookPresenter >> initializePresenters
 
     table := self newTable.
-    table 
+    table
         addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
         addColumn: (SpStringTableColumn title: 'Phone' evaluated: #phone).
-    
     table contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ].
     table items: contactBook contacts
 ```
+
+Here we see that by sending the slash message \(` / `\), we can select the group in which we want to add a menu iten.
 
 
 ### Extending menus
 
 
-Building a menu is nice, but sometimes we need to add a menu to an existing one. 
-Commander supports this via a dedicated pragma, called `<extensionCommands>` that identifies extensions. 
-
-as we show it now. 
+Building menus is nice, but sometimes we need to add a menu to an existing one. Commander supports this via a dedicated pragma, called `<extensionCommands>` that identifies extensions.
 
 
-Imagine that we have new functionality that we want to add to the contact book and that this behavior is packaged in another package, here, `EgContactBook-Extensions`.
+Imagine that we have new functionality that we want to add to the contact book and that this behavior is packaged in another package, here, `ContactBook-Extensions`.
 First, we will define a new command and second, we will show how we can extend the existing menu to add a new menu item. 
 
 ```
-EgContactBookCommand << #EgChangePhoneCommand
-    slots: { #newPhone};
-    package: 'EgContactBook-Extensions'
+ContactBookCommand << #ChangePhoneCommand
+    package: 'ContactBook-Extensions'
 ```
 
 
 ```
-EgChangePhoneCommand >> newPhone: anObject
-    newPhone := anObject
-```
+ChangePhoneCommand >> initialize
 
-
-```
-EgChangePhoneCommand >> newPhone
-    ^ newPhone 
-```
-
-
-```
-EgChangePhoneCommand >> initialize
     super initialize.
     self
         name: 'Change phone';
@@ -364,44 +316,42 @@ EgChangePhoneCommand >> initialize
 
 
 ```
-EgChangePhoneCommand >> execute
+ChangePhoneCommand >> execute
+
     self selectedContact phone: self contactBookPresenter newPhone.
     self contactBookPresenter updateView
 ```
 
 
-We add `ContactBookPresenter` with the method `newPhone` the presenter to support the definition of the new phone number. 
-The point here is not that this is method is or not packaged with the new command.
+We extend `ContactBookPresenter` with the method `newPhone` to let the presenter decide how a user should provide a new phone number.
 
 ```
-EgContactBookPresenter >> newPhone
+ContactBookPresenter >> newPhone
+
     | phone |
-    phone := self 
+    phone := self
         request: 'New phone for the contact'
-        initialAnswer: self selectedContact phone 
+        initialAnswer: self selectedContact phone
         title: 'Set new phone for contact'.
     (phone matchesRegex: '\d\d\d\s\d\d\d')
-        ifFalse: [ 
-            SpInvalidUserInput signal: 'The phone number is not well formatted. 
+        ifFalse: [
+            SpInvalidUserInput signal: 'The phone number is not well formatted.
 Should match "\d\d\d\s\d\d\d"' ].
     ^ phone
 ```
 
 
-The last missing piece is the declaration of the extension.
-This one is done using the pragma `<extensionCommands>` on the class side of the presenter class as follows:
-
-Here we see that using slash \(` / `\), we can select the group in which we want to add the item.
+The last missing piece is the declaration of the extension. This is done using the pragma `<extensionCommands>` on the class side of the presenter class as follows:
 
 ```
-EgContactBookPresenter class >> 
-    changePhoneCommandWith: presenter 
+ContactBookPresenter class >>
+    changePhoneCommandWith: presenter
     forRootGroup: aRootCommandsGroup
-    
+
     <extensionCommands>
-    
+
     (aRootCommandsGroup / 'Context Menu')
-        register: (EgChangePhoneCommand forSpec context: presenter)
+        register: (ChangePhoneCommand forSpec context: presenter)
 ```
 
 
@@ -412,16 +362,14 @@ EgContactBookPresenter class >>
 ### Managing icons and shortcuts
 
 
-By default a command does not know about Spec-specific behavior, this is because a command does not have to be linked to UI.
-Now obviously you want to have icons and shortcut bindings when you are designing an interactive application.
+By default a command does not know about Spec-specific behavior, because a command does not have to be linked to UI. Obviously you want to have icons and shortcut bindings when you are designing an interactive application.
 
-Commander supports the addition of icons and shortcut keys to commands.
-Let us see how it works from a user perspective. 
-The framework offers two methods to set icon and shortcut key: `iconName:` and `shortcutKey:`.
-We should specialize the method `aSpecCommand` as follows: 
+Commander supports the addition of icons and shortcut keys to commands.Let us see how it works from a user perspective. The framework offers two methods to set an icon and a shortcut key: `iconName:` and `shortcutKey:`.
+We should specialize the method `asSpecCommand` as follows:
 
 ```
-EgRemoveContactCommand >> asSpecCommand
+RemoveContactCommand >> asSpecCommand
+
     ^ super asSpecCommand
         iconName: #removeIcon;
         shortcutKey: $x meta;
@@ -431,7 +379,8 @@ EgRemoveContactCommand >> asSpecCommand
 
 
 ```
-EgRemoveContactCommand >> asSpecCommand
+AddContactCommand >> asSpecCommand
+
     ^ super asSpecCommand
         shortcutKey: $n meta;
         iconName: #changeAdd;
@@ -439,18 +388,17 @@ EgRemoveContactCommand >> asSpecCommand
 ```
 
 
-Note that the commands are created using the message `forSpec` and this is this message that takes care of the calling of `asSpecCommand`.
+Note that the commands are created using the message `forSpec`. This message takes care of the calling `asSpecCommand`.
 
 ### Enabling shortcuts
 
 
-To the time of this chapter writing, Commander management of shortcuts has not been pushed to Spec to avoid dependency on Commander. 
-It is then the responsibility of your presenter to manage shortcuts as shown in the following method.
+At the time of writing this chapter, Commander management of shortcuts has not been pushed to Spec to avoid dependency on Commander. It is then the responsibility of your presenter to manage shortcuts as shown in the following method.
 We ask the command group to install the shortcut handler in the window.
 
 ```
-EgContactBookPresenter >> initializeWindow: aWindowPresenter
-    
+ContactBookPresenter >> initializeWindow: aWindowPresenter
+
     super initializeWindow: aWindowPresenter.
     self rootCommandsGroup installShortcutsIn: aWindowPresenter
 ```
@@ -459,21 +407,19 @@ EgContactBookPresenter >> initializeWindow: aWindowPresenter
 ### In-place customisation
 
 
-Commander supports also the reuse and in-place customisation of commands.
-It means that the instance representing a command can be modified on the spot: for example, its name or description can be adapted to the exact 
-use context.
-Here is an example that shows that we adapt twice the same command.
+Commander supports the reuse and in-place customisation of commands. It means that a command can be modified on the spot: for example, its name or description can be adapted to the exact usage context. Here is an example that shows that we adapt the same command twice.
 
-Let us define a really simple and generic command that will simply inspect the object. 
+Let us define a really simple and generic command that will simply inspect the object.
 
 ```
-EgContactBookCommand << #EgInspectCommand
-    package: 'EgContactBook-Extensions'
+ContactBookCommand << #InspectCommand
+    package: 'ContactBook-Extensions'
 ```
 
 
 ```
-EgInspectCommand >> initialize
+InspectCommand >> initialize
+
     super initialize.
     self
         name: 'Inspect';
@@ -482,36 +428,37 @@ EgInspectCommand >> initialize
 
 
 ```
-EgInspectCommand >> execute
+InspectCommand >> execute
+
     self context inspect
 ```
 
 
-Using a block the context is computed at the moment the command is executed and the name and description can be adapted for its specific usage as shown in Figure *@inPlaceCustomisation@*.
+By using a block, the context is computed at the moment the command is executed and the name and description can be adapted for its specific usage as shown in Figure *@inPlaceCustomisation@*.
 
 ```
-EgContactBookPresenter class >>    
-    extraCommandsWith: presenter 
+ContactBookPresenter class >>
+    extraCommandsWith: presenter
     forRootGroup: aRootCommandsGroup
-    
+
     <extensionCommands>
-    
+
     aRootCommandsGroup / 'Context Menu'
         register:
             ((CmCommandGroup named: 'Extra') asSpecGroup
                 description: 'Extra commands to help during development.';
-                register:
-                    ((EgInspectCommand forSpec context: [ presenter selectedContact ])
-                        name: 'Inspect contact';
-                        description: 'Open an inspector on the selected contact.';
-                        iconName: #smallFind;
-                        yourself);
-                register:
-                    ((EgInspectCommand forSpec context: [ presenter contactBook ])
-                        name: 'Inspect contact book';
-                        description: 'Open an inspector on the contact book.';
-                        yourself);
-                yourself)
+        register:
+            ((InspectCommand forSpec context: [ presenter selectedContact ])
+                name: 'Inspect contact';
+                description: 'Open an inspector on the selected contact.';
+                iconName: #smallFind;
+                yourself);
+        register:
+            ((InspectCommand forSpec context: [ presenter contactBook ])
+                name: 'Inspect contact book';
+                description: 'Open an inspector on the contact book.';
+                yourself);
+        yourself)
 ```
 
 
@@ -520,29 +467,29 @@ EgContactBookPresenter class >>
 ### Managing a menu bar
 
 
-Commander supports also menu bar creation.
-The logic is the same as for contextual menus: we define a group and register it under a given and we specify to the presenter to use this group 
-as a menubar.
+Commander also supports menu bar creation.
+The logic is the same as for contextual menus: we define a group and register it under a given root, and we tell the presenter to use this group as a menubar.
 
 Imagine that we have a new command to print the contact.
 
 ```
-EgContactBookCommand << #EgPrintContactCommand
-    package: 'EgContactBook'
+ContactBookCommand << #PrintContactCommand
+    package: 'ContactBook'
 ```
 
 
 ```
-EgPrintContactCommand >> initialize
+PrintContactCommand >> initialize
+
     super initialize.
     self
         name: 'Print';
-        description: 'Print the contact book in Transcript.'    
+        description: 'Print the contact book in Transcript.'
 ```
 
 
 ```
-EgPrintContactCommand >> execute
+PrintContactCommand >> execute
 
     Transcript open.
     self contactBook contacts do: [ :contact | self traceCr: contact name , ' - ' , contact name ]
@@ -553,32 +500,33 @@ EgPrintContactCommand >> execute
 We create a simple group that we call 'MenuBar' \(but it could be called anything\).
 
 ```
-EgContactBookPresenter class >> buildMenuBarGroupWith: presenter
+ContactBookPresenter class >> buildMenuBarGroupWith: presenter
+
     ^ (CmCommandGroup named: 'MenuBar') asSpecGroup
-        register: (EgPrintContactCommand forSpec context: presenter);
+        register: (PrintContactCommand forSpec context: presenter);
         yourself
 ```
 
 
-We modify the root to get the menu bar group in addition to the previous ones. 
+We modify the root to add the menu bar group in addition to the previou one.
 ```
-EgContactBookPresenter class >> 
-    buildCommandsGroupWith: presenter 
+ContactBookPresenter class >>
+    buildCommandsGroupWith: presenter
     forRoot: rootCommandGroup
-    
+
     rootCommandGroup
         register: (self buildMenuBarGroupWith: presenter);
         register: (self buildContextualMenuGroupWith: presenter)
 ```
 
 
-And we hook it into the widget as the last line of the `initializePresenters` method. 
-Notice the use of the message `asMenuBarPresenter` and the addition of a new instance variable called `menuBar`.
+We hook it into the widget as the last line of the `initializePresenters` method. Notice the use of the message `asMenuBarPresenter` and the addition of a new instance variable called `menuBar`.
 
 ```
-EgContactBookPresenter >> initializePresenters
+ContactBookPresenter >> initializePresenters
+
     table := self newTable.
-    table 
+    table
         addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
         addColumn: (SpStringTableColumn title: 'Phone' evaluated: #phone).
     table contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ].
@@ -587,25 +535,22 @@ EgContactBookPresenter >> initializePresenters
 ```
 
 
-Finally, to get the menu bar you should declare it in the layout.
+Finally, to get the menu bar we declare it in the layout. We use `SpAbstractPresenter class>>#toolbarHeight` to specify the height of the menu bar.
 
 ```
-EgContactBookPresenter class >> defaultSpec
+ContactBookPresenter class >> defaultLayout
 
     ^ SpBoxLayout newVertical
             add: #menuBar
             withConstraints: [ :constraints | constraints height: self toolbarHeight ];
-            add: #table; 
+            add: #table;
             yourself
 ```
 
 
-![With menubar.](figures/withmenubar.png width=60&label=inPlaceCustomisation)
+![With a menubar.](figures/withmenubar.png width=60&label=inPlaceCustomisation)
 
 
 ### Conclusion
 
-In this chapter, we saw how you can define a simple command and execute it in a given context. 
-We show how you can turn a command into a menu item in Spec20 by sending the message `forSpec`. 
-You learned how we can reuse and customize commands. 
-We presented groups of commands as a way to structure menus and menubars. 
+In this chapter, we saw how you can define a simple command and execute it in a given context. We show how you can turn a command into a menu item in Spec 2.0 by sending the message `forSpec`. You learned how we can reuse and customize commands. We presented groups of commands as a way to structure menus and menu bars.
