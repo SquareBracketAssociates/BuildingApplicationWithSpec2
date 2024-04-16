@@ -3,12 +3,9 @@
 status: Ready for review - should publish the code
 status: spellchecked
 
-In this chapter, we develop a simple model for a contact book.
-Then we define a user interface.
-This example will be used later in the book as an example to explain concepts such as commands, applications, and windows.
+In this chapter, we develop a simple model for a contact book. Then we define a user interface. This example will be used later in the book as an example to explain concepts such as commands, applications, and windows.
 
-Now it is more of a replay of the concept previously mentioned.
-We start by implementing classes modeling the domain and then we will add a basic graphical user interface to obtain a little application as shown in Figure *@overview@*.
+Now it is more of a replay of the concepts previously mentioned. We start by implementing classes modeling the domain and then we will add a basic graphical user interface to obtain a little application as shown in Figure *@overview@*.
 
 
 ![A rudimentary contact book application.](figures/withmenuExtension.png width=60&label=overview)
@@ -175,13 +172,11 @@ ContactBook class >> reset
 ### A simple graphical user interface
 
 
-Now we define the graphical user interface \(GUI\) to expose the model to the user.
-The targeted GUI is shown in Figure *@firstFullUI@*.
+Now we define the graphical user interface \(GUI\) to expose the model to the user. The targeted GUI is shown in Figure *@firstFullUI@*.
 
 ![A rudimentary contact book application.](figures/firstFullUI.png width=60&label=firstFullUI)
 
-We define the class `ContactBookPresenter`.
-It holds a reference to a contact book and it is structured around a table.
+We define the class `ContactBookPresenter`. It holds a reference to a contact book and it is structured around a table.
 
 ```
 SpPresenter << #ContactBookPresenter
@@ -252,17 +247,16 @@ ContactBookPresenter >> initializePresenters
 ```
 
 
-Now we can start opening the UI by executing the following snippet
-`(ContactBookPresenter on: ContactBook coworkers) open`
+Now we can open the UI by executing the snippet `(ContactBookPresenter on: ContactBook coworkers) open`.
 
 We define a class method to be able to easily re-execute the setup.
+
 ```
 ContactBookPresenter class >> coworkersExample
 
     <example>
     ^ (self on: ContactBook coworkers) open
 ```
-
 
 You should obtain the GUI as shown in Figure *@first@*.
 
@@ -271,8 +265,7 @@ You should obtain the GUI as shown in Figure *@first@*.
 #### Interacting with user
 
 
-We now implement the method that will open a window to ask the user to create
-a new contact for the contact book.
+We now implement the method that will open a window to ask the user to create a new contact for the contact book.
 
 ```
 ContactBookPresenter >> newContact
@@ -293,6 +286,7 @@ ContactBookPresenter >> newContact
 
 
 To test it, we can get access to the presenter with
+
 ```
 (ContactBookPresenter on: ContactBook coworkers)
     open presenter inspect
