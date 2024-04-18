@@ -302,7 +302,7 @@ GridExample >> defaultLayout
         yourself
 ```
 
-![An ugly example.](figures/grid.png width=90&label=grid)
+![An ugly example.](figures/grid.png width=60&label=grid)
 
 Here is a list of options:
 - `columnHomogeneous`: Whether a column will have the same size.
