@@ -1,13 +1,11 @@
 ## Styling Applications
 @cha_style
 
-status: spellchecked
-
 In this chapter, we will describe how to use custom styles in Spec applications. First we present styles and then we will build a little editor like the one displayed hereafter.
 
 We will show that an application in Spec manages styles and lets you adapt the look of a presenter as shown in Figure *@style1@*.
 
-![Building a little styling editor.](figures/style1.png width=80&label=style1)
+![Building a little styling editor.](figures/style1.png width=0&label=style1)
 
 We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
 
@@ -223,7 +221,7 @@ Also we can change the styles for all the presenters by default. For instance, w
 ### Defining an application
 
 
-To use styles we need to associate the main presenter with an application. The class `SpApplication` already has default styles. To not redefine all the properties for all the presenters, we can concatenate the default styles \(`SpStyle defaultStyleSheet`\) with our own.
+To use styles we need to associate the main presenter with an application. The class `SpApplication` already has default styles. To not redefine all the properties for all the presenters, we can concatenate the default styles (`SpStyle defaultStyleSheet`) with our own.
 
 To parse a string into a STON we use the class `SpStyleVariableSTONReader`.
 
@@ -435,7 +433,7 @@ CustomStylesPresenter >> initializeStyles
 ```
 
 
-![Styled editor.](figures/style8.png width=70&label=style8)
+![Styled editor.](figures/style8.png width=60&label=style8)
 
 Finally, we have to override the `start` method in the application. We are going to set the application of the presenter and run the presenter from the application.
 
@@ -481,11 +479,11 @@ CustomStylesPresenter >> connectPresenters
 
 When we click on the the "zoom in" button, the size of the text changes as shown in Figure *@style9@*.
 
-![Zoomed styled editor.](figures/style9.png width=60&label=style9)
+![Zoomed styled editor.](figures/style9.png width=50&label=style9)
 
 When we click the "Text font" button, the font of the text changes as shown in Figure *@style10@*.
 
-![Styled editor with other font.](figures/style10.png width=60&label=style10)
+![Styled editor with other font.](figures/style10.png width=50&label=style10)
 
 
 
