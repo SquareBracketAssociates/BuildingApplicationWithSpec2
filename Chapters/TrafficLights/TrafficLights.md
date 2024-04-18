@@ -29,9 +29,9 @@ Object << #TrafficLights
 
 We will start creating a panel to control the traffic lights: we want to be able to control the duration of each of the lights.
 
-We want to obtain a UI similar to the one shown in *@input@*.
+We want to obtain a UI similar to the one shown in Figure *@input@*.
 
-![An input panel.](figures/InputPanel.png width=30&label=input)
+![An input panel.](figures/InputPanel.png width=20&label=input)
 
 
 ```
