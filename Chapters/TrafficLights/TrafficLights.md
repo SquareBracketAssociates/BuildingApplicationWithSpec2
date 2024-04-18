@@ -21,13 +21,13 @@ In addition it knows its view (a morph). This design does not fully separate the
  
 ```
 Object << #TrafficLights
-	slots: {lamps activeLamp mustRun stopwatch morphView'
+	slots: {#lamps . #activeLamp . #mustRun . #stopwatch . #morphView}' ;
 	package: 'TrafficLightsProject'
 ```
 
 ### Configuration Panel 
 
-We will start creating a panel to control the traffic light: we want to be able to control the duration of each of the lights.
+We will start creating a panel to control the traffic lights: we want to be able to control the duration of each of the lights.
 
 We want to obtain a UI similar to the one shown in *@input@*.
 
@@ -129,7 +129,7 @@ initializeWindow: aWindowPresenter
 ```
 
 
-### Aplication
+### Application
 
 ```
 SpApplication << #TrafficApplication

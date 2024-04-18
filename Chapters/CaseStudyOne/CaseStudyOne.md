@@ -59,7 +59,6 @@ ImdbFilm class >> films
     ^ films ifNil: [ films := OrderedCollection new ]
 ```
 
-
 And to finish we define a way to add a film to the list.
 
 ```
@@ -271,7 +270,7 @@ ImdbFilmPresenter >> defaultLayout
 
 Pay attention, do not add a `yourself` message here. Because you would return the class and not the layout instance.
 
-![A single film presenter.](figures/FilmList-03-OpenFilmPresenter.png width=60&label=figFilmPresenter1)
+![A single film presenter.](figures/FilmList-03-OpenFilmPresenter.png width=50&label=figFilmPresenter1)
 
 And similarly, as before, we define the method `initializePresenters` to initialize the variables to the corresponding elementary presenters. Here `nameText` and `directorText` are initialized to a text input, and `yearNumber` is a number input.
 
@@ -314,7 +313,7 @@ ImdbFilmPresenter >> defaultLayout
             add: 'Year'; add: yearNumber ]
 ```
 
-![Using the non homogenous grid layout.](figures/FilmList-04-OpenFilmPresenter-2.png width=60&label=FilmListPresenter2)
+![Using the non homogenous grid layout.](figures/FilmList-04-OpenFilmPresenter-2.png width=50&label=FilmListPresenter2)
 
 We now set the window properties by adding the following new `initializeWindow:` method. See Figure *@FilmListPresenter3@*.
 
@@ -326,7 +325,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
         initialExtent: 400 @ 250
 ```
 
-![Better window.](figures/FilmPresenter3.png width=60&label=FilmListPresenter3)
+![Better window.](figures/FilmPresenter3.png width=50&label=FilmListPresenter3)
 
 ### Customizing the modal Dialog
 
