@@ -6,7 +6,7 @@ It illustrates how a spec application can use Morphic objects.
 
 The code and the suggestion for this chapter have been made by Prof. S. Jaroshko from the National University Ivan Franko of Lviv.
 
-![A little traffic ligth simulator.](figures/TrafficLights width=50)
+![A little traffic ligth simulator.](figures/TrafficLights width=30)
 
 We will start describing the object model and then the presenters. 
 
@@ -28,7 +28,7 @@ We will start creating a panel to control the traffic lights: we want to be able
 
 We want to obtain a UI similar to the one shown in Figure *@input@*.
 
-![An input panel.](figures/InputPanel.png width=20&label=input)
+![An input panel.](figures/InputPanel.png width=30&label=input)
 
 
 ```
