@@ -1,20 +1,16 @@
 ## Introduction
-
 @chaintroduction
-status: ready for review
 
 Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg the git manager, Change Sorter, Critics Browser, and the Pharo debugger.
 An important architectural decision is that Spec supports multiple backends \(at the time of writing this book, GTK and Morphic are available\).
 
 ![Spec supports multiple backends Morphic and GTK3.0.: Here we see GTK.](figures/GTK.png width=100)
 
-
 ### Reuse of logic
 
 The fundamental principle behind Spec is the reuse of user interface logic and its visual composition. User interfaces are built by reusing and composing existing user interfaces, and configuring them as needed. This principle starts from the most primitive elements of the UI: widgets such as buttons and labels are in themselves complete UIs that can be reused, configured, and opened in a window. These elements can be combined to form more complex UIs that again can be reused as part of a bigger UI, and so on. This is somewhat similar to how the different tiles on the cover of this book are combined. Smaller tiles configured with different colors or patterns join to form bigger rectangular shapes that are part of an even bigger floor design.
 
-
-To allow such a reuse, Spec was influenced by VisualWorks and Dolphin Smalltalk's Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter  class. A presenter represents the glue between a domain and widgets as well as the logic of interaction between the widgets composing the application.
+To allow such reuse, Spec was influenced by VisualWorks and Dolphin Smalltalk's Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter class. A presenter represents the glue between a domain and widgets as well as the logic of interaction between the widgets composing the application.
 
 In Spec 1.0, this role was filled by the class `ComposableModel` and now, in Spec 20, the class is called `SpPresenter`. A presenter manages the _logic UI and the link between widgets and domain objects_. Fundamentally, when writing Spec code,  developers do _not_ come into contact with UI widgets. Instead, they program a Presenter that holds the UI logic (interactions, layout, ...) and talks to domain objects. When the UI is opened, this presenter instantiates the appropriate widgets. This being said, for developers, this distinction is not apparent and it feels as if the widgets are being programmed directly.
 
