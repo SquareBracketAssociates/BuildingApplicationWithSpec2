@@ -1,7 +1,7 @@
 ## Using transmissions and ports (Draft)
  
  
-Transmissions are a more compact way to connect presenters than events as shown in Chapter *@chacore@*. 
+Transmissions are a more compact way to connect presenters than events as shown previously. 
  
 ### What are transmissions? 
  
