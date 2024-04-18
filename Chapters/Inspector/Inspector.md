@@ -6,7 +6,7 @@ status: spellchecked
 
 An Inspector is a tool that is used to look and interact with objects.
 In Pharo, inspecting an object means opening this tool and interacting with your object. It is a key tool for developing in Pharo. 
-It allows one to navigate the object structure, look at the state of the variables, modify their state, or send message. 
+It allows one to navigate the object structure, look at the state of the variables, modify their state, or send messages. 
 An inspector can show other information and you can also extend it to display the information that is best suited for you.
 This is what we will see in this chapter.
 
@@ -17,9 +17,9 @@ You can inspect the result of an execution by selecting the code and using the s
 
 By inspecting `1/3` we get the following inspector:
 
-![Raw tab.](figures/Inspector_raw_tab.png)
+![Raw tab.](figures/Inspector_raw_tab.png width=60)
 
-![Raw tab areas](figures/Inspector_raw_tab_areas.png)
+![Raw tab areas.](figures/Inspector_raw_tab_areas.png width=60)
 
 The tree-framed areas in the next pictures are :
 1. This text starts with the **class** of the inspected object. Here we have an instance of Fraction.
@@ -31,36 +31,36 @@ By clicking on an instance variable you can also open a new inspector pane.
 This is recursive: if you click on more variables, more panes will open. By default, only the last two panes are visible at any time. You can use the small rectangles at the bottom of the window to navigate in the opened pane. You can also choose how many panes and showing at the same time and which one by clicking on the small navigation rectangles. 
 
 %Here is a small demonstration :
-%![Navigating in the inspector](figures/Inspector_pane_navigation.gif)
+%![Navigating in the inspector](figures/Inspector_pane_navigation.gif width=40)
 
-3. This last area is the evaluator. In this area, you can write expressions and evaluate them like you would do it in the playground. In a given evaluator, `self` is referring to the inspected object. This can be seen in the raw view above the evaluator showing the value of the `self` variable.
+3. This last area is the evaluator. In this area, you can write expressions and evaluate them like you would do it in the playground. In a given evaluator, `self` refers to the inspected object. This can be seen in the raw view above the evaluator showing the value of the `self` variable.
 
 ### The pane toolbar
 
 Each inspector pane has the following toolbar :
 
-![Raw tab areas](figures/Inspector_pane_toolbar.png)
+![Toolbar.](figures/Inspector_pane_toolbar.png width=40)
 
 - The **last button** allows one to open a browser on the class of the inspected object. It can be used to check for available methods to use in the evaluator
 - The **green glasses** button opens another inspector window on the current object
 - The **circling arrows** button allows one to refresh the current view of the object. Fields of an object are not updated live, so if the object is modified from elsewhere, the new values will only show if the refresh button is used.
 - The **triangle button** is related to object-centric debugging. It allows one to put breakpoints on state access (read and/or write) of a specific object. The following animation shows how to put a breakpoint on writing an instance variable, the `Breakpoints` tab listing breakpoints on the current object, and how to deactivate one.
 
-%![Breakpoints](figures/Inspector_breakpoints.gif)
+%![Breakpoints](figures/Inspector_breakpoints.gif width=60)
 
 ### The Meta tab: searching for methods and class hierarchy
 The `Meta` tab is the last one that is available on most objects.
 On the left it shows the class hierarchy of the current object's class and on the right the methods available. Clicking on parent classes in the hierarchy will show methods implemented in this class on the right. Selecting a method will display its source code at the bottom of the tab.
 
 
-![Meta tab.](figures/Inspector_meta_tab.png)
+![Meta tab.](figures/Inspector_meta_tab.png width=60)
 
 ### Creating custom tabs
 
 If you used the inspector a bit, you might have noticed that some objects have additional tabs showing up in the inspector.
 For example, both `Float`s and `Integer`s have their first tabs showing different representations of the numbers:
 
-![Inspecting numbers.](figures/Inspector_numbers_tabs.png)
+![Inspecting numbers.](figures/Inspector_numbers_tabs.png width=60)
 
 Another example is the `FileReference` class. When a file reference is inspected, according to the type of the file, different tabs show up with relevant information.
 
@@ -84,7 +84,7 @@ OrderedCollection << inspectionFirstElement
 
 The content of the tab is returned by the method. Here we are creating a text presenter (`SpTextPresenter`) with the content we want and we specify it should not be editable. This gives us the following result:
 
-![First element tab.](figures/Inspector_expension_first_element.png)
+![First element tab.](figures/Inspector_expension_first_element.png width=60)
 
 We notice that our new tab is in the second position. This is because in `Collection<<inspectionItems:` (the method defining the Items tab) the order parameter is 0.
 
@@ -114,27 +114,28 @@ OrderedCollection << inspectionMultipliedByTwo
 		             yourself.
 	^ presenter
 ```
-If we inspect a collection of numbers we get the following tab :
-![Mutliplied by 2 tab](figures/Inspector_expension_multiplied_by_two.png)
+If we inspect a collection of numbers we get the following tab:
+![Mutliplied by 2 tab](figures/Inspector_expension_multiplied_by_two.png width=60)
 
 However if the collection contains elements that are not numbers, the tab crashes and looks like a red rectangle. 
-By defining a method with the name `<name of the method defining the tab>Context:` we can specify when we want to activate a given tab.
-For example :
+By defining a method with the name `<name of the method defining the tab>Context:` we can specify when we want to activate a given tab. For example:
 
 ```Smalltalk
 OrderedCollection << containsOnlyNumbers 
 	^ self allSatisfy: [ :each | each isNumber  ]
-
+```
+```Smalltalk
 OrderedCollection << inspectionMultipliedByTwoContext: aContext
 	^ aContext active: self containsOnlyNumbers.
 ```
 
-This two methods will ensure that the tab will be displayed only when there is only number in the collection.
+These two methods will ensure that the tab will be displayed only when there are only numbers in the collection.
 
 
 ### Adding a raw view of a specific element of the collection and removing the evaluator
 
 We can also add a tab showing the raw view of the max value:
+
 ```pharo
 OrderedCollection << inspectionIMaxValue
 	<inspectorPresentationOrder: 5 title: 'Max Value'>
@@ -146,7 +147,7 @@ OrderedCollection << inspectionIMaxValueContext: aContext
 	^ aContext active: self containsOnlyIntegers.
 ```
 
-![Inspect max value tab.](figures/Inspector_expension_max.png)
+![Inspect max value tab.](figures/Inspector_expension_max.png width=60)
 
 However as we can see above, the `self` in the evaluator does not match the `self` in the max value which is confusing so we will hide the evaluator.
 
@@ -158,7 +159,7 @@ OrderedCollection << inspectionIMaxValueContext: aContext
 
 By reinspecting the same collection we now get:
 ![Removing the evaluator.](figures/Inspector_expension_max_without_evaluator.png)
-
+s
 
 ### Adding Roassal charts
 
@@ -184,10 +185,10 @@ OrderedCollection << inspectionIntegerHistogramContext: aContext
 
 By inspecting `{ 1 . 1 . 3 . 2 . 5 . 2. 2 . 1. 9. 3 . 2. 2. 5 . 7 . 7 . 8  } asOrderedCollection` we get Figure *@hist@*.
 
-![Histogram tab](figures/Inspector_expension_histogram.png label=hist)
+![Histogram tab](figures/Inspector_expension_histogram.png label=hist&width=60)
 
 
 ### Conclusion 
 
-In this chapter we presented briefly the inspector and how you can specialize its panes to shape the way you can see and interact with your objects.
+In this chapter, we presented briefly the inspector and how you can specialize its panes to shape the way you can see and interact with your objects.
 We presented how to define conditional panes as well as embed visualizations.
