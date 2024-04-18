@@ -258,9 +258,9 @@ ContactBookPresenter class >> coworkersExample
     ^ (self on: ContactBook coworkers) open
 ```
 
-You should obtain the GUI as shown in Figure *@first@*.
+You should obtain the GUI as shown in Figure *@firstMenuToolbar@*.
 
-![First version of the GUI without menus and toolbar.](figures/firstVersion.png width=60&label=first)
+![First version of the GUI without menus and toolbar.](figures/firstVersion.png width=60&label=firstMenuToolbar)
 
 #### Interacting with user
 

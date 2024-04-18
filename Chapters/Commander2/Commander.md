@@ -548,7 +548,7 @@ ContactBookPresenter class >> defaultLayout
 ```
 
 
-![With a menubar.](figures/withmenubar.png width=60&label=inPlaceCustomisation)
+![With a menubar.](figures/withmenubar.png width=60&label=inPlaceCustomisation2)
 
 
 ### Conclusion
