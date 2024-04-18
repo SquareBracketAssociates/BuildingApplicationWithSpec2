@@ -342,7 +342,7 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
         addButton: 'Save Film' do: [ :presenter | presenter beOk; close ].
 ```
 
-![Customizing the dialog window.](figures/FilmList-05-Modal.png width=100&label=Customizeddialog)
+![Customizing the dialog window.](figures/FilmList-05-Modal.png width=60&label=Customizeddialog)
 
 
 ### Invoking a presenter
@@ -817,7 +817,7 @@ We can now see that the name label of a film detail has been styled.
 ""esteban"" I get a grey not read label. No idea why.
 ""Enzo"" Personally I don't have any problem, the label is red
 
-![Styled film description](figures/FilmList-styling.png width=100&label=FilmListPresenterStyled)
+![Styled film description](figures/FilmList-styling.png width=60&label=FilmListPresenterStyled)
 
 ### Conclusion
 

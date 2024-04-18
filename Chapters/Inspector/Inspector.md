@@ -159,7 +159,7 @@ OrderedCollection << inspectionIMaxValueContext: aContext
 
 By reinspecting the same collection we now get:
 ![Removing the evaluator.](figures/Inspector_expension_max_without_evaluator.png)
-s
+
 
 ### Adding Roassal charts
 
