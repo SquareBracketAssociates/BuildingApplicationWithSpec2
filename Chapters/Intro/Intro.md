@@ -27,7 +27,6 @@ Another example of integration is the NovaStelo project of Prof. E. Ito as shown
 Since Spec 2.0, different widget sets can be used to render your applications. At the time of writing this book, Spec can be rendered using either Morphic or GTK as a backend.
 Spec 2.0 represents a large iteration over Spec 1. Many enhancements have been introduced: the way user interface layouts are expressed, the API has been revisited, new widgets are supported, and integration with other projects, such as `Commander`, has been added.
 
-
 Pharo's objective is to use Spec to build all its own GUIs. This ensures strong support of Spec over time and improves the standardization of Pharo's interfaces as well as their portability to new graphical systems.
 Using Spec2 provides backend independence and logic reuse.
 This means that a UI written in Spec will be rendered on backends other than GTK and Morphic. As new backends become available, all applications written in Spec will be able to use them.
@@ -35,7 +34,6 @@ This means that a UI written in Spec will be rendered on backends other than GTK
 While this book uses previous Spec documentation as a foundation, the text has been almost completely rewritten with an aim toward higher quality. We hope that it will be of use to developers who write UIs in Pharo.
 
 !!note This book focuses on Pharo 12. Earlier versions of Pharo come equipped with different versions of Spec, which may cause some code samples from this book to break. Nevertheless, the fundamental principles of UI development in Spec are the same.
-
 
 ### Outline
 
