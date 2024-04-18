@@ -1,8 +1,5 @@
 ## Lists, tables and trees
 
-status: should review
-status: spellchecked
-
 An important part of user interfaces is displaying lists of data. Such lists can be structured as tables, plain lists but also trees supporting the nesting of data.
 
 Spec proposes three main presenters: `SpListPresenter`, `SpTreePresenter`, and `SpTablePresenter`. In addition, it offers `SpComponentListPresenter` which allows one to embed any presenter in a list. In this chapter, we present some of the functionality of such presenters.
@@ -18,7 +15,7 @@ SpListPresenter new
     open
 ```
 
-![A simple list showing class names.](figures/List1Simple.png width=60&label=figSimpleList)
+![A simple list showing class names.](figures/List1Simple.png width=50&label=figSimpleList)
 
 We can change the header title of the list using the message `headerTitle:`. The header title can be hidden using the message `hideHeaderTitle`.
 
@@ -36,7 +33,7 @@ SpListPresenter new
     open
 ```
 
-![A simple list controlling the way items are displayed.](figures/List1SimpleDisplay.png width=60&label=figSimpleList2)
+![A simple list controlling the way items are displayed.](figures/List1SimpleDisplay.png width=50&label=figSimpleList2)
 
 We can sort the items using the message `sortingBlock:`.
 
@@ -69,7 +66,7 @@ SpListPresenter new
     open
 ```
 
-![A decorated list: icons, text styling and color.](figures/List1Decorated.png width=60&label=figSimpleListDecorated)
+![A decorated list: icons, text styling and color.](figures/List1Decorated.png width=50&label=figSimpleListDecorated)
 
 
 ### About multiple/single selection
@@ -149,7 +146,7 @@ SpFilteringListPresenter new
         window title: 'SpFilteringListPresenter example' ]
 ```
 
-![A filtering list with bottom filter.](figures/FilteringList.png width=60&label=figFiltering)
+![A filtering list with bottom filter.](figures/FilteringList.png width=50&label=figFiltering)
 
 The following script shows that the filter can be placed at the top.
 
@@ -179,7 +176,7 @@ SpFilteringListPresenter new
 Often lists are used to select items. This is what the class `SpFilteringSelectableListPresenter` offers. 
 In addition to being able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
 
-![A selectable filtering list with a filter at the top.](figures/SelectableList.png width=60&label=figSelectable)
+![A selectable filtering list with a filter at the top.](figures/SelectableList.png width=50&label=figSelectable)
 
 The following script produces this situation.
 
@@ -226,14 +223,14 @@ SpComponentListPresenter new
     open
 ```
 
-![A component list with several different presenters: a label, an image, a button, and an image.](figures/ComponentList.png width=50&label=figCompo)
+![A component list with several different presenters: a label, an image, a button, and an image.](figures/ComponentList.png width=45&label=figCompo)
 
 
 ### Trees
 
 Spec offers also trees. The following script shows how to list all the classes of Pharo using inheritance as shown by Figure *@figTreeExpanded@*.
 
-![A Tree.](figures/TreeExpanded.png width=50&label=figTreeExpanded)
+![A Tree.](figures/TreeExpanded.png width=45&label=figTreeExpanded)
 
 ```
 SpTreePresenter new
@@ -247,7 +244,7 @@ SpTreePresenter new
 
 The message `expandPath:` shows that we can expand a specific item by a path.
 
-![A tree with a menu.](figures/TreeWithMenu.png width=50&label=figTreemenu)
+![A tree with a menu.](figures/TreeWithMenu.png width=45&label=figTreemenu)
 
 The following script shows how to use a dynamic context menu. This is a dynamic menu because its content is recalculated.
 The dynamic aspect is expressed by a block `[ ... ]`. Figure *@figTreemenu@* shows the result.

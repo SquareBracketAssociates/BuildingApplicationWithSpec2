@@ -1,8 +1,6 @@
 ## Spec core in a nutshell
 @cha_core
 
-status: ready for review
-status: spellchecked
 
 Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed most tools in Pharo are written in Spec, e.g., the inspector, spotter, the Pharo debugger, Iceberg, etc. In this short chapter, we place the key architectural elements of Spec in the context.
 
@@ -12,7 +10,7 @@ The fundamental principle behind Spec is the reuse of user interface logic and v
 
 To allow such reuse, Spec is influenced by the Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter or ApplicationModel class (in Spec represented by the abstract superclass `SpPresenter`) that manages the logic and the link between widgets and domain objects. Fundamentally, when writing Spec code, the developer does ‘‘not’’ come into contact with UI widgets, instead one subclass of `SpPresenter` is programmed that holds the UI logic. When the UI is opened this model will then instantiate the appropriate widgets.
 
-Spec offers different backends to render the presenters: Morphic (the default backend) and Gtk. It means that, without modifying your UI described as presenters with Spec, you can render your application in the Pharo image with Morphic or as a native application with external Windows thanks to the Gtk backend.
+Spec offers different backends to render the presenters: Morphic (the default backend) and GTK. It means that, without modifying your UI described as presenters with Spec, you can render your application in the Pharo image with Morphic or as a native application with external Windows thanks to the GTK backend.
 
 
 ### Spec architecture overview
@@ -86,7 +84,7 @@ You can run your application with `MyApplication new run`. It will call the `sta
 
 ### Application configuration
 
-In the application initialization, you can configure the backend you want to use: morphic (default) or Gtk.
+In the application initialization, you can configure the backend you want to use: morphic (default) or GTK.
 
 ##### Using Morphic
 
@@ -127,16 +125,16 @@ ImdbApp >> initialize
 
 ##### Using GTK theme and settings
 
-For Gtk the process is similar, we define a subclass of `SpGtkConfiguration`.
+For GTK the process is similar, we define a subclass of `SpGTKConfiguration`.
 
 ```
-SpGtkConfiguration << #ImdbGtkConfiguration
+SpGTKConfiguration << #ImdbGTKConfiguration
     package: 'Spec-TutorialOne'
 ```
 Then we configure it by selecting and extending CSS.
 
 ```
-ImdbGtkConfiguration >> configure: anApplication
+ImdbGTKConfiguration >> configure: anApplication
 
     super configure: anApplication.
     "This will choose the theme 'Sierra-dark' if it is available"
@@ -144,13 +142,13 @@ ImdbGtkConfiguration >> configure: anApplication
     "This will add a 'provider' (a stylesheet)"
     self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
 ```
-And in the application initialization, we declare that the configuration should be used for Gtk.
+And in the application initialization, we declare that the configuration should be used for GTK.
 
 ```
 ImdbApp >> initialize
 
     super initialize.
-    self useBackend: #Gtk with: ImdbGtkConfiguration new
+    self useBackend: #GTK with: ImdbGTKConfiguration new
 ```
 
 

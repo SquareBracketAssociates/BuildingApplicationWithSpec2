@@ -1,18 +1,13 @@
 ## Reuse and composition at work
 @cha_reuse
 
-status: Currently working on it.
-status: spellchecked
-
 A key design goal of Spec is to enable the seamless reuse of user interfaces. The reason for this is that it results in a significant productivity boost when creating user interfaces.
 
 This focus on reuse was actually already visible in the previous chapters, where we have seen that basic widgets can be used as if they were a complete user interface. In this section we focus on the reuse and composition of presenters, showing that it basically comes for free. The only requirement when building a UI is to consider how the user interface should be parameterized when it is being reused.
 
 Said differently, in this chapter, you will learn how we can build a new UI by reusing already defined elements.
 
-
 ### First requirements
-
 
 ![ProtocolCodeBrowser: Browsing the public APIs of widgets.](figures/ProtocolBrowser.png width=80&anchor=figprotocolbrowser&label=figprotocolbrowser)
 
@@ -21,7 +16,6 @@ To show how Spec enables the composition and reuse of user interfaces, in this c
 1. The **ProtocolMethodListPresenter**: a widget composed of a `SpListPresenter` and a `SpLabelPresenter` for displaying methods of a protocol.
 1. The **ProtocolPresenter**:  a composition of one `WidgetClassListPresenter` and two `ProtocolMethodListPresenter`, it will browse the methods of all subclasses of `SpAbstractWidgetPresenter`.
 1. The **ProtocolCodeBrowser**: reuses a `ProtocolPresenter`, changes its layout, and adds a `SpTextPresenter` to see the source code of the methods.
-
 
 
 ### Creating a basic UI to be reused as a widget
