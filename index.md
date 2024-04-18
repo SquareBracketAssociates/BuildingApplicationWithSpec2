@@ -30,17 +30,11 @@
 %Reviewed by stef
 
 <!inputFile|path=Chapters/LayoutContruction/Layout.md!>
-
 <!inputFile|path=Chapters/DynamicPresenter/DynamicPresenter.md!>
-
 <!inputFile|path=Chapters/Menus/Menus.md!>
-
 <!inputFile|path=Chapters/Style/Style.md!>
-
 <!inputFile|path=Chapters/Transmissions/Transmission.md!>
-
 <!inputFile|path=Chapters/MorphicAthens/MorphicAthens.md!>
-
 
 
 # Working with Commands
@@ -52,11 +46,3 @@
 <!inputFile|path=Chapters/Inspector/Inspector.md!>
 <!inputFile|path=Chapters/Tips/Tips.md!>
 <!inputFile|path=Chapters/CaseStudyTwo/CaseStudyTwo.md!> 
-%Reviewed by stef
-
-
-
-## TODO
-
-- check Smalltalk icons
-- check UIManager reference
