@@ -250,10 +250,10 @@ ButtonAndListV2 >> defaultLayout
         yourself
 ```
 
-Note the use of the message `add:layout:` with the selector of the method returning the layout configuration: #buttonColumn. This is normal since we cannot access the state of a subcomponent at this moment.
+Note the use of the message `add:layout:` with the selector of the method returning the layout configuration: `#buttonColumn`. This is normal since we cannot access the state of a subcomponent at this moment.
 
 ##### Dynamically changing a layout
-It is possible to change the layout of a presenter dynamically for example from the inspector as shown in *@figTweak@*.
+It is possible to change the layout of a presenter dynamically for example from the inspector as shown in Figure *@figTweak@*.
 
 ![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak)
 

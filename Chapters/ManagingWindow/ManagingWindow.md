@@ -318,7 +318,7 @@ A modal window is a window that takes control of the entire Pharo user interface
 By default the `openModal` sent to a dialog window will return the dialog window itself
 so you can easily ask it `isOk`.
 
-
+PLACE AN EXAMPLE HERE
 
 ### Little dialog presenters
 

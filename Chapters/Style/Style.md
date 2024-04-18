@@ -5,7 +5,7 @@ In this chapter, we will describe how to use custom styles in Spec applications.
 
 We will show that an application in Spec manages styles and lets you adapt the look of a presenter as shown in Figure *@style1@*.
 
-![Building a little styling editor.](figures/style1.png width=0&label=style1)
+![Building a little styling editor.](figures/style1.png width=70&label=style1)
 
 We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
 
