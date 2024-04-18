@@ -10,8 +10,6 @@ Developers often think that testing a user interface is difficult. It is true th
 
 Tests are key to ensuring that everything works correctly. In addition, they free us from the fear of breaking something without being warned about it. Tests support refactorings. While such facts are general and applicable to many domains, they are also true for user interfaces.
 
-
-
 #### Spec architecture
 
 
@@ -193,10 +191,9 @@ testInitializeWindow
     presenter := ClassVisualizerPresenter on: Object.
 
     [ window := presenter open.
-
     self assert: window isBuilt.
     self assert: window title equals: 'Class visualizer'.
-    self assert: window initialExtent equals: 600 @ 500. ]
+    self assert: window initialExtent equals: 600 @ 500 ]
         ensure: [ window close ]
 ```
 
