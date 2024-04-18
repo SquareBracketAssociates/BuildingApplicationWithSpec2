@@ -1,8 +1,5 @@
 ## Integration of Athens in Spec
 
-status: Did a first pass on the material of renaud
-status: spellchecked
-
 This chapter has been originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components.
 
 ### Introduction
@@ -20,7 +17,7 @@ Ultimately, pictures on a computer are displayed on a screen with a specific dis
 
 Morphic is the way to do graphics with Pharo. However, most existing canvases are pixel based, and not vector based. This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc)
 
-Enter Athens, a vector-based graphic API. Under the scene, it can either useballoon Canvas, or the Cairo graphic library for the rasterization phase.
+Enter Athens, a vector-based graphic API. Under the scene, it can either use Balloon Canvas or the Cairo graphic library for the rasterization phase.
 
 When you integrate Athens with Spec, you'll use its rendering engine to create your picture. It's then transformed into a `Form` and displayed on the screen.
 
@@ -28,7 +25,7 @@ When you integrate Athens with Spec, you'll use its rendering engine to create y
 
 We'll see how to use Athens directly integrated with Morphic. This is why we first start to create a `Morph` subclass. Figure *@figathens@* shows the display of such a morph. It will be the class we'll use after for all our experiments.
 
-![AthensHello new openInWindow](figures/athens.png width=70&label=figathens)
+![AthensHello new openInWindow](figures/athens.png width=60&label=figathens)
 
 
 
@@ -202,7 +199,7 @@ We could decorate the window as with any presenters.
 
 Executing `AthensExamplePresenter new open` produces Figure *@figathens2@*.
 
-![AthensExamplePresenter new open](figures/athens2.png width=70&label=figathens2)
+![AthensExamplePresenter new open](figures/athens2.png width=60&label=figathens2)
 
 This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture.
 

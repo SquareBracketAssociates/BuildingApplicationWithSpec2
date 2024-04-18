@@ -1,7 +1,5 @@
-## A Simple Contact Book
+## A simple contact book
 
-status: Ready for review - should publish the code
-status: spellchecked
 
 In this chapter, we develop a simple model for a contact book. Then we define a user interface. This example will be used later in the book as an example to explain concepts such as commands, applications, and windows.
 

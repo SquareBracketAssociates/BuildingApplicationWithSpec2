@@ -2,7 +2,7 @@
 @chaintroduction
 
 Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg the git manager, Change Sorter, Critics Browser, and the Pharo debugger.
-An important architectural decision is that Spec supports multiple backends \(at the time of writing this book, GTK and Morphic are available\).
+An important architectural decision is that Spec supports multiple backends (at the time of writing this book, GTK and Morphic are available).
 
 ![Spec supports multiple backends Morphic and GTK3.0.: Here we see GTK.](figures/GTK.png width=100)
 

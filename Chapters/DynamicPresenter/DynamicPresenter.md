@@ -1,4 +1,4 @@
-## Dynamic Presenters
+## Dynamic presenters
 @cha_dynamic_presenter
 
 Contrary to Spec 1, in Spec 2.0 all the layouts are dynamic. It means that you can change the displayed elements on the fly. It is a radical improvement from Spec 1 where most of the layouts were static and building dynamic widgets was cumbersome.

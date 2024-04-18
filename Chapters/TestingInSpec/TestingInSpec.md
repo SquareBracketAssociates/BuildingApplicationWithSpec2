@@ -1,4 +1,4 @@
-## Testing Spec Applications
+## Testing Spec applications
 @cha_testing
 
 status: Looking for some source of already written tests - may be the launcher so that people can have a look

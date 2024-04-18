@@ -1,9 +1,6 @@
 ## Layouts
 @cha_layout
 
-status: to be finished
-status: spellchecker
-
 In Spec2 layouts are represented by instances of layout classes. Such layout classes encode different positioning of elements such as box, paned, or grid layouts.
 This chapter presents the available layouts, their definition, and how layouts can be reused when a presenter reuses other presenters.
 

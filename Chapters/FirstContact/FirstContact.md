@@ -1,8 +1,4 @@
-## First Contact With Examples
-
-status: spellchecked
-status: missing colored list snippet
-
+## First contact with examples
 @cha_first_contact
 
 As a first step in Spec's world, we use a couple of examples to explain its use. We will first construct a small but complete user interface, and then show some more examples of how existing widgets can be configured. This will allow you to build basic user interfaces.

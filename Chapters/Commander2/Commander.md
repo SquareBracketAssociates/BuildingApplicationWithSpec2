@@ -1,8 +1,6 @@
-## Commander: A Powerful and Simple Command Framework
+## Commander: A powerful and simple command framework
 @cha_commander
 
-status: Ready for review should publish the code
-status: spellchecked
 
 Commander was a library originally developed by Denis Kudriashov. Commander 2.0 is the second iteration of that library. It was designed and developed by Julien Delplanque and Stéphane Ducasse. Note that Commander 2.0 is not compatible with Commander but it is really easy to migrate from Commander to Commander 2.0. We describe Commander 2.0 in the context of Spec 2.0. From now on, when we mention Commander we refer to Commander 2.0. In addition, we show how to extend Commander to other needs.
 

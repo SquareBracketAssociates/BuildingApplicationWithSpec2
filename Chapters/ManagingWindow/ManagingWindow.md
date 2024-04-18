@@ -2,8 +2,6 @@
 
 @cha_managing_windows
 
-status: need a pass before review need some explanation about modal window.
-status: spellchecked
 
 So far we have talked about the reuse of `SpPresenter`s, discussed the fundamental functioning of Spec, and presented how to layout the widgets of a user interface. Yet what is still missing for a working user interface is showing all these widgets inside of a window. In our examples until now we have only shown a few of the features of Spec for managing windows, basically restricting ourselves to opening a window.
 
