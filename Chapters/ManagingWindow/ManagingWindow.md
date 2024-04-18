@@ -61,7 +61,7 @@ presenter openWithLayout: aLayout
 ### Opening a dialog box and its configuration options
 
 
-Spec provides an easy way to open a UI as a simple dialog box with _Ok_ and _Cancel_ buttons \(that has no icons for resizing, closing, or the window menu\). To do this, send the message `openDialog` as below:
+Spec provides an easy way to open a UI as a simple dialog box with _Ok_ and _Cancel_ buttons (that has no icons for resizing, closing, or the window menu). To do this, send the message `openDialog` as below:
 
 ```
 | presenter dialog |
@@ -265,7 +265,7 @@ presenter window title: 'I am different!'
 ```
 
 
-### Setting the icon
+### Setting the icon (DOES NOT WORK)
 
 
 !!todo Does not work :\(
@@ -278,10 +278,10 @@ Firstly, sending the `windowIcon:` message to the `SpWindowPresenter` allows an 
 ```
 | windowPresenter1 windowPresenter2 |
  windowPresenter1 := WindowExamplePresenter new open.
- windowPresenter1 windowIcon: (Smalltalk ui icons iconNamed: #thumbsDown).
+ windowPresenter1 windowIcon: (windowPresenter1 iconNamed: #thumbsDown).
 
  windowPresenter2 := WindowExample new asWindow.
- windowPresenter2 windowIcon: (Smalltalk ui icons iconNamed: #thumbsUp).
+ windowPresenter2 windowIcon: (windowPresenter2 iconNamed: #thumbsUp).
  windowPresenter2 open
 ```
 
@@ -335,7 +335,7 @@ SpAlertDialog new
 	openModal
 ```
 
-Confirm dialog are created as follows:
+Confirm dialogs are created as follows:
 
 ```
 SpConfirmDialog new
@@ -348,7 +348,7 @@ SpConfirmDialog new
 	openModal
 ```
 
-
+### Check this!
 The following example is not working because
 - `openModal` does not return the dialog
 - second the dialog does not offer `isOk`
