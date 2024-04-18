@@ -1,20 +1,16 @@
 ## Introduction
-
 @chaintroduction
-status: ready for review
 
 Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg the git manager, Change Sorter, Critics Browser, and the Pharo debugger.
-An important architectural decision is that Spec supports multiple backends \(at the time of writing this book, GTK and Morphic are available\).
+An important architectural decision is that Spec supports multiple backends (at the time of writing this book, GTK and Morphic are available).
 
 ![Spec supports multiple backends Morphic and GTK3.0.: Here we see GTK.](figures/GTK.png width=100)
-
 
 ### Reuse of logic
 
 The fundamental principle behind Spec is the reuse of user interface logic and its visual composition. User interfaces are built by reusing and composing existing user interfaces, and configuring them as needed. This principle starts from the most primitive elements of the UI: widgets such as buttons and labels are in themselves complete UIs that can be reused, configured, and opened in a window. These elements can be combined to form more complex UIs that again can be reused as part of a bigger UI, and so on. This is somewhat similar to how the different tiles on the cover of this book are combined. Smaller tiles configured with different colors or patterns join to form bigger rectangular shapes that are part of an even bigger floor design.
 
-
-To allow such a reuse, Spec was influenced by VisualWorks and Dolphin Smalltalk's Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter  class. A presenter represents the glue between a domain and widgets as well as the logic of interaction between the widgets composing the application.
+To allow such reuse, Spec was influenced by VisualWorks and Dolphin Smalltalk's Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter class. A presenter represents the glue between a domain and widgets as well as the logic of interaction between the widgets composing the application.
 
 In Spec 1.0, this role was filled by the class `ComposableModel` and now, in Spec 20, the class is called `SpPresenter`. A presenter manages the _logic UI and the link between widgets and domain objects_. Fundamentally, when writing Spec code,  developers do _not_ come into contact with UI widgets. Instead, they program a Presenter that holds the UI logic (interactions, layout, ...) and talks to domain objects. When the UI is opened, this presenter instantiates the appropriate widgets. This being said, for developers, this distinction is not apparent and it feels as if the widgets are being programmed directly.
 
@@ -31,7 +27,6 @@ Another example of integration is the NovaStelo project of Prof. E. Ito as shown
 Since Spec 2.0, different widget sets can be used to render your applications. At the time of writing this book, Spec can be rendered using either Morphic or GTK as a backend.
 Spec 2.0 represents a large iteration over Spec 1. Many enhancements have been introduced: the way user interface layouts are expressed, the API has been revisited, new widgets are supported, and integration with other projects, such as `Commander`, has been added.
 
-
 Pharo's objective is to use Spec to build all its own GUIs. This ensures strong support of Spec over time and improves the standardization of Pharo's interfaces as well as their portability to new graphical systems.
 Using Spec2 provides backend independence and logic reuse.
 This means that a UI written in Spec will be rendered on backends other than GTK and Morphic. As new backends become available, all applications written in Spec will be able to use them.
@@ -39,7 +34,6 @@ This means that a UI written in Spec will be rendered on backends other than GTK
 While this book uses previous Spec documentation as a foundation, the text has been almost completely rewritten with an aim toward higher quality. We hope that it will be of use to developers who write UIs in Pharo.
 
 !!note This book focuses on Pharo 12. Earlier versions of Pharo come equipped with different versions of Spec, which may cause some code samples from this book to break. Nevertheless, the fundamental principles of UI development in Spec are the same.
-
 
 ### Outline
 

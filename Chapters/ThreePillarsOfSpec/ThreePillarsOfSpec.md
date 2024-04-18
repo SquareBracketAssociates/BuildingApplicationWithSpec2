@@ -1,9 +1,6 @@
 ##The dual aspects of presenters: Domain and interaction model
 @cha_fundamentals_of_spec
 
-status: spellchecked
-
-
 A presenter has a dual role in Spec. On the one hand, it acts as the glue between domain objects and widgets, and on the other hand, it implements the user interface logic by connecting subpresenters together.
 These two aspects compose the core of a presenter and this is what this chapter describes.
 
@@ -71,7 +68,7 @@ The following snippet creates a window with the list of methods of the class `Po
 (MethodLister on: Point) open.
 ```
 
-![A simple list of sorted selectors of the class Point.](figures/PointSelectors.png label=pointselectors&width=50)
+![A simple list of sorted selectors of the class Point.](figures/PointSelectors.png label=pointselectors&width=45)
 
 
 
@@ -135,7 +132,7 @@ MethodListerWithModel >> defaultLayout
 ```
 
 
-![A simple list of sorted selectors changing based on its model.](figures/PointThenRectangleSelectors.png label=pointRectangeSelectors&width=100)
+![A simple list of sorted selectors changing based on its model.](figures/PointThenRectangleSelectors.png label=pointRectangeSelectors&width=90)
 
 Now we can open our widget. As the following script shows, it will react to the change of the model (see Figure *@pointRectangeSelectors@*).
 

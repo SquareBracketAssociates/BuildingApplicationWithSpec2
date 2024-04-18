@@ -1,4 +1,4 @@
-## Dynamic Presenters
+## Dynamic presenters
 @cha_dynamic_presenter
 
 Contrary to Spec 1, in Spec 2.0 all the layouts are dynamic. It means that you can change the displayed elements on the fly. It is a radical improvement from Spec 1 where most of the layouts were static and building dynamic widgets was cumbersome.
@@ -27,7 +27,7 @@ presenter open.
 
 Of course, we are going to see an empty window because we did not put anything in the layout as shown in Figure *@layout1@*.
 
-![An empty layout.](figures/layout1.png width=60&label=layout1)
+![An empty layout.](figures/layout1.png width=40&label=layout1)
 
 
 Now, without closing the window, we can dynamically edit the layout of the main presenter. We will add a button presenter executing the following lines:
@@ -38,7 +38,7 @@ button1 label: 'I am a button'.
 ```
 
 
-![Paned layout with one button.](figures/layout2.png width=60&label=layout2)
+![Paned layout with one button.](figures/layout2.png width=40&label=layout2)
 
 
 Now, we can add another button. There is no need to close and reopen the window, everything updates dynamically and without the need of rebuilding the window. As we instantiate the layout with `newTopToBottom`, the presenters will be laid out vertically.
@@ -49,7 +49,7 @@ button2 label: 'I am another button'.
 ```
 
 
-![Paned layout with two buttons.](figures/layout3.png width=60&label=layout3)
+![Paned layout with two buttons.](figures/layout3.png width=40&label=layout3)
 
 Now, we can put an icon for the first button:
 
@@ -58,7 +58,7 @@ button1 icon: (button1 iconNamed: #smallDoIt).
 ```
 
 
-![Paned layout with two buttons.](figures/layout4.png width=60&label=layout4)
+![Paned layout with two buttons.](figures/layout4.png width=40&label=layout4)
 
 Or we can delete one of the buttons from the layout \(as shown in Figure *@layout5@*\)
 
@@ -67,7 +67,7 @@ presenter layout remove: button2.
 ```
 
 
-![Removing a button.](figures/layout5.png width=60&label=layout5)
+![Removing a button.](figures/layout5.png width=40&label=layout5)
 
 **Note.** What you see here is that all the changes happen simply by creating a new instance of a given layout and sending messages to it.  It means that programs can create complex logic of the dynamic behavior of a presenter.
 
@@ -75,7 +75,7 @@ presenter layout remove: button2.
 
 We will create a presenter in which we will add and remove dynamically buttons. We will create a new class called `DynamicButtonsPresenter`.
 
-![A presenter that dynamically adds buttons](figures/layout8.png width=60&label=layout8)
+![A presenter that dynamically adds buttons](figures/layout8.png width=40&label=layout8)
 
 ```
 SpPresenter << #DynamicButtonsPresenter
@@ -181,7 +181,7 @@ defaultLayout
 		yourself
 ```
 
-![Adding random buttons](figures/layout9.png width=60&label=layout9)
+![Adding random buttons](figures/layout9.png width=40&label=layout9)
 
 ### Building a little dynamic browser
 

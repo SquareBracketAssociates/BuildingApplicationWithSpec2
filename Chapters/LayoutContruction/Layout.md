@@ -1,9 +1,6 @@
 ## Layouts
 @cha_layout
 
-status: to be finished
-status: spellchecker
-
 In Spec2 layouts are represented by instances of layout classes. Such layout classes encode different positioning of elements such as box, paned, or grid layouts.
 This chapter presents the available layouts, their definition, and how layouts can be reused when a presenter reuses other presenters.
 
@@ -253,10 +250,10 @@ ButtonAndListV2 >> defaultLayout
         yourself
 ```
 
-Note the use of the message `add:layout:` with the selector of the method returning the layout configuration: #buttonColumn. This is normal since we cannot access the state of a subcomponent at this moment.
+Note the use of the message `add:layout:` with the selector of the method returning the layout configuration: `#buttonColumn`. This is normal since we cannot access the state of a subcomponent at this moment.
 
 ##### Dynamically changing a layout
-It is possible to change the layout of a presenter dynamically for example from the inspector as shown in *@figTweak@*.
+It is possible to change the layout of a presenter dynamically for example from the inspector as shown in Figure *@figTweak@*.
 
 ![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak)
 
@@ -302,7 +299,7 @@ GridExample >> defaultLayout
         yourself
 ```
 
-![An ugly example.](figures/grid.png width=90&label=grid)
+![An ugly example.](figures/grid.png width=60&label=grid)
 
 Here is a list of options:
 - `columnHomogeneous`: Whether a column will have the same size.

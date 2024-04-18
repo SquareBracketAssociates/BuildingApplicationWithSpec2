@@ -1,8 +1,7 @@
-## Testing Spec Applications
+## Testing Spec applications
 @cha_testing
 
-status: ready for review. Looking for some source of already written tests - may be the launcher so that people can have a look
-status: spellchecked
+status: Looking for some source of already written tests - may be the launcher so that people can have a look
 
 Developers often think that testing a user interface is difficult. It is true that fully testing the placement and layout of widgets can be tedious. However, testing the logic of an application and in particular the interaction logic is possible and this is what we will show in this chapter. We show that testing a Spec application is simple and effective.
 
@@ -10,8 +9,6 @@ Developers often think that testing a user interface is difficult. It is true th
 ### Testing presenters
 
 Tests are key to ensuring that everything works correctly. In addition, they free us from the fear of breaking something without being warned about it. Tests support refactorings. While such facts are general and applicable to many domains, they are also true for user interfaces.
-
-
 
 #### Spec architecture
 
@@ -47,7 +44,7 @@ But let us give an example.
 
 We will test a simple spec application. The model for this application can be any class. It shows all the subclasses of the model in a tree presenter. Also, it has a text presenter that shows the definition string for the selected class. Finally, it has a string morph and a button. When the button is pressed, the color of the morph changes randomly.
 
-![A Spec application.](figures/examplespecapplication.jpg width=75&label=fig:SpecApp)
+![A Spec application.](figures/examplespecapplication.jpg width=70&label=fig:SpecApp)
 
 First, we will define a test class.
 
@@ -194,10 +191,9 @@ testInitializeWindow
     presenter := ClassVisualizerPresenter on: Object.
 
     [ window := presenter open.
-
     self assert: window isBuilt.
     self assert: window title equals: 'Class visualizer'.
-    self assert: window initialExtent equals: 600 @ 500. ]
+    self assert: window initialExtent equals: 600 @ 500 ]
         ensure: [ window close ]
 ```
 
