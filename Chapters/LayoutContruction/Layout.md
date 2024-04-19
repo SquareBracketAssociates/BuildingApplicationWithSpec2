@@ -8,8 +8,7 @@ This chapter presents the available layouts, their definition, and how layouts c
 
 Spec expects that layouts objects, instances of the layout classes, are associated with a presenter. Each presenter should describe the positioning of its subpresenters.
 
-Contrary to Spec1.0 where layouts were only defined at the class level, in Spec2.0
-to define the layout of a presenter you can:
+Contrary to Spec 1.0, where layouts were only defined at the class level, in Spec 2.0 to define the layout of a presenter you can:
 - Define the `defaultLayout` method on the instance side,
 - Or use the message `layout:` in your `initializePresenters` method to set an instance of layout in the current presenter.
 
@@ -17,7 +16,7 @@ to define the layout of a presenter you can:
 
 Note that the possibility of defining a class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
 
-This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using presenter instances directly, not forcing you to declare subpresenters in instance variables upfront and then use their names as it was done in Spec1.0.
+This new design reflects the dynamic nature of layouts in Spec2, and the fact that you can compose them using presenter instances directly, not forcing you to declare subpresenters in instance variables upfront and then use their names as it was done in Spec 1.0.
 It is, however, possible that there are cases where you want a layout "template"... so you still can do it.
 
 

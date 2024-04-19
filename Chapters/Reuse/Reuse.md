@@ -569,7 +569,7 @@ In Spec2 list presenters and friends are exposing a different one exposing the s
         selection selectedItem ifNotNil: [ api resetSelection ] ].
 ```
 
-Now the question for your presenters is what is the API that you should expose to your users. We would say that it does not matter because exposing a API similar to the one of Spec1 is possible as shown below.
+Now the question for your presenters is what is the API that you should expose to your users. We would say that it does not matter because exposing a API similar to the one of Spec 1.0 is possible as shown below.
 
 ```
 whenSelectedItemChangedDo: aBlock

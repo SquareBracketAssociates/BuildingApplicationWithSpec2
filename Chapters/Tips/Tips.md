@@ -278,8 +278,8 @@ You can. You have two possibilities:
 Maybe (2) needs some work to be really usable, it was never tried. Also, it needs a rename to `SpAthensPresenter` 
 
 
-### Migrating from Spec1  
-Here is a little list of points that you should consider when you migrate your applications from Spec1 to Spec2. 
+### Migrating from Spec 1.0  
+Here is a little list of points that you should consider when you migrate your applications from Spec 1.0 to Spec2. 
  
  
 ##### Picking the right superclass 

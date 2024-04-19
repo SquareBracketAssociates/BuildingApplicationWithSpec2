@@ -239,7 +239,7 @@ ImdbFilmPresenter >> defaultLayout
 ```
 
 
-Note that it is not required to create the accessors for the presenter elements as we were forced to do it in Spec1.0.
+Note that it is not required to create the accessors for the presenter elements as we were forced to do it in Spec 1.0.
 Here we only create getters because we will need them when creating the corresponding `ImbdFilm` instance.
 
 ```

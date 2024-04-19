@@ -25,7 +25,7 @@ Another example of integration is the NovaStelo project of Prof. E. Ito as shown
 ### Spec 2.0
 
 Since Spec 2.0, different widget sets can be used to render your applications. At the time of writing this book, Spec can be rendered using either Morphic or GTK as a backend.
-Spec 2.0 represents a large iteration over Spec 1. Many enhancements have been introduced: the way user interface layouts are expressed, the API has been revisited, new widgets are supported, and integration with other projects, such as `Commander`, has been added.
+Spec 2.0 represents a large iteration over Spec 1.0. Many enhancements have been introduced: the way user interface layouts are expressed, the API has been revisited, new widgets are supported, and integration with other projects, such as `Commander`, has been added.
 
 Pharo's objective is to use Spec to build all its own GUIs. This ensures strong support of Spec over time and improves the standardization of Pharo's interfaces as well as their portability to new graphical systems.
 Using Spec2 provides backend independence and logic reuse.
@@ -60,6 +60,6 @@ the authors would like to express their warm gratitude to the following people f
 
 We want to thank I. Thomas for her chapter on the inspector, S. Jaroshko for his code and idea about the traffic light chapter and R. De Villemeur for the chapter on Athens integration.
 
-Finally, the first author wants to thank Johan Fabry for his co-authoring of the first book on Spec1. Without that first book, this one would not exist.
+Finally, Stéphane Ducasse wants to thank Johan Fabry for his co-authoring of the first book on Spec 1.0. Without that first book, this one would not exist.
 
 If you supported us and you are not on this list, please contact us or do a pull request.
