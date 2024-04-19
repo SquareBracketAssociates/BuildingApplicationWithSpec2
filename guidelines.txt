@@ -1,5 +1,6 @@
 Here are some guidelines about writing style and spelling that resulted from discussion among Stéphane and Koen.
 
+* Write "Spec 2.0" only when needed, e.g. when comparing to Spec 1.0. If there is no ambiguity, write "Spec".
 * Write "backend", not "back-end" or "back end".
 * Write "subpresenter", not "sub-presenter".
 * Methods without comment have an empty line after the method selector.
