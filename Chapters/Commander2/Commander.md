@@ -2,7 +2,7 @@
 @cha_commander
 
 
-Commander was a library originally developed by Denis Kudriashov. Commander 2.0 is the second iteration of that library. It was designed and developed by Julien Delplanque and Stéphane Ducasse. Note that Commander 2.0 is not compatible with Commander but it is really easy to migrate from Commander to Commander 2.0. We describe Commander 2.0 in the context of Spec 2.0. From now on, when we mention Commander we refer to Commander 2.0. In addition, we show how to extend Commander to other needs.
+Commander was a library originally developed by Denis Kudriashov. Commander 2.0 is the second iteration of that library. It was designed and developed by Julien Delplanque and Stéphane Ducasse. Note that Commander 2.0 is not compatible with Commander but it is really easy to migrate from Commander to Commander 2.0. We describe Commander 2.0 in the context of Spec. From now on, when we mention Commander we refer to Commander 2.0. In addition, we show how to extend Commander to other needs.
 
 
 
@@ -551,4 +551,4 @@ ContactBookPresenter class >> defaultLayout
 
 ### Conclusion
 
-In this chapter, we saw how you can define a simple command and execute it in a given context. We show how you can turn a command into a menu item in Spec 2.0 by sending the message `forSpec`. You learned how we can reuse and customize commands. We presented groups of commands as a way to structure menus and menu bars.
+In this chapter, we saw how you can define a simple command and execute it in a given context. We show how you can turn a command into a menu item in Spec by sending the message `forSpec`. You learned how we can reuse and customize commands. We presented groups of commands as a way to structure menus and menu bars.

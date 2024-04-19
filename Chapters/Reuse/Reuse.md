@@ -560,7 +560,7 @@ connectPresenters
         method ifNotNil: [ api resetSelection ] ].
 ```
 
-In Spec2 list presenters and friends are exposing a different one exposing the selection of the list itself. The design rationale is that a selection is a complex object (multi selection...). So we have
+In Spec, list presenters and friends are exposing a different one exposing the selection of the list itself. The design rationale is that a selection is a complex object (multi selection...). So we have
 
 ```
     api whenSelectionChangedDo: [ :selection |
@@ -578,7 +578,7 @@ whenSelectedItemChangedDo: aBlock
 ```
 
 
-Now we suggest using the Spec20 way because it will give your presenters consistency with the core presenters of Spec
+Now we suggest using the Spec way because it will give your presenters consistency with the core presenters of Spec
 and it will make them easier to collaborate.
 
 

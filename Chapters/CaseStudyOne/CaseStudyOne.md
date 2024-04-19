@@ -5,8 +5,7 @@ status: ready for review I got an error with ports so should check with esteban
 status: grammarly passed
 
 In this chapter, we will guide you through the building of a simple but not trivial application to manage films as shown in Figure *@FullApp@*.
-We will show many aspects of Spec20 that we will revisit in depth in the rest of this book:
-the application, presenters, the separation between domain and model, layout, transmissions to connect widgets,  and styles.
+We will show many aspects of Spec that we will revisit in depth in the rest of this book: the application, presenters, the separation between domain and model, layout, transmissions to connect widgets,  and styles.
 
 ![Film App: reusing the same component to edit and browsing a film.](figures/FullApp.png width=90&label=FullApp)
 
@@ -100,7 +99,7 @@ A presenter can have subpresenters e.g., `ImdbFilmListPresenter` will contain ta
 1. a presenter can have multiple layouts and
 2. that layouts can be defined dynamically.
 
-In Spec 2.0, layouts are by default dynamic and are expressed at the instance level. To allow backward compatibility, it is still possible to define a `defaultLayout` _class_ side method that returns a layout instead of using a `defaultLayout` instance side method but it is not the recommended way.
+In Spec, layouts are dynamic by default and are expressed at the instance level. To allow backward compatibility, it is still possible to define a `defaultLayout` _class_ side method that returns a layout instead of using a `defaultLayout` instance side method but it is not the recommended way.
 
 #### initializePresenters
 
@@ -453,7 +452,7 @@ Note that the method `setModel:` is needed only if you do not subclass from `SpP
 
 Defining interactions between presenters is done in the `connectPresenters` method. We implement it to define that, when an element of the list is selected, we should display the information in the detail presenter. It is worth taking some time to look at the `whenSelectionChangedDo:` message.
 
-The `whenSelectionChangedDo:` method expects a block with zero or one argument. Such an argument is not the selected item directly but a more complex object that represents the selection. Indeed a selection is different in a single selection list and a multiple selection list. Therefore Spec 2,0 defines the notion of selection mode under the form of subclasses of `SpAbstractSelectionMode`.
+The `whenSelectionChangedDo:` method expects a block with zero or one argument. Such an argument is not the selected item directly but a more complex object that represents the selection. Indeed a selection is different in a single selection list and a multiple selection list. Therefore Spec defines the notion of selection mode under the form of subclasses of `SpAbstractSelectionMode`.
 
 ```
 ImdbFilmListPresenter >> connectPresenters

@@ -2,7 +2,7 @@
 
 status: Ready for review
 
-This is a small tutorial to give a first look at the world of Spec2 and developing applications with it.  
+This is a small tutorial to give a first look at the world of Spec and developing applications with it.  
 It should not be taken as a comprehensive guide since a lot of details and features are left out explicitly to avoid difficult issues. 
   
 We will build a small Todo application that will connect a couple of components and it will show some interesting characteristics.
@@ -77,7 +77,7 @@ TodoTask new title: 'Task Two'; save.
 ### Creating your application
 
 Every application needs an entry point, a place where to configure the basics and start the GUI. Compiled programs like C have `main()`, Cocoa has the class `NSApplication` and you add a _delegate_ to add your configuration and Gtk3 has `GtkApplication`.  
-Pharo is a living environment where many things can be executed at the same time, and because of that Spec2 also needs its own entry point: Your application needs to be independent of the rest of the system! To do that, Spec2 needs you to extend the class `SpApplication`.  
+Pharo is a living environment where many things can be executed at the same time, and because of that Spec also needs its own entry point: Your application needs to be independent of the rest of the system! To do that, Spec needs you to extend the class `SpApplication`.  
 
 ```Smalltalk
 SpApplication << #TodoApplication
@@ -87,7 +87,7 @@ SpApplication << #TodoApplication
 Note that an application is not a visual element, it manages the application and information that may be displayed visually such as icons but also other concerns such as the backend.
 
 You will also need your main window, a Todo list.  
-In Spec2, all components that you create inherit (directly or indirectly) from a single root base class: `SpPresenter`. A _presenter_ is how you expose (present) your data to the user.  
+In Spec, all components that you create inherit (directly or indirectly) from a single root base class: `SpPresenter`. A _presenter_ is how you expose (present) your data to the user.  
 
 
 We create a presenter, named `TodoListPresenter` to represent the logic of managing a list of Todo items. 
@@ -503,7 +503,7 @@ delete simply takes the selected item and sends the `delete` message.
 %    load.
 %```
 
-%(Do not worry if you have a couple of messages asking to "load" or "merge" a Spec2 package, this is because the baseline has Spec2 in its dependencies and it will "touch" the packages while loading the Gtk backend).
+%(Do not worry if you have a couple of messages asking to "load" or "merge" a Spec package, this is because the baseline has Spec in its dependencies and it will "touch" the packages while loading the Gtk backend).
 
 %Now, you can execute
 

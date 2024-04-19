@@ -279,7 +279,7 @@ Maybe (2) needs some work to be really usable, it was never tried. Also, it need
 
 
 ### Migrating from Spec 1.0  
-Here is a little list of points that you should consider when you migrate your applications from Spec 1.0 to Spec2. 
+Here is a little list of points that you should consider when you migrate your applications from Spec 1.0 to Spec 2.0. 
  
  
 ##### Picking the right superclass 

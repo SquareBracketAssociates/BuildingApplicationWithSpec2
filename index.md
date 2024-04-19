@@ -1,7 +1,7 @@
 <!inputFile|path=Chapters/Intro/Intro.md!>
 %Reviewed by stef
 
-# All Spec20 in One Example
+# All Spec in One Example
 
 <!inputFile|path=Chapters/FirstContact/FirstContactShrunk.md!> 
 
@@ -10,7 +10,7 @@
 
 <!inputFile|path=Chapters/TrafficLights/TrafficLights.md!>
 
-# Spec 2.0 Essentials
+# Spec Essentials
 
 <!inputFile|path=Chapters/InANutshell/InANutshell.md!> 
 %Reviewed by stef

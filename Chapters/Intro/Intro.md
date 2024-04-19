@@ -12,7 +12,7 @@ The fundamental principle behind Spec is the reuse of user interface logic and i
 
 To allow such reuse, Spec was influenced by VisualWorks and Dolphin Smalltalk's Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter class. A presenter represents the glue between a domain and widgets as well as the logic of interaction between the widgets composing the application.
 
-In Spec 1.0, this role was filled by the class `ComposableModel` and now, in Spec 20, the class is called `SpPresenter`. A presenter manages the _logic UI and the link between widgets and domain objects_. Fundamentally, when writing Spec code,  developers do _not_ come into contact with UI widgets. Instead, they program a Presenter that holds the UI logic (interactions, layout, ...) and talks to domain objects. When the UI is opened, this presenter instantiates the appropriate widgets. This being said, for developers, this distinction is not apparent and it feels as if the widgets are being programmed directly.
+In Spec 1.0, this role was filled by the class `ComposableModel` and now, in Spec 2.0, the class is called `SpPresenter`. A presenter manages the _logic UI and the link between widgets and domain objects_. Fundamentally, when writing Spec code,  developers do _not_ come into contact with UI widgets. Instead, they program a Presenter that holds the UI logic (interactions, layout, ...) and talks to domain objects. When the UI is opened, this presenter instantiates the appropriate widgets. This being said, for developers, this distinction is not apparent and it feels as if the widgets are being programmed directly.
 
 Spec is the standard GUI framework in Pharo and differs from Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists, etc. It cannot be used as a general drawing framework, but you can integrate a canvas inside a Spec component. For example, you can embed a Roassal visualization \(see Figure *@SpecRoassal@*\), or you can extend Spec itself with additional native components.
 
@@ -20,7 +20,7 @@ Spec is the standard GUI framework in Pharo and differs from Pharo's other GUI f
 
 Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo@*.
 
-![An integration of Morphic Native Widgets and Spec2.](figures/NovaStelo.png width=100&label=NovaStelo)
+![An integration of Morphic Native Widgets and Spec.](figures/NovaStelo.png width=100&label=NovaStelo)
 
 ### Spec 2.0
 
@@ -28,7 +28,7 @@ Since Spec 2.0, different widget sets can be used to render your applications. A
 Spec 2.0 represents a large iteration over Spec 1.0. Many enhancements have been introduced: the way user interface layouts are expressed, the API has been revisited, new widgets are supported, and integration with other projects, such as `Commander`, has been added.
 
 Pharo's objective is to use Spec to build all its own GUIs. This ensures strong support of Spec over time and improves the standardization of Pharo's interfaces as well as their portability to new graphical systems.
-Using Spec2 provides backend independence and logic reuse.
+Using Spec 2.0 provides backend independence and logic reuse.
 This means that a UI written in Spec will be rendered on backends other than GTK and Morphic. As new backends become available, all applications written in Spec will be able to use them.
 
 While this book uses previous Spec documentation as a foundation, the text has been almost completely rewritten with an aim toward higher quality. We hope that it will be of use to developers who write UIs in Pharo.
