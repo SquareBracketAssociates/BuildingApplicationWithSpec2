@@ -14,3 +14,4 @@ Here are some guidelines about writing style and spelling that resulted from dis
 * Use sentence case for headers, e.g. "Editable tables", not "Editable Tables".
 * Start a note with "**Note.**".
 * Do not write a space before a colon, e.g. "the following code:", not "the following code :". In French one would write the space, but not in English.
+* Use tabs to indent code.
