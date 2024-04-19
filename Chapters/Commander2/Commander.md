@@ -536,7 +536,7 @@ ContactBookPresenter >> initializePresenters
 Finally, to get the menu bar we declare it in the layout. We use `SpAbstractPresenter class>>#toolbarHeight` to specify the height of the menu bar.
 
 ```
-ContactBookPresenter class >> defaultLayout
+ContactBookPresenter >> defaultLayout
 
     ^ SpBoxLayout newVertical
             add: #menuBar
