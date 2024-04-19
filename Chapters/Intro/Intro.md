@@ -35,6 +35,19 @@ While this book uses previous Spec documentation as a foundation, the text has b
 
 !!note This book focuses on Pharo 12. Earlier versions of Pharo come equipped with different versions of Spec, which may cause some code samples from this book to break. Nevertheless, the fundamental principles of UI development in Spec are the same.
 
+### Code
+
+The code of all the examples in this book is stored at [https://github.com/SquareBracketAssociates/CodeOfSpec20Book](https://github.com/SquareBracketAssociates/CodeOfSpec20Book).
+
+You can load the code by evaluating this code snippet:
+
+```
+Metacello new
+  baseline: 'CodeOfSpec20Book';
+  repository: 'github://SquareBracketAssociates/CodeOfSpec20Book/src';
+  load
+```
+
 ### Outline
 
 !!note SD: to revise
