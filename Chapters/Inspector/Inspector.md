@@ -31,7 +31,7 @@ Figure *@InspectorNavigation@* is a small demonstration.
 
 KDH: adding a GIF file does not work. We need an alternative, or remove this part
 
-![Navigating in the inspector](figures/InspectorPaneNavigation.gif width=40&label=InspectorNavigation)
+%![Navigating in the inspector](figures/InspectorPaneNavigation.gif width=40&label=InspectorNavigation)
 
 ### The inspector toolbar
 
@@ -53,7 +53,7 @@ The following animation shows how to put a breakpoint on writing an instance var
 
 KDH: adding a GIF file does not work. We need an alternative, or remove this part
 
-![Breakpoints](figures/InspectorBreakpoints.gif width=60&label=InspectorBreakpoints)
+%![Breakpoints](figures/InspectorBreakpoints.gif width=60&label=InspectorBreakpoints)
 
 ### The Meta tab: class hierarchy and searching methods
 
