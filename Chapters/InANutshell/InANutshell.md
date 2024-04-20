@@ -84,7 +84,7 @@ We define a configuration as a subclass of `SpMorphicConfiguration`.
 
 ```
 SpMorphicConfiguration << #ImdbMorphicConfiguration
-    package: 'Spec-TutorialOne'
+	package: 'Spec-TutorialOne'
 ```
 
 Then we define the method `configure:` as follows:
@@ -92,14 +92,14 @@ Then we define the method `configure:` as follows:
 ```
 ImdbMorphicConfiguration >> configure: anApplication
 
-    super configure: anApplication.
-    "There are ways to write/read this from strings or files,
-     but this is how you do it programatically."
-    self styleSheet
-         addClass: 'header' with: [ :style |
-             style
-                addPropertyFontWith: [ :font | font bold: true ];
-                addPropertyDrawWith: [ :draw | draw color: Color red ] ]
+	super configure: anApplication.
+	"There are ways to write/read this from strings or files,
+	 but this is how you do it programatically."
+	self styleSheet
+		addClass: 'header' with: [ :style |
+			style
+				addPropertyFontWith: [ :font | font bold: true ];
+				addPropertyDrawWith: [ :draw | draw color: Color red ] ]
 ```
 
 Note that we could use a style described in a string as shown in the Styling Applications chapter (Chapter *@cha_style@*).
@@ -109,8 +109,8 @@ Finally, in the corresponding application class, we declare that the Morphic bac
 ```
 ImdbApp >> initialize
 
-    super initialize.
-    self useBackend: #Morphic with: ImdbMorphicConfiguration new
+	super initialize.
+	self useBackend: #Morphic with: ImdbMorphicConfiguration new
 ```
 
 
@@ -120,26 +120,26 @@ For GTK the process is similar, we define a subclass of `SpGTKConfiguration`.
 
 ```
 SpGTKConfiguration << #ImdbGTKConfiguration
-    package: 'Spec-TutorialOne'
+	package: 'Spec-TutorialOne'
 ```
 Then we configure it by selecting and extending CSS.
 
 ```
 ImdbGTKConfiguration >> configure: anApplication
 
-    super configure: anApplication.
-    "This will choose the theme 'Sierra-dark' if it is available"
-    self installTheme: 'Sierra-dark'.
-    "This will add a 'provider' (a stylesheet)"
-    self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
+	super configure: anApplication.
+	"This will choose the theme 'Sierra-dark' if it is available"
+	self installTheme: 'Sierra-dark'.
+	"This will add a 'provider' (a stylesheet)"
+	self addCSSProviderFromString: '.header {color: red; font-weight: bold}'
 ```
 And in the application initialization, we declare that the configuration should be used for GTK.
 
 ```
 ImdbApp >> initialize
 
-    super initialize.
-    self useBackend: #GTK with: ImdbGTKConfiguration new
+	super initialize.
+	self useBackend: #GTK with: ImdbGTKConfiguration new
 ```
 
 
@@ -165,15 +165,15 @@ Figure *@layout6B@* shows the corresponding result.
 ```
 MyMiniBrowserPresenter >> defaultLayout
 
-    ^ (SpBoxLayout newTopToBottom
-        spacing: 5;
-        add: (SpBoxLayout newLeftToRight
-                spacing: 10;
-                add: treeClasses;
-                add: methodsFilteringList;
-                yourself);
-        add: codeShower;
-        yourself)
+	^ (SpBoxLayout newTopToBottom
+			spacing: 5;
+			add: (SpBoxLayout newLeftToRight
+						spacing: 10;
+						add: treeClasses;
+						add: methodsFilteringList;
+						yourself);
+			add: codeShower;
+			yourself)
 ```
 
 ![The layout corresponding to the `defaultLayout` method.](figures/layout6Annotated.pdf width=70&label=layout6B)
@@ -190,8 +190,8 @@ Here is an example of a stylesheet for the Morphic backend:
 
 ```
 '.application [
-    .lightGreen [ Draw { #color: #B3E6B5 } ],
-    .lightBlue [ Draw { #color: #lightBlue } ] ]'
+	.lightGreen [ Draw { #color: #B3E6B5 } ],
+	.lightBlue [ Draw { #color: #lightBlue } ] ]'
 ```
 
 
@@ -202,10 +202,10 @@ You can apply it on your Spec application by sending the `styleSheet:` message t
 
 ```
 myStyleSheet := SpStyleVariableSTONReader fromString:
-    '.application [
-        Font { #bold: true },
-        .bgBlack [ Draw { #backgroundColor: #black } ],
-        .blue [ Draw { #color: #blue } ]
+	'.application [
+		Font { #bold: true },
+		.bgBlack [ Draw { #backgroundColor: #black } ],
+		.blue [ Draw { #color: #blue } ]
 ]'
 application styleSheet: SpStyle defaultStyleSheet, myStyleSheet.
 ```
@@ -228,12 +228,12 @@ It is quite easy to define the behavior of the UI by using widget-predefined eve
 
 ```
 messageList
-    whenSelectionChangedDo: [ :selection |
-        messageDetail model: selection selectedItem ];
-    whenModelChangedDo: [ self updateTitle ].
-    textModel whenSubmitDo: [ :text | self accept: text ].
-    addButton action: [ self addDirectory ].
-    filterInput whenTextChangedDo: [ :text | self refreshTable ].
+	whenSelectionChangedDo: [ :selection |
+		messageDetail model: selection selectedItem ];
+	whenModelChangedDo: [ self updateTitle ].
+	textModel whenSubmitDo: [ :text | self accept: text ].
+	addButton action: [ self addDirectory ].
+	filterInput whenTextChangedDo: [ :text | self refreshTable ].
 ```
 
 ### Conclusion
