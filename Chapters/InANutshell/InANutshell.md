@@ -2,24 +2,16 @@
 @cha_core
 
 
-Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed most tools in Pharo are written in Spec, e.g., the inspector, spotter, the Pharo debugger, Iceberg, etc. In this short chapter, we place the key architectural elements of Spec in the context.
-
-### Spec core principle
-
-The fundamental principle behind Spec is the reuse of user interface logic and visual composition. User interfaces are built by reusing, composing existing user interfaces, and configuring them as needed. This principle starts from the most primitive elements of the UI: widgets such as buttons and labels are in themselves complete UIs that can be reused, configured, and opened in their own window. These elements can be combined to form more complex UIs that again can be reused as part of a bigger UI, and so on.
-
-To allow such reuse, Spec is influenced by the Model View Presenter (MVP) pattern. Spec recognizes the need for a Presenter or ApplicationModel class (in Spec represented by the abstract superclass `SpPresenter`) that manages the logic and the link between widgets and domain objects. Fundamentally, when writing Spec code, the developer does ‘‘not’’ come into contact with UI widgets, instead one subclass of `SpPresenter` is programmed that holds the UI logic. When the UI is opened this model will then instantiate the appropriate widgets.
-
-Spec offers different backends to render the presenters: Morphic (the default backend) and GTK. It means that, without modifying your UI described as presenters with Spec, you can render your application in the Pharo image with Morphic or as a native application with external Windows thanks to the GTK backend.
+Spec is Pharo's user interface framework. It provides the building blocks for constructing UIs, from simple windows to complex tools like browsers and debuggers. Spec is the foundation of most tools in Pharo, like the inspector, Spotter, the Pharo debugger, Iceberg, etc. In this short chapter, we place the key architectural elements of Spec in context.
 
 
 ### Spec architecture overview
 
-Figure *@coreextended@* presents the general architecture of Spec. Basically, Spec is built around 5 elements that we will describe in a subsequent section. The most important elements are Presenter, Layout, and Application.
+Figure *@coreextended@* presents the general architecture of Spec. Basically, Spec is built around 5 concepts that we will describe in subsequent sections. The most important concepts are Presenter, Layout, and Application.
 
-A presenter represents the UI element logic and it is also the connection with the domain.  The Application is also a place to be in contact with domain objects but generally, it handles application-specific resources (icons, windows...).
+A Presenter represents the UI element logic and it is also the connection with the domain. The Application is also a place to be in contact with domain objects but generally, it handles application-specific resources (icons, windows...).
 
-Based on presenters and layout, Spec builds the actual UI. To do so it internally uses adapters that are specific to each widget and per backend. This way presenters are totally agnostic about backends and are reusable across them.
+Based on presenters and layouts, Spec builds the actual UI. Internally, it uses adapters that are specific to each widget and per backend. This way presenters are totally agnostic about backends and are reusable across them.
 
 
 ![Architecture of Spec.](figures/coreExtended.pdf label=coreextended&width=80)
