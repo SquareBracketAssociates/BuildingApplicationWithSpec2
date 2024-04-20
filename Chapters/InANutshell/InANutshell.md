@@ -46,7 +46,7 @@ SpButtonPresenter new
     open
 ```
 
-A presenter may also have a model that is a domain object you need to interact with to display or update data. In this case, your presenter class should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object and gets changed when the model changes (See Chapter *@cha_fundamentals_of_spec@*).
+A presenter may also have a model that is a domain object you need to interact with to display or update data. In this case, your presenter class should inherit from `SpPresenterWithModel` so that the presenter keeps a reference to the domain object and gets changed when the model changes (see Chapter *@cha_fundamentals_of_spec@*).
 
 A presenter defines layouts. One is mandatory. If you want to display a presenter with the default layout, you can use the `open` or `openDialog` methods.
 The former will open a new window with the presenter while the latter will open a blocking dialog with the presenter.
