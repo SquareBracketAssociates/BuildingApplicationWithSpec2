@@ -294,8 +294,7 @@ Some of the hook methods got renamed to convey better what they are doing:
 - `initializeWidgets` is renamed to `initializePresenters` 
 - `initializePresenter` is renamed to `connectPresenters` 
 
-There is no need to define a `defaultSpec` class side method. You can now simply define an `initializeLayout` method and call it. 
-The method `defaultSpec` is now called `defaultLayout`.
+There is no need to define a `defaultSpec` class side method. You can now simply define an instance method `defaultLayout`.
 
 
 ##### Layouts 
