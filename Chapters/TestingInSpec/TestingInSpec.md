@@ -134,7 +134,7 @@ ClassVisualizerPresenter >> selectClass: aClass
 
 
 The action of the color button changes the color of the morph randomly.
-When the button is clicked the morph must change its colour.
+When the button is clicked the morph must change its color.
 
 ```
 ClassVisualizerPresenterTest >> testButtonChangesMorph
