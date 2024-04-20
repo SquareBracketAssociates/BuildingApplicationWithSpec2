@@ -36,8 +36,7 @@ We detail each of the main elements.
 
 ### Presenters
 
-A Spec presenter (an instance of a `SpPresenter` subclass), is an essential part of the Spec framework. It represents the logic of a UI element. It can be the model of a simple UI widget such as a button as well as of a complex UI widget composed by many other presenters (either simple or complex).
-To build your user interface, you compose presenters.
+A Spec presenter (an instance of a `SpPresenter` subclass), is an essential part of the Spec framework. It represents the logic of a UI element. It can define the behavior of a simple UI widget such as a button, as well as of a complex UI widget composed by many other presenters (either simple or complex). To build your user interface, you compose presenters.
 
 Spec already comes with a predefined set of basic presenters (widgets) ready to use in your presenters. You can find them in the 'scripting - widgets' protocol of the `SpPresenter` class. You will find buttons, labels, checkboxes, text input, drop lists, lists, menus, tables, trees, toolbars, action bars, but also more complex widgets like code diff presenters or notebooks. You can easily instantiate a new presenter and display it:
 
