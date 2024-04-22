@@ -4,7 +4,7 @@ status: should do another pass
 status: spellchecked
 
 
-An Inspector is a tool that is used to look at and interact with objects. In Pharo, inspecting an object means opening this tool and interacting with your object. It is a key tool for developing in Pharo. It allows one to navigate the object structure, look at the state of the variables, change their value, or send messages. An inspector can show other information and you can extend it to display the information that is best suited for you. This is what we will see in this chapter.
+An Inspector is a tool that is used to look at and interact with objects. In Pharo, inspecting an object means opening this tool and interacting with your object. It is a key tool when developing in Pharo. It allows one to navigate the object structure, look at the state of the variables, change their value, or send messages. An inspector can show other information and you can extend it to display the information that is best suited for you. This is what we will see in this chapter.
 
 
 ### A first look at the inspector

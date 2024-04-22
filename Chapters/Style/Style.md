@@ -34,7 +34,7 @@ When using styles, the size of the button will also scale as shown in Figure *@s
 Spec first collects the style for the presenter, then collects the styles for its
  subcomponents. 'application' is the default root level.
 
-A defined stylesheet always has a root element, and this root element
+A defined stylesheet always has a root element and this root element
 has to be called `'.application'`.
 
 Each style follows a cascading style, starting from `.application` like
@@ -44,7 +44,7 @@ Each style follows a cascading style, starting from `.application` like
 .application.checkBox
 ```
 
-There are two ways to express stylesheets: one for Morphic expressed using an extended version of STON, and CSS for Gtk.
+There are two ways to express stylesheets: one for Morphic expressed using an extended version of STON, and CSS for GTK.
 
 ### STON notation
 
@@ -191,7 +191,7 @@ If we want to change the color of a presenter, we need to create a string and us
 ```
 
 
-Now we have two styles: lightGreen and lightBlue that can be applied to any presenter.
+Now we have two styles: `lightGreen` and `lightBlue` that can be applied to any presenter.
 
 ### Environmental variables
 
@@ -261,7 +261,6 @@ presenter open.
 ![The stylesheet had been applied to the label.](figures/style5.png width=50&label=style5)
 
 ### Dynamically applying styles
-
 
 We can also remove and add styles at runtime as shown in the following snippet whose result is displayed in Figure *@style6@*.
 
