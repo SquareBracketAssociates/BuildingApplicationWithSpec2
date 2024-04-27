@@ -24,7 +24,7 @@ We can change the header title of the list using the message `headerTitle:`. The
 
 By default a list item is displayed using the result of the `displayString` message sent to the item.
 We can configure a list to apply a block to control the display of each item using the message `display:`.
-The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `displayString` (See Figure *@figSimpleList2@*).
+The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `displayString` (see Figure *@figSimpleList2@*).
 
 ```
 SpListPresenter new

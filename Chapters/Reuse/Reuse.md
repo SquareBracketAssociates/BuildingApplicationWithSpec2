@@ -116,8 +116,7 @@ ProtocolMethodListPresenter >> initializeWindow: aWindowPresenter
 ```
 
 
-The layout code builds a column with the fixed-height label on top and the list taking all the space that remains. 
-%(See Chapter *@cha_layout_construction@* for more on layouts.)
+The layout code builds a column with the fixed-height label on top and the list taking all the space that remains. See Chapter *@cha_layout@* for more on layouts.
 
 ```
 ProtocolMethodListPresenter >> defaultLayout
