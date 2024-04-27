@@ -3,7 +3,7 @@
 
 # All Spec in One Example
 
-<!inputFile|path=Chapters/FirstContact/FirstContactShrunk.md!> 
+<!inputFile|path=Chapters/FirstContact/FirstContact.md!> 
 
 <!inputFile|path=Chapters/CaseStudyOne/CaseStudyOne.md!>
 %Reviewed by stef
