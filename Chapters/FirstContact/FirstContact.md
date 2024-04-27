@@ -20,8 +20,8 @@ All user interfaces in Spec are subclasses of `SpPresenter`, so the first step i
 
 ```
 SpPresenter << #CustomerSatisfactionPresenter
-    slots: { #buttonHappy . #buttonNeutral . #buttonBad . #result};
-    package: 'CodeOfSpec20Book'
+	slots: { #buttonHappy . #buttonNeutral . #buttonBad . #result};
+	package: 'CodeOfSpec20Book'
 ```
 
 The instance variables of the class hold the _presenters_ the UI contains, the so-called _subpresenters_. In this case, we have three buttons and a text to show the result of the survey.
@@ -40,10 +40,10 @@ their intent.
 ```
 CustomerSatisfactionPresenter >> initializePresenters
 
-    result := self newLabel.
-    buttonHappy := self newButton.
-    buttonNeutral := self newButton.
-    buttonBad := self newButton.
+	result := self newLabel.
+	buttonHappy := self newButton.
+	buttonNeutral := self newButton.
+	buttonBad := self newButton.
 ```
 
 
@@ -54,7 +54,7 @@ The following method shows how `newButton` is defined.
 ```
 SpPresenter >> newButton
 
-    ^ self instantiate: SpButtonPresenter
+	^ self instantiate: SpButtonPresenter
 ```
 
 
@@ -69,17 +69,17 @@ The next step is configuring the buttons of our UI. The message `label:` sets th
 ```
 CustomerSatisfactionPresenter >> initializePresenters
 
-    ... continued ...
-    result label: 'Please give us your feedback.'.
-    buttonHappy
-        label: 'Happy';
-        icon: (self iconNamed: #thumbsUp).
-    buttonNeutral
-        label: 'Neutral';
-        icon: (self iconNamed: #user).
-    buttonBad
-        label: 'Bad';
-        icon: (self iconNamed: #thumbsDown)
+	... continued ...
+	result label: 'Please give us your feedback.'.
+	buttonHappy
+		label: 'Happy';
+		icon: (self iconNamed: #thumbsUp).
+	buttonNeutral
+		label: 'Neutral';
+		icon: (self iconNamed: #user).
+	buttonBad
+		label: 'Bad';
+		icon: (self iconNamed: #thumbsDown)
 ```
 
 `SpPresenter>>#iconNamed:` uses an icon provider to fetch the icon with the given name. You can browse the Spec icon provider by looking at `SpPharoThemeIconProvider`, which is a subclass of `SpIconProvider`. Each application is able to define its own icon provider by defining a subclass of `SpIconProvider`.
@@ -94,9 +94,9 @@ Now we define what will happen when the user presses a button. We define this in
 ```
 CustomerSatisfactionPresenter >> connectPresenters
 
-    buttonHappy action: [ result label: buttonHappy label ].
-    buttonNeutral action: [ result label: buttonNeutral label ].
-    buttonBad action: [ result label: buttonBad label ]
+	buttonHappy action: [ result label: buttonHappy label ].
+	buttonNeutral action: [ result label: buttonNeutral label ].
+	buttonBad action: [ result label: buttonBad label ]
 ```
 
 
@@ -114,14 +114,14 @@ The presenters have been defined and configured, but their placement in the UI h
 ```
 CustomerSatisfactionPresenter >> defaultLayout
 
-    ^ SpBoxLayout newTopToBottom
-        add: (SpBoxLayout newLeftToRight
-                add: buttonHappy;
-                add: buttonNeutral;
-                add: buttonBad;
-                yourself);
-        add: result;
-        yourself
+	^ SpBoxLayout newTopToBottom
+		add: (SpBoxLayout newLeftToRight
+				add: buttonHappy;
+				add: buttonNeutral;
+				add: buttonBad;
+				yourself);
+		add: result;
+		yourself
 ```
 
 
@@ -140,10 +140,10 @@ To set the window title and the initial size of your presenter, you have to spec
 ```
 CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
 
-    super initializeWindow: aWindowPresenter.
-    aWindowPresenter
-        title: 'Customer Satisfaction Survey';
-        initialExtent: 400@100
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter
+		title: 'Customer Satisfaction Survey';
+		initialExtent: 400@100
 ```
 
 
