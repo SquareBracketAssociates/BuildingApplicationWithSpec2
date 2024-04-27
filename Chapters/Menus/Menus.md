@@ -1,4 +1,4 @@
-## Menu and MenuBar
+## Menu and menuBar
 
 status: definitively needed
 

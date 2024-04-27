@@ -1,4 +1,4 @@
-## Traffic Lights 
+## Traffic lights 
 
 In this chapter, we will present a traffic light system. 
 It is interesting because it shows that we can build different user applications with Spec. 
@@ -144,5 +144,3 @@ TrafficApplication >> start
 ### Conclusion
 
 We build a simple yet different kind of application
-
-
