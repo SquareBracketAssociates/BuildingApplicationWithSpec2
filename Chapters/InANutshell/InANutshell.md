@@ -155,28 +155,29 @@ To display its elements, a presenter uses a layout. A layout describes how eleme
 
 Any layout in Spec is dynamic and composable. In general, a layout is defined at the presenter instance level, but it can be defined on the class side.
 
-Defining a layout is as simple as defining the `defaultLayout` method. This method is automatically invoked if a layout is not manually set. The following method defines two box layouts:
-- one containing a tree and a list and
-- the second one containing the first one and a code text below.
-Each of the layouts refers to presenters accessible (`treeClasses`, `methodsFilteringList`, `codeShower`) from the current one.
+Defining a layout is as simple as defining the `defaultLayout` method. This method is automatically invoked if a layout is not manually set.
 
-Figure *@layout6B@* shows the corresponding result.
+Let's revisit the `defaultLayout` method from Chapter *@chaSmallExample@*.
 
 ```
-MyMiniBrowserPresenter >> defaultLayout
+CustomerSatisfactionPresenter >> defaultLayout
 
-	^ (SpBoxLayout newTopToBottom
-			spacing: 5;
-			add: (SpBoxLayout newLeftToRight
-						spacing: 10;
-						add: treeClasses;
-						add: methodsFilteringList;
-						yourself);
-			add: codeShower;
-			yourself)
+	^ SpBoxLayout newTopToBottom
+		add: (SpBoxLayout newLeftToRight
+					add: buttonHappy;
+					add: buttonNeutral;
+					add: buttonBad;
+					yourself);
+		add: result;
+		yourself
 ```
 
-![The layout corresponding to the `defaultLayout` method.](figures/layout6Annotated.pdf width=70&label=layout6B)
+The method defines two box layouts:
+- one containing the three buttons
+- one containing the first one and a result text below.
+Each of the layouts refers to accessible subpresenters  (`buttonHappy`, `buttonNeutral`, `buttonBad`, `result`) from the presenter. Figure *@layout6B@* shows the corresponding result.
+
+![The layout corresponding to the `defaultLayout` method.](figures/layout6Annotated.png width=70&label=layout6B)
 
 
 
