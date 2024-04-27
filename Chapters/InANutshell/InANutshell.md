@@ -2,7 +2,8 @@
 @cha_core
 
 
-Spec is Pharo's user interface framework. It provides the building blocks for constructing UIs, from simple windows to complex tools like browsers and debuggers. With Spec, developers can capture the layout and the interactions between the elements that compose a UI. For example, clicking on an item list on the left will display detailed information about the selected item on the right.
+Spec is Pharo's user interface framework. It provides the building blocks for constructing UIs, from simple windows to complex tools like browsers and debuggers. With Spec, developers can capture the layout and the interactions between the elements that compose a UI. For example, with Spec developer can express that a tool has two elements: a list on the left and an element displaying information on the left and that clicking on an item list will display detailed information about the selected item.
+In addition, Spec supports the reuse of the UI interaction logic. 
 Spec is the foundation of most tools in Pharo, such as the inspector, Spotter, the Pharo debugger, Iceberg, etc. In this short chapter, we place the key architectural elements of Spec in context.
 
 ### Spec architecture overview
@@ -11,7 +12,7 @@ Figure *@coreextended@* presents the general architecture of Spec. Basically, Sp
 
 A Presenter represents the UI element logic and it is also the connection with the domain. The Application is also a place to be in contact with domain objects but generally, it handles application-specific resources (icons, windows,…).
 
-Based on presenters and layouts, Spec builds the actual UI. Internally, it uses adapters that are specific to each widget and per backend. This way presenters are totally agnostic about backends and are reusable across them.
+Based on presenters and layouts, Spec builds the actual UI. Internally, it uses adapters that are specific to each widget and per backend. This way presenters are agnostic about backends and are reusable across them.
 
 
 ![Architecture of Spec.](figures/coreExtended.pdf label=coreextended&width=80)
@@ -55,11 +56,11 @@ You can use `openWithLayout:` or `openDialogWithLayout:` to open the presenter w
 
 ### Application
 
-A spec application (an instance of the `SpApplication` class hierachy) handles your application initialization, configuration, and resources. `SpApplication` is not a presenter because it does not have a graphical representation. An `SpApplication` defines your application (keeping the backend, theme, icons, and other graphical resources), and keeps the opened windows that belong to the application, but it is not shown itself.
+A Spec application (an instance of the `SpApplication` class hierarchy) handles your application initialization, configuration, and resources. `SpApplication` is not a presenter because it does not have a graphical representation. An instance of `SpApplication` defines your application (keeping the backend, theme, icons, and other graphical resources), and keeps the opened windows that belong to the application, but it is not shown itself.
 
-A Spec application also provides a way to access windows or resources like icons, and provides abstractions for interactions with the user (inform, error, file, or directory selection).
+A Spec application also provides a way to access windows or resources such as icons, and provides abstractions for interactions with the user (inform, error, file, or directory selection).
 
- An application also provides the style used by Spec to style UI elements.  A default style is available but you can customize it as shown in Chapter *@cha_style@*.
+Finally an application provides the style used by Spec to style UI elements.  A default style is available but you can customize it as shown in Chapter *@cha_style@*.
 
 You should also define a method to tell what is the main window / presenter to use when running the application.
 Here we specialize the method `start` as follows:
@@ -76,6 +77,7 @@ You can run your application with `MyApplication new run`. It will call the `sta
 ### Application configuration
 
 In the application initialization, you can configure the backend you want to use: Morphic (default) or GTK.
+In the future, Spec will also support Toplo (a new widget library built on top of Bloc the replacement of Morphic).
 
 ##### Using Morphic
 
@@ -152,7 +154,7 @@ To display its elements, a presenter uses a layout. A layout describes how eleme
 - **BoxLayout**: a `SpBoxLayout` arranges presenters in a box, vertically (top to bottom) or horizontally \(left to right\).
 - **PanedLayout**: a `SpPanedLayout` is a layout with two elements called "panes" and a splitter in between. The user can drag the splitter to resize the panes.
 - **TabLayout**: a `SpTabLayout` shows all its elements as tabs. You can select a tab to display the content.
-- **MillerLayout**: a layout to implement miller columns ([https://en.wikipedia.org/wiki/Miller\_columns](https://en.wikipedia.org/wiki/Miller_columns)), also known as cascading lists.
+- **MillerLayout**: a layout to implement miller columns, also known as cascading lists ([https://en.wikipedia.org/wiki/Miller\_columns](https://en.wikipedia.org/wiki/Miller_columns)).
 
 Any layout in Spec is dynamic and composable. In general, a layout is defined at the presenter instance level, but it can be defined on the class side.
 
@@ -232,9 +234,9 @@ messageList
 	whenSelectionChangedDo: [ :selection |
 		messageDetail model: selection selectedItem ];
 	whenModelChangedDo: [ self updateTitle ].
-	textModel whenSubmitDo: [ :text | self accept: text ].
-	addButton action: [ self addDirectory ].
-	filterInput whenTextChangedDo: [ :text | self refreshTable ].
+textModel whenSubmitDo: [ :text | self accept: text ].
+addButton action: [ self addDirectory ].
+filterInput whenTextChangedDo: [ :text | self refreshTable ].
 ```
 
 ### Conclusion
