@@ -77,7 +77,7 @@ You can run your application with `MyApplication new run`. It will call the `sta
 ### Application configuration
 
 In the application initialization, you can configure the backend you want to use: Morphic (default) or GTK.
-In the future, Spec will also support Toplo (a new widget library built on top of Bloc the replacement of Morphic).
+In the future, Spec will also support Toplo, a new widget library built on top of Bloc. It will replace Morphic.
 
 ##### Using Morphic
 
