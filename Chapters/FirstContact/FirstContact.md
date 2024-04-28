@@ -3,7 +3,7 @@
 
 We will construct a small but complete user interface. This will allow you to build basic user interfaces.
 
-After completing this chapter you should read Chapter *@cha_reuse@* about reuse of Spec presenters, which is the key behind the power of Spec. With these two chapters, you should be able to construct Spec user interfaces as intended. You could use the rest of this book just as reference material, but nonetheless we recommend you to at least give a brief look at the other chapters as well.
+After completing this chapter you should read Chapter *@cha_reuse@* about the reuse of Spec presenters, which is the key behind the power of Spec. With these two chapters, you should be able to construct Spec user interfaces as intended. You could use the rest of this book just as reference material, but nonetheless, we recommend you to at least give a brief look at the other chapters as well.
 
 ### A customer satisfaction UI
 @seccustomersatisfaction
@@ -47,7 +47,7 @@ CustomerSatisfactionPresenter >> initializePresenters
 ```
 
 
-`SpPresenter` defines messages for the creation of standard presenters: `newButton`, `newCheckBox`, `newDropList`, … All of these are defined in the `scripting - widgets` protocol of the `#SpTPresenterBuilder` trait. They are shortcuts to create presenters.
+`SpPresenter` defines messages for the creation of standard presenters: `newButton`, `newCheckBox`, `newDropList`, … All of these are defined in the `scripting - widgets` protocol of the `SpTPresenterBuilder` trait. They are shortcuts to create presenters.
 
 The following method shows how `newButton` is defined.
 
@@ -60,7 +60,7 @@ SpPresenter >> newButton
 
 Note that the naming may be a bit confusing since we write `newButton` while it will create a button _presenter_ and not a button _widget_, which Spec will take care by itself. Spec provides `newButton` because it is easier to use than `newButtonPresenter`.
 
-**Do not** call `new` to instantiate a presenter that is part of your UI. An alternative way to instantiate presenters is to use the message `instantiate:` with a presenter class as argument. For example `result := self instantiate: SpLabelPresenter`. This allows one to instantiate standard and non-standard presenters.
+**Do not** call `new` to instantiate a presenter that is part of your UI. An alternative way to instantiate presenters is to use the message `instantiate:` with a presenter class as an argument. For example `result := self instantiate: SpLabelPresenter`. This allows one to instantiate standard and non-standard presenters.
 
 #### Presenter configuration
 
@@ -82,9 +82,7 @@ CustomerSatisfactionPresenter >> initializePresenters
 		icon: (self iconNamed: #thumbsDown)
 ```
 
-`SpPresenter>>#iconNamed:` uses an icon provider to fetch the icon with the given name. You can browse the Spec icon provider by looking at `SpPharoThemeIconProvider`, which is a subclass of `SpIconProvider`. Each application is able to define its own icon provider by defining a subclass of `SpIconProvider`.
-
-
+The method `iconNamed:` of `SpPresenter` uses an icon provider to fetch the icon with the given name. You can browse the Spec icon provider by looking at `SpPharoThemeIconProvider`, which is a subclass of `SpIconProvider`. Each application is able to define its own icon provider by defining a subclass of `SpIconProvider`.
 
 #### Presenter interaction logic
 
