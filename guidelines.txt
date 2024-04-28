@@ -16,7 +16,7 @@ Here are some guidelines about writing style and spelling that resulted from dis
 * Use sentence case for headers, e.g. "Editable tables", not "Editable Tables".
 * Use sentence case for chapter titles, e.g. "Testing Spec applications", not "Testing Spec Applications".
 * Start a note with "**Note.**".
-* I love musicians such Metallica (it means that I do), I love musicians like Metallica (it does not mean I like Metallica).
+* I love musicians such as Metallica (it means that I do), I love musicians like Metallica (it does not mean I like Metallica).
 * For method `SpPresenter>>methodName` and not `SpPresenter>>#methodName`
 * Do not write a space before a colon, e.g. "the following code:", not "the following code :". In French one would write the space, but not in English.
 * Use tabs to indent code.
