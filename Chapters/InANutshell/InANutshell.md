@@ -60,7 +60,7 @@ A Spec application (an instance of the `SpApplication` class hierarchy) handles 
 
 A Spec application also provides a way to access windows or resources such as icons, and provides abstractions for interactions with the user (inform, error, file, or directory selection).
 
-Finally an application provides the style used by Spec to style UI elements.  A default style is available but you can customize it as shown in Chapter *@cha_style@*.
+Finally, an application provides the style used by Spec to style UI elements.  A default style is available, but you can customize it as shown in Chapter *@cha_style@*.
 
 You should also define a method to tell what is the main window / presenter to use when running the application.
 Here we specialize the method `start` as follows:
