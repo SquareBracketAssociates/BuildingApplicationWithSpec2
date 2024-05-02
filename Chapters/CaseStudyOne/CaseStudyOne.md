@@ -9,12 +9,6 @@ We will show many aspects of Spec that we will revisit in depth in the rest of t
 
 ![Film App: reusing the same component to edit and browsing a film.](figures/FullApp.png width=90&label=FullApp)
 
-You can find the code of this chapter at:
-
-```
-https://github.com/SquareBracketAssociates/CodeOfSpec20Book
-```
-
 ### Application
 
 Spec20 introduces the concept of an application. An _application_ is a small object responsible for keeping the state of your application. It manages, for example, the multiple windows that can compose your application, and its backend (Morphic or Gtk), and can hold properties shared by the application.
