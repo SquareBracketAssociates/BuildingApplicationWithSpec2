@@ -582,10 +582,10 @@ ImdbFilmListPresenter >> filmList
 	^ filmList
 ```
 
-Let us test that a list has one film and that if we select a non-existent index, the name is still the last valid selected one.
+Let us test that a list has one film and that if we select a non-existent index, the name is cleared.
 
 ```
-ImdbFilmListPresenterTest >> testWhenSelectingOneFilmAndClickingOnEmpty
+ImdbFilmListPresenterTest >> testNoSelectionClearsDetails
 
 	| name |
 	"Arrange"
@@ -601,7 +601,7 @@ ImdbFilmListPresenterTest >> testWhenSelectingOneFilmAndClickingOnEmpty
 	self assert: presenter filmList listSize equals: 1.
 
 	presenter clickFilmAtIndex: 2.
-	self assert: presenter detail name equals: name
+	self assert: presenter detail name equals: ''
 ```
 
 
