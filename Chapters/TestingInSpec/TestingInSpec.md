@@ -189,7 +189,9 @@ There are only two methods missing from the code above to complete the class imp
 lighter
 
 	self updateColor: currentColor lighter
+```
 
+```
 darker
 
 	self updateColor: currentColor darker
@@ -259,7 +261,9 @@ We have to add a few so-called 'test support' methods to make this work. These m
 ColorChooser >> boxColor
 
 	^ colorBox canvas color
+```
 
+```
 ColorChooser >> detailsText
 
 	^ colorDetails text
@@ -415,17 +419,23 @@ In a TDD fashion, we define the test class first:
 TestCase << #ColorChooserApplicationTest
 	slots: { #application };
 	package: 'CodeOfSpec20Book'
+```
 
+```
 setUp
 
 	super setUp.
 	application := ColorChooserApplication new
+```
 
+```
 tearDown
 
 	application ifNotNil: [ application closeAllWindows ].
 	super tearDown
+```
 
+```
 testWindowRegistration
 
 	self assert: application windows size equals: 0.
