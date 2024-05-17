@@ -143,9 +143,7 @@ ColorChooser >> detailsFor: color
 
 	^ String streamContents: [ :stream |
 		stream
-			print: color;
-			cr; cr;
-			nextPut: $#;
+			print: color; cr; cr; nextPut: $#;
 			nextPutAll: color asHexString ]
 ```
 
