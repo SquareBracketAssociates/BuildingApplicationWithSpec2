@@ -1,9 +1,7 @@
 ## Testing Spec applications
 @cha_testing
 
-status: Looking for some source of already written tests - may be the launcher so that people can have a look
-
-Developers often think that testing a user interface is difficult. It is true that fully testing the placement and layout of widgets can be tedious. However, testing the logic of an application and in particular the interaction logic is possible and this is what we will show in this chapter. We show that testing a Spec application is simple and effective.
+Developers often think that testing a user interface is difficult. It is true that fully testing the placement and layout of widgets can be tedious. However, testing the logic of an application and in particular the interaction logic is possible. That is what we will show in this chapter. We will show that testing a Spec application is simple and effective.
 
 
 ### Testing presenters
@@ -25,7 +23,7 @@ Spec is based on an architecture with three different layers as shown in Figure 
 
 To help you understand the different possibilities of testing that you can engage in, we identify the following roles and their related concerns.
 
-- **Spec Users.** Spec users are developers that build a new application. They define the logic of the application by assembling presenters and domain objects. We believe that this is the role that you will play most of the time.
+- **Spec Users.** Spec users are developers who build a new application. They define the logic of the application by assembling presenters and domain objects. We believe that this is the role that you will play most of the time.
 - **Spec Developers.** Spec developers are more concerned with the development of new Spec presenters and their link with the adapters.
 - **Widget Developers.** Widget developers are concerned about the logic and working of a given widget for a given backend.
 
@@ -33,192 +31,441 @@ To help you understand the different possibilities of testing that you can engag
 
 We will focus on the first role. For the reader interested in the second role, the class `SpAbstractBackendForTest` is a good starting place.
 
-As a Spec user, you should consider that the backends are working and your responsibility is to test the logic of the user interface components.
-We should make sure that when the model changes, the user interface components reflect the changes.
-Inversely when the user interface components change, we should ensure that the model is updated.
-But let us give an example.
+As a Spec user, you should consider that the backends are working and your responsibility is to test the logic of the user interface components. You should make sure that when the model changes, the user interface components reflect the changes. Inversely when the user interface components change, you should ensure that the model is updated. Let's give an example.
 
 
 ### Spec user example
 
 
-We will test a simple spec application. The model for this application can be any class. It shows all the subclasses of the model in a tree presenter. Also, it has a text presenter that shows the definition string for the selected class. Finally, it has a string morph and a button. When the button is pressed, the color of the morph changes randomly.
+We will test a simple spec application, as shown in Figure *@exampleapplication@*. The model for this application is an instance of the `Color` class. The application shows a list of colors from which the user can choose one. After choosing a color, the application shows the color in a big box, and it shows the `printString` of the color, together with the hexadecimal code. The application also provides two buttons to make the chosen color lighter or darker.
 
-![A Spec application.](figures/examplespecapplication.jpg width=70&label=fig:SpecApp)
+![A Spec application.](figures/ExampleApplication.png width=70&label=exampleapplication)
 
-First, we will define a test class.
+The presenter is defined as described below. The class has six instance variables. The first five instance variables hold subpresenters that compose the application window. The sixth instance variable holds the color that serves as the model of the application.
 
 ```
-TestCase << #ClassVisualizerPresenterTest
-    slots: { #presenter };
-    package: 'Spec-Testing'
+SpPresenter << #ColorChooser
+	slots: { #colorList . #colorDetails . #colorBox . #lighterButton . #darkerButton . #currentColor };
+	package: 'CodeOfSpec20Book'
+```
+
+`initializePresenters` initializes the subpresenters. `colorList` holds a list presenter with the colors. `colorBox` displays the chosen color in a `SpRoassalPresenter`. `colorDetails` holds a text presenter that shows information about the color. `lighterButton` and `darkerButton` are the buttons to make the current color lighter or darker.
+
+```
+initializePresenters
+
+	colorList := self newList
+		display: [ :color | '' ];
+		displayBackgroundColor: [ :color | color ];
+		yourself.
+	colorBox := self instantiate: SpRoassalPresenter.
+	lighterButton := self newButton
+		label: 'Lighter';
+		action: [ self lighter ];
+		yourself.
+	darkerButton := self newButton
+		label: 'Darker';
+		action: [ self darker ];
+		yourself.
+	colorDetails := self newText
+```
+
+`currentColor` is not initialized by `initializePresenters`. It is initialized in `setModelBeforeInitialization:` because a color can be given when creating a new `ColorChooser` instance.
+
+```
+setModelBeforeInitialization: aColor
+
+	currentColor := aColor
+```
+
+`defaultLayout` defines the layout with a left side and a right side. The left side is the color list. The right side consists of the color box, the two buttons, and the color details. Composition with horizontal and vertical `BoxLayout`s, together with a 5 pixel spacing, results in the window shown in Figure *@exampleapplication@*.
+
+```
+defaultLayout
+
+	| colorBoxAndDetails buttons |
+	buttons := SpBoxLayout newLeftToRight
+		spacing: 5;
+		add: lighterButton;
+		add: darkerButton;
+		yourself.
+	colorBoxAndDetails := SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: colorBox;
+		add: buttons expand: false;
+		add: colorDetails;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		spacing: 5;
+		add: colorList expand: false;
+		add: colorBoxAndDetails;
+		yourself
+```
+
+`initializeWindow:` sets the title and the initial dimensions of the window.
+
+```
+initializeWindow: aWindowPresenter
+
+	aWindowPresenter
+		title: 'Color Chooser';
+		initialExtent: 400@294
+```
+
+Connecting the subpresenters is expressed easily. When a selection in the color list is made, the color is updated.
+
+```
+connectPresenters
+
+	colorList whenSelectionChangedDo: [ :selection |
+		self updateColor: selection selectedItem ]
+```
+`connectPresenters` delegates to `updateColor:` to update the color box and the color details. As you can see, `updateColor:` takes care of a possible `nil` value for `currentColor`.
+
+```
+updateColor: color
+
+	| details |
+	currentColor := color.
+	colorBox canvas
+		background: (currentColor ifNil: [ Color transparent ]);
+		signalUpdate.
+	details := currentColor
+		ifNil: [ '' ]
+		ifNotNil: [ self detailsFor: currentColor ].
+	colorDetails text: details
+```
+
+`updateColor:` delegates the responsability of producing the text with color details to `detailsFor:`.
+
+```
+detailsFor: color
+
+	^ String streamContents: [ :stream |
+		stream
+			print: color;
+			cr; cr;
+			nextPut: $#;
+			nextPutAll: color asHexString ]
+```
+
+We also define `updatePresenter` to set the initial state of the subpresenters. It populates the color list with default colors, as defined by `defaultColors`, and the initial color is set with `updateColor:`.
+
+```
+updatePresenter
+
+	| initialColor |
+	initialColor := currentColor.
+	colorList items: self defaultColors.
+	self updateColor: initialColor
+```
+
+Note that keeping the initial color with `initialColor := currentColor` is necessary because `colorList items: self defaultColors` resets the selection in the list, which triggers the block in `connectPresenters`. That block sends `updateColor: nil` because there is no selection. So this method keeps the initial color and applies it with `self updateColor: initialColor`.
+
+To keep things simple, `defaultColors` answers only a handful of colors. This method can be changed easily to answer a different collection of colors. For instance, you could try `Color red wheel: 20`.
+
+```
+defaultColors
+
+	^ {
+		Color red .
+		Color orange .
+		Color yellow .
+		Color green .
+		Color magenta .
+		Color cyan .
+		Color blue .
+		Color purple .
+		Color pink .
+		Color brown .
+		Color white .
+		Color gray .
+		Color black }
+```
+
+There are only two methods missing from the code above to complete the class implementation. `initializePresenters` sets actions for the buttons, which invoke the following two methods. These methods delegate to `updateColor:` to do the heavy lifting.
+
+```
+lighter
+
+	self updateColor: currentColor lighter
+```
+
+```
+darker
+
+	self updateColor: currentColor darker
+```
+
+With the code above in place, we can open the application. Let's start with opening the default with:
+
+```
+ColorChooser new open
+```
+
+In this case, there is no initial color, which results in the window shown in Figure *@defaultapplication@*. The color box does not show a color and the color details are empty.
+
+![The default ColorChooser.](figures/DefaultApplication.png width=70&label=defaultapplication)
+
+Let's see what happens when we provide a color with:
+
+```
+(ColorChooser on: Color yellow) open
+```
+
+In this case, yellow is given as the initial color that should be shown when the window opens. Note that `on:` has not been defined as a class method by `ColorChooser`. The class method is inherited from the superclass `SpAbstractPresenter`. The result is shown in Figure *@initializedapplication@*.
+
+![The ColorChooser opened on the color yellow.](figures/InitializedApplication.png width=70&label=initializedapplication)
+
+
+### Tests
+
+With all the code in place, it is time to write some tests. First, we define the test class.
+
+```
+TestCase << #ColorChooserTest
+	slots: { #chooser };
+	package: 'CodeOfSpec20Book'
+```
+
+Each test will open a new instance of `ColorChooser`. It is expected that the instance variable `chooser` will hold the instance used in a test. To ensure that the instance is cleaned up, we define `tearDown`. It takes into account that a test can fail before `chooser` is bound to an instance of `ColorChooser`.
+
+```
+ColorChooserTest >> tearDown
+
+	chooser ifNotNil: [ chooser delete ].
+	super tearDown
+```
+
+With that infrastructure in place, we can write our tests.
+
+#### Opening the default application
+
+Our first test describes the state of the application after opening the default application.
+
+```
+ColorChooserTest >> testDefault
+	"When a ColorChooser opens without a color,
+	 the color box shows a transparent color and the details are empty."
+
+	chooser := ColorChooser new.
+	chooser open.
+
+	self assert: chooser boxColor equals: Color transparent.
+	self assert: chooser detailsText equals: ''
+```
+
+We have to add a few so-called 'test support' methods to make this work. These methods belong to the test api of the `ColorChooser`, because they are intended to be used for testing purposes only.
+
+```
+ColorChooser >> boxColor
+
+	^ colorBox canvas color
+```
+
+```
+ColorChooser >> detailsText
+
+	^ colorDetails text
 ```
 
 #### Correct initialization
 
-
-The tool will be instantiated with a model. In this case, we will use `Object` because it is the root of almost all classes. When we instantiate the spec application of Figure *@fig:SpecApp@*, all the subpresenters of the application must show the data of the model.
-
-```
-ClassVisualizerPresenterTest >> testInitialization
-
-    | model |
-    model := String.
-    presenter := ClassVisualizerPresenter on: model.
-
-    self assert: presenter model equals: model.
-    self assert: presenter codeText equals: model definitionString.
-    self
-        assert: presenter stringMorphContent
-        equals: model name
-```
-
-We have to create a few methods on `ClassVisualizerPresenter` to allow a proper testing.
-```
-ClassVisualizerPresenter >> selectPath: aCollection
-
-    tree selectPath: aCollection
-```
+The second test describes the state of the application after opening the application with a color.
 
 ```
-ClassVisualizerPresenter >> stringMorphContent
+ColorChooserTest >> testInitialization
+	"When a ColorChooser opens on a color,
+	 the color box shows that color
+	 and the details show the print string and the HEX code."
 
-    ^ morphPresenter morph contents
+	chooser := ColorChooser on: Color palePeach.
+	chooser open.
+
+	self assert: chooser boxColor equals: Color palePeach.
+	self assert: chooser detailsText equals: 'Color palePeach\\#FFEDD5' withCRs
 ```
 
+#### Choosing a color
 
-#### Selection is changing the morph
+The third test describes what happens when the user chooses a color.
 
-
-When selecting a new item in the tree presenter the text presenter and the morph should change.
-The tree presenter shows a tree of classes.
-When a class is selected in the tree presenter, the text presenter should change according to the definition of the selected class.
-The morph must change as well.
+First, the test selects the first color in the list and verifies the state of the subpresenters. Then it selects the seventh color in the list and verifies the expected state changes in the subpresenters.
 
 ```
-ClassVisualizerPresenterTest >> testSelectItemOnTreePresenter
+ColorChooserTest >> testChooseColor
+	"When the user chooses a color in the list,
+	 the color box shows the color
+	 and the details show the print string and the HEX code."
 
-    "We have initialized the tree with Object as its roots.
-     The class OrderedCollection is a subclass of Object.
-     We would simulate that a user selects OrderedCollection
-     from the tree presenter."
+	chooser := ColorChooser new.
+	chooser open.
 
-    presenter := ClassVisualizerPresenter on: Object.
-    presenter selectClass: OrderedCollection.
+	chooser clickColorAtIndex: 1.
+	self assert: chooser boxColor equals: Color red.
+	self assert: chooser detailsText equals: 'Color red\\#FF0000' withCRs.
 
-    self
-        assert: presenter selectedClass
-        equals: OrderedCollection.
-    self
-        assert: presenter codeText
-        equals: OrderedCollection definitionString.
-    self
-        assert: presenter stringMorphContent
-        equals: OrderedCollection name
+	chooser clickColorAtIndex: 7.
+	self assert: chooser boxColor equals: Color blue.
+	self assert: chooser detailsText equals: 'Color blue\\#0000FF' withCRs
 ```
 
-```
-ClassVisualizerPresenter >> selectClass: aClass
-
-    tree selectItem: aClass
-```
+This test uses an extra test support method to click on a color in the list.
 
 ```
-ClassVisualizerPresenter >> selectClass: aClass
+ColorChooser >> clickColorAtIndex: index
 
-    tree selectItem: aClass
+	colorList clickAtIndex: index
 ```
 
+#### Making the current color lighter
 
-#### Triggering the button action
+Now it is time to describe the application behavior after clicking the 'Lighter' button.
 
-
-The action of the color button changes the color of the morph randomly.
-When the button is clicked the morph must change its color.
-
-```
-ClassVisualizerPresenterTest >> testButtonChangesMorph
-
-    | previousColor |
-    spApplication := ClassVisualizerPresenter on: Object.
-    previousColor := spApplication morphPresenter morph color.
-    spApplication colorButton click.
-    self
-        deny: spApplication morphPresenter morph color
-        equals: previousColor
-```
+The test consists of four parts. First, the first color in the list is clicked. That results in an update of the color box and the color details. After a click on the button, the test verifies the changed state of the color box and the color details. Then it clicks the button a second time to describe that the current color can be made lighter over and over again. Finally, the test selects the seventh color in the list and verifies the expected state changes in the subpresenters.
 
 ```
-ClassVisualizerPresenter >> clickOnColorButton
+ColorChooserTest >> testLighter
+	"When the user presses the 'Lighter' button,
+	 the color box shows the ligher color
+	 and the details show the print string and the HEX code."
 
-    button click
+	chooser := ColorChooser new.
+	chooser open.
+
+	chooser clickColorAtIndex: 1.
+	chooser clickLighterButton.
+	self assert: chooser boxColor equals: (Color r: 1.0 g: 0.030303030303030304 b: 0.030303030303030304 alpha: 1.0).
+	self assert: chooser detailsText equals: '(Color r: 1.0 g: 0.030303030303030304 b: 0.030303030303030304 alpha: 1.0)\\#FF0707' withCRs.
+
+	chooser clickLighterButton.
+	self assert: chooser boxColor equals: (Color r: 1.0 g: 0.06060606060606061 b: 0.06060606060606061 alpha: 1.0).
+	self assert: chooser detailsText equals: '(Color r: 1.0 g: 0.06060606060606061 b: 0.06060606060606061 alpha: 1.0)\\#FF0F0F' withCRs.
+
+	chooser clickColorAtIndex: 7.
+	chooser clickLighterButton.
+	self assert: chooser boxColor equals: (Color r: 0.030303030303030304 g: 0.030303030303030304 b: 1.0 alpha: 1.0).
+	self assert: chooser detailsText equals: '(Color r: 0.030303030303030304 g: 0.030303030303030304 b: 1.0 alpha: 1.0)\\#0707FF' withCRs
 ```
 
-```
-ClassVisualizerPresenter >> stringMorphColor
-
-    ^ morphPresenter morph color
-```
-
-
-
-#### The text presenter should not be editable
-
-
-For this application, we only want the text presenter to show the class definition.
-We do not want the user to be able to edit it.
+As the other tests, this test requires an extra test support method.
 
 ```
-testTextPresenterIsNotEditable
+ColorChooser >> clickLighterButton
 
-    spApplication := ClassVisualizerPresenter on: Object.
-    self deny: spApplication textPresenter isEditable
+	lighterButton click
 ```
 
-```
-ClassVisualizerPresenter >> codePresenter
+#### Making the current color darker
 
-    ^ codePresenter
-```
-
-#### Checking the window
-
-Now we want to check that the window is built correctly. Here, we will test that the title and the initial extent of the window are correct.
+This test is very similar to the previos test. Instead of clicking the 'Lighter' button, this test clicks the 'Darker' button.
 
 ```
-testInitializeWindow
+ColorChooserTest >> testDarker
+	"When the user presses the 'Darker' button,
+	 the color box shows the darker color
+	 and the details show the print string and the HEX code."
 
-    presenter := ClassVisualizerPresenter on: Object.
+	chooser := ColorChooser new.
+	chooser open.
 
-    [ window := presenter open.
-    self assert: window isBuilt.
-    self assert: window title equals: 'Class visualizer'.
-    self assert: window initialExtent equals: 600 @ 500 ]
-        ensure: [ window close ]
+	chooser clickColorAtIndex: 1.
+	chooser clickDarkerButton.
+	self assert: chooser boxColor equals: (Color r: 0.9198435972629521 g: 0.0 b: 0.0 alpha: 1.0).
+	self assert: chooser detailsText equals: '(Color r: 0.9198435972629521 g: 0.0 b: 0.0 alpha: 1.0)\\#EB0000' withCRs.
+
+	chooser clickDarkerButton.
+	self assert: chooser boxColor equals: (Color r: 0.8396871945259042 g: 0.0 b: 0.0 alpha: 1.0).
+	self assert: chooser detailsText equals: '(Color r: 0.8396871945259042 g: 0.0 b: 0.0 alpha: 1.0)\\#D60000' withCRs.
+
+	chooser clickColorAtIndex: 7.
+	chooser clickDarkerButton.
+	self assert: chooser boxColor equals: (Color r: 0.0 g: 0.0 b: 0.9198435972629521 alpha: 1.0).
+	self assert: chooser detailsText equals: '(Color r: 0.0 g: 0.0 b: 0.9198435972629521 alpha: 1.0)\\#0000EB' withCRs
+```
+
+Again, this test requires an extra test support method.
+
+```
+ColorChooser >> clickDarkerButton
+
+	darkerButton click
+```
+
+#### Verifying window properties
+
+Now we want to check that the window is built correctly. We will verify that the title and the initial extent of the window are correct.
+
+```
+ColorChooserTest >> testInitializeWindow
+
+	| window |
+	chooser := ColorChooser new.
+	window := chooser open.
+	self assert: window isBuilt.
+	self assert: window title equals: 'Color Chooser'.
+	self assert: window initialExtent equals: 400@294
 ```
 
 ### Testing your application
 
-In Spec, an application is responsible to run and gather the windows of your application. The pattern is to override the `start` method of your application. The method `start` is a hook method that is invoked when you execute your application using the `run` message as in `MyApplication new run`.
+In Spec, an application is responsible to run and gather the windows of your application. The pattern is to override the `start` method of your application. The method `start` is a hook method that is invoked when you execute your application using the `run` message as in `ColorChooserApplication new run`.
 
 It is important to see that in the `start` method you should configure the presenter you are opening so that it knows its application. This is important so that the application knows the windows it is opening.
 
-```
-MyApplication >> start
-
-    MyPresenter new
-        application: self;
-        open
-````
-
-The follwowing code in `tearDown` will automatically close your application windows.
+In a TDD fashion, we define the test class first:
 
 ```
-MyApplicationTest>>tearDown
+TestCase << #ColorChooserApplicationTest
+	slots: { #application };
+	package: 'CodeOfSpec20Book'
+```
+
+```
+setUp
+
+	super setUp.
+	application := ColorChooserApplication new
+```
+
+```
+tearDown
 
 	application ifNotNil: [ application closeAllWindows ].
 	super tearDown
 ```
+
+```
+testWindowRegistration
+
+	self assert: application windows size equals: 0.
+	application start.
+	self assert: application windows size equals: 1.
+	application start.
+	self assert: application windows size equals: 2
+```
+
+`testWindowRegistration` describes the expected behaviour of our application. When opened windows are correctly registered, the application should have access to all the opened windows. The test opens two windows and verifies that the number of windows increases.
+
+The test fails, because `ColorChooserApplication` does not exist yet. Let's define it:
+
+```
+SpApplication << #ColorChooserApplication
+	slots: {};
+	package: 'CodeOfSpec20Book'
+```
+
+The test still fails. It fails in the second assert because the application does not register the open windows. Let's implement the `start` method to register the windows.
+
+```
+ColorChooserApplication >> start
+
+	ColorChooser new
+		application: self;
+		open
+```
+
+Tada! The test passes.
 
 ### Known limitations and conclusion
 
