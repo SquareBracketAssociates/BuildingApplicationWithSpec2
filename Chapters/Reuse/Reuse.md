@@ -450,10 +450,10 @@ ProtocolCodeBrowserPresenter >> connectPresenters
 		text behavior: selection selectedItem ].
 	viewer whenSelectionInAPIChanged: [ :selection |
 		selection selectedItem
-			ifNotNil: [ :item | text text: item sourceCode ] ].
+			ifNotNil: [ :item | text beForMethod: item; text: item sourceCode ] ].
 	viewer whenSelectionInEventChanged: [ :selection |
 		selection selectedItem
-			ifNotNil: [ :item | text text: item sourceCode ] ]
+			ifNotNil: [ :item | text beForMethod: item; text: item sourceCode ] ]
 ```
 
 With the current implementation of `initializePresenters`, opening a window with `ProtocolCodeBrowserPresenter new open` results in a vertical layout for the `ProtocolViewerPresenter` instance held in the `viewer` instance variable because its default layout is the vertical layout. Our objective was to use a different layout. That can be achieved by sending `layout:` to the `viewer`. So let's adapt `initializePresenters` that way.
