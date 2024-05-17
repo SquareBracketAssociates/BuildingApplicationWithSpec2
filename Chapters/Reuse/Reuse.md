@@ -3,9 +3,9 @@
 
 A key design goal of Spec is to enable the seamless reuse of user interfaces. The reason for this is that it results in a significant productivity boost when creating user interfaces.
 
-This focus on reuse was actually already visible in the previous chapters, where we have seen that basic widgets can be used as if they were a complete user interface. In this section we focus on the reuse and composition of presenters, showing that it basically comes for free. The only requirement when building a UI is to consider how the user interface should be parameterized when it is being reused.
+This focus on reuse was actually already visible in the previous chapters, where we have seen that basic widgets can be used as if they were complete user interfaces. In this section we focus on the reuse and composition of presenters, showing that it basically comes for free. The only requirement when building a UI is to consider how the user interface should be parameterized when it is being reused.
 
-Said differently, in this chapter, you will learn how we can build a new UI by reusing already defined elements.
+Said differently, in this chapter, you will learn how you can build a new UI by reusing already defined elements.
 
 ### First requirements
 
@@ -14,16 +14,16 @@ Said differently, in this chapter, you will learn how we can build a new UI by r
 To show how Spec enables the composition and reuse of user interfaces, in this chapter we build the user interface shown in Figure *@figprotocolbrowser@* as a composition of four parts:
 1. The **WidgetClassListPresenter**: a widget containing a `SpListPresenter` specifically for displaying the subclasses of `SpAbstractWidgetPresenter`.
 1. The **ProtocolMethodListPresenter**: a widget composed of a `SpListPresenter` and a `SpLabelPresenter` for displaying methods of a protocol.
-1. The **ProtocolPresenter**:  a composition of one `WidgetClassListPresenter` and two `ProtocolMethodListPresenter`. It allows browsing the methods of all subclasses of `SpAbstractWidgetPresenter`.
-1. The **ProtocolCodeBrowserPresenter**: reuses a `ProtocolPresenter`, changes its layout, and adds a `SpTextPresenter` to see the source code of the methods.
+1. The **ProtocolViewerPresenter**:  a composition of one `WidgetClassListPresenter` and two `ProtocolMethodListPresenter`. It allows browsing the methods of all subclasses of `SpAbstractWidgetPresenter`.
+1. The **ProtocolCodeBrowserPresenter**: reuses a `ProtocolViewerPresenter`, changes its layout, and adds a `SpTextPresenter` to see the source code of the methods.
 
 
 ### Creating a basic UI to be reused as a widget
 @sec_WidgetClassList
 
-The first custom UI we build displays a list of all subclasses of the class `SpAbstractWidgetPresenter`. This UI will later be reused as a widget for a more complete UI. The code is as follows (we do not include code for accessors):
+The first UI we build displays a list of all subclasses of the class `SpAbstractWidgetPresenter`. This UI will later be reused as a widget for a more complete UI. The code is as follows.
 
-First, we create a subclass of `SpPresenter` with one instance variable `list` which will hold an instance of `SpListModel`.
+First, we create a subclass of `SpPresenter` with one instance variable `list` which will hold an instance of `SpListPresenter`.
 
 ```
 SpPresenter << #WidgetClassListPresenter
@@ -49,7 +49,7 @@ WidgetClassListPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Widgets'
 ```
 
-The layout contains only the list:
+The layout contains only the list.
 
 ```
 WidgetClassListPresenter >> defaultLayout
@@ -61,7 +61,7 @@ WidgetClassListPresenter >> defaultLayout
 
 When doing `WidgetClassListPresenter new open`, you should see the UI shown in Figure *@fig_WidgetClassList@*.
 
-![WidgetClassListPresenter open.](figures/WidgetClassList.png width=50&label=fig_WidgetClassList)
+![WidgetClassListPresenter.](figures/WidgetClassList.png width=50&label=fig_WidgetClassList)
 
 
 ### Supporting reuse
@@ -90,7 +90,7 @@ SpPresenter << #ProtocolMethodListPresenter
 ```
 
 
-The `initializePresenters` method for this UI is straightforward. We specify the default label text as 'protocol', which will be changed when the widget is reused. We also give this UI a title.
+The `initializePresenters` method for this UI is straightforward. We specify the default label text as 'Protocol', which will be changed when the widget is reused.
 
 ```
 ProtocolMethodListPresenter >> initializePresenters
@@ -112,7 +112,7 @@ ProtocolMethodListPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter title: 'Protocol widget'
 ```
 
-The layout code builds a column with the label on top of the method list.
+The layout code builds a column with the label above the method list.
 
 ```
 ProtocolMethodListPresenter >> defaultLayout
@@ -143,7 +143,7 @@ Now you should get a better UI as shown in Figure *@figprotocollist2@*.
 
 ![ProtocolMethodListPresenter with nicer layout.](figures/ProtocolList2.png width=50&label=figprotocollist2)
 
-Our protocol method list needs to be configured when it is used, for example, to fill the list of methods and to specify what the name of the protocol is. To allow this, we add some configuration methods:
+Our protocol method list needs to be configured when it is used, by filling the list of methods and specifying what the name of the protocol is. To allow this, we add some configuration methods:
 
 ```
 ProtocolMethodListPresenter >> items: aCollection
@@ -170,8 +170,6 @@ ProtocolMethodListPresenter >> whenSelectionChangedDo: aBlock
 	methods whenSelectionChangedDo: aBlock
 ```
 
-**Note.** An alternative to adding these methods is simply doing nothing: since both the methods and the label are accessible through their accessors, a reuser of this widget may simply obtain them and configure them directly. These two alternatives reflect design decisions that we will discuss later in Section *@sec_public_API@*.
-
 ### Live inspection of the widgets
 
 Now we can check manually if the widget is working by doing:
@@ -181,7 +179,7 @@ ProtocolMethodListPresenter new open; inspect
 ```
 
 
-Then in the inspector, we can use the newly created presenter to pass a collection of methods:
+Then in the inspector, we can use the newly created presenter to pass a collection of methods. See the result in Figure *@figinspectingLive@*.
 
 ```
 self items: Point methods
@@ -316,7 +314,11 @@ ProtocolViewerPresenter >> defaultLayout
 
 
 
-As previously, the result can be seen by executing the following snippet of code: `ProtocolViewerPresenter new open`, and the result is shown in Figure *@figProtocolViewerVertical@*.
+As previously, the result can be seen by executing the following snippet of code. The result is shown in Figure *@figProtocolViewerVertical@*.
+
+```
+ProtocolViewerPresenter new open
+```
 
 This user interface is functional. Clicking on a class will show the methods of the 'api' and the 'api-events' protocols of that class.
 
@@ -351,25 +353,24 @@ ProtocolViewerPresenter >> verticalLayout
 		yourself
 ```
 
-
 ```
 ProtocolViewerPresenter >> defaultLayout
 
 	^ self verticalLayout
 ```
 
-Now we can decide to open the viewer with different layouts using the message `openWithLayout:` as follows (as shown in Figure *@figProtocolViewerHorizontal@*):
+Now we can decide to open the viewer with different layouts using the message `openWithLayout:` as follows. See Figure *@figProtocolViewerHorizontal@* for the result.
 
 ```
 ProtocolViewerPresenter class >> exampleHorizontal
 
     | inst |
-    inst := self new.
-    inst openWithLayout: inst horizontalLayout
+    instance := self new.
+    instance openWithLayout: instance horizontalLayout
 ```
 
 
-![ProtocolViewerPresenter in horizontal mode.](figures/ProtocolViewerHorizontal.png width=50&label=figProtocolViewerHorizontal)
+![ProtocolViewerPresenter in horizontal mode.](figures/ProtocolViewerHorizontal.png width=70&label=figProtocolViewerHorizontal)
 
 
 ### Enhancing our API
@@ -397,7 +398,7 @@ ProtocolViewerPresenter >> whenSelectionInEventChanged: aBlock
 
 
 **Note.**
-These methods add semantic information to the configuration API. They state that they configure what to do when a class, 'api' or 'api-events' list item has been changed. This arguably communicates the customization API more clearly than just having the subpresenters accessible.
+These methods add semantic information to the configuration API. They state that they configure what to do when a class, 'api', or 'api-events' list item has been changed. This arguably communicates the customization API more clearly than just having the subpresenters accessible.
 
 
 ### Changing the layout of a reused widget
@@ -474,7 +475,7 @@ Now a window opens as shown in Figure *@figprotocolbrowser@*.
 
 ### Changing layouts
 
-There are different ways to configure the layout of a presenter. Let's demonstrate with `ProtocolViewerPresenter`. The first option is using `openWithLayout:` to open a window.
+There are different ways to configure the layout of a presenter. Let's demonstrate that with `ProtocolViewerPresenter`. The first option is using `openWithLayout:` to open a window.
 
 ```
 presenter := ProtocolViewerPresenter new.
@@ -510,22 +511,19 @@ presenter open
 
 @sec_public_API
 
-In this chapter, we have seen several definitions of methods in the public configuration API of the presenter being built.
-The implementation of our configuration methods here is simply delegated to internal widgets, but a configuration can of course be more complex than that, depending on the internal logic of the UI.
+In this chapter, we have seen several definitions of methods in the public configuration API of the presenter being built. The implementation of our configuration methods is simply delegated to internal widgets, but a configuration can of course be more complex than that, depending on the internal logic of the UI.
 
-For methods that simply delegate to the internal widgets, the question is whether it makes sense to define these as methods in the `api` protocols at all. Fundamentally this is a design decision to be made by the programmer.
-Not having such methods makes the implementation of the presenter more lightweight but comes at the cost of a less clear intent and of breaking encapsulation.
+For methods that simply delegate to the internal widgets, the question is whether it makes sense to define these as methods in the 'api' protocols at all. Fundamentally this is a design decision to be made by the programmer. Not having such methods makes the implementation of the presenter more lightweight but comes at the cost of a less clear intent and of breaking encapsulation.
 
-For the former cost, we have seen an example in the protocol method list of Section *@sec_protocollist@*.
-The presence of the three methods defined there communicates to the user that we care about what to do when a class, `api` or `api-events` list item has been changed. Fundamentally the same also holds for the other examples in this chapter: each method in an `api` protocol communicates an intent to the reuser: this is how we expect that this presenter will be configured. Without such declared methods, it is less clear to the reuser what can be done to effectively reuse this presenter.
+For the former cost, we have seen an example in the protocol method list of Section *@sec_protocollist@*. The presence of the three methods defined there communicates to the user that we care about what to do when a class, 'api' or 'api-events' list item has been changed. Fundamentally the same also holds for the other examples in this chapter: each method in an 'api' protocol communicates an intent to the reuser: this is how we expect that this presenter will be configured. Without such declared methods, it is less clear to the reuser what can be done to effectively reuse a presenter.
 
-For the latter cost, expecting reusers of the widget to directly send messages to internal objects (in instance variables) means breaking encapsulation. As a consequence, we are no longer free to change the internals of the UI, e.g., by renaming the instance variables to a better name or changing the kind of widget used. Such changes may break reusers of the presenter and hence severely limit how we can evolve this presenter in the future. In the end, it is safer to define a public API and ensure in future versions of the presenter that the functionality of this API remains the same.
+For the latter cost, expecting reusers of the widget to directly send messages to internal objects (in instance variables) means breaking encapsulation. As a consequence, we are no longer free to change the internals of the UI, e.g., by renaming the instance variables to a better name or changing the kind of widget used. Such changes may break reusers of the presenter and hence severely limit how we can evolve this presenter in the future. It is safer to define a public API and ensure in future versions of the presenter that the functionality of this API remains the same.
 
 So in the end it is important to consider future reusers of your UI and the future evolution of your UI. You need to make a tradeoff between writing extra methods and possibly making reuse of the UI harder as well as possibly making future evolution of the UI harder.
 
 ### New versus old patterns
 
-In Spec 1.0, list presenters exposed a different API namely `whenSelectedItemChanged:` as in the following example.
+In Spec 1.0, list presenters exposed a different API, namely `whenSelectedItemChanged:`, as in the following example.
 
 ```
 initializePresenters
@@ -535,7 +533,7 @@ initializePresenters
 	events := self instantiate: ProtocolMethodListPresenter.
 
 	api label: 'api'.
-	events label: 'api-events’
+	events label: 'api-events'
 
 
 connectPresenters
@@ -572,4 +570,4 @@ But we advise using the Spec 2.0 way because it will give your presenters consis
 
 In this chapter, we have discussed a key point of Spec: the ability to seamlessly reuse existing UIs as widgets. This ability comes with no significant cost to the creator of a UI. The only thing that needs to be taken into account is how a UI can (or should) be customized.
 
-The reuse of complex widgets at no significant cost was a key design goal of Spec because it is an important productivity boost for the writing process of UIs. The boost firstly comes from being able to reuse existing nontrivial widgets, and secondly because it allows you to structure your UI in coherent and more easily manageable sub-parts with clear interfaces. We therefore encourage you to think of your UI as a composition of such sub-parts and construct it modularly, to yield greater productivity.
+The reuse of complex widgets at no significant cost was a key design goal of Spec because it is an important productivity boost for the writing process of UIs. The boost firstly comes from being able to reuse existing nontrivial widgets, and secondly because it allows you to structure your UI in coherent and more easily manageable subparts with clear interfaces. We therefore encourage you to think of your UI as a composition of such subparts and construct it modularly, to yield greater productivity.
