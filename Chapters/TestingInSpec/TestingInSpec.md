@@ -52,7 +52,7 @@ SpPresenter << #ColorChooser
 `initializePresenters` initializes the subpresenters. `colorList` holds a list presenter with the colors. `colorBox` displays the chosen color in a `SpRoassalPresenter`. `colorDetails` holds a text presenter that shows information about the color. `lighterButton` and `darkerButton` are the buttons to make the current color lighter or darker.
 
 ```
-initializePresenters
+ColorChooser >> initializePresenters
 
 	colorList := self newList
 		display: [ :color | '' ];
@@ -73,15 +73,15 @@ initializePresenters
 `currentColor` is not initialized by `initializePresenters`. It is initialized in `setModelBeforeInitialization:` because a color can be given when creating a new `ColorChooser` instance.
 
 ```
-setModelBeforeInitialization: aColor
+ColorChooser >> setModelBeforeInitialization: aColor
 
 	currentColor := aColor
 ```
 
-`defaultLayout` defines the layout with a left side and a right side. The left side is the color list. The right side consists of the color box, the two buttons, and the color details. Composition with horizontal and vertical `BoxLayout`s, together with a 5 pixel spacing, results in the window shown in Figure *@exampleapplication@*.
+`defaultLayout` defines the layout with a left side and a right side. The left side is the color list. The right side consists of the color box, the two buttons, and the color details. Composition with horizontal and vertical `BoxLayout`s, together with a 5-pixel spacing, results in the window shown in Figure *@exampleapplication@*.
 
 ```
-defaultLayout
+ColorChooser >> defaultLayout
 
 	| colorBoxAndDetails buttons |
 	buttons := SpBoxLayout newLeftToRight
@@ -105,7 +105,7 @@ defaultLayout
 `initializeWindow:` sets the title and the initial dimensions of the window.
 
 ```
-initializeWindow: aWindowPresenter
+ColorChooser >> initializeWindow: aWindowPresenter
 
 	aWindowPresenter
 		title: 'Color Chooser';
@@ -115,7 +115,7 @@ initializeWindow: aWindowPresenter
 Connecting the subpresenters is expressed easily. When a selection in the color list is made, the color is updated.
 
 ```
-connectPresenters
+ColorChooser >> connectPresenters
 
 	colorList whenSelectionChangedDo: [ :selection |
 		self updateColor: selection selectedItem ]
@@ -123,7 +123,7 @@ connectPresenters
 `connectPresenters` delegates to `updateColor:` to update the color box and the color details. As you can see, `updateColor:` takes care of a possible `nil` value for `currentColor`.
 
 ```
-updateColor: color
+ColorChooser >> updateColor: color
 
 	| details |
 	currentColor := color.
@@ -139,7 +139,7 @@ updateColor: color
 `updateColor:` delegates the responsability of producing the text with color details to `detailsFor:`.
 
 ```
-detailsFor: color
+ColorChooser >> detailsFor: color
 
 	^ String streamContents: [ :stream |
 		stream
@@ -152,7 +152,7 @@ detailsFor: color
 We also define `updatePresenter` to set the initial state of the subpresenters. It populates the color list with default colors, as defined by `defaultColors`, and the initial color is set with `updateColor:`.
 
 ```
-updatePresenter
+ColorChooser >> updatePresenter
 
 	| initialColor |
 	initialColor := currentColor.
@@ -165,7 +165,7 @@ Note that keeping the initial color with `initialColor := currentColor` is neces
 To keep things simple, `defaultColors` answers only a handful of colors. This method can be changed easily to answer a different collection of colors. For instance, you could try `Color red wheel: 20`.
 
 ```
-defaultColors
+ColorChooser >> defaultColors
 
 	^ {
 		Color red .
@@ -186,13 +186,13 @@ defaultColors
 There are only two methods missing from the code above to complete the class implementation. `initializePresenters` sets actions for the buttons, which invoke the following two methods. These methods delegate to `updateColor:` to do the heavy lifting.
 
 ```
-lighter
+ColorChooser >> lighter
 
 	self updateColor: currentColor lighter
 ```
 
 ```
-darker
+ColorChooser >> darker
 
 	self updateColor: currentColor darker
 ```
@@ -335,17 +335,29 @@ ColorChooserTest >> testLighter
 
 	chooser clickColorAtIndex: 1.
 	chooser clickLighterButton.
-	self assert: chooser boxColor equals: (Color r: 1.0 g: 0.030303030303030304 b: 0.030303030303030304 alpha: 1.0).
-	self assert: chooser detailsText equals: '(Color r: 1.0 g: 0.030303030303030304 b: 0.030303030303030304 alpha: 1.0)\\#FF0707' withCRs.
+	self 
+		assert: chooser boxColor 
+		equals: (Color r: 1.0 g: 0.030303030303030304 b: 0.030303030303030304 alpha: 1.0).
+	self 
+		assert: chooser detailsText 
+		equals: '(Color r: 1.0 g: 0.030303030303030304 b: 0.030303030303030304 alpha: 1.0)\\#FF0707' withCRs.
 
 	chooser clickLighterButton.
-	self assert: chooser boxColor equals: (Color r: 1.0 g: 0.06060606060606061 b: 0.06060606060606061 alpha: 1.0).
-	self assert: chooser detailsText equals: '(Color r: 1.0 g: 0.06060606060606061 b: 0.06060606060606061 alpha: 1.0)\\#FF0F0F' withCRs.
+	self 
+		assert: chooser boxColor 
+		equals: (Color r: 1.0 g: 0.06060606060606061 b: 0.06060606060606061 alpha: 1.0).
+	self 
+		assert: chooser detailsText 
+		equals: '(Color r: 1.0 g: 0.06060606060606061 b: 0.06060606060606061 alpha: 1.0)\\#FF0F0F' withCRs.
 
 	chooser clickColorAtIndex: 7.
 	chooser clickLighterButton.
-	self assert: chooser boxColor equals: (Color r: 0.030303030303030304 g: 0.030303030303030304 b: 1.0 alpha: 1.0).
-	self assert: chooser detailsText equals: '(Color r: 0.030303030303030304 g: 0.030303030303030304 b: 1.0 alpha: 1.0)\\#0707FF' withCRs
+	self 
+		assert: chooser boxColor 
+		equals: (Color r: 0.030303030303030304 g: 0.030303030303030304 b: 1.0 alpha: 1.0).
+	self 
+		assert: chooser detailsText 
+		equals: '(Color r: 0.030303030303030304 g: 0.030303030303030304 b: 1.0 alpha: 1.0)\\#0707FF' withCRs
 ```
 
 As the other tests, this test requires an extra test support method.
@@ -358,7 +370,7 @@ ColorChooser >> clickLighterButton
 
 #### Making the current color darker
 
-This test is very similar to the previos test. Instead of clicking the 'Lighter' button, this test clicks the 'Darker' button.
+This test is very similar to the previous test. Instead of clicking the 'Lighter' button, this test clicks the 'Darker' button.
 
 ```
 ColorChooserTest >> testDarker
@@ -371,17 +383,29 @@ ColorChooserTest >> testDarker
 
 	chooser clickColorAtIndex: 1.
 	chooser clickDarkerButton.
-	self assert: chooser boxColor equals: (Color r: 0.9198435972629521 g: 0.0 b: 0.0 alpha: 1.0).
-	self assert: chooser detailsText equals: '(Color r: 0.9198435972629521 g: 0.0 b: 0.0 alpha: 1.0)\\#EB0000' withCRs.
+	self 
+		assert: chooser boxColor 
+		equals: (Color r: 0.9198435972629521 g: 0.0 b: 0.0 alpha: 1.0).
+	self 
+		assert: chooser detailsText 
+		equals: '(Color r: 0.9198435972629521 g: 0.0 b: 0.0 alpha: 1.0)\\#EB0000' withCRs.
 
 	chooser clickDarkerButton.
-	self assert: chooser boxColor equals: (Color r: 0.8396871945259042 g: 0.0 b: 0.0 alpha: 1.0).
-	self assert: chooser detailsText equals: '(Color r: 0.8396871945259042 g: 0.0 b: 0.0 alpha: 1.0)\\#D60000' withCRs.
+	self 
+		assert: chooser boxColor 
+		equals: (Color r: 0.8396871945259042 g: 0.0 b: 0.0 alpha: 1.0).
+	self 
+		assert: chooser detailsText 
+		equals: '(Color r: 0.8396871945259042 g: 0.0 b: 0.0 alpha: 1.0)\\#D60000' withCRs.
 
 	chooser clickColorAtIndex: 7.
 	chooser clickDarkerButton.
-	self assert: chooser boxColor equals: (Color r: 0.0 g: 0.0 b: 0.9198435972629521 alpha: 1.0).
-	self assert: chooser detailsText equals: '(Color r: 0.0 g: 0.0 b: 0.9198435972629521 alpha: 1.0)\\#0000EB' withCRs
+	self 
+		assert: chooser boxColor 
+		equals: (Color r: 0.0 g: 0.0 b: 0.9198435972629521 alpha: 1.0).
+	self 
+		assert: chooser detailsText 
+		equals: '(Color r: 0.0 g: 0.0 b: 0.9198435972629521 alpha: 1.0)\\#0000EB' withCRs
 ```
 
 Again, this test requires an extra test support method.
@@ -422,21 +446,21 @@ TestCase << #ColorChooserApplicationTest
 ```
 
 ```
-setUp
+ColorChooserApplicationTest >> setUp
 
 	super setUp.
 	application := ColorChooserApplication new
 ```
 
 ```
-tearDown
+ColorChooserApplicationTest >> tearDown
 
 	application ifNotNil: [ application closeAllWindows ].
 	super tearDown
 ```
 
 ```
-testWindowRegistration
+ColorChooserApplicationTest >> testWindowRegistration
 
 	self assert: application windows size equals: 0.
 	application start.
