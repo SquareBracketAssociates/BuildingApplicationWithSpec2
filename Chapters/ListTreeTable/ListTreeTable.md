@@ -297,7 +297,7 @@ SpTablePresenter new
 	addColumn: (SpStringTableColumn title: 'Number' evaluated: #yourself);
 	addColumn: (SpStringTableColumn title: 'Hex' evaluated: #hex);
 	showColumnHeaders;
-	items: (1 to: 10) asArray;
+	items: (1 to: 10);
 	open
 ```
 
