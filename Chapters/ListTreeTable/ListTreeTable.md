@@ -152,7 +152,6 @@ The following script shows that the filter can be placed at the top.
 SpFilteringListPresenter new
 	items: Smalltalk globals allClasses;
 	openWithLayout: SpFilteringListPresenter topLayout;
-	open;
 	withWindowDo: [ :window |
 		window title: 'SpFilteringListPresenter example' ]
 ```
@@ -164,7 +163,6 @@ SpFilteringListPresenter new
 	items: Smalltalk globals allClasses;
 	openWithLayout: SpFilteringListPresenter topLayout;
 	applyFilter: 'ZZ';
-	open;
 	withWindowDo: [ :window |
 		window title: 'SpFilteringListPresenter prefiltered example' ]
 ```
