@@ -11,7 +11,7 @@ The following script illustrates this and the result is shown in Figure *@figSim
 
 ```
 SpListPresenter new
-	items: Smalltalk allClasses;
+	items: Smalltalk globals allClasses;
 	open
 ```
 
@@ -75,7 +75,7 @@ Lists support multiple selection. The message `beMultipleSelection` controls tha
 
 ```
 SpListPresenter new
-	items: Smalltalk allClasses;
+	items: Smalltalk globals allClasses;
 	beMultipleSelection;
 	open
 ```
@@ -138,7 +138,7 @@ Lists can also be filtered as shown in Figure *@figFiltering@*. The following sc
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk allClasses;
+	items: Smalltalk globals allClasses;
 	open;
 	withWindowDo: [ :window |
 		window title: 'SpFilteringListPresenter example' ]
@@ -150,7 +150,7 @@ The following script shows that the filter can be placed at the top.
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk allClasses;
+	items: Smalltalk globals allClasses;
 	openWithLayout: SpFilteringListPresenter topLayout;
 	open;
 	withWindowDo: [ :window |
@@ -161,7 +161,7 @@ Note that a filter can be declared upfront using the message `applyFilter:`.
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk allClasses;
+	items: Smalltalk globals allClasses;
 	openWithLayout: SpFilteringListPresenter topLayout;
 	applyFilter: 'ZZ';
 	open;
@@ -179,7 +179,7 @@ The following script produces this situation.
 
 ```
 (SpFilteringSelectableListPresenter new
-	items: Smalltalk allClasses;
+	items: Smalltalk globals allClasses;
 	layout: SpFilteringListPresenter topLayout;
 	applyFilter: 'ZZ';
 	asWindow)
