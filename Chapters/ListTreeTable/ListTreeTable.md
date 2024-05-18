@@ -57,8 +57,8 @@ SpListPresenter new
 	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 	displayColor: [ :aClass |
 		(aClass name endsWith: 'Test')
-			  ifTrue: [ Color green ]
-			  ifFalse: [ Smalltalk ui theme textColor ] ];
+				ifTrue: [ Color green ]
+				ifFalse: [ Smalltalk ui theme textColor ] ];
 	displayItalic: [ :aClass |
 		aClass name includesSubstring: 'abstract' caseSensitive: false ];
 	displayBold: [ :aClass | aClass hasSubclasses ];
@@ -372,15 +372,19 @@ The following script shows that the first column will be a tree whose element is
 ```
 SpTreeTablePresenter new
 	beResizable;
-	addColumn: (SpCompositeTableColumn new
-				title: 'Classes';
-				addColumn: (SpImageTableColumn evaluated: [ :aClass |
-							self iconNamed: aClass systemIconName ]);
-				addColumn: (SpStringTableColumn evaluated: [ :each | each name ] );
-				yourself);
-	addColumn: (SpStringTableColumn new
-				title: 'Methods';
-				evaluated: [ :class | class methodDictionary size asString ]);
+	addColumn:
+		(SpCompositeTableColumn new
+			title: 'Classes';
+			addColumn:
+				(SpImageTableColumn evaluated: [ :aClass |
+					self iconNamed: aClass systemIconName ]);
+			addColumn:
+				(SpStringTableColumn evaluated: [ :each | each name ] );
+			yourself);
+	addColumn:
+		(SpStringTableColumn new
+			title: 'Methods';
+			evaluated: [ :class | class methodDictionary size asString ]);
 	roots: { Object };
 	children: [ :aClass | aClass subclasses ];
 	open
@@ -393,10 +397,11 @@ Sending the messages `width:` and `beExpandable` to the `SpCompositeTableColumn`
 ```
 SpCompositeTableColumn new
 	title: 'Classes';
-	addColumn: (SpImageTableColumn evaluated: [ :aClass |
-		self iconNamed: aClass systemIconName ]);
+	addColumn:
+		(SpImageTableColumn evaluated: [ :aClass |
+			self iconNamed: aClass systemIconName ]);
 	addColumn: (SpStringTableColumn evaluated: #name);
-	width: 150;
+	width: 250;
 	beExpandable;
 	yourself
 ```
