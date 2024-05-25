@@ -11,7 +11,7 @@ The following script illustrates this and the result is shown in Figure *@figSim
 
 ```
 SpListPresenter new
-	items: Smalltalk globals allClasses;
+	items: Collection withAllSubclasses;
 	open
 ```
 
@@ -24,7 +24,7 @@ We can change the header title of the list using the message `headerTitle:`. The
 
 By default a list item is displayed using the result of the `asStringOrText` message sent to the item.
 We can configure a list to apply a block to control the display of each item using the message `display:`.
-The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `asStringOrText` (see Figure *@figSimpleList2@*).
+The following script configures a list presenter to display the name of the methods of the class `Point` instead of showing the result of `asStringOrText`. See Figure *@figSimpleList2@*.
 
 ```
 SpListPresenter new
@@ -47,20 +47,19 @@ SpListPresenter new
 
 ### Decorating elements
 
-We can configure the way items are displayed in a more finer-grained way. The following example illustrates it. We can control the icon associated with the item using the message `displayIcon:`, and the item color using the message `displayColor:`. The format (bold, italic, underline) can the controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:` (See Figure *@figSimpleListDecorated@*).
+We can configure the way items are displayed in a more finer-grained way. The following example illustrates it. We can control the icon associated with the item using the message `displayIcon:`, and the item color using the message `displayColor:`. The format (bold, italic, underline) can the controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:`. See Figure *@figSimpleListDecorated@*.
 
 
 
 ```
 SpListPresenter new
-	items: self environment allClasses;
+	items: Collection withAllSubclasses;
 	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 	displayColor: [ :aClass |
-		(aClass name endsWith: 'Test')
-				ifTrue: [ Color green ]
-				ifFalse: [ Smalltalk ui theme textColor ] ];
-	displayItalic: [ :aClass |
-		aClass name includesSubstring: 'abstract' caseSensitive: false ];
+		(aClass name endsWith: 'Set')
+			ifTrue: [ Color green ]
+			ifFalse: [ self theme textColor ] ];
+	displayItalic: [ :aClass | aClass isAbstract ];
 	displayBold: [ :aClass | aClass hasSubclasses ];
 	displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
 	open
@@ -71,11 +70,11 @@ SpListPresenter new
 
 ### About single/multiple selection
 
-Lists support multiple selection. The message `beMultipleSelection` controls that aspect.
+Lists support multiple selections. The message `beMultipleSelection` controls that aspect.
 
 ```
 SpListPresenter new
-	items: Smalltalk globals allClasses;
+	items: Collection withAllSubclasses;
 	beMultipleSelection;
 	open
 ```
@@ -138,7 +137,7 @@ Lists can also be filtered as shown in Figure *@figFiltering@*. The following sc
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk globals allClasses;
+	items: Collection withAllSubclasses;
 	open;
 	withWindowDo: [ :window |
 		window title: 'SpFilteringListPresenter example' ]
@@ -150,7 +149,7 @@ The following script shows that the filter can be placed at the top.
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk globals allClasses;
+	items: Collection withAllSubclasses;
 	openWithLayout: SpFilteringListPresenter topLayout;
 	withWindowDo: [ :window |
 		window title: 'SpFilteringListPresenter example' ]
@@ -160,9 +159,9 @@ Note that a filter can be declared upfront using the message `applyFilter:`.
 
 ```
 SpFilteringListPresenter new
-	items: Smalltalk globals allClasses;
+	items: Collection withAllSubclasses;
 	openWithLayout: SpFilteringListPresenter topLayout;
-	applyFilter: 'ZZ';
+	applyFilter: 'set';
 	withWindowDo: [ :window |
 		window title: 'SpFilteringListPresenter prefiltered example' ]
 ```
@@ -177,9 +176,9 @@ The following script produces this situation.
 
 ```
 (SpFilteringSelectableListPresenter new
-	items: Smalltalk globals allClasses;
+	items: Collection withAllSubclasses;
 	layout: SpFilteringListPresenter topLayout;
-	applyFilter: 'ZZ';
+	applyFilter: 'set';
 	asWindow)
 		title: 'SpFilteringSelectableListPresenter example';
 		open
@@ -323,7 +322,7 @@ SpTablePresenter new
 	addColumn: ((SpStringTableColumn
 			title: 'Methods'
 			evaluated: [ :c | c methodDictionary size ]) sortFunction: methodCountSorter);
-	items: Smalltalk globals allClasses;
+	items: Collection withAllSubclasses;
 	open
 ```
 
