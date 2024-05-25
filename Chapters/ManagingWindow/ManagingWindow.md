@@ -90,31 +90,28 @@ The message `canceled` sent to `dialog` will return `true` if the dialog is clos
 
 ### Preventing window close
 
-Spec provides for the possibility to check if a window can effectively be closed when the user clicks on the close box. To use it, this feature must be turned on first by sending `askOkToClose: true` to the `SpWindowPresenter`. This can be done for example by changing our `WindowExamplePresenter` as follows:
+Spec provides a way to check if a window can effectively be closed when the user clicks on the close box. `SpWindowPresenter>>whenWillCloseDo:` takes a block that decides whether the window can be closed. We can change our example  `WindowExamplePresenter` as follows:
 
 ```
-WindowExamplePresenter >> initializePresenters
+WindowExamplePresenter >> initializeWindow: aWindowPresenter
 
-   button1 := self newButton.
-   button2 := self newButton.
-   button1 label: '+'.
-   button2 label: '-'.
-   self askOkToClose: true
+	aWindowPresenter whenWillCloseDo: [ :announcement |
+		announcement denyClose ]
 ```
 
+The block has an `announcement` argument. It will be bound to an instance of `SpWindowWillClose`. That class has two interesting methods: `allowClose` and `denyClose`. The code snippet above sends `denyClose` to the announcement. By doing so, we have effectively created an unclosable window!
 
-The behavior of the close button however is still not changed, closing a window is still possible. This is because we have not defined the implementation of what to check on window close. This is most easily done by overriding the `okToChange` method of `SpPresenter`, for example:
+To be able to close this window, we have to change the implementation of the above method. By default a window can be closed, so the block should only send `denyClose` in case the window cannot be closed. Let's adapt the block to ask whether the user is sure about closing the window.
 
 ```
-WindowExamplePresenter >> requestWindowClose
+WindowExamplePresenter >> initializeWindow: aWindowPresenter
 
-   ^ false
+	aWindowPresenter whenWillCloseDo: [ :announcement |
+		(self confirm: 'Are you sure that you want to close the window?')
+			ifFalse: [ announcement denyClose ] ]
 ```
 
-
-Because this method returns `false`, clicking on the close button of an open `WindowExamplePresenter` window will have no effect. We have effectively created an unclosable window! To be able to close this window, we have to change the implementation of the above method to return `true`, or simply remove it.
-
-Of course, the example `requestWindowClose` method above is extremely simplistic and not very useful. Instead, it should define application-dependent logic of what to check on window close. Note that there are many examples of `okToChange` methods in the system that can be used as inspiration.
+Of course, the example method above is extremely simplistic and not very useful. Instead, it should define application-dependent logic of what to check on window close.
 
 
 ### Acting on window close or open
