@@ -172,7 +172,7 @@ withWindowDo: [ :window | window title: 'MyTitle' ]
 
 Now we focus on sizing a window before and after opening it, and then describe removing the different control widgets that decorate the window.
 
-### Setting initial size and changing size
+#### Setting initial size and changing size
 
 
 To set the initial size of a window when it opens, send the `initialExtent:` message to the corresponding `SpWindowPresenter` before opening, for example like this:
@@ -210,7 +210,7 @@ WindowExamplePresenter >> initializePresenters
 You have also `centered`, `centeredRelativeTo:` and `centeredRelativeToTopWindow` to help you place the windows relative to world/other windows.
 
 
-### Fixed size
+#### Fixed size
 
 The size of a window can be made fixed size, so that the user cannot resize it by dragging the sides or corners as follows:
 
@@ -220,7 +220,7 @@ presenter := WindowExamplePresenter new open.
 presenter window beUnresizeable
 ```
 
-### Removing window decoration
+#### Removing window decoration
 
 
 Sometimes it makes sense to have a window without decoration, i.e. without control widgets. Currently, this configuration cannot be performed on the `SpWindowPresenter` of that window, but the underlying widget library may allow it. Below we show how to get the `Morphic` window of our example and instruct it to remove the different control widgets:
@@ -240,7 +240,7 @@ presenter window
 
 
 
-### Setting and changing the title
+#### Setting and changing the title
 
 
 By default, the title of a new window is 'Untitled window'. Of course, this can be changed. The first way is to specialize the method `initializeWindow:`
@@ -263,7 +263,7 @@ presenter window title: 'I am different!'
 ```
 
 
-### Setting the icon (DOES NOT WORK)
+#### Setting the icon (DOES NOT WORK)
 
 At the bottom of the main Pharo window, there is a window taskbar, allowing the user to switch between windows by clicking on the buttons that represent the windows. These buttons have an icon that is meant to represent the window's kind. This icon can be configured through Spec, in two different ways.
 
@@ -291,7 +291,7 @@ WindowExamplePresenter >> windowIcon
 
 **Note.** Changing the `windowIcon` method will affect all open windows, as the taskbar is periodically refreshed. This refreshing is also why `windowIcon:` can be sent before or after the window has been opened.
 
-### Setting the about text
+#### Setting the about text
 
 
 To set the about text of a window, either override the `aboutText` method of the corresponding `SpPresenter` so that it returns the new about text, or sends the instance the `aboutText:` message before opening, for example as below.
