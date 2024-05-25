@@ -259,35 +259,6 @@ presenter open.
 presenter window title: 'I am different!'
 ```
 
-
-#### Setting the icon (DOES NOT WORK)
-
-At the bottom of the main Pharo window, there is a window taskbar, allowing the user to switch between windows by clicking on the buttons that represent the windows. These buttons have an icon that is meant to represent the window's kind. This icon can be configured through Spec, in two different ways.
-
-First, sending the `windowIcon:` message to the `SpWindowPresenter` allows an icon to be set per window. Note that it does not matter if the message is sent before or after the window is opened.
-
-```
-| windowPresenter1 windowPresenter2 |
- windowPresenter1 := WindowExamplePresenter new open.
- windowPresenter1 windowIcon: (windowPresenter1 iconNamed: #thumbsDown).
-
- windowPresenter2 := WindowExamplePresenter new asWindow.
- windowPresenter2 windowIcon: (windowPresenter2 iconNamed: #thumbsUp).
- windowPresenter2 open
-```
-
-
-Second, the icon can be changed by overriding the `windowIcon` message, as below.
-
-```
-WindowExamplePresenter >> windowIcon
-
-	^ self iconNamed: #thumbsUp
-```
-
-
-**Note.** Changing the `windowIcon` method will affect all open windows, as the taskbar is periodically refreshed. This refreshing is also why `windowIcon:` can be sent before or after the window has been opened.
-
 #### Setting the about text
 
 
