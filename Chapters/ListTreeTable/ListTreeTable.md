@@ -56,11 +56,11 @@ SpListPresenter new
 	items: Collection withAllSubclasses;
 	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 	displayColor: [ :aClass |
-		(aClass name endsWith: 'Test')
 				ifTrue: [ Color green ]
 				ifFalse: [ Smalltalk ui theme textColor ] ];
+		(aClass name endsWith: 'Set')
 	displayItalic: [ :aClass |
-		aClass name includesSubstring: 'abstract' caseSensitive: false ];
+		aClass isAbstract ];
 	displayBold: [ :aClass | aClass hasSubclasses ];
 	displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
 	open
@@ -162,7 +162,7 @@ Note that a filter can be declared upfront using the message `applyFilter:`.
 SpFilteringListPresenter new
 	items: Collection withAllSubclasses;
 	openWithLayout: SpFilteringListPresenter topLayout;
-	applyFilter: 'ZZ';
+	applyFilter: 'set';
 	withWindowDo: [ :window |
 		window title: 'SpFilteringListPresenter prefiltered example' ]
 ```
@@ -179,7 +179,7 @@ The following script produces this situation.
 (SpFilteringSelectableListPresenter new
 	items: Collection withAllSubclasses;
 	layout: SpFilteringListPresenter topLayout;
-	applyFilter: 'ZZ';
+	applyFilter: 'set';
 	asWindow)
 		title: 'SpFilteringSelectableListPresenter example';
 		open
