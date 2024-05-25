@@ -56,9 +56,9 @@ SpListPresenter new
 	items: Collection withAllSubclasses;
 	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 	displayColor: [ :aClass |
-				ifTrue: [ Color green ]
-				ifFalse: [ Smalltalk ui theme textColor ] ];
 		(aClass name endsWith: 'Set')
+			ifTrue: [ Color green ]
+			ifFalse: [ self theme textColor ] ];
 	displayItalic: [ :aClass |
 		aClass isAbstract ];
 	displayBold: [ :aClass | aClass hasSubclasses ];
