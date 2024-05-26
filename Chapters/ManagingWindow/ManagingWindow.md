@@ -3,9 +3,9 @@
 @cha_managing_windows
 
 
-So far we have talked about the reuse of `SpPresenter`s, discussed the fundamental functioning of Spec, and presented how to layout the widgets of a user interface. Yet what is still missing for a working user interface is showing all these widgets inside of a window. In our examples until now we have only shown a few of the features of Spec for managing windows, basically restricting ourselves to opening a window.
+So far we have described the reuse of `SpPresenter`s, discussed the fundamental functioning of Spec, and presented how to layout the widgets of a user interface. Yet what is still missing for a working user interface is showing all these widgets inside of a window. In our examples until now we have only shown a few of the features of Spec for managing windows, basically restricting ourselves to opening a window.
 
-In this chapter, we provide a more complete overview of how Spec allows for the managing of windows. We show opening and closing, the built-in dialog box facility, the sizing of windows, and all kinds of window decoration.
+In this chapter, we provide a more complete overview of how Spec allows for the management of windows. We will show opening and closing, the built-in dialog box facility, the sizing of windows, and all kinds of window decoration.
 
 
 ### A working example
@@ -17,39 +17,39 @@ To illustrate the window configuration options that are available, we use a simp
 
 ```
 SpPresenter << #WindowExamplePresenter
-	slots: { #button1 . #button2 };
-	package: 'CodeOfSpec20Book''
+	slots: { #minusButton . #plusButton };
+	package: 'CodeOfSpec20Book'
 ```
 
 ```
 WindowExamplePresenter >> initializePresenters
 
-	button1 := self newButton.
-	button2 := self newButton.
-	button1 label: '+'.
-	button2 label: '-'
+	plusButton := self newButton.
+	minusButton := self newButton.
+	plusButton label: '+'.
+	minusButton label: '-'
 ```
 
 ```
 WindowExamplePresenter >> defaultLayout
 
 	^ SpBoxLayout newLeftToRight
-		add: #button1;
-		add: #button2;
+		add: #plusButton;
+		add: #minusButton;
 		yourself
 ```
 
 ### Opening a window or a dialog box
 
-A user interface can be opened as a normal window or opened as a dialog box, i.e. without decoration and with _Ok_ and _Cancel_ buttons. We will show how this is done, including the configuration options specific to dialog boxes. See also Section *@sec_win_size_decoration@* for more information about window decoration.
+A user interface can be opened as a normal window or opened as a dialog box, i.e. without decoration and with 'Ok' and 'Cancel' buttons. We will show how this is done, including the configuration options specific to dialog boxes. See also Section *@sec_win_size_decoration@* for more information about window decoration.
 
-### Opening a window
+#### Opening a window
 
-As we have shown in previous chapters, to open a user interface you need to instantiate the `SpPresenter` for that interface and send the `open` message to the instance. That results in the creation of an instance of `SpWindowPresenter` which points to the window containing the user interface, and showing it in a window on the screen.
+As we have shown in previous chapters, to open a user interface you have to instantiate the `SpPresenter` for that interface and send the `open` message to the instance. That results in the creation of an instance of `SpWindowPresenter` which points to the window containing the user interface, and showing it in a window on the screen.
 
 We have also seen the `openWithLayout:` method that takes a layout (instance of SpLayout subclasses) as an argument. Instead of using the default layout, the opened UI will use the layout passed as an argument.
 
-For example, below we show the two ways we can open a window for our `WindowExamplePresenter`. It will open two identical windows as shown in *@windowExample1@*.
+Below we show the two ways we can open a window for our `WindowExamplePresenter`. The code snippet opens two identical windows as shown in *@windowExample1@*.
 
 ```
 | presenter |
@@ -58,10 +58,10 @@ presenter open.
 presenter openWithLayout: presenter defaultLayout
 ```
 
-### Opening a dialog box
+#### Opening a dialog box
 
 
-Spec provides an easy way to open a UI as a simple dialog box with _Ok_ and _Cancel_ buttons. A dialog box does not have icons for resizing and closing, nor a window menu. To open a dialog box, send the message `openDialog` as below:
+Spec provides an easy way to open a UI as a simple dialog box with 'Ok' and 'Cancel' buttons. A dialog box does not have icons for resizing and closing, nor a window menu. To open a dialog box, send the message `openDialog`:
 
 ```
 | presenter dialog |
@@ -72,7 +72,7 @@ dialog := presenter openDialog
 
 The answer of sending `openDialog`, assigned to the `dialog` variable above, is an instance of the `SpDialogWindowPresenter` class (a subclass of `SpWindowPresenter`).
 
-![A rather simple window on WindowExamplePresent.](figures/WindowExamplePresenterDialog width=50&label=windowDialog)
+![A rather simple dialog on WindowExamplePresenter.](figures/WindowExamplePresenterDialog width=50&label=windowDialog)
 
 
 The `SpDialogWindowPresenter` instance can be configured in multiple ways. To execute code when the user clicks on a button, send it the `okAction:` or `cancelAction:` message with a zero-argument block.
@@ -81,16 +81,15 @@ The `SpDialogWindowPresenter` instance can be configured in multiple ways. To ex
 | presenter dialog |
 presenter := WindowExamplePresenter new.
 dialog := presenter openDialog
-	okAction: [ Transcript show: 'okAction'; cr ];
-	cancelAction: [ Transcript show: 'cancelAction'; cr ];
-	whenClosedDo: [ Transcript show: 'whenClosedDo'; cr ]
+	okAction: [ 'okAction' crTrace ];
+	cancelAction: [ 'cancelAction' crTrace ]
 ```
 
-The message `canceled` sent to `dialog` will return `true` if the dialog is closed by clicking on the _Cancel_ button.
+The message `canceled` sent to `dialog` will return `true` if the dialog is closed by clicking on the 'Cancel' button.
 
 ### Preventing window close
 
-Spec provides a way to check if a window can effectively be closed when the user clicks on the close box. `SpWindowPresenter>>whenWillCloseDo:` takes a block that decides whether the window can be closed. We can change our example  `WindowExamplePresenter` as follows:
+Spec provides a way to check if a window can effectively be closed when the user clicks on the close box. `SpWindowPresenter>>whenWillCloseDo:` takes a block that decides whether the window can be closed. We can change our  `WindowExamplePresenter` as follows:
 
 ```
 WindowExamplePresenter >> initializeWindow: aWindowPresenter
@@ -111,10 +110,10 @@ WindowExamplePresenter >> initializeWindow: aWindowPresenter
 			ifFalse: [ announcement denyClose ] ]
 ```
 
-Of course, the example method above is extremely simplistic and not very useful. Instead, it should define application-dependent logic of what to check on window close.
+Of course, the example method above is extremely simplistic and not very useful. Instead, it should use application-dependent logic of what to check on window close.
 
 
-### Acting on window close or open
+### Acting on window close
 
 It is also possible to perform an action whenever a window is closed, both with a plain window or a dialog window.
 
@@ -125,17 +124,16 @@ When you want to be notified that a window is closed, you should redefine the `i
 ```
 WindowExamplePresenter >> initializeWindow: aWindowPresenter
 
-	aWindowPresenter whenClosedDo: [
-		self application newInform title: 'When closed'; openModal ]
+	aWindowPresenter whenClosedDo: [ self inform: 'When closed' ]
 ```
 
-Then the following snippet programmatically opens and closes a window and you should see the notification triggered on close.
+The following snippet programmatically opens and closes a window and you should see the notification triggered on close.
 
 ```
 | presenter window |
 presenter := WindowExamplePresenter new.
 window := presenter open.
-window close.
+window close
 ```
 
 
@@ -149,19 +147,19 @@ When you want the same behavior with a dialog window you can either use the mech
 presenter := WindowExamplePresenter new.
 dialog := presenter openDialog.
 dialog
-	okAction: [ Transcript show: 'okAction'; cr ];
-	cancelAction: [ Transcript show: 'cancelAction'; cr ];
-	whenClosedDo: [ dialog application newInform title: 'Bye bye!'; openModal ]
+	okAction: [ 'okAction' crTrace ];
+	cancelAction: [ 'cancelAction' crTrace ];
+	whenClosedDo: [ self inform: 'Bye bye!' ]
 ```
 
 
 #### Action with Window
 
+`withWindowDo:` makes sure that the presenter that scheduled the window still exists or is in a state that makes sense.
+
 ```
 withWindowDo: [ :window | window title: 'MyTitle' ]
 ```
-
-`withWindowDo:` makes sure that the presenter that scheduled the window still exists or is in a state that makes sense.
 
 
 ### Window size and decoration
@@ -196,12 +194,12 @@ After a window is opened, it can also be resized by sending the `resize:` messag
 ```
 WindowExamplePresenter >> initializePresenters
 
-	button1 := self newButton.
-	button2 := self newButton.
-	button1 label: '+'.
-	button2 label: '-'.
-	button1 action: [ self window resize: 500@200].
-	button2 action: [ self window resize: 200@100]
+	plusButton := self newButton.
+	minusButton := self newButton.
+	plusButton label: '+'.
+	minusButton label: '-'.
+	plusButton action: [ self window resize: 500@200].
+	minusButton action: [ self window resize: 200@100]
 ```
 
 You have also `centered`, `centeredRelativeTo:` and `centeredRelativeToTopWindow` to help you place the windows relative to world/other windows.
@@ -209,7 +207,7 @@ You have also `centered`, `centeredRelativeTo:` and `centeredRelativeToTopWindow
 
 #### Fixed size
 
-The size of a window can be made fixed size, so that the user cannot resize it by dragging the sides or corners as follows:
+The size of a window can be fixed, so that the user cannot resize it by dragging the sides or corners as follows:
 
 ```
 | presenter |
@@ -220,7 +218,7 @@ presenter window beUnresizeable
 #### Removing window decoration
 
 
-Sometimes it makes sense to have a window without decoration, i.e. without control widgets. Currently, this configuration cannot be performed on the `SpWindowPresenter` of that window, but the underlying widget library may allow it. Below we show how to get the `Morphic` window of our example and instruct it to remove the different control widgets:
+Sometimes it makes sense to have a window without decoration, i.e. without control widgets. Currently, this configuration cannot be performed on the `SpWindowPresenter` of that window, but the underlying widget library may allow it. Below we show how to get the `SpWindow` of our example and instruct it to remove the different control widgets:
 
 ```
 | presenter |
@@ -261,8 +259,11 @@ presenter window title: 'I am different!'
 
 #### Setting the about text
 
+The about text of a window can be used by application developers to give a description of the application, and to list its contributors. The about text can be opened by selecting 'About' from the pop-up menu in the top-right corner of a window, as shown in Figure *@about@*.
 
-To set the about text of a window, either override the `aboutText` method of the corresponding `SpPresenter` so that it returns the new about text, or sends the instance the `aboutText:` message before opening, for example as below.
+![Opening the about text of a window.](figures/About.png width=60&label=about)
+
+To set the about text of a window, either override the `aboutText` method of the corresponding `SpPresenter` so that it returns the new about text, or send the instance the `aboutText:` message before opening, for example as below.
 
 ```
 | windowPresenter |
@@ -271,9 +272,9 @@ To set the about text of a window, either override the `aboutText` method of the
  windowPresenter open
 ```
 
-### Modal windows
+After opening the window with the code snippet above, and after choosing 'About' from the window menu, the about window opens with the configured about text, as shown in Figure *@abouttext@*.
 
-A modal window is a window that takes control of the entire Pharo user interface, making it impossible for the user to select another window while it is open. This is especially useful for dialog boxes, but may also be needed for other kinds of windows.
+![The about text of a window.](figures/AboutText.png width=60&label=abouttext)
 
 ### Getting values from a dialog window
 
@@ -286,6 +287,7 @@ Configuring the UI makes up for the largest part of the code below, but the inte
 Then in the `whenClosedDo:` block, we send `isOk` to the dialog. If that message answers `true`, it makes sense to process the selection of colors. For the sake of simplicity of this example, we just inspect the selected colors.
 
 ```
+| selectedColors presenter colorTable dialogPresenter |
 selectedColors := Set new.
 presenter := SpPresenter new.
 colorTable := presenter newTable
@@ -305,16 +307,19 @@ colorTable := presenter newTable
 presenter layout: (SpBoxLayout newTopToBottom
 	add: colorTable;
 	yourself).
-dialog := presenter openDialog.
-dialog
+dialogPresenter := presenter openDialog.
+dialogPresenter
 	title: 'Select colors';
 	okAction: [ :dialog | dialog beOk ];
-	whenClosedDo: [ dialog isOk ifTrue: [ selectedColors inspect ] ]
+	whenClosedDo: [ dialogPresenter isOk
+		ifTrue: [ selectedColors inspect ] ]
 ```
 
-### Little dialog presenters
+### Little modal dialog presenters
 
-Spec supports some little predefined dialogs to inform or request information from the users. Most of them inherit from `SpDialogPresenter`. They offer a builder API to configure them.
+A modal dialog is a window that takes control of the entire Pharo user interface, making it impossible for the user to select another window while it is open.
+
+Spec provides some little predefined dialogs to inform or request information from the users. Most of them inherit from `SpDialogPresenter`. They offer a builder API to configure them.
 
 The simplest dialog is an alert.
 
@@ -354,27 +359,26 @@ self application newAlert
 
 ### Placing a presenter inside a dialog window
 
-Any presenter can be placed in a dialog window by specializing the method `initializeDialogWindow:`.
-Here is a simple example showing how the default buttons are set. 
-
+Any presenter can be placed in a dialog window by specializing the method `SpAbstractPresenter>>initializeDialogWindow:`, which is implemented like this:
 
 
 ```
 initializeDialogWindow: aDialogWindowPresenter
-
 	"Used to initialize the model in the case of the use into a dialog window.
 	 Override this to set buttons other than the default (Ok, Cancel)."
 
 	aDialogWindowPresenter
-		addButton: 'Ok' do: [ :presenter |
-			self accept.
-			presenter close ];
 		addButton: 'Cancel' do: [ :presenter |
+			presenter triggerCancelAction.
+			presenter close ];
+		addDefaultButton: 'Ok' do: [ :presenter |
+			presenter triggerOkAction.
 			presenter close ]
 ```
-You can also define  in your presenter how it will behave when it is open in a dialog window
+
+Override this method to define how your presenter will behave when it is open in a dialog window
 
 ### Conclusion
 
 
-In this chapter, we treated the features of Spec that have to do with windows. First we described opening and closing windows as well as how to open a window as a dialog box. That was followed by configuring the window's size and its decorating widgets. We ended this chapter with the small yet important details of the window: its title, icon, and about text.
+In this chapter, we treated the features of Spec that have to do with windows. First we described opening and closing windows as well as how to open a window as a dialog box. That was followed by configuring the window's size and its decorating widgets. After highlighting small yet important details of the window like its title and the about text, the chapter ended with handling dialogs.
