@@ -11,13 +11,13 @@ Tests are key to ensuring that everything works correctly. In addition, they fre
 #### Spec architecture
 
 
-Spec is based on an architecture with three different layers as shown in Figure *@fig:Architecture@*:
+Spec is based on an architecture with three different layers as shown in Figure *@Architecture@*:
 - **Presenters:** Presenters define the interaction logic and manipulate domain objects. They access backend widgets but via an API that is specified by Adapters.
 - **Adapters:** Adapters are objects exposing low-level backend widgets. They are a bridge between presenters and low-level widgets.
 - **Backend widgets**. Backend widgets are plain widgets that can be used without Spec.
 
 
-![Spec Architecture: three layers Presenters - Adapters - Backends.](figures/ArchitectureSpec2.pdf width=95&label=fig:Architecture)
+![Spec Architecture: three layers Presenters - Adapters - Backends. % width=95&anchor=Architecture](figures/ArchitectureSpec2.pdf)
 
 #### Three roles and concerns
 
@@ -39,7 +39,7 @@ As a Spec user, you should consider that the backends are working and your respo
 
 We will test a simple spec application, as shown in Figure *@exampleapplication@*. The model for this application is an instance of the `Color` class. The application shows a list of colors from which the user can choose one. After choosing a color, the application shows the color in a big box, and it shows the `printString` of the color, together with the hexadecimal code. The application also provides two buttons to make the chosen color lighter or darker.
 
-![A Spec application.](figures/ExampleApplication.png width=70&label=exampleapplication)
+![A Spec application. % width=70&anchor=exampleapplication](figures/ExampleApplication.png)
 
 The presenter is defined as described below. The class has six instance variables. The first five instance variables hold subpresenters that compose the application window. The sixth instance variable holds the color that serves as the model of the application.
 
@@ -203,7 +203,7 @@ ColorChooser new open
 
 In this case, there is no initial color, which results in the window shown in Figure *@defaultapplication@*. The color box does not show a color and the color details are empty.
 
-![The default ColorChooser.](figures/DefaultApplication.png width=70&label=defaultapplication)
+![The default ColorChooser. % width=70&anchor=defaultapplication](figures/DefaultApplication.png)
 
 Let's see what happens when we provide a color with:
 
