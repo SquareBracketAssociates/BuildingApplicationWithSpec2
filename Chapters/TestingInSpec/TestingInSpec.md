@@ -11,13 +11,13 @@ Tests are key to ensuring that everything works correctly. In addition, they fre
 #### Spec architecture
 
 
-Spec is based on an architecture with three different layers as shown in Figure *@fig:Architecture@*:
+Spec is based on an architecture with three different layers as shown in Figure *@Architecture@*:
 - **Presenters:** Presenters define the interaction logic and manipulate domain objects. They access backend widgets but via an API that is specified by Adapters.
 - **Adapters:** Adapters are objects exposing low-level backend widgets. They are a bridge between presenters and low-level widgets.
 - **Backend widgets**. Backend widgets are plain widgets that can be used without Spec.
 
 
-![Spec Architecture: three layers Presenters - Adapters - Backends. %  width=95&anchor=fig:Architecture ](figures/ArchitectureSpec2.pdf)
+![Spec Architecture: three layers Presenters - Adapters - Backends. % width=95&anchor=Architecture](figures/ArchitectureSpec2.pdf)
 
 #### Three roles and concerns
 
