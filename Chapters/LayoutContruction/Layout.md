@@ -1,23 +1,22 @@
 ## Layouts
 @cha_layout
 
-In Spec layouts are represented by instances of layout classes. Such layout classes encode different positioning of elements such as box, paned, or grid layouts.
+In Spec, layouts are represented by instances of layout classes. The layout classes encode different positioning of elements such as box, paned, or grid.
 This chapter presents the available layouts, their definition, and how layouts can be reused when a presenter reuses other presenters.
 
 ### Basic principle reminder
 
-Spec expects that layouts objects, instances of the layout classes, are associated with a presenter. Each presenter should describe the positioning of its subpresenters.
+Spec expects that layout objects, instances of the layout classes, are associated with a presenter. Each presenter should describe the positioning of its subpresenters.
 
-Contrary to Spec 1.0, where layouts were only defined at the class level, in Spec 2.0 to define the layout of a presenter you can:
-- Define the `defaultLayout` method on the instance side,
-- Or use the message `layout:` in your `initializePresenters` method to set an instance of layout in the current presenter.
+Contrary to Spec 1.0, where layouts were only defined at the class level, in Spec 2.0, to define the layout of a presenter you can:
+- Define the `defaultLayout` method on the instance side
+- Use the message `layout:` in your `initializePresenters` method to set an instance of layout in the current presenter.
 
 `defaultLayout` returns a layout and `layout:` sets a layout, for example, an instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
 
-Note that the possibility of defining a class-side accessor e.g. `defaultLayout` will remain for those who prefer it.
+Note that the possibility of defining a class-side accessor e.g. `defaultLayout` remains for those who prefer it.
 
-This new design reflects the dynamic nature of layouts in Spec, and the fact that you can compose them using presenter instances directly, not forcing you to declare subpresenters in instance variables upfront and then use their names as it was done in Spec 1.0.
-It is, however, possible that there are cases where you want a layout "template"... so you still can do it.
+This new design reflects the dynamic nature of layouts in Spec, and the fact that you can compose them using presenter instances directly, not forcing you to declare subpresenters in instance variables upfront, and then use their names as it was done in Spec 1.0. It is, however, possible that there are cases where you want a layout "template"... so you can still do it.
 
 
 ### A running example
@@ -26,8 +25,8 @@ To be able to play with the layouts defined in this chapter, we define a simple 
 
 ```
 SpPresenter << #TwoButtons
-    slots: { #button1 . #button2 };
-    package: 'CodeOfSpec20BookThreePillar'
+	slots: { #button1 . #button2 };
+	package: 'CodeOfSpec20Book'
 ```
 
 We define a simple `initializePresenters` method as follows:
@@ -35,33 +34,31 @@ We define a simple `initializePresenters` method as follows:
 ```
 TwoButtons >> initializePresenters
 
-    button1 := self newButton.
-    button2 := self newButton.
-    button1 label: '1'.
-    button2 label: '2'.
+	button1 := self newButton.
+	button2 := self newButton.
+	button1 label: '1'.
+	button2 label: '2'
 ```
-
-
 
 ### BoxLayout (SpBoxLayout and SpBoxConstraints)
 
-The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. A box can be horizontal or vertical and presenters are ordered top to bottom or left to right following the direction decided. A box layout can be composed of other layouts.
+The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. A box layout can be horizontal or vertical and presenters are ordered left to right and top to bottom respectively. A box layout can be composed of other layouts.
 
 
 ![Two buttons placed horizontally from left to right.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight)
 
-Let us define a first simple layout whose result is displayed in  Figure *@TwoButtonsLeftToRight@* as follows.
+Let us define a first simple layout as follows and whose result is displayed in Figure *@TwoButtonsLeftToRight@*.
 
 ```
 TwoButtons >> defaultLayout
 
-     ^ SpBoxLayout newLeftToRight
-        add: button1;
-        add: button2;
-        yourself
+	^ SpBoxLayout newLeftToRight
+		add: button1;
+		add: button2;
+		yourself
 ```
 
-What we see is that by default a presenter expands its size to fit the space of its container.
+What we see is that by default a subpresenter expands its size to fit the space of its container.
 
 An element in a vertical box will use all available horizontal space, and fill
 vertical space according to the rules. This is inversed in a horizontal box.
@@ -71,105 +68,115 @@ We can refine this layout to indicate that the subpresenters should not expand t
 ```
 TwoButtons >> defaultLayout
 
-    ^ SpBoxLayout newLeftToRight
-        add: #button1 expand: false;
-        add: #button2 expand: false;
-        yourself
+	^ SpBoxLayout newLeftToRight
+		add: button1 expand: false;
+		add: button2 expand: false;
+		yourself
 ```
 
-![Two buttons placed horizontally from left to right but not expanded.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded)
+![Two buttons placed from left to right, but not expanded.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded)
 
 The full message to add presenters is: `add:expand:fill:padding:`
 - `expand:` argument - when true, the new child is to be given extra space allocated to the box. The extra space is divided evenly between all children that use this option.
 - `fill:` argument - when true, the space given to a child by the expand option is actually allocated to the child, rather than just padding it. This parameter has no effect if `expand` is set to `false`.
-- `padding:` argument  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by “spacing” property. If a child is a widget at one of the reference ends of the box, then padding pixels are also put between the child and the reference edge of the box.
+- `padding:` argument  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by the `spacing` property. If a child is a widget at one of the reference ends of the box, then padding pixels are also put between the child and the reference edge of the box.
 
 
-To illustrate this API a bit, we add another button to the presenter and change the `defaultLayout` method as follows. The result is shown in Fig *@ThreeButtons@*. We want to stress however that it is better not to use a fixed width or padding.
+To illustrate this API a bit, we add another button to the presenter and change the `defaultLayout` method as follows. The result is shown in Fig *@ThreeButtons@*. We want to stress, however, that it is better not to use a fixed height or padding.
 
 ```
 TwoButtons >> defaultLayout
 
-    ^ SpBoxLayout newTopToBottom
-        spacing: 15;
-        add: button1 expand: false fill: true padding: 5;
-        add: button2 withConstraints: [ :constraints | constraints width: 30; padding: 5];
-        addLast: button3 expand: false fill: true padding: 5;
-        yourself
+	^ SpBoxLayout newTopToBottom
+		spacing: 15;
+		add: button1 expand: false fill: true padding: 5;
+		add: button2 withConstraints: [ :constraints |
+			constraints height: 80; padding: 5 ];
+		addLast: button3 expand: false fill: true padding: 5;
+		yourself
 ```
 
 
 ![Three buttons placed from top to bottom playing with padding and fill options.](figures/ThreeButtons.png width=50&label=ThreeButtons)
 
+The annotations in the figure indicate the padding in red, the height of `button2` in blue, and the spacing in green. Note that the padding of `button2` is included in the height of the button.
 
+The `defaultLayout` method sends the message `withConstraints: [ :constraints | constraints height: 80; padding: 5 ]`. This message allows setting constraints when the often used messages `add:`, `add:expand:`, and `add:expand:fill:padding:` do not cover your particular use case. The `constraints` argument of the block is an instance of the `SpBoxConstraints` class.
+
+The `defaultLayout` method adds button `button3` to the box layout with `addLast:expand:fill:padding:`. For every method starting with `add:`, the `SpBoxLayout` class provides a similar method starting with `addLast:`.
+
+A box layout has two parts: a "start" and an "end". Messages starting with `add:`, add subpresenters to the "start". Messages starting with `addLast:`, add subpresenters to the "end". As you can see in Figure *@ThreeButtons@*, there is a large gap between `button2` and `button3`. For vertical box layouts, the "start" part of a box layout aligns to the top side of the box. The "end" part aligns to the bottom side of the box. The gap between the "start" and the "end" is all the excess space not used by the subpresenters.
+
+In this example with three buttons, the usefulness of the "start" and "end" parts is not very clear. But it is very handy for button bars with buttons on the left side and on the right side, such as in the "Reposities" browser of Iceberg, as you can see in Figure *@Repositories@*. The bar has one button on the left side and two buttons on the right side.
+
+![Buttons on the left side and on the right side. ](figures/Repositories.png width=60&label=Repositories)
 
 ### Example setup for layout reuse
 
-Before presenting some of the other layouts, we show an important aspect of Spec presenter composition: a composite can declare that it wants to reuse a presenter using a specific layout of such a presenter.
+Before presenting some of the other layouts, we show an important aspect of Spec presenter composition: a composite can declare that it wants to reuse a presenter using a specific layout of a presenter.
 
-Consider our artificial example of a two-button UI. Let us define two layouts as follows:
-We define two class methods returning different layouts. Note that we could define such methods on the instance side too and we define them on the class side to be able to get such layouts without an instance of the class.
+Consider our artificial example of a two-button UI. Let us use two layouts as follows. We define two class methods returning different layouts. Note that we could define such methods on the instance side to. We define them on the class side to be able to get the layouts without an instance of the class.
 
 ```
 TwoButtons class >> buttonRow
 
-    ^ SpBoxLayout newLeftToRight
-        add: #button1;
-        add: #button2;
-        yourself
+	^ SpBoxLayout newLeftToRight
+		add: #button1;
+		add: #button2;
+		yourself
 ```
 
 ```
 TwoButtons class >> buttonColumn
 
-    ^ SpBoxLayout newTopToBottom
-        add: #button1;
-        add: #button2;
-        yourself
+	^ SpBoxLayout newTopToBottom
+		add: #button1;
+		add: #button2;
+		yourself
 ```
 
-Note that when we define the layout at the class level, we use a symbol whose name is the corresponding instance variable. Hence we use `#button2` to refer to the presenter stored in the instance variable `button2`. This mapping can be customized at the level of the presenter but we do not present this because we never got the need for it.
+Note that when we define the layout at the class level, we use a symbol whose name is the corresponding instance variable. Hence we use `#button2` to refer to the presenter stored in the instance variable `button2`.
 
 
 ### Opening with a layout
 
-Spec message `openWithLayout:` lets you specify the layout you want to use to open the presenter.
+The message `openWithLayout:` lets you specify the layout you want to use when opening a presenter.
 Here are some examples:
 - `TwoButtons new openWithLayout: TwoButtons buttonRow` places the buttons in a row.
 - `TwoButtons new openWithLayout: TwoButtons buttonColumn` places them in a column.
 
 
 
-We define a `defaultLayout` method just invoking one of the previously defined methods so that the presenter can be opened without defining a given layout.
+We define a `defaultLayout` method which invokes one of the previously defined methods so that the presenter can be opened without giving a layout.
 ```
 TwoButtons >> defaultLayout
 
-    ^ self class buttonRow
+	^ self class buttonRow
 ```
 
 
 ### Better design
 
-Now we can do better and define two instance level methods to encapsulate the layout configuration.
+We can do better and define two instance level methods to encapsulate the layout configuration.
 
 ```
 TwoButtons >> beColumn
 
-    self layout: self class buttonColumn
+	self layout: self class buttonColumn
 ```
 
 ```
 TwoButtons >> beRow
 
-    self layout: self class buttonRow
+	self layout: self class buttonRow
 ```
 
-We can then write the following script:
+Then we can write the following script:
 
 ```
 TwoButtons new
-    beColumn;
-    open
+	beColumn;
+	open
 ```
 
 
@@ -179,63 +186,65 @@ Having multiple layouts for a presenter implies that there is a way to specify t
 
 ```
 SpPresenter << #ButtonAndListH
-    slots: { #buttons . #list };
-    package: 'CodeOfSpec20BookThreePillar'
+	slots: { #buttons . #list };
+	package: 'CodeOfSpec20Book'
 ```
 
 
 ```
 ButtonAndListH >> initializePresenters
 
-    buttons := self instantiate: TwoButtons.
-    list := self newList.
-    list items: (1 to: 10).
+	buttons := self instantiate: TwoButtons.
+	list := self newList.
+	list items: (1 to: 10)
 ```
 
 ```
 ButtonAndListH >> initializeWindow: aWindowPresenter
 
-    aWindowPresenter title: 'SuperWidget'
+	aWindowPresenter title: 'SuperWidget'
 ```
 
 ```
 ButtonAndListH >> defaultLayout
 
-    ^ SpBoxLayout newLeftToRight
-          add: buttons;
-          add: list;
-          yourself
+	^ SpBoxLayout newLeftToRight
+		add: buttons;
+		add: list;
+		yourself
 ```
 
 
-This `ButtonAndListH` class results in a SuperWidget window as shown in Figure *@fig_alternativeButton@*. It reuses the `TwoButtons` widget and places all three widgets in a horizontal order because the `TwoButtons` widget uses the `buttonRow` layout method.
+This `ButtonAndListH` class results in a SuperWidget window as shown in Figure *@ButtonAndListH@*. It reuses the `TwoButtons` widget and places all three widgets in a horizontal order because the `TwoButtons` widget uses the `buttonRow` layout method by default.
 
-![Screenshot of the UI with buttons placed horizontally](figures/alternativeButton.png width=50&label=fig_alternativeButton)
+![Buttons placed horizontally.](figures/ButtonAndListH.png width=50&label=ButtonAndListH)
 
-Alternatively, we can create `TButtonAndListV` class as a subclass of `ButtonAndListH` and only change the `initializePresenters` method as below. It specifies that the reused `buttons` widget should use the `buttonColumn` layout method, and hence results in the window shown in Figure *@fig_SuperWidget@*.
-
-```
-ButtonAndListH << #TButtonAndListV
-    package: 'CodeOfSpec20BookThreePillar'
-```
+Alternatively, we can create `ButtonAndListV` class as a subclass of `ButtonAndListH` and only change the `initializePresenters` method as below. It specifies that the reused `buttons` widget should use the `buttonColumn` layout method, and hence results in the window shown in Figure *@ButtonAndListV@*.
 
 ```
-TButtonAndListV >> initializePresenters
-
-    super initializePresenters.
-    buttons beColumn
+ButtonAndListH << #ButtonAndListV
+	slots: {};
+	package: 'CodeOfSpec20Book'
 ```
 
-![Screenshot of the UI with buttons placed vertically](figures/SuperWidget.png width=50&label=fig_SuperWidget)
+```
+ButtonAndListV >> initializePresenters
+
+	super initializePresenters.
+	buttons beColumn
+```
+
+![Buttons placed vertically.](figures/ButtonAndListV.png width=50&label=ButtonAndListV)
 
 
-##### Alternative to declare subcomponent layout choice
+#### Alternative to declare subcomponent layout choice
 
 The alternative is to define a new method `defaultLayout` and to use the `add:layout:` message. We define a different presenter.
 
 ```
-ButtonAndListH << #TButtonAndListV2
-    package: 'CodeOfSpec20BookThreePillar'
+ButtonAndListH << #ButtonAndListV2
+	slots: {};
+	package: 'CodeOfSpec20Book'
 ```
 
 We define a new `defaultLayout` method as follows:
@@ -243,22 +252,38 @@ We define a new `defaultLayout` method as follows:
 ```
 ButtonAndListV2 >> defaultLayout
 
-    ^ SpBoxLayout new
-        add: buttons layout: #buttonColumn;
-        add: list;
-        yourself
+	^ SpBoxLayout newTopToBottom
+		add: buttons layout: #buttonColumn;
+		add: list;
+		yourself
 ```
 
-Note the use of the message `add:layout:` with the selector of the method returning the layout configuration: `#buttonColumn`. This is normal since we cannot access the state of a subcomponent at this moment.
+Note the use of the message `add:layout:` with the selector of the method returning the layout configuration: `#buttonColumn`. This is normal since we cannot access the state of a subcomponent at this moment. Let's open a window with:
 
-##### Dynamically changing a layout
-It is possible to change the layout of a presenter dynamically for example from the inspector as shown in Figure *@figTweak@*.
+```
+ButtonAndListV2 new open
+```
 
-![Tweaking and playing interactively with layouts from the inspector.](figures/Interactive.png width=100&label=figTweak)
+That opens the window shown in Figure *@ButtonAndListV2@*.
+
+![Buttons and list placed vertically.](figures/ButtonAndListV2.png width=50&label=ButtonAndListV2)
+
+#### Dynamically changing a layout
+
+It is possible to change the layout of a presenter dynamically, for example from an inspector. Open the presenter with:
+
+```
+ButtonAndListV new inspect open
+```
+
+That opens an inspector on the presenter, and a window with the buttons placed vertically as shown in Figure *@ButtonAndListV@*.
+
+Then select the 'buttons' instance variable in the inspector and do `self beRow`. The result is shown Figure *@InteractiveTweaking@*.
+
+![Tweaking and playing interactively with layouts from the inspector.](figures/InteractiveTweaking.png width=100&label=InteractiveTweaking)
 
 
-
-### Grid layout
+### Grid layout (SpGridLayout)
 
 The class `SpGridLayout` arranges subpresenters in a grid according to certain layout properties such as:
 - A position is mandatory (`columnNumber@rowNumber`)
@@ -280,7 +305,7 @@ GridExample >> initializePresenters
     acceptButton := self newButton.
     acceptButton label: 'Accept'.
     cancelButton := self newButton.
-    cancelButton label: 'Cancel'.
+    cancelButton label: 'Cancel'
 ```
 
 
@@ -301,75 +326,145 @@ GridExample >> defaultLayout
 ![An ugly example.](figures/grid.png width=60&label=grid)
 
 Here is a list of options:
-- `columnHomogeneous`: Whether a column will have the same size.
-- `rowHomogeneous`: Whether a row will have the same size.
+- `columnHomogeneous`: Whether presenters in a column will have the same size.
+- `rowHomogeneous`: Whether presenters a row will have the same size.
 - `colSpacing:`: The horizontal space between cells.
 - `rowSpacing:`: The vertical space between cells.
 
 
 
-### Paned layout (SpPanedLayout and SpPanedConstraints)
+### Paned layout (SpPanedLayout)
 
-A paned layout is like a box layout. It places children in a vertical or horizontal fashion, but it will add a splitter in between, that the user can drag to resize the panels. A paned layout can have at most two children. `positionOfSlider:` indicates the original position of the splitter. It can be nil (then it defaults to 50%) or it can be a percentage (e.g. 30 percent)
+A paned layout is like a box layout, but restricted to two children, which are the "panes". It places children in a vertical or horizontal fashion and adds a splitter in between, that the user can drag to resize the panes. `positionOfSlider:` indicates the original position of the splitter. It can be nil (then it defaults to 50%), or it can be a percentage (e.g. 70 percent), a `Float` (e.g. 0.7), or a `Fraction` (e.g. 7/10).
 
-```
-SpPanedLayout newHorizontal
-    positionOfSlider: 80 percent;
-    add: acceptButton;
-    add: cancelButton;
-    yourself.
-```
-
-
-
-### Overlay layout
-
+Let's look at this simple example:
 
 ```
-app := SpApplication new.
-app addStyleSheetFromString: '.application [
-        .green [
-            Draw {
-                #backgroundColor: #16A085
-            }
-        ],
-        .redOverlay [
-            Draw { #backgroundColor: #C0392BBB },
-            Geometry { #height: 150, #width: 150 }
-        ],
-        .title [ Font { #size: 40, #bold: true },
-            Geometry { #height: Reset, #width: Reset } ]
-]'.
-
-presenter := SpPresenter newApplication: app.
-
-child := presenter newPresenter
-    layout: (SpBoxLayout new
-        hAlignCenter;
-        vAlignCenter;
-        add: ('I AM THE CHILD' asPresenter
-            addStyle: 'title';
-            yourself);
-        yourself);
-    addStyle: 'green';
-    yourself.
-
-overlay := presenter newPresenter
-    layout: SpBoxLayout newVertical;
-    addStyle: 'redOverlay';
-    yourself.
-
-presenter layout: (SpOverlayLayout new
-     child: child;
-     addOverlay: overlay withConstraints: [ :c |
-         c
-            vAlignCenter;
-            hAlignCenter ];
-     yourself).
-
-presenter open.
+SpPresenter << #PanedLayoutExample
+	slots: { #leftList . #rightList };
+	package: 'CodeOfSpec20Book'
 ```
+
+```
+PanedLayoutExample >> initializePresenters
+
+	leftList := self newList
+		items: (1 to: 10);
+		yourself.
+	rightList := self newList
+		items: ($a to: $z);
+		yourself
+```
+
+```
+PanedLayoutExample >> defaultLayout
+
+	^ SpPanedLayout newLeftToRight
+		positionOfSlider: 70 percent;
+		add: #leftList;
+		add: #rightList;
+		yourself
+```
+
+Let's open the presenter with:
+
+```
+PanedLayoutExample new open
+```
+
+Figure *@PanedLayoutExample@* shows the result. The left list takes 70% of the width of the window and the right list takes 30%.
+
+![A paned layout with two lists.](figures/PanedLayoutExample.png width=50&label=PanedLayoutExample)
+
+### Overlay layout (SpOverlayLayout)
+
+An overlay layout allows overlaying one presenter by other presenters.
+
+As an example, we will create a presenter that shows a button labeled 'Inbox', with a red indicator overlayed in the top-right corner. A use case could be indicating that there are unread messages in the inbox.
+
+```
+SpPresenter << #OverlayLayoutExample
+	slots: { #button . #indicator };
+	package: 'CodeOfSpec20Book'
+```
+
+`initializePresenters` creates the button and the indicator. The latter is a `SpRoassalPresenter`. We use a helper method to answer the shape that should be shown.
+
+```
+OverlayLayoutExample >> initializePresenters
+
+	button := self newButton
+		label: 'Inbox';
+		yourself.
+	indicator := (self instantiate: SpRoassalPresenter)
+		script: [ :view | view addShape: self indicatorShape ];
+		yourself
+```
+
+```
+OverlayLayoutExample >> indicatorShape
+
+	^ RSBox new
+			extent: 10@10;
+			color: Color red;
+			yourself
+```
+
+To make the structure of the layout clear, we have three methods. The `defaultLayout` is the layout of the window. For demonstration purposes, we put the button in the middle of the window. The button's dimensions are 50 by 50 pixels.
+
+```
+OverlayLayoutExample >> defaultLayout
+
+	| buttonVBox |
+	buttonVBox := SpBoxLayout newTopToBottom
+			vAlignCenter;
+			add: self buttonLayout height: 50;
+			yourself.
+	^ SpBoxLayout newLeftToRight
+			hAlignCenter;
+			add: buttonVBox width: 50;
+			yourself
+```
+
+The `defaultLayout` method sends `buttonLayout` to fetch the overlay layout for the button and the indicator. The `child` is the presenter that we want to overlay with the indicator. It is possible to add multiple overlays. In this example, we have only one, which is defined by `indicatorLayout`. Note that `addOverlay:withConstraints:` is used to configure where the overlay presenter should be displayed. We choose to display it in the top-right corner, by sending `vAlignStart` (top) and `hAlignEnd` (right).
+
+```
+OverlayLayoutExample >> buttonLayout
+
+	^ SpOverlayLayout new
+			child: button;
+			addOverlay: self indicatorLayout
+				withConstraints: [ :constraints |
+					constraints vAlignStart; hAlignEnd ];
+			yourself
+```
+
+The `indicatorLayout` method defines the layout for the indicator. To apply a vertical and a horizontal padding, we have to wrap a vertical box layout with a horizontal box layout. We could have wrapped a horizontal box layout with a vertical box layout to achieve the same result. We apply a padding of 2 pixels so that the indicator does not overlap the border of the button.
+
+```
+OverlayLayoutExample >> indicatorLayout
+
+	| counterVBox |
+	counterVBox := SpBoxLayout newTopToBottom
+			add: indicator withConstraints: [ :constraints |
+				constraints height: 12; padding: 2 ];
+			yourself.
+	^ SpBoxLayout newLeftToRight
+			add: counterVBox withConstraints: [ :constraints |
+				constraints width: 12; padding: 2 ];
+			yourself
+```
+
+With all these methods in place, we can open the presenter.
+
+```
+OverlayLayoutExample new open.
+```
+
+That opens the window shown in Figure *@OverlayLayoutExample@*.
+
+![An overlay layout with a button and a Roassal box.](figures/OverlayLayoutExample.png width=50&label=OverlayLayoutExample)
 
 ### Conclusion
 
-Spec offers several predefined layouts. New ones will probably be added but in a compatible way. An important closing point is that layouts can be dynamically composed. It means that you are able to design applications that can adapt to specific conditions.
+Spec offers several predefined layouts. Probably new ones will be added but in a compatible way. An important closing point is that layouts can be dynamically composed. It means that you are able to design applications that can adapt to specific conditions.
