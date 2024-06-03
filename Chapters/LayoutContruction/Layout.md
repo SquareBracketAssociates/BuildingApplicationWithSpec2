@@ -107,9 +107,171 @@ The `defaultLayout` method adds button `button3` to the box layout with `addLast
 
 A box layout has two parts: a "start" and an "end". Messages starting with `add:`, add subpresenters to the "start". Messages starting with `addLast:`, add subpresenters to the "end". As you can see in Figure *@ThreeButtons@*, there is a large gap between `button2` and `button3`. For vertical box layouts, the "start" part of a box layout aligns to the top side of the box. The "end" part aligns to the bottom side of the box. The gap between the "start" and the "end" is all the excess space not used by the subpresenters.
 
-In this example with three buttons, the usefulness of the "start" and "end" parts is not very clear. But it is very handy for button bars with buttons on the left side and on the right side, such as in the "Reposities" browser of Iceberg, as you can see in Figure *@Repositories@*. The bar has one button on the left side and two buttons on the right side.
+In this example with three buttons, the usefulness of the "start" and "end" parts is not very clear. But it is very handy for button bars with buttons on the left side and on the right side, such as in the Repositories browser of Iceberg, as you can see in Figure *@Repositories@*. The bar has one button on the left side and two buttons on the right side.
 
-![Buttons on the left side and on the right side. ](figures/Repositories.png width=60&label=Repositories)
+![Buttons on the left side and on the right side.](figures/Repositories.png width=60&label=Repositories)
+
+### Box layout alignment
+
+A box layout can be configured with horizontal and vertical alignment of the children. These are the horizontal alignment options, which are messages that can be sent to a `SpBoxLayout` instance:
+
+* hAlignStart
+* hAlignCenter
+* hAlignEnd
+
+These are the vertical layout options:
+
+* vAlignStart
+* vAlignCenter
+* vAlignEnd
+
+Let's see how this works in a small example. We will create a presenter with 9 subpresenters, which we will call "tiles", layed out in 3 rows with 3 columns. Each subpresenter displays two label presenters with labels 'One' and 'Two'. The presenter class defines nine instance variables. The names refer to the position of the content inside each tile.
+
+```
+SpPresenter << #AlignmentExample
+	slots: {
+			 #northWest .
+			 #north .
+			 #northEast .
+			 #west .
+			 #center .
+			 #east .
+			 #southWest .
+			 #south .
+			 #southEast };
+	package: 'CodeOfSpec20Book'
+```
+
+As always, `initializePresenters` binds the instance variables that hold the subpresenters. It uses a helper method `newTile:` to create the tiles.
+
+```
+AlignmentExample >> initializePresenters
+
+	northWest := self newTile: [ :tileLayout |
+		tileLayout vAlignStart; hAlignStart ].
+	north := self newTile: [ :tileLayout |
+		tileLayout vAlignStart; hAlignCenter ].
+	northEast := self newTile: [ :tileLayout |
+		tileLayout vAlignStart; hAlignEnd ].
+	west := self newTile: [ :tileLayout |
+		tileLayout vAlignCenter; hAlignStart ].
+	center := self newTile: [ :tileLayout |
+		tileLayout vAlignCenter; hAlignCenter ].
+	east := self newTile: [ :tileLayout |
+		tileLayout vAlignCenter; hAlignEnd ].
+	southWest := self newTile: [ :tileLayout |
+		tileLayout vAlignEnd; hAlignStart ].
+	south := self newTile: [ :tileLayout |
+		tileLayout vAlignEnd; hAlignCenter ].
+	southEast := self newTile: [ :tileLayout |
+		tileLayout vAlignEnd; hAlignEnd ]
+```
+
+Note that the block argument of the `newTile:` message has a `titleLayout` argument, which is bound to an instance of `SpBoxLayout`. Inside the nine blocks, the alignment messages that we saw earlier are sent to configure the alignment inside the tiles. For instance, for the top-left tile called "northWest", `vAlignStart` is sent to align to the top side of the tile, and `hAlignStart` is sent to align to the left side of the tile.
+
+```
+AlignmentExample >> newTile: alignmentBlock
+
+	| tileLayout |
+	tileLayout := SpBoxLayout newTopToBottom
+		add: self newLableOne;
+		add: self newLableTwo;
+		yourself.
+	alignmentBlock value: tileLayout.
+	^ SpPresenter new
+		layout: tileLayout;
+		addStyle: 'tile';
+		yourself
+```
+
+`newTile:` uses two other helper methods:
+
+```
+AlignmentExample >> newLableOne
+
+	^ self newLabel
+		label: 'One';
+		yourself
+```
+
+```
+AlignmentExample >> newLableTwo
+
+	^ self newLabel
+		label: 'two';
+		yourself
+```
+
+The layout of the window is defined with:
+
+```
+AlignmentExample >> defaultLayout
+
+	^ SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: (self rowWithAll: { northWest . north . northEast });
+		add: (self rowWithAll: { west . center . east });
+		add: (self rowWithAll: { southWest . south . southEast });
+		yourself
+```
+
+It answers a vertical box layout with three rows. It applies a spacing of 5 pixels between the rows. It sends `rowWithAll:` three times to create horizontal box layouts with three subpresenters each. `rowWithAll:` applies the same spacing of 5 pixels between the tiles in a row.
+
+```
+AlignmentExample >> rowWithAll: tiles
+
+	| row |
+	row := SpBoxLayout newLeftToRight
+		spacing: 5;
+		yourself.
+	tiles do: [ :tile | row add: tile ].
+	^ row
+```
+
+For demonstration purposes, we apply a stylesheet to display tiles with a white background and a black border.
+
+```
+AlignmentExample >> application
+
+	^ SpApplication new
+		addStyleSheetFromString: '.application [
+			.tile [
+				Container { #borderWidth: 2, #borderColor: #black },
+				Draw { #backgroundColor: #white } ]
+		]';
+		yourself
+```
+
+Now we have all the code we need to open the window with:
+
+```
+AlignmentExample new open
+```
+
+The result is shown in Figure *@AlignmentExampleWithVerticalTiles@*. Each tile displays the label presenters at another location. The label presenters are positioned vertically.
+
+![Nine tiles with different alignment options.](figures/AlignmentExampleWithVerticalTiles.png width=60&label=AlignmentExampleWithVerticalTiles)
+
+Let's see what happens when we put the label presenters in a horizontal box layout.
+
+```
+AlignmentExample >> newTile: alignmentBlock
+
+	| tileLayout |
+	tileLayout := SpBoxLayout newLeftToRight
+		add: self newLableOne;
+		add: self newLableTwo;
+		yourself.
+	alignmentBlock value: tileLayout.
+	^ SpPresenter new
+		layout: tileLayout;
+		addStyle: 'tile';
+		yourself
+```
+
+Figure *@AlignmentExampleWithHorizontalTiles@* shows the result of opening the window again. Now the labels are positioned horizontally.
+
+![Nine tiles with the labels in a vertical box layout.](figures/AlignmentExampleWithHorizontalTiles.png width=60&label=AlignmentExampleWithHorizontalTiles)
 
 ### Example setup for layout reuse
 
