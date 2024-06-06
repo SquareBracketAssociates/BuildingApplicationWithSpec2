@@ -451,41 +451,44 @@ The class `SpGridLayout` arranges subpresenters in a grid according to certain l
 - A position is mandatory (`columnNumber@rowNumber`)
 - A span can be added if desired (`columnExtension@rowExtension`)
 
-The following example opens a window with a grid layout with several widgets, as shown in Figure *@grid@*.
+The following example opens a window with a grid layout with several widgets, as shown in Figure *@GridExample@*.
 
 ```
 SpPresenter << #GridExample
-	slots: {#nameText . #passwordText . #acceptButton . #cancelButton};
-	package: 'CodeOfSpec20BookThreePillar'
+	slots: { #promptLabel . #nameText . #suggestionsText . #submitButton };
+	package: 'CodeOfSpec20Book'
 ```
 
 ```
 GridExample >> initializePresenters
 
-    nameText := self newTextInput.
-    passwordText := self newTextInput.
-    acceptButton := self newButton.
-    acceptButton label: 'Accept'.
-    cancelButton := self newButton.
-    cancelButton label: 'Cancel'
+	promptLabel := self newLabel
+		label: 'Please enter your name and your suggestions.';
+		yourself.
+	nameText := self newTextInput.
+	suggestionsText := self newText.
+	submitButton := self newButton
+		label: 'Submit';
+		yourself
 ```
 
 
 ```
 GridExample >> defaultLayout
 
-    ^ SpGridLayout new
-        add: 'Name:' at: 1@1;
-        add: #nameText at: 2@1;
-        add: 'Password:' at: 1@2;
-        add: #passwordText at: 2@2;
-        add: #acceptButton at: 1@3;
-        add: #cancelButton at: 2@3 span: 2@3;
-        add: 'test label' at: 1@4;
-        yourself
+	^ SpGridLayout new
+		add: #promptLabel at: 1@1 span: 3@1;
+		add: 'Name:' at: 1@2;
+		add: #nameText at: 2@2 span: 2@1;
+		add: 'Suggestions:' at: 1@3;
+		add: #suggestionsText at: 2@3 span: 2@1;
+		add: #submitButton at: 2@4 span: 1@1;
+		yourself
 ```
 
-![An ugly example.](figures/grid.png width=60&label=grid)
+The layout defines a grid with three columns. The prompt 'Please enter your name and your suggestions.' spans the three columns. The labels of the two fields are put in the first column. The fields span the second and the third column. The button is put in the second column. The second field is a multi-line text field. That is why it is higher than the first field, which is a single-line text field.
+
+![A simple grid for a small form.](figures/GridExample.png width=60&label=GridExample)
 
 Here is a list of options:
 - `columnHomogeneous`: Whether presenters in a column will have the same size.
@@ -493,6 +496,18 @@ Here is a list of options:
 - `colSpacing:`: The horizontal space between cells.
 - `rowSpacing:`: The vertical space between cells.
 
+The `defaultLayout` method of the example maybe hard to read, especially when the grid contains a lot of presenters. The reader has to compute the positions and the spans of the subpresenters. We can use a `SpGridLayoutBuilder` to make grid building easier. The class is not to be used directly. Instead send `build:` to a `SpGridLayout`. Below is an alternative `defaultlayout` method that produces the same result as before. By putting all presenters of one row on one line, it is clear that there are four rows, and it is clear which subpresenters are part of the same row.
+
+```
+GridExample >> defaultLayout
+
+	^ SpGridLayout build: [ :builder |
+		builder
+			add: #promptLabel span: 3@1; nextRow;
+			add: 'Name:'; add: #nameText span: 2@1; nextRow;
+			add: 'Suggestions:'; add: #suggestionsText span: 2@1; nextRow;
+			nextColumn; add: #submitButton ]
+```
 
 
 ### Paned layout (SpPanedLayout)
