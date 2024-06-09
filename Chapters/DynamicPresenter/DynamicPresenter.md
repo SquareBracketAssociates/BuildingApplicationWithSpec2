@@ -24,7 +24,7 @@ presenter open.
 
 Of course, as shown in Figure *@layout1@*, we are going to see an empty window because we did not put anything in the layout.
 
-![An empty layout.](figures/layout1.png width=40&label=layout1)
+![An empty layout. % width=40&anchor=layout1](figures/layout1.png)
 
 
 Now, without closing the window, we can dynamically edit the layout of the main presenter. We will add a button presenter by executing the following lines:
@@ -36,7 +36,7 @@ button1 label: 'I am a button'.
 ```
 
 
-![Paned layout with one button.](figures/layout2.png width=40&label=layout2)
+![Paned layout with one button. %width=40&anchor=layout2](figures/layout2.png)
 
 
 Now we can add another button. There is no need to close and reopen the window. Everything updates dynamically and without the need of rebuilding the window. As we have instantiated the layout with `newTopToBottom`, the presenters will be laid out vertically. See Figure *@layout3@*.
@@ -48,7 +48,7 @@ button2 label: 'I am another button'.
 ```
 
 
-![Paned layout with two buttons.](figures/layout3.png width=40&label=layout3)
+![Paned layout with two buttons. % width=40&anchor=layout3](figures/layout3.png)
 
 We can put an icon in the first button. See Figure *@layout4@*.
 
@@ -57,7 +57,7 @@ button1 icon: (button1 iconNamed: #smallDoIt).
 ```
 
 
-![Paned layout with two buttons, one with an icon.](figures/layout4.png width=40&label=layout4)
+![Paned layout with two buttons, one with an icon. % width=40&anchor=layout4](figures/layout4.png)
 
 Or we can delete one of the buttons from the layout, as shown in Figure *@layout5@*.
 
@@ -66,7 +66,7 @@ presenter layout remove: button2.
 ```
 
 
-![Removing a button.](figures/layout5.png width=40&label=layout5)
+![Removing a button. % width=40&anchor=layout5](figures/layout5.png)
 
 What you see here is that all the changes happen simply by creating a new instance of a given layout and sending messages to it.  It means that programs can define complex logic for the dynamic behavior of a presenter.
 
@@ -74,7 +74,7 @@ What you see here is that all the changes happen simply by creating a new instan
 
 We will create a presenter in which we will add and remove buttons dynamically. We will create a new class called `DynamicButtons`.
 
-![A presenter that dynamically adds buttons.](figures/layout8.png width=40&label=layout8)
+![A presenter that dynamically adds buttons. % width=40&anchor=layout8](figures/layout8.png)
 
 ```
 SpPresenter << #DynamicButtons
@@ -151,12 +151,12 @@ After opening the window with the following code snippet, we see the window show
 DynamicButtons new open
 ```
 
-![The initial state of the window.](figures/layout6.png width=40&label=layout6)
+![The initial state of the window.%  width=40&anchor=layout6](figures/layout6.png)
 
 Figure *@layout7@* shows what the window looks like after clicking the add button four times.
 
 
-![Adding random buttons.](figures/layout7.png width=40&label=layout7)
+![Adding random buttons. % width=40&anchor=layout7](figures/layout7.png)
 
 ### Building a little dynamic browser
 
@@ -172,7 +172,7 @@ With all of the knowledge gained so far, we are going to build a new mini versio
 Initially, the code of the method will be in “Read-only” mode. When we press the button, we are switching to “Edit” mode.
 
 
-![The mini browser in action.](figures/layout8.png width=60&label=layout8)
+![The mini browser in action. % width=60&anchor=layout8](figures/layout8.png)
 
 
 
@@ -254,7 +254,7 @@ Opening the presenter with the code below, opens the window shown in Figure *@la
 MyMiniBrowser new open
 ```
 
-![A little browser in read-only mode.](figures/layout9.png width=60&label=layout9)
+![A little browser in read-only mode. %width=60&anchor=layout9](figures/layout9.png)
 
 
 ### Placing elements visually
@@ -353,7 +353,7 @@ MyMiniBrowserPresenter >> initializeWindow: aWindowPresenter
 
 Voilà! We have a new minimal version version of the System Browser with a read-only mode. When we run `MyMiniBrowser new open`, and we select a class and a method, and we press the 'Edit' button, we see the window in Figure *@layout10@*.
 
-![Our little browser in edit mode.](figures/layout10.png width=60&label=layout10)
+![Our little browser in edit mode. % width=60&anchor=layout10](figures/layout10.png)
 
 ### Conclusion
 

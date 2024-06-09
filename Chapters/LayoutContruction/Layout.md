@@ -45,7 +45,7 @@ TwoButtons >> initializePresenters
 The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. A box layout can be horizontal or vertical and presenters are ordered left to right and top to bottom respectively. A box layout can be composed of other layouts.
 
 
-![Two buttons placed horizontally from left to right.](figures/TwoButtonsLeftToRight.png width=50&label=TwoButtonsLeftToRight)
+![Two buttons placed horizontally from left to right. % width=50&anchor=TwoButtonsLeftToRight ](figures/TwoButtonsLeftToRight.png)
 
 Let us define a first simple layout as follows and whose result is displayed in Figure *@TwoButtonsLeftToRight@*.
 
@@ -74,7 +74,7 @@ TwoButtons >> defaultLayout
 		yourself
 ```
 
-![Two buttons placed from left to right, but not expanded.](figures/TwoButtonsLeftToRightNotExpanded.png width=50&label=TwoButtonsLeftToRightExpanded)
+![Two buttons placed from left to right, but not expanded. %width=50&anchor=TwoButtonsLeftToRightExpanded](figures/TwoButtonsLeftToRightNotExpanded.png)
 
 The full message to add presenters is: `add:expand:fill:padding:`
 - `expand:` argument - when true, the new child is to be given extra space allocated to the box. The extra space is divided evenly between all children that use this option.
@@ -109,7 +109,7 @@ A box layout has two parts: a "start" and an "end". Messages starting with `add:
 
 In this example with three buttons, the usefulness of the "start" and "end" parts is not very clear. But it is very handy for button bars with buttons on the left side and on the right side, such as in the Repositories browser of Iceberg, as you can see in Figure *@Repositories@*. The bar has one button on the left side and two buttons on the right side.
 
-![Buttons on the left side and on the right side.](figures/Repositories.png width=60&label=Repositories)
+![Buttons on the left side and on the right side. % width=60&anchor=Repositories](figures/Repositories.png)
 
 ### Box layout alignment
 
@@ -250,7 +250,7 @@ AlignmentExample new open
 
 The result is shown in Figure *@AlignmentExampleWithVerticalTiles@*. Each tile displays the label presenters at another location. The label presenters are positioned vertically.
 
-![Nine tiles with different alignment options.](figures/AlignmentExampleWithVerticalTiles.png width=60&label=AlignmentExampleWithVerticalTiles)
+![Nine tiles with different alignment options. %width=60&anchor=AlignmentExampleWithVerticalTiles](figures/AlignmentExampleWithVerticalTiles.png)
 
 Let's see what happens when we put the label presenters in a horizontal box layout.
 
@@ -271,7 +271,7 @@ AlignmentExample >> newTile: alignmentBlock
 
 Figure *@AlignmentExampleWithHorizontalTiles@* shows the result of opening the window again. Now the labels are positioned horizontally.
 
-![Nine tiles with the labels in a vertical box layout.](figures/AlignmentExampleWithHorizontalTiles.png width=60&label=AlignmentExampleWithHorizontalTiles)
+![Nine tiles with the labels in a vertical box layout.%width=60&anchor=AlignmentExampleWithHorizontalTiles](figures/AlignmentExampleWithHorizontalTiles.png )
 
 ### Example setup for layout reuse
 
@@ -379,7 +379,7 @@ ButtonAndListH >> defaultLayout
 
 This `ButtonAndListH` class results in a SuperWidget window as shown in Figure *@ButtonAndListH@*. It reuses the `TwoButtons` widget and places all three widgets in a horizontal order because the `TwoButtons` widget uses the `buttonRow` layout method by default.
 
-![Buttons placed horizontally.](figures/ButtonAndListH.png width=50&label=ButtonAndListH)
+![Buttons placed horizontally.% width=50&anchor=ButtonAndListH](figures/ButtonAndListH.png)
 
 Alternatively, we can create `ButtonAndListV` class as a subclass of `ButtonAndListH` and only change the `initializePresenters` method as below. It specifies that the reused `buttons` widget should use the `buttonColumn` layout method, and hence results in the window shown in Figure *@ButtonAndListV@*.
 
@@ -396,7 +396,7 @@ ButtonAndListV >> initializePresenters
 	buttons beColumn
 ```
 
-![Buttons placed vertically.](figures/ButtonAndListV.png width=50&label=ButtonAndListV)
+![Buttons placed vertically. % width=50&anchor=ButtonAndListV](figures/ButtonAndListV.png)
 
 
 #### Alternative to declare subcomponent layout choice
@@ -428,7 +428,7 @@ ButtonAndListV2 new open
 
 That opens the window shown in Figure *@ButtonAndListV2@*.
 
-![Buttons and list placed vertically.](figures/ButtonAndListV2.png width=50&label=ButtonAndListV2)
+![Buttons and list placed vertically. % width=50&anchor=ButtonAndListV2](figures/ButtonAndListV2.png)
 
 #### Dynamically changing a layout
 
@@ -442,7 +442,7 @@ That opens an inspector on the presenter, and a window with the buttons placed v
 
 Then select the 'buttons' instance variable in the inspector and do `self beRow`. The result is shown Figure *@InteractiveTweaking@*.
 
-![Tweaking and playing interactively with layouts from the inspector.](figures/InteractiveTweaking.png width=100&label=InteractiveTweaking)
+![Tweaking and playing interactively with layouts from the inspector.%width=100&anchor=InteractiveTweaking](figures/InteractiveTweaking.png)
 
 
 ### Grid layout (SpGridLayout)
@@ -488,7 +488,7 @@ GridExample >> defaultLayout
 
 The layout defines a grid with three columns. The prompt 'Please enter your name and your suggestions.' spans the three columns. The labels of the two fields are put in the first column. The fields span the second and the third column. The button is put in the second column. The second field is a multi-line text field. That is why it is higher than the first field, which is a single-line text field.
 
-![A simple grid for a small form.](figures/GridExample.png width=60&label=GridExample)
+![A simple grid for a small form. % width=60&anchor=GridExample](figures/GridExample.png)
 
 Here is a list of options:
 - `columnHomogeneous`: Whether presenters in a column will have the same size.
@@ -512,7 +512,7 @@ GridExample >> defaultLayout
 
 ### Paned layout (SpPanedLayout)
 
-A paned layout is like a box layout, but restricted to two children, which are the "panes". It places children in a vertical or horizontal fashion and adds a splitter in between, that the user can drag to resize the panes. `positionOfSlider:` indicates the original position of the splitter. It can be nil (then it defaults to 50%), or it can be a percentage (e.g. 70 percent), a `Float` (e.g. 0.7), or a `Fraction` (e.g. 7/10).
+A paned layout is like a box layout, but restricted to two children, which are the "panes". It places children in a vertical or horizontal fashion and adds a splitter in between, that the user can drag to resize the panes. `positionOfSlider:` indicates the original position of the splitter. It can be nil (then it defaults to 50\%), or it can be a percentage (e.g. 70 percent), a `Float` (e.g. 0.7), or a `Fraction` (e.g. 7/10).
 
 Let's look at this simple example:
 
@@ -549,9 +549,9 @@ Let's open the presenter with:
 PanedLayoutExample new open
 ```
 
-Figure *@PanedLayoutExample@* shows the result. The left list takes 70% of the width of the window and the right list takes 30%.
+Figure *@PanedLayoutExample@* shows the result. The left list takes 70\% of the width of the window and the right list takes 30%.
 
-![A paned layout with two lists.](figures/PanedLayoutExample.png width=50&label=PanedLayoutExample)
+![A paned layout with two lists. % width=50&anchor=PanedLayoutExample](figures/PanedLayoutExample.png)
 
 ### Overlay layout (SpOverlayLayout)
 
@@ -640,7 +640,7 @@ OverlayLayoutExample new open.
 
 That opens the window shown in Figure *@OverlayLayoutExample@*.
 
-![An overlay layout with a button and a Roassal box.](figures/OverlayLayoutExample.png width=50&label=OverlayLayoutExample)
+![An overlay layout with a button and a Roassal box. %width=50&anchor=OverlayLayoutExample](figures/OverlayLayoutExample.png)
 
 ### Conclusion
 

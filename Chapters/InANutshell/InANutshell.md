@@ -15,7 +15,7 @@ A Presenter represents the UI element logic and it is also the connection with t
 Based on presenters and layouts, Spec builds the actual UI. Internally, it uses adapters that are specific to each widget and per backend. This way presenters are agnostic about backends and are reusable across them.
 
 
-![Architecture of Spec.](figures/coreExtended.pdf label=coreextended&width=80)
+![Architecture of Spec. %  anchor=coreextended&width=80](figures/coreExtended.pdf)
 
 
 
@@ -29,7 +29,7 @@ Spec core is composed of the following elements:
 - **Stylesheet and styles**. A stylesheet is composed of styles that describe visual properties such as fonts, colors, …
 
 
-![Presenter, Application, Layout and Style of Spec.](figures/core.pdf label=core&width=60)
+![Presenter, Application, Layout and Style of Spec. % anchor=core&width=60](figures/core.pdf )
 
 
 We detail each of the main elements.
@@ -151,7 +151,7 @@ ImdbApp >> initialize
 To display its elements, a presenter uses a layout. A layout describes how elements are placed on the display surface. To help you build nice user interfaces, several layouts are available:
 
 - **GridLayout**: Choose this layout when you need to create a presenter with a label, and fields that need to be aligned (form style). You can specify in which box of the grid you want to place an element.
-- **BoxLayout**: a `SpBoxLayout` arranges presenters in a box, vertically (top to bottom) or horizontally \(left to right\).
+- **BoxLayout**: a `SpBoxLayout` arranges presenters in a box, vertically (top to bottom) or horizontally (left to right).
 - **PanedLayout**: a `SpPanedLayout` is a layout with two elements called "panes" and a splitter in between. The user can drag the splitter to resize the panes.
 - **TabLayout**: a `SpTabLayout` shows all its elements as tabs. You can select a tab to display the content.
 - **MillerLayout**: a layout to implement miller columns, also known as cascading lists ([https://en.wikipedia.org/wiki/Miller\_columns](https://en.wikipedia.org/wiki/Miller_columns)).
@@ -180,7 +180,7 @@ The method defines two box layouts:
 - one containing the first one and a result text below.
 Each of the layouts refers to accessible subpresenters  (`buttonHappy`, `buttonNeutral`, `buttonBad`, `result`) from the presenter. Figure *@layout6B@* shows the corresponding result.
 
-![The layout corresponding to the `defaultLayout` method.](figures/layout6Annotated.png width=70&label=layout6B)
+![The layout corresponding to the `defaultLayout` method. % width=70&anchor=layout6B](figures/layout6Annotated.png)
 
 
 

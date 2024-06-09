@@ -9,7 +9,7 @@ Said differently, in this chapter, you will learn how you can build a new UI by 
 
 ### First requirements
 
-![ProtocolCodeBrowser: Browsing the public APIs of widgets.](figures/ProtocolBrowser.png width=80&anchor=figprotocolbrowser&label=figprotocolbrowser)
+![ProtocolCodeBrowser: Browsing the public APIs of widgets. %width=80&anchor=figprotocolbrowser&label=figprotocolbrowser](figures/ProtocolBrowser.png )
 
 To show how Spec enables the composition and reuse of user interfaces, in this chapter we build the user interface shown in Figure *@figprotocolbrowser@* as a composition of four parts:
 1. The **WidgetClassListPresenter**: a widget containing a `SpListPresenter` specifically for displaying the subclasses of `SpAbstractWidgetPresenter`.
@@ -61,7 +61,7 @@ WidgetClassListPresenter >> defaultLayout
 
 When doing `WidgetClassListPresenter new open`, you should see the UI shown in Figure *@fig_WidgetClassList@*.
 
-![WidgetClassListPresenter.](figures/WidgetClassList.png width=50&label=fig_WidgetClassList)
+![WidgetClassListPresenter. % width=50&anchor=fig_WidgetClassList](figures/WidgetClassList.png)
 
 
 ### Supporting reuse
@@ -125,7 +125,7 @@ ProtocolMethodListPresenter >> defaultLayout
 
 This UI can be seen by executing `ProtocolMethodList new open`. As shown in Figure *@figprotocollist@* the list is empty and the result is not really nice. This is normal because we did not set any items. We should also place the elements better.
 
-![ProtocolMethodListPresenter with bad layout.](figures/ProtocolList.png width=50&label=figprotocollist)
+![ProtocolMethodListPresenter with bad layout. % width=50&anchor=figprotocollist](figures/ProtocolList.png)
 
 ```
 
@@ -141,7 +141,7 @@ ProtocolMethodListPresenter >> defaultLayout
 Now you should get a better UI as shown in Figure *@figprotocollist2@*.
 
 
-![ProtocolMethodListPresenter with nicer layout.](figures/ProtocolList2.png width=50&label=figprotocollist2)
+![ProtocolMethodListPresenter with nicer layout. % width=50&anchor=figprotocollist2](figures/ProtocolList2.png)
 
 Our protocol method list needs to be configured when it is used, by filling the list of methods and specifying what the name of the protocol is. To allow this, we add some configuration methods:
 
@@ -186,7 +186,7 @@ self items: Point methods
 ```
 
 
-![Live coding your widgets.](figures/inspectingLive.png width=90&label=figinspectingLive)
+![Live coding your widgets. % width=90&anchor=figinspectingLive](figures/inspectingLive.png)
 
 Now we can play and for example, decide to sort the items as follows:
 
@@ -322,7 +322,7 @@ ProtocolViewerPresenter new open
 
 This user interface is functional. Clicking on a class will show the methods of the 'api' and the 'api-events' protocols of that class.
 
-![ProtocolViewerPresenter in vertical mode.](figures/ProtocolViewerVertical.png width=50&label=figProtocolViewerVertical)
+![ProtocolViewerPresenter in vertical mode. % width=50&anchor=figProtocolViewerVertical](figures/ProtocolViewerVertical.png)
 
 
 ### Having different layouts
@@ -370,7 +370,7 @@ ProtocolViewerPresenter class >> exampleHorizontal
 ```
 
 
-![ProtocolViewerPresenter in horizontal mode.](figures/ProtocolViewerHorizontal.png width=70&label=figProtocolViewerHorizontal)
+![ProtocolViewerPresenter in horizontal mode. %width=70&anchor=figProtocolViewerHorizontal](figures/ProtocolViewerHorizontal.png )
 
 
 ### Enhancing our API
@@ -508,12 +508,11 @@ presenter open
 
 
 ### Considerations about a public configuration API
-
 @sec_public_API
 
 In this chapter, we have seen several definitions of methods in the public configuration API of the presenter being built. The implementation of our configuration methods is simply delegated to internal widgets, but a configuration can of course be more complex than that, depending on the internal logic of the UI.
 
-For methods that simply delegate to the internal widgets, the question is whether it makes sense to define these as methods in the 'api' protocols at all. Fundamentally this is a design decision to be made by the programmer. Not having such methods makes the implementation of the presenter more lightweight but comes at the cost of a less clear intent and of breaking encapsulation.
+For methods that simply delegate to the internal widgets, the question is whether it makes sense to define these as methods in the 'api' protocols at all. Fundamentally this is a design decision to be made by the programmer. Not having such methods makes the implementation of the presenter more lightweight but comes at the cost of less clear intent and of breaking encapsulation.
 
 For the former cost, we have seen an example in the protocol method list of Section *@sec_protocollist@*. The presence of the three methods defined there communicates to the user that we care about what to do when a class, 'api' or 'api-events' list item has been changed. Fundamentally the same also holds for the other examples in this chapter: each method in an 'api' protocol communicates an intent to the reuser: this is how we expect that this presenter will be configured. Without such declared methods, it is less clear to the reuser what can be done to effectively reuse a presenter.
 
@@ -566,7 +565,6 @@ But we advise using the Spec 2.0 way because it will give your presenters consis
 
 
 ### Conclusion
-
 
 In this chapter, we have discussed a key point of Spec: the ability to seamlessly reuse existing UIs as widgets. This ability comes with no significant cost to the creator of a UI. The only thing that needs to be taken into account is how a UI can (or should) be customized.
 

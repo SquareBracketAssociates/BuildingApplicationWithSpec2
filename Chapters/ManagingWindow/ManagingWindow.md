@@ -1,5 +1,4 @@
 ## Managing windows
-
 @cha_managing_windows
 
 
@@ -12,7 +11,7 @@ In this chapter, we provide a more complete overview of how Spec allows for the 
 
 To illustrate the window configuration options that are available, we use a simple `WindowExamplePresenter` class that has two buttons placed side by side. These buttons do not have any behavior associated yet. The behavior will be added in an example further down this chapter.
 
-![A rather simple window on WindowExamplePresenter.](figures/WindowExamplePresenterWindow.png width=50&label=windowExample1)
+![A rather simple window on WindowExamplePresenter. %width=50&anchor=windowExample1](figures/WindowExamplePresenterWindow.png)
 
 
 ```
@@ -72,7 +71,7 @@ dialog := presenter openDialog
 
 The answer of sending `openDialog`, assigned to the `dialog` variable above, is an instance of the `SpDialogWindowPresenter` class (a subclass of `SpWindowPresenter`).
 
-![A rather simple dialog on WindowExamplePresenter.](figures/WindowExamplePresenterDialog width=50&label=windowDialog)
+![A rather simple dialog on WindowExamplePresenter. %width=50&anchor=windowDialog](figures/WindowExamplePresenterDialog)
 
 
 The `SpDialogWindowPresenter` instance can be configured in multiple ways. To execute code when the user clicks on a button, send it the `okAction:` or `cancelAction:` message with a zero-argument block.
@@ -231,7 +230,7 @@ presenter window
 ```
 
 
-!!note This window is still closable using the halo menus or by calling `close` on the `SpWindowPresenter` instance \(`presenter` in the example above\).
+!!note This window is still closable using the halo menus or by calling `close` on the `SpWindowPresenter` instance (`presenter` in the example above).
 
 
 
@@ -261,7 +260,7 @@ presenter window title: 'I am different!'
 
 The about text of a window can be used by application developers to give a description of the application, and to list its contributors. The about text can be opened by selecting 'About' from the pop-up menu in the top-right corner of a window, as shown in Figure *@about@*.
 
-![Opening the about text of a window.](figures/About.png width=60&label=about)
+![Opening the about text of a window.%  width=60&anchor=about](figures/About.png)
 
 To set the about text of a window, either override the `aboutText` method of the corresponding `SpPresenter` so that it returns the new about text, or send the instance the `aboutText:` message before opening, for example as below.
 
@@ -274,7 +273,7 @@ To set the about text of a window, either override the `aboutText` method of the
 
 After opening the window with the code snippet above, and after choosing 'About' from the window menu, the about window opens with the configured about text, as shown in Figure *@abouttext@*.
 
-![The about text of a window.](figures/AboutText.png width=60&label=abouttext)
+![The about text of a window. %  width=60&anchor=abouttext](figures/AboutText.png)
 
 ### Getting values from a dialog window
 

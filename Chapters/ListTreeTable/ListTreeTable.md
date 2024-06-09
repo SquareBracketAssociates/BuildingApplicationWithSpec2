@@ -15,7 +15,7 @@ SpListPresenter new
 	open
 ```
 
-![A simple list showing class names.](figures/List1Simple.png width=50&label=figSimpleList)
+![A simple list showing class names. % width=50&anchor=figSimpleList](figures/List1Simple.png)
 
 We can change the header title of the list using the message `headerTitle:`. The header title can be hidden using the message `hideHeaderTitle`.
 
@@ -65,7 +65,7 @@ SpListPresenter new
 	open
 ```
 
-![A decorated list: icons, text styling, and color.](figures/List1Decorated.png width=50&label=figSimpleListDecorated)
+![A decorated list: icons, text styling, and color.%width=50&anchor=figSimpleListDecorated](figures/List1Decorated.png)
 
 
 ### About single/multiple selection
@@ -143,7 +143,7 @@ SpFilteringListPresenter new
 		window title: 'SpFilteringListPresenter example' ]
 ```
 
-![A filtering list with bottom filter.](figures/FilteringList.png width=50&label=figFiltering)
+![A filtering list with bottom filter. % width=50&anchor=figFiltering](figures/FilteringList.png)
 
 The following script shows that the filter can be placed at the top.
 
@@ -170,7 +170,7 @@ SpFilteringListPresenter new
 
 Often lists are used to select items. This is what the class `SpFilteringSelectableListPresenter` offers. In addition to being able to filter items, it lets the user select items by ticking them as shown by Figure *@figSelectable@*.
 
-![A selectable filtering list with a filter at the top.](figures/SelectableList.png width=50&label=figSelectable)
+![A selectable filtering list with a filter at the top. % width=50&anchor=figSelectable](figures/SelectableList.png)
 
 The following script produces this situation.
 
@@ -191,7 +191,7 @@ While the lists we saw until now are homogeneous in the sense that they all disp
 
 This lets developers produce advanced user interfaces such as the one of the report builder of the ModMoose tool suite shown in Figure *@figModMoose@*.
 
-![An example of a component list from the ModMoose platform.](figures/mooseQDScreenshot.png width=80&label=figModMoose)
+![An example of a component list from the ModMoose platform.%width=80&anchor=figModMoose](figures/mooseQDScreenshot.png )
 
 The following script shows how to define a `SpComponentListPresenter` as shown in Figure *@figCompo@*.
 
@@ -216,14 +216,14 @@ SpComponentListPresenter new
 	open
 ```
 
-![A component list with several different presenters: a label, an image, a button, and an image.](figures/ComponentList.png width=45&label=figCompo)
+![A component list with several different presenters: a label, an image, a button, and an image. %width=45&anchor=figCompo](figures/ComponentList.png )
 
 
 ### Trees
 
 Spec offers also trees. The following script shows how to list all the classes of Pharo using inheritance as shown by Figure *@figTreeExpanded@*.
 
-![A Tree.](figures/TreeExpanded.png width=45&label=figTreeExpanded)
+![A Tree. % width=45&anchor=figTreeExpanded](figures/TreeExpanded.png)
 
 ```
 SpTreePresenter new
@@ -237,7 +237,7 @@ SpTreePresenter new
 
 The message `expandPath:` shows that we can expand a specific item by a path.
 
-![A tree with a menu.](figures/TreeWithMenu.png width=45&label=figTreemenu)
+![A tree with a menu. %width=45&anchor=figTreemenu](figures/TreeWithMenu.png)
 
 The following script shows how to use a dynamic context menu. This is a dynamic menu because its content is recalculated.
 The dynamic aspect is expressed by a block. Figure *@figTreemenu@* shows the result.
@@ -273,7 +273,7 @@ SpTreePresenter new
 	selectPathByItems: pathToSpPresenter scrollToSelection: true
 ```
 
-![A tree with a selected item.](figures/TreeSelectedItem.png width=50&label=figTreeselect)
+![A tree with a selected item. % width=50&anchor=figTreeselect](figures/TreeSelectedItem.png)
 
 ### Tables
 
@@ -300,7 +300,7 @@ SpTablePresenter new
 	open
 ```
 
-![A simple table with two columns.](figures/Table.png width=50&label=figSimpleTable)
+![A simple table with two columns. % width=50&anchor=figSimpleTable](figures/Table.png)
 
 Add `SpIndexTableColumn title: 'My index'` to the previous table to see the index column in action.
 
@@ -326,7 +326,7 @@ SpTablePresenter new
 	open
 ```
 
-![A simple table with two columns that can be sorted.](figures/TableSorting.png width=50&label=figTableSorting)
+![A simple table with two columns that can be sorted. % width=50&anchor=figTableSorting](figures/TableSorting.png)
 
 
 ### Editable tables
@@ -358,7 +358,7 @@ SpTablePresenter new
 	open
 ```
 
-![A table with an editable column.](figures/EditableTable.png width=50&label=figEditableTable)
+![A table with an editable column. % width=50&anchor=figEditableTable](figures/EditableTable.png)
 
 
 ### Tree tables
@@ -389,7 +389,7 @@ SpTreeTablePresenter new
 	open
 ```
 
-![A tree table with two columns: the first one is a composed column with an icon and a string.](figures/TreeTable.png width=50&label=figTreeTable)
+![A tree table with two columns: the first one is a composed column with an icon and a string. %width=50&anchor=figTreeTable](figures/TreeTable.png )
 
 Sending the messages `width:` and `beExpandable` to the `SpCompositeTableColumn` instance fixes the size of the column.
 
@@ -425,7 +425,7 @@ SpTreeTablePresenter new
 	open
 ```
 
-![A tree table with two columns.](figures/TreeTableSilly.png width=50&label=figTreeTableSilly)
+![A tree table with two columns. % width=50&anchor=figTreeTableSilly](figures/TreeTableSilly.png)
 
 ### Conclusion
 

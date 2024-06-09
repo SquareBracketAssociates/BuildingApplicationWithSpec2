@@ -4,33 +4,36 @@
 # All Spec in One Example
 
 <!inputFile|path=Chapters/FirstContact/FirstContact.md!> 
-
+%Reviewed by stef  - anchor
 <!inputFile|path=Chapters/CaseStudyOne/CaseStudyOne.md!>
-%Reviewed by stef
+%Reviewed by stef  - anchor
 
 <!inputFile|path=Chapters/TrafficLights/TrafficLights.md!>
 
 # Spec Essentials
 
 <!inputFile|path=Chapters/InANutshell/InANutshell.md!> 
-%Reviewed by stef
+%Reviewed by stef  - anchor
 
 <!inputFile|path=Chapters/TestingInSpec/TestingInSpec.md!> 
-%Reviewed by stef
+%Reviewed by stef  - anchor
 
 <!inputFile|path=Chapters/ThreePillarsOfSpec/ThreePillarsOfSpec.md!>
-%Reviewed by stef
+%Reviewed by stef  - anchor
 
 <!inputFile|path=Chapters/Reuse/Reuse.md!> 
-%Underway
+%Underway  - anchor
 
 <!inputFile|path=Chapters/ListTreeTable/ListTreeTable.md!>
-<!inputFile|path=Chapters/ManagingWindow/ManagingWindow.md!>
+%Reviewed by stef - anchor
 
-%Reviewed by stef
+<!inputFile|path=Chapters/ManagingWindow/ManagingWindow.md!>
+%Reviewed by stef - anchor
 
 <!inputFile|path=Chapters/LayoutContruction/Layout.md!>
+
 <!inputFile|path=Chapters/DynamicPresenter/DynamicPresenter.md!>
+
 <!inputFile|path=Chapters/Menus/Menus.md!>
 <!inputFile|path=Chapters/Style/Style.md!>
 <!inputFile|path=Chapters/Transmissions/Transmission.md!>

@@ -8,7 +8,7 @@ After completing this chapter you should read Chapter *@cha_reuse@* about the re
 ### A customer satisfaction UI
 @seccustomersatisfaction
 
-![A screenshot of the customer satisfaction survey UI.](figures/CustomersBasic.png width=50&label=figCustomersBasic)
+![A screenshot of the customer satisfaction survey UI. %  width=50&anchor=figCustomersBasic](figures/CustomersBasic.png)
 
 We construct a simple customer satisfaction survey UI, which allows a user to give feedback about a service by clicking on one of three buttons. This feedback should be recorded and processed, but that is outside of the scope of this example. Figure *@figCustomersBasic@* shows a screenshot of the UI.
 
@@ -125,7 +125,7 @@ CustomerSatisfactionPresenter >> defaultLayout
 
 In this layout, we add two rows to the UI, one with the buttons and one with the result text. Defining presenter layout is a complex process with many different possible requirements, hence in this chapter we do not talk in detail about layout specification. For more information we refer to Chapter *@cha_layout@*.
 
-![A first version of the customer satisfaction UI.](figures/FirstCut.png width=50&label=figFirstCut)
+![A first version of the customer satisfaction UI. % width=50&anchor=figFirstCut](figures/FirstCut.png)
 
 Once the method `defaultLayout` is defined, you can open your UI with `CustomerSatisfactionPresenter new open`. You should see a window similar to the one shown in Figure *@figFirstCut@*.
 
@@ -148,7 +148,7 @@ CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter
 You are free to use helper methods to return the title and extent of your presenter. When you reopen your presenter, and you click the "Happy" button, you should see the window shown in Fig. *@figSecondCut@*.
 
 
-![A final version of the customer satisfaction UI.](figures/SecondCut.png width=50&label=figSecondCut)
+![A final version of the customer satisfaction UI. % width=50&anchor=figSecondCut](figures/SecondCut.png)
 
 
 Sending the `open` message to a presenter will open a window and return an instance of `SpWindowPresenter`, which allows the window to be closed from code.
@@ -163,12 +163,12 @@ ui close
 
 Note that to update the contents of your window once it is open, you have the method `SpPresenter>>withWindowDo:`, but we will discuss it later in this book. More information about managing windows, e.g., opening dialog boxes or setting the about text is present in Chapter *@cha_managing_windows@*.
 
-This concludes our first example of a Spec user interface. In the next chapter we continue with more examples on how to configure the different presenters that can be used in a user interface.
+This concludes our first example of a Spec user interface. In the next chapter, we continue with more examples on how to configure the different presenters that can be used in a user interface.
 
 ### Conclusion
 
 
-In this chapter we have given you a small example of Spec user interfaces. We have shown you what the different steps are to build a user interface with Spec.
+In this chapter, we have given you a small example of Spec user interfaces. We have shown you what the different steps are to build a user interface with Spec.
 
 More examples of Spec user interfaces are found in the Pharo image. Since all Spec user interfaces are subclasses of `SpPresenter`, they are easy to find and each of them may serve as an example. Furthermore, experimentation with presenters and user interfaces is made easy because all presenters can be opened as standalone windows.
 
