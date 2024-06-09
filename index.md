@@ -44,7 +44,9 @@
 # Working with Commands
 
 <!inputFile|path=Chapters/ContactBook2/ContactBook.md!>
+%Reviewed by stef - anchor
 <!inputFile|path=Chapters/Commander2/Commander.md!>
+%Reviewed by stef - anchor
 
 # Other
 <!inputFile|path=Chapters/Inspector/Inspector.md!>
