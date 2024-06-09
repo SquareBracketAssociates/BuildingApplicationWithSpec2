@@ -1,5 +1,5 @@
 <!inputFile|path=Chapters/Intro/Intro.md!>
-%Reviewed by stef
+%Reviewed by stef - anchor
 
 # All Spec in One Example
 

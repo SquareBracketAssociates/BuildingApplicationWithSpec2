@@ -113,7 +113,7 @@ ImdbFilmListPresenter new open
 ```
 
 
-![A layout and a simple `initializePresenters` showing an empty list of films.](figures/FilmList-01-LayoutInitilalizePresenters.png width=60&label=LayoutInitilalizePresenters)
+![A layout and a simple `initializePresenters` showing an empty list of films. %width=60&anchor=LayoutInitilalizePresenters](figures/FilmList-01-LayoutInitilalizePresenters.png)
 
 
 ### Filling up the film list
@@ -126,7 +126,7 @@ ImdbFilmListPresenter >> updatePresenter
 	filmList items: ImdbFilm films
 ```
 
-If you want, just add a film and reopen the presenter. You should see the film in the list.
+If you want, just add a film and reopen the presenter. You should see the film on the list.
 
 ```
 ImdbFilm addFilm: (ImdbFilm new
@@ -152,7 +152,7 @@ The application is responsible for managing windows and other information, there
 
 A presenter can be embedded in another presenter as we will show later. It can also be placed within a window and this is what the message `open` does. Spec offers another hook, the method `initializeWindow:`, to specialize the information presented when a presenter is displayed within a window.
 
-![Film list presenter with a toolbar and a decorated window.](figures/FilmList-02-initalizeWindows.png width=60&label=figFilmListPresenter2)
+![Film list presenter with a toolbar and a decorated window. %width=60&anchor=figFilmListPresenter2](figures/FilmList-02-initalizeWindows.png )
 
 The method `initializeWindow:` allows you to define a title, a default size (message `initialExtent:`), and a toolbar.
 
@@ -247,7 +247,7 @@ ImdbFilmPresenter >> defaultLayout
 
 Pay attention: do not add a `yourself` message here because you would return the class and not the layout instance.
 
-![A single film presenter.](figures/FilmList-03-OpenFilmPresenter-1.png width=50&label=figFilmPresenter1)
+![A single film presenter. % width=50&anchor=figFilmPresenter1](figures/FilmList-03-OpenFilmPresenter-1.png)
 
 And as before, we define the method `initializePresenters` to initialize the variables to the corresponding elementary presenters. Here `nameText` and `directorText` are initialized to a text input, and `yearNumber` is a number input.
 
@@ -288,7 +288,7 @@ ImdbFilmPresenter >> defaultLayout
 				add: 'Year'; add: yearNumber ]
 ```
 
-![Using a non-homogenous grid layout.](figures/FilmList-04-OpenFilmPresenter-2.png width=50&label=FilmListPresenter2)
+![Using a non-homogenous grid layout. % width=50&anchor=FilmListPresenter2](figures/FilmList-04-OpenFilmPresenter-2.png)
 
 Now we set the window properties by adding the following new `initializeWindow:` method. See Figure *@FilmListPresenter3@*.
 
@@ -300,7 +300,7 @@ ImdbFilmPresenter >> initializeWindow: aWindowPresenter
 		initialExtent: 400@250
 ```
 
-![Better window.](figures/FilmList-05-OpenFilmPresenter-3.png width=50&label=FilmListPresenter3)
+![Better window. % width=50&anchor=FilmListPresenter3](figures/FilmList-05-OpenFilmPresenter-3.png)
 
 ### Opening FilmPresenter in a modal dialog
 
@@ -314,7 +314,7 @@ app := ImdbApp new.
 (app newPresenter: ImdbFilmPresenter) openModal
 ```
 
-![A modal dialog.](figures/FilmList-06-Modal.png width=50&label=dialog)
+![A modal dialog. %width=50&anchor=dialog](figures/FilmList-06-Modal.png)
 
 Figure *@dialog@* shows the result. Note that there are no UI components to close the dialog. Press the "Esc" key on the keyboard to close it.
 
@@ -331,7 +331,7 @@ ImdbFilmPresenter >> initializeDialogWindow: aDialogPresenter
 		addButton: 'Save Film' do: [ :button | button beOk; close ].
 ```
 
-![Customizing the dialog window.](figures/FilmList-07-DecoratedModal.png width=60&label=Customizeddialog)
+![Customizing the dialog window. % width=60&anchor=Customizeddialog](figures/FilmList-07-DecoratedModal.png)
 
 
 ### Invoking a presenter
@@ -363,7 +363,7 @@ app := ImdbApp new.
 (app newPresenter: ImdbFilmListPresenter) open
 ```
 
-![The refreshed film list.](figures/FilmList-08-ListRefreshed.png width=60&label=refreshed)
+![The refreshed film list. % width=60&anchor=refreshed](figures/FilmList-08-ListRefreshed.png)
 
 
 ### Embedding a FilmPresenter into the FilmListPresenter
@@ -457,7 +457,7 @@ filmList whenSelectionChangedDo: [ :selectedItemMode |
 
 With `connectPresenters` in place, selecting an item in the list results in showing the details of the selected item, as shown in Figure *@embedded@*.
 
-![Embedding the film description in the list: selecting a list item populates the detailed visual component.](figures/FilmList-09-Embedded.png width=60&label=embedded)
+![Embedding the film description in the list: selecting a list item populates the detailed visual component. % width=60&anchor=embedded](figures/FilmList-09-Embedded.png)
 
 
 ### Testing your application UI
@@ -799,7 +799,7 @@ ImdbFilmPresenter >> defaultLayout
 
 Now we see that the name label of a film detail has been styled, as shown in Figure *@FilmListPresenterStyled@*.
 
-![Styled film name label.](figures/FilmList-11-styling.png width=60&label=FilmListPresenterStyled)
+![Styled film name label. % width=60&anchor=FilmListPresenterStyled](figures/FilmList-11-styling.png)
 
 ### Conclusion
 

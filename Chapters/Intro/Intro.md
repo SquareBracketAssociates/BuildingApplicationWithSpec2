@@ -16,11 +16,11 @@ In Spec 1.0, this role was filled by the class `ComposableModel` and now, in Spe
 
 Spec is the standard GUI framework in Pharo and differs from Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists, etc. It cannot be used as a general drawing framework, but you can integrate a canvas inside a Spec component. For example, you can embed a Roassal visualization \(see Figure *@SpecRoassal@*\), or you can extend Spec itself with additional native components.
 
-![Roassal and Spec integration. %width=100&label=SpecRoassal](figures/roassalGTK.png)
+![Roassal and Spec integration. %width=100&anchor=SpecRoassal](figures/roassalGTK.png)
 
 Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo@*.
 
-![An integration of Morphic Native Widgets and Spec %width=100&label=NovaStelo](figures/NovaStelo.png)
+![An integration of Morphic Native Widgets and Spec %width=100&anchor=NovaStelo](figures/NovaStelo.png)
 
 ### Spec 2.0
 
@@ -47,11 +47,6 @@ Metacello new
   repository: 'github://SquareBracketAssociates/CodeOfSpec20Book/src';
   load
 ```
-
-### Outline
-
-!!note SD: to revise
-This book is meant to be read as follows: Chapters 2 and 3 provide a first demonstration of Spec and introduce the core principles of reuse in Spec. These chapters should be read completely by a Spec novice. The fourth chapter treats the fundamentals of Spec and provides a more complete, conceptual overview of how the different parts of a Spec UI work together. This is recommended reading for all Spec users since a better understanding of the fundamentals will ease UI development at all user experience levels. Chapters 5 and beyond are considered more as reference material to be read on demand. That being said, chapter 5 introduces layouts, which are required by all UIs. Hence it does make sense for all Spec users to read it so that they can construct their UI layout in the best way possible.  Lastly, chapter 9 contains tips and tricks that can be useful in a wide variety of settings, so we recommend that all readers of this book at least browse through it.
 
 ### Acknowledgements
 
