@@ -9,7 +9,7 @@ We will build a small Todo application that will connect a couple of components 
 It will look like Figure *@taskManager@*.
 
 
-![First full version of the Task List Manager. ](figures/figure4.png label=taskManager&width=60)
+![First full version of the Task List Manager. % anchor=taskManager&width=60](figures/figure4.png)
 
 
 ### A TodoTask class
@@ -134,7 +134,7 @@ In this case, you are adding to your presenter a table widget, which is a very c
 Let us go over the layout definition to explain it:
 
 - `SpBoxLayout newTopToBottom` creates a box layout that distributes elements in a vertical arrangement.
-- `add: todoListPresenter` adds the list as a subcomponent of our presenter. Here we only have one but you can have as many subcomponents as you want. Note that by default, the box layout distributes all elements in a proportional way (since this is the only element for the moment, it will take 100% of the available space.
+- `add: todoListPresenter` adds the list as a subcomponent of our presenter. Here we only have one but you can have as many subcomponents as you want. Note that by default, the box layout distributes all elements in a proportional way (since this is the only element for the moment, it will take 100\% of the available space.
 
 And now, we need to give our Todo list the tasks to display:
 
@@ -145,7 +145,7 @@ TodoListPresenter >> updatePresenter
 
 ###  Opening the application 
 
-Now defining the method `start`, we tell the application that when ask to run it should open the todo list presenter.
+Now defining the method `start`, we tell the application that when asked to run it should open the todo list presenter.
 
 ```
 TodoApplication >> start 
@@ -158,7 +158,7 @@ Now we can open our task list manager as follows and we should get a situation s
 TodoApplication new run.
 ```
 
-![A draft version of our task manager.](figures/figure1.png width=60&label=firstfig)
+![A draft version of our task manager. % width=60&anchor=firstfig](figures/figure1.png)
 
 
 ### Improving the window
@@ -187,7 +187,7 @@ You may ask why this is done like that and not directly modifying the presenter?
 
 Figure *@fig2@* shows how the task manager looks like now.
 
-![Task Manager is a better window title.](figures/figure2.png width=60&label=fig2)
+![Task Manager is a better window title. % width=60&anchor=fig2](figures/figure2.png)
 
 
 
@@ -416,7 +416,7 @@ What we did here?
 
 Figure *@fig3@* shows how the task manager looks like.
 
-![Task Manager with a button to add tasks.s](figures/figure3.png width=80&label=fig3)
+![Task Manager with a button to add tasks. %  width=80&anchor=fig3](figures/figure3.png)
 
 
 ### Add edit and delete menu items
@@ -488,7 +488,7 @@ TodoListPresenter >> deleteSelectedTask
 As you see, `editSelectedTask` is almost equal to `addTask` but instead of adding a new task, it takes the selected task in our table by sending `TodoListPresenter selection selectedItem`.  
 delete simply takes the selected item and sends the `delete` message.
 
-![First full version of the Task List Manager.](figures/figure4.png width=80&label=fig4)
+![First full version of the Task List Manager. % width=80&anchor=fig4](figures/figure4.png)
 
 %### Switching the backend to Gtk
 

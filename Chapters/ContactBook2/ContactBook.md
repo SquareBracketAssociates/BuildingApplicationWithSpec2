@@ -6,13 +6,13 @@ In this chapter, we develop a simple model for a contact book. Then we define a 
 Now it is more of a replay of the concepts previously mentioned. We start by implementing classes modeling the domain and then we will add a basic graphical user interface to obtain a little application as shown in Figure *@overview@*.
 
 
-![A rudimentary contact book application.](figures/withmenuExtension.png width=60&label=overview)
+![A rudimentary contact book application. % width=60&anchor=overview](figures/withmenuExtension.png)
 
 ### Contact book model
 
 The model for the domain of our example is composed of two classes: Contact and ContactBook as shown in Figure *@contactmodel@*.
 
-![A simple model for the contact book.](figures/contactBook.pdf width=60&label=contactmodel)
+![A simple model for the contact book. %width=60&anchor=contactmodel](figures/contactBook.pdf)
 
 #### Contact
 
@@ -93,7 +93,7 @@ ContactBook >> addContact: newContact after: contactAfter
 ```
 
 
-We add a simple testing method in case one wants to write some tests \(which we urge you to do\).
+We add a simple testing method in case one wants to write some tests (which we urge you to do).
 
 ```
 ContactBook >> includesContact: aContact
@@ -170,9 +170,9 @@ ContactBook class >> reset
 ### A simple graphical user interface
 
 
-Now we define the graphical user interface \(GUI\) to expose the model to the user. The targeted GUI is shown in Figure *@firstFullUI@*.
+Now we define the graphical user interface (GUI) to expose the model to the user. The targeted GUI is shown in Figure *@firstFullUI@*.
 
-![A rudimentary contact book application.](figures/firstFullUI.png width=60&label=firstFullUI)
+![A rudimentary contact book application. %width=60&anchor=firstFullUI](figures/firstFullUI.png)
 
 We define the class `ContactBookPresenter`. It holds a reference to a contact book and it is structured around a table.
 
@@ -258,7 +258,7 @@ ContactBookPresenter class >> coworkersExample
 
 You should obtain the GUI as shown in Figure *@firstMenuToolbar@*.
 
-![First version of the GUI without menus and toolbar.](figures/firstVersion.png width=60&label=firstMenuToolbar)
+![First version of the GUI without menus and toolbar. % width=60&anchor=firstMenuToolbar](figures/firstVersion.png)
 
 #### Interacting with user
 
@@ -293,7 +293,7 @@ To test it, we can get access to the presenter with
 
 and you can send the `newContact` message to open the GUI shown in Figure *@inspector@*.
 
-![Playing inside the inspector.](figures/inspector.png width=80&label=inspector)
+![Playing inside the inspector. % width=80&anchor=inspector](figures/inspector.png)
 
 
 #### Some extra methods
