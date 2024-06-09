@@ -31,8 +31,9 @@
 %Reviewed by stef - anchor
 
 <!inputFile|path=Chapters/LayoutContruction/Layout.md!>
-
+%Reviewed by stef - anchor
 <!inputFile|path=Chapters/DynamicPresenter/DynamicPresenter.md!>
+%Reviewed by stef - anchor
 
 <!inputFile|path=Chapters/Menus/Menus.md!>
 <!inputFile|path=Chapters/Style/Style.md!>

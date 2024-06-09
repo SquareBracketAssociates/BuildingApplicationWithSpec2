@@ -13,9 +13,9 @@ You can inspect the result of an execution by selecting the code and using the s
 
 By inspecting `1/3` we get the inspector shown in Figure *@InspectorWithRawTab@*.
 
-![An inspector with the Raw tab selected.](figures/InspectorRawTab.png width=60&label=InspectorWithRawTab)
+![An inspector with the Raw tab selected. % width=60&anchor=InspectorWithRawTab](figures/InspectorRawTab.png)
 
-![Inspector areas.](figures/InspectorRawTabAreas.png width=60&label=InspectorWithThreeAreas)
+![Inspector areas. % width=60&anchor=InspectorWithThreeAreas](figures/InspectorRawTabAreas.png)
 
 There are three areas in an inspector. They are highlighted in Figure *@InspectorWithThreeAreas@*.
 
@@ -29,7 +29,7 @@ This is recursive: if you click on more variables, more panes will open. By defa
 
 Figure *@InspectorNavigation@* is a small demonstration.
 
-KDH: adding a GIF file does not work. We need an alternative, or remove this part
+KDH: adding a GIF file does not work. We need an alternative or remove this part
 
 %![Navigating in the inspector](figures/InspectorPaneNavigation.gif width=40&label=InspectorNavigation)
 
@@ -51,22 +51,22 @@ KDH: this section was/is missing.
 
 The following animation shows how to put a breakpoint on writing an instance variable, the breakpoints listing on the current object, and how to deactivate one.
 
-KDH: adding a GIF file does not work. We need an alternative, or remove this part
+KDH: adding a GIF file does not work. We need an alternative or remove this part
 
 %![Breakpoints](figures/InspectorBreakpoints.gif width=60&label=InspectorBreakpoints)
 
 ### The Meta tab: class hierarchy and searching methods
 
-The `Meta` tab is the last one that is available for most objects. See Figure *@InspectorMetaTab@*. On the left it shows the hierarchy of the current object's class. On the right it shows the available methods. Clicking on parent classes in the hierarchy will show methods implemented in this class on the right. Selecting a method will display its source code at the bottom of the tab.
+The `Meta` tab is the last one that is available for most objects. See Figure *@InspectorMetaTab@*. On the left, it shows the hierarchy of the current object's class. On the right, it shows the available methods. Clicking on parent classes in the hierarchy will show methods implemented in this class on the right. Selecting a method will display its source code at the bottom of the tab.
 
-![Meta tab.](figures/InspectorMetaTab.png width=60&label=InspectorMetaTab)
+![Meta tab. % width=60&anchor=InspectorMetaTab](figures/InspectorMetaTab.png)
 
 ### Creating custom tabs
 
 If you used the inspector a bit, you may have noticed that some objects have additional tabs showing up in the inspector.
 For example, both `Float`s and `Integer`s have their first tabs showing different representations of numbers, as shown in Figure *@InspectorForNumbers@*.
 
-![Inspecting numbers.](figures/InspectorNumbersTabs.png width=60&label=InspectorForNumbers)
+![Inspecting numbers. % width=60&anchor=InspectorForNumbers](figures/InspectorNumbersTabs.png)
 
 Another example is the `FileReference` class. When a file reference is inspected, according to the type of the file, different tabs show up with relevant information.
 
@@ -127,7 +127,7 @@ OrderedCollection << inspectionMultipliedByTwo
 
 When we inspect a collection of numbers we see the tabs shown in Figure *@InspectorMultipliedByTwoTab@*.
 
-![Multiplied by 2 tab](figures/InspectorExpansionMultipliedByTwo.png width=60&label=InspectorMultipliedByTwoTab)
+![Multiplied by 2 tab. % width=60&anchor=InspectorMultipliedByTwoTab](figures/InspectorExpansionMultipliedByTwo.png)
 
 However if the collection contains elements that are not numbers, the tab crashes and looks like a red rectangle. By defining a method with the name `<name of the method defining the tab>Context:` we can specify when we want to activate a given tab. For example:
 
@@ -164,7 +164,7 @@ OrderedCollection << inspectionMaxValueContext: aContext
   ^ aContext active: self containsOnlyIntegers
 ```
 
-![Inspect max value tab.](figures/InspectorExpansionMax.png width=60&label=InspectorMaxValueTab)
+![Inspect max value tab. %width=60&anchor=InspectorMaxValueTab](figures/InspectorExpansionMax.png)
 
 However as we can see in Figure *@InspectorMaxValueTab@*, the `self` in the evaluator does not match the `self` in the max value, which is confusing. So we will hide the evaluator.
 
@@ -177,7 +177,7 @@ OrderedCollection << inspectionMaxValueContext: aContext
 
 By reinspecting the same collection we see the inspector in Figure *@InspectorWithoutEvaluator@*.
 
-![Removing the evaluator.](figures/InspectorExpansionMaxWithoutWvaluator.png width=60&label=InspectorWithoutEvaluator)
+![Removing the evaluator. % width=60&anchor=InspectorWithoutEvaluator](figures/InspectorExpansionMaxWithoutWvaluator.png)
 
 ### Adding Roassal charts
 
@@ -202,7 +202,7 @@ OrderedCollection << inspectionIntegerHistogramContext: aContext
 
 By inspecting `{ 1 . 1 . 3 . 2 . 5 . 2. 2 . 1. 9. 3 . 2. 2. 5 . 7 . 7 . 8  } asOrderedCollection` we see the inspector shown in Figure *@histogram@*.
 
-![Histogram tab](figures/InspectorExpansionHistogram.png width=60&label=histogram)
+![Histogram tab.  %width=60&anchor=histogram](figures/InspectorExpansionHistogram.png)
 
 
 ### Conclusion
