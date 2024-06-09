@@ -4,7 +4,7 @@
 Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg the git manager, Change Sorter, Critics Browser, and the Pharo debugger.
 An important architectural decision is that Spec supports multiple backends (at the time of writing this book, GTK and Morphic are available).
 
-![Spec supports multiple backends Morphic and GTK3.0.: Here we see GTK.](figures/GTK.png width=100)
+![Spec supports multiple backends Morphic and GTK3.0.: Here we see GTK. %width=100](figures/GTK.png )
 
 ### Reuse of logic
 
@@ -16,11 +16,11 @@ In Spec 1.0, this role was filled by the class `ComposableModel` and now, in Spe
 
 Spec is the standard GUI framework in Pharo and differs from Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists, etc. It cannot be used as a general drawing framework, but you can integrate a canvas inside a Spec component. For example, you can embed a Roassal visualization \(see Figure *@SpecRoassal@*\), or you can extend Spec itself with additional native components.
 
-![Roassal and Spec integration.](figures/roassalGTK.png width=100&label=SpecRoassal)
+![Roassal and Spec integration. %width=100&label=SpecRoassal](figures/roassalGTK.png)
 
 Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo@*.
 
-![An integration of Morphic Native Widgets and Spec.](figures/NovaStelo.png width=100&label=NovaStelo)
+![An integration of Morphic Native Widgets and Spec %width=100&label=NovaStelo](figures/NovaStelo.png)
 
 ### Spec 2.0
 
