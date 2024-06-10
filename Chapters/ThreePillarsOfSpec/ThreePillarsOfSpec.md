@@ -70,7 +70,7 @@ The following snippet opens a window with the list of methods of the class `Poin
 (MethodLister on: Point) open.
 ```
 
-![A simple list of sorted selectors of the class Point.](figures/PointSelectors.png label=pointselectors&width=45)
+![A simple list of sorted selectors of the class Point.  %anchors=pointselectors&width=45](figures/PointSelectors.png)
 
 
 
@@ -135,7 +135,7 @@ MethodListerWithModel >> defaultLayout
 ```
 
 
-![A simple list of sorted selectors changing based on its model.](figures/PointThenRectangleSelectors.png label=pointRectangeSelectors&width=90)
+![A simple list of sorted selectors changing based on its model. %anchor=pointRectangeSelectors&width=90](figures/PointThenRectangleSelectors.png )
 
 Now we can open our widget. As the following script shows, it will react to the change of the model (see Figure *@pointRectangeSelectors@*).
 
@@ -176,7 +176,7 @@ A key aspect of Spec is that all user interfaces are constructed through the reu
 
 In the end, it is the presentation model and the UI elements that make up the resulting user interface that is shown. This composition of the presentation models is represented as a Presenter object as in Model-View-Presenter. The presenter that is defined in Spec corresponds to a presenter in the MVP triad as shown in Figure *@mvpfig@*.
 
-![A presenter is a model of presentation: It is in relationships with the widgets and its domain model. It composes other presenters to form a presenter tree.](figures/MVP.pdf label=mvpfig&width=60)
+![A presenter is a model of presentation: It is in relationships with the widgets and its domain model. It composes other presenters to form a presenter tree. %anchor=mvpfig&width=60](figures/MVP.pdf)
 
 To define a new user interface, the developer should create a subclass of `SpPresenter`.
 
@@ -231,7 +231,6 @@ In Spec, the different UI models are contained in value holders, and the event m
 Value holders provide the method `whenChangedDo:` that is used to register a block to perform on change, and the method `whenChangedSend: aSelector to: aReceiver` to send a message to a given object. In addition to these primitive methods, the basic widgets provide more specific hooks, e.g., when an item in a list is selected (`whenSelectionChangedDo:`).
 
 ### The _defaultLayout_ method
-
 @sec_layoutmethod
 
 Widget layout is defined by specifying methods that state how the different widgets are placed in the UI. In addition, it also specifies how a widget reacts when the window is resized. As we will see later, these methods can have different names.
