@@ -5,7 +5,7 @@ In this chapter, we will describe how to use custom styles in Spec applications.
 
 We will show that an application in Spec manages styles and lets you adapt the look of a presenter as shown in Figure *@style1@*.
 
-![Building a little styling editor.](figures/style1.png width=70&label=style1)
+![Building a little styling editor.](figures/style8.png width=70&label=style1)
 
 We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
 
@@ -14,8 +14,7 @@ We give some basis before showing how to effectively use styles to enhance the l
 Styles in Spec work like CSS. They are style sheets in which the properties for presenting a presenter are defined. Properties such as colors, width, height, font, and others.
 As a general principle, it is better to use styles instead of fixed constraints, because your application will be more responsive.
 
-For example, you want a button to have a specific width and height.
-You can do it using constraints with the method `add:withConstraints:` or using styles. In both cases, the result will be as shown in Figure *@style2@*:
+For example, assume you want a button to have a specific width and height. You can achieve that by using constraints with the method `add:withConstraints:` or using styles. In both cases, the result will be as shown in Figure *@style2@*:
 
 ![A window with a button.](figures/style2.png width=50&label=style2)
 
@@ -234,8 +233,8 @@ styleSheet := SpStyle defaultStyleSheet,
     (SpStyleVariableSTONReader fromString:
     '.application [
          Font { #bold: true },
-            .lightGreen [ Draw { #color: #B3E6B5 } ],
-            .bgBlack [ Draw { #backgroundColor: #black } ],
+            .red [ Draw { #color: #red } ],
+            .bgGray [ Draw { #backgroundColor: #E2E2E2 } ],
         .blue [ Draw { #color: #blue } ]
 ]' ).
 
@@ -251,8 +250,8 @@ presenter layout: (SpBoxLayout newTopToBottom
     yourself).
 
 label label: 'I am a label'.
-label addStyle: 'lightGreen'.
-label addStyle: 'bgBlack'.
+label addStyle: 'red'.
+label addStyle: 'bgGray'.
 
 presenter open.
 ```
@@ -265,8 +264,8 @@ presenter open.
 We can also remove and add styles at runtime as shown in the following snippet whose result is displayed in Figure *@style6@*.
 
 ```
-label removeStyle: 'lightGreen'.
-label removeStyle: 'bgBlack'.
+label removeStyle: 'red'.
+label removeStyle: 'bgGray'.
 label addStyle: 'blue'.
 ```
 
@@ -282,8 +281,8 @@ Until now we just wrote scripts. Now we want to show how we can use styles using
 
 ```
 SpApplication << #CustomStylesApplication
-    slots: {};
-    package: 'Spec-workshop'
+	slots: {};
+	package: 'CodeOfSpec20Book'
 ```
 
 
@@ -292,24 +291,25 @@ In the class, we override the method `styleSheet` to return our custom styleshee
 ```
 CustomStylesApplication >> styleSheet
 
-    ^ SpStyle defaultStyleSheet,
-        (SpStyleVariableSTONReader fromString:
-    '.application [
-        Font { #bold: true },
-        .lightGreen [ Draw { #color: #B3E6B5 } ],
-        .lightBlue [ Draw { #color: #lightBlue } ],
-        .container [ Container { #padding: 4, #borderWidth: 2 } ],
-        .bgOpaque [ Draw { #backgroundColor: EnvironmentColor(#base) } ],
-        .codeFont [ Font { #name: EnvironmentFont(#code) } ],
-        .textFont [ Font { #name: EnvironmentFont(#default) } ],
-        .bigFontSize [ Font { #size: 20 } ],
-        .smallFontSize [ Font { #size: 14 } ],
-        .icon [ Geometry { #width: 30 } ],
-        .buttonStyle [ Geometry { #width: 110 } ],
-        .labelStyle [
-            Geometry { #height: 25 },
-            Font { #size: 12 }    ]
-    ]')
+	| customStyleSheet |
+	customStyleSheet := SpStyleVariableSTONReader fromString:
+		'.application [
+			Font { #bold: true },
+			.lightGreen [ Draw { #color: #B3E6B5 } ],
+			.lightBlue [ Draw { #color: #lightBlue } ],
+			.container [ Container { #padding: 4, #borderWidth: 2 } ],
+			.bgOpaque [ Draw { #backgroundColor: EnvironmentColor(#base) } ],
+			.codeFont [ Font { #name: EnvironmentFont(#code) } ],
+			.textFont [ Font { #name: EnvironmentFont(#default) } ],
+			.bigFontSize [ Font { #size: 20 } ],
+			.smallFontSize [ Font { #size: 14 } ],
+			.icon [ Geometry { #width: 30 } ],
+			.buttonStyle [ Geometry { #width: 110 } ],
+			.labelStyle [
+				Geometry { #height: 25 },
+				Font { #size: 12 } ]
+		]'.
+	^ SpStyle defaultStyleSheet , customStyleSheet
 ```
 
 
@@ -322,75 +322,72 @@ We can use different properties in the same style. For example, in `labelStyle` 
 For the main presenter, we will build a mini text viewer in which we will be able to change the size and font of the text that we are viewing.
 
 ```
-SpPresenter << #CustomStylesPresenter
-    slots: { #text . #label . #zoomOutButton . #textFontButton . #codeFontButton . #zoomInButton };
-    package: 'Spec-workshop'
+SpPresenter << #CustomStyles
+	slots: { #text . #label . #zoomOutButton . #textFontButton . #codeFontButton . #zoomInButton };
+	package: 'CodeOfSpec20Book'
 ```
 
 In the `initializePresenters` method we will first initialize the presenters, then set the styles for the presenters and finally initialize the layout.
 
 ```
-CustomStylesPresenter >> initializePresenters
+CustomStyles >> initializePresenters
 
-    self instantiatePresenters.
-    self initializeStyles.
-    self initializeLayout
+	self instantiatePresenters.
+	self initializeStyles
 ```
 
 
 ```
-CustomStylesPresenter >> instantiatePresenters
+CustomStyles >> instantiatePresenters
 
-    zoomInButton := self newButton.
-    zoomInButton icon: (self iconNamed: #glamorousZoomIn).
-    zoomOutButton := self newButton.
-    zoomOutButton icon: (self iconNamed: #glamorousZoomOut).
-
-    codeFontButton := self newButton.
-    codeFontButton
-        icon: (self iconNamed: #smallObjects);
-        label: 'Code font'.
-    textFontButton := self newButton.
-    textFontButton
-        icon: (self iconNamed: #smallFonts);
-        label: 'Text font'.
-
-    text := self newText.
-    text
-        beNotEditable
-        clearSelection;
-        text: String loremIpsum.
-
-    label := self newLabel.
-    label label: 'Lorem ipsum'
+	zoomInButton := self newButton.
+	zoomInButton icon: (self iconNamed: #glamorousZoomIn).
+	zoomOutButton := self newButton.
+	zoomOutButton icon: (self iconNamed: #glamorousZoomOut).
+	codeFontButton := self newButton.
+ 	codeFontButton
+		icon: (self iconNamed: #smallObjects);
+		label: 'Code font'.
+	textFontButton := self newButton.
+	textFontButton
+		icon: (self iconNamed: #smallFonts);
+		label: 'Text font'.
+	text := self newText.
+	text
+		beNotEditable
+		clearSelection;
+		text: String loremIpsum.
+	label := self newLabel.
+	label label: 'Lorem ipsum'
 ```
 
 
 ```
-CustomStylesPresenter >> initializeLayout
+CustomStyles >> defaultLayout
 
-    self layout: (SpBoxLayout newTopToBottom
-        add: label expand: false;
-        add: (SpBoxLayout newLeftToRight
-            add: textFontButton expand: false;
-            add: codeFontButton expand: false;
-            addLast: zoomOutButton expand: false;
-            addLast: zoomInButton expand: false;
-            yourself)
-        expand: false;
-        add: text;
-        yourself)
+	| buttonbar |
+	buttonbar := SpBoxLayout newLeftToRight
+		add: textFontButton expand: false;
+		add: codeFontButton expand: false;
+		addLast: zoomOutButton expand: false;
+		addLast: zoomInButton expand: false;
+		yourself.
+	^ SpBoxLayout newTopToBottom
+		add: label expand: false;
+		add: buttonbar expand: false;
+		add: text;
+		yourself
 ```
 
 
 Finally, we change the window title and size:
 
 ```
-CustomStylesPresenter>> initializeWindow: aWindowPresenter
+CustomStyles >> initializeWindow: aWindowPresenter
 
-    aWindowPresenter
-        title: 'Using styles';
-        initialExtent: 600 @ 400
+	aWindowPresenter
+		title: 'Using styles';
+		initialExtent:600 @400
 ```
 
 
@@ -404,31 +401,23 @@ Without setting the custom styles nor using our custom application in the presen
 We do not want the black background color for the text presenter. We would like to have a sort of multi-line label. We want the zoom buttons to be smaller as they only have icons. We want to have the option to change the size and font of the text inside the text presenter. Finally, we want to change the color of the label, change its height and make it a little bit bigger.
 
 ```
-CustomStylesPresenter >> initializeStyles
-
+CustomStyles >> initializeStyles
     "Change the height and size of the label and the color as ligthgreen"
-    label addStyle: 'labelStyle'.
-    label addStyle: 'lightGreen'.
 
-    "The default font of the text will be the code font and 
-    the font size will be the small one."
-    text addStyle: 'codeFont'.
-    text addStyle: 'smallFontSize'.
-
-    "Change the background color."
-    text addStyle: 'bgOpaque'.
-
-    "But a smaller width for the zoom buttons"
-    zoomInButton addStyle: 'icon'.
-    zoomOutButton addStyle: 'icon'.
-
-    codeFontButton addStyle: 'buttonStyle'.
-    textFontButton addStyle: 'buttonStyle'.
-
-    "As this presenter is the container, set to self the container
-    style to add a padding and border width."
-
-    self addStyle: 'container'
+	label addStyle: 'labelStyle'.
+	label addStyle: 'lightGreen'.
+	"The default font of the text will be the code font and the font size will be the small one."
+	text addStyle: 'codeFont'.
+	text addStyle: 'smallFontSize'.
+	"Change the background color."
+	text addStyle: 'bgOpaque'.
+	"But a smaller width for the zoom buttons"
+	zoomInButton addStyle: 'icon'.
+	zoomOutButton addStyle: 'icon'.
+	codeFontButton addStyle: 'buttonStyle'.
+	textFontButton addStyle: 'buttonStyle'.
+	"As this presenter is the container, set to self the container style to add a padding and border width."
+	self addStyle: 'container'
 ```
 
 
@@ -439,7 +428,7 @@ Finally, we have to override the `start` method in the application. We are going
 ```
 CustomStylesApplication >> start
 
-    (self new: CustomStylesPresenter) open
+	(self new: CustomStyles) open
 ```
 
 
@@ -458,21 +447,20 @@ For example, if we click on the zoom-in button we want to remove the `smallFontS
 This is what we have to do in the `connectPresenters` method:
 
 ```
-CustomStylesPresenter >> connectPresenters
+CustomStyles >> connectPresenters
 
-    zoomInButton action: [
-        text removeStyle: 'smallFontSize'.
-        text addStyle: 'bigFontSize' ].
-    zoomOutButton action: [
-        text removeStyle: 'bigFontSize'.
-        text addStyle: 'smallFontSize'].
-
-    codeFontButton action: [
-        text removeStyle: 'textFont'.
-        text addStyle: 'codeFont' ].
-    textFontButton action: [
-        text removeStyle: 'codeFont'.
-        text addStyle: 'textFont']
+	zoomInButton action: [
+		text removeStyle: 'smallFontSize'.
+		text addStyle: 'bigFontSize' ].
+	zoomOutButton action: [
+		text removeStyle: 'bigFontSize'.
+		text addStyle: 'smallFontSize' ].
+	codeFontButton action: [
+		text removeStyle: 'textFont'.
+		text addStyle: 'codeFont' ].
+	textFontButton action: [
+		text removeStyle: 'codeFont'.
+		text addStyle: 'textFont' ]
 ```
 
 
@@ -493,7 +481,7 @@ When we click the "Text font" button, the font of the text changes as shown in F
 You can ask an adapter for its style name using the message `styleName`
 
 ```
- SpMorphicLabelAdapter styleName 
+ SpMorphicLabelAdapter styleName
  > Label
 ```
 
