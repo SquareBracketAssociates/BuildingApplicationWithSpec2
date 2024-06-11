@@ -174,8 +174,8 @@ AlignmentExample >> newTile: alignmentBlock
 
 	| tileLayout |
 	tileLayout := SpBoxLayout newTopToBottom
-		add: self newLableOne;
-		add: self newLableTwo;
+		add: self newLabelOne;
+		add: self newLabelTwo;
 		yourself.
 	alignmentBlock value: tileLayout.
 	^ SpPresenter new
@@ -187,7 +187,7 @@ AlignmentExample >> newTile: alignmentBlock
 `newTile:` uses two other helper methods:
 
 ```
-AlignmentExample >> newLableOne
+AlignmentExample >> newLabelOne
 
 	^ self newLabel
 		label: 'One';
@@ -195,7 +195,7 @@ AlignmentExample >> newLableOne
 ```
 
 ```
-AlignmentExample >> newLableTwo
+AlignmentExample >> newLabelTwo
 
 	^ self newLabel
 		label: 'two';
@@ -259,8 +259,8 @@ AlignmentExample >> newTile: alignmentBlock
 
 	| tileLayout |
 	tileLayout := SpBoxLayout newLeftToRight
-		add: self newLableOne;
-		add: self newLableTwo;
+		add: self newLabelOne;
+		add: self newLabelTwo;
 		yourself.
 	alignmentBlock value: tileLayout.
 	^ SpPresenter new
