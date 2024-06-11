@@ -74,7 +74,7 @@ What you see here is that all the changes happen simply by creating a new instan
 
 We will create a presenter in which we will add and remove buttons dynamically. We will create a new class called `DynamicButtons`.
 
-![A presenter that dynamically adds buttons. % width=40&anchor=layout8](figures/layout8.png)
+![A presenter that dynamically adds buttons. % width=40&anchor=layout6](figures/layout6.png)
 
 ```
 SpPresenter << #DynamicButtons
@@ -150,8 +150,6 @@ After opening the window with the following code snippet, we see the window show
 ```
 DynamicButtons new open
 ```
-
-![The initial state of the window.%  width=40&anchor=layout6](figures/layout6.png)
 
 Figure *@layout7@* shows what the window looks like after clicking the add button four times.
 
