@@ -45,7 +45,7 @@ TwoButtons >> initializePresenters
 The class `SpBoxLayout` displays presenters in an ordered sequence of boxes. A box layout can be horizontal or vertical and presenters are ordered left to right and top to bottom respectively. A box layout can be composed of other layouts.
 
 
-![Two buttons placed horizontally from left to right. % width=50&anchor=TwoButtonsLeftToRight ](figures/TwoButtonsLeftToRight.png)
+![Two buttons placed horizontally from left to right. %anchor=TwoButtonsLeftToRight&width=50 ](figures/TwoButtonsLeftToRight.png)
 
 Let us define a first simple layout as follows and whose result is displayed in Figure *@TwoButtonsLeftToRight@*.
 
