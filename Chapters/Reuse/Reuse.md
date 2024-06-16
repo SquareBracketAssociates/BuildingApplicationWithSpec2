@@ -59,9 +59,9 @@ WidgetClassListPresenter >> defaultLayout
 			yourself
 ```
 
-When doing `WidgetClassListPresenter new open`, you should see the UI shown in Figure *@fig_WidgetClassList@*.
+When doing `WidgetClassListPresenter new open`, you should see the UI shown in Figure *@WidgetClassList@*.
 
-![WidgetClassListPresenter. % width=50&anchor=fig_WidgetClassList](figures/WidgetClassList.png)
+![WidgetClassListPresenter. %anchor=WidgetClassList&width=50](figures/WidgetClassList.png)
 
 
 ### Supporting reuse

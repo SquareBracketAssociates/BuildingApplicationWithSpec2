@@ -70,7 +70,7 @@ The following snippet opens a window with the list of methods of the class `Poin
 (MethodLister on: Point) open.
 ```
 
-![A simple list of sorted selectors of the class Point.  %anchors=pointselectors&width=45](figures/PointSelectors.png)
+![A simple list of sorted selectors of the class Point. %anchor=pointselectors&width=45](figures/PointSelectors.png)
 
 
 

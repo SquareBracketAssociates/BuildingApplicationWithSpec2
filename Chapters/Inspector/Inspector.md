@@ -27,11 +27,11 @@ The raw view on the object is a tree list. By clicking the small grey triangle o
 
 This is recursive: if you click on more variables, more panes will open. By default, only the last two panes are visible at any time. You can use the small rectangles at the bottom of the window to navigate between panes.
 
-Figure *@InspectorNavigation@* is a small demonstration.
+%Figure *@InspectorNavigation@* is a small demonstration.
 
 KDH: adding a GIF file does not work. We need an alternative or remove this part
 
-%![Navigating in the inspector](figures/InspectorPaneNavigation.gif width=40&label=InspectorNavigation)
+%![Navigating in the inspector](figures/InspectorPaneNavigation.gif %anchor=InspectorNavigation&width=40)
 
 ### The inspector toolbar
 
