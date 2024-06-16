@@ -82,7 +82,6 @@ AthensHello >> renderAthens
 		canvas drawString: 'Hello Athens in Pharo/Morphic' ]
 ```
 
-Note that recreating the paint and the font is not the best way to have efficient code, but that is not the purpose of this example.
 
 To test the code, let's add a helper method. This will add a button on the left of the method name. When you click on it, it'll execute the content of the script instruction.
 
