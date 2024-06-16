@@ -83,7 +83,7 @@ AthensHello >> renderAthens
 ```
 
 
-To test the code, let's add a helper method. This will add a button on the left of the method name. When you click on it, it'll execute the content of the script instruction.
+To test the code, let's add a helper method. This will add a button on the left of the method name in the method list of the browser. When you click on it, it will execute the content of the script instruction.
 
 ```
 AthensHello >> open
