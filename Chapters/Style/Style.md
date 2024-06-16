@@ -11,15 +11,13 @@ We give some basis before showing how to effectively use styles to enhance the l
 
 ### How do styles work?
 
-Styles in Spec work like CSS. They are style sheets in which the properties for presenting a presenter are defined. Properties such as colors, width, height, font, and others.
-As a general principle, it is better to use styles instead of fixed constraints, because your application will be more responsive.
+Styles in Spec work like CSS. They are stylesheets in which the properties for displaying a presenter are defined. Properties such as colors, width, height, font, and others. As a general principle, it is better to use styles instead of fixed constraints, because your application will be more responsive.
 
 For example, assume you want a button to have a specific width and height. You can achieve that by using constraints with the method `add:withConstraints:` or using styles. In both cases, the result will be as shown in Figure *@style2@*:
 
 ![A window with a button.](figures/style2.png width=50&label=style2)
 
-But, if you change the size of the fonts of the Pharo image using Settings/Appearance/Standard Fonts/Huge, using fixed constraints, you will obtain the following result shown in Figure *@style3@*.
-You will for example not be able to see the icons because the size is not recomputed correctly.
+But, if you change the size of the fonts of the Pharo image using Settings/Appearance/Standard Fonts/Huge, using fixed constraints, you will obtain the result shown in Figure *@style3@*. You will not be able to see the icons because the size is not recomputed correctly.
 
 ![Badly scaled window.](figures/style3.png width=50&label=style3)
 
@@ -31,7 +29,7 @@ When using styles, the size of the button will also scale as shown in Figure *@s
 ### About stylesheets
 
 Spec first collects the style for the presenter, then collects the styles for its
- subcomponents. 'application' is the default root level.
+ subpresenters. 'application' is the default root level.
 
 A defined stylesheet always has a root element and this root element
 has to be called `'.application'`.
@@ -47,26 +45,26 @@ There are two ways to express stylesheets: one for Morphic expressed using an ex
 
 ### STON notation
 
-Morphic styles can be declared using STON. STON is a textual object notation. It is described in a dedicated chapter in the _Enterprise Pharo_ book available at [http://books.pharo.org](http://books.pharo.org).
+Morphic styles can be declared using STON. STON is a textual object notation. It is described in a dedicated chapter in the _Enterprise Pharo_ book available at [https://books.pharo.org](https://books.pharo.org).
 
 Each style element can use specific properties defined by associated classes:
 
-- Geometry: `SpStyleGeometry`
-- Draw: `SpStyleDraw`
-- Font:  `SpStyleFont`
-- Container: `SpStyleContainer`
+- Geometry: `SpGeometryStyle`
+- Draw: `SpDrawStyle`
+- Font:  `SpFontStyle`
+- Container: `SpContainerStyle`
+- Text: `SpTextStyle`
 
 Example:
 ```
 Geometry { #hResizing: true }
-Draw { #color:  Color{ #red: 1, #green: 0, #blue: 0, #alpha: 1}}
+Draw { #color:  Color { #red: 1, #green: 0, #blue: 0, #alpha: 1}}
 Draw { #color: #blue}
 Font { #name: "Lucida Grande", #size: 10, #bold: true }
 Container { #borderColor: Color { #rgb: 0, #alpha: 0 }, #borderWidth: 2, #padding: 5 },
 ```
 
-You can define your style globally, and to your specific presenter, with the `addStyle:`
-message: for example `addStyle: 'section'`.
+You can define your style globally, and add it to your specific presenter with the `addStyle:` message, for example `addStyle: 'section'`.
 
 This message is specific to the `SpAbstractMorphicAdapter` backend.
 Here are two examples of stylesheets.
@@ -195,7 +193,7 @@ Now we have two styles: `lightGreen` and `lightBlue` that can be applied to any 
 ### Environmental variables
 
 
-We can also use environmental variables to get the values of the predefined colors and fonts of the current theme. For example, we can create two styles for changing the fonts of the text of a presenter:
+We can also use environmental variables to get the values of the predefined colors and fonts of the current theme. For example, we can create two styles for changing the font of the text of a presenter:
 
 ```
 '.application [
@@ -205,7 +203,7 @@ We can also use environmental variables to get the values of the predefined colo
 ```
 
 
-Also we can change the styles for all the presenters by default. For instance, we can put all the text in bold by default.
+Also we can change the styles for all the presenters by default. For instance, we can display all the text in bold by default.
 
 ```
 '.application [
@@ -242,18 +240,19 @@ app styleSheet: styleSheet.
 ```
 
 
-Now we can add styles to a presenter, as follows and whose result is shown in Figure *@style5@*.
+Now we can add styles to a presenter as follows, and whose result is shown in Figure *@style5@*.
 
 ```
+label := presenter newLabel.
 presenter layout: (SpBoxLayout newTopToBottom
-    add: (label := presenter newLabel);
+    add: label;
     yourself).
 
 label label: 'I am a label'.
 label addStyle: 'red'.
 label addStyle: 'bgGray'.
 
-presenter open.
+presenter open
 ```
 
 
@@ -313,7 +312,7 @@ CustomStylesApplication >> styleSheet
 ```
 
 
-We can use different properties in the same style. For example, in `labelStyle` we are setting the height of the presenter to 25 scaled pixels and the font size to 12 scaled pixels. Also, we are using `EnvironmentColor(#base)` for obtaining the default background color according to the current theme. Because the color will change according to the theme that is used in the image.
+We can use different properties in the same style. For example, in `labelStyle` we are setting the height of the presenter to 25 scaled pixels and the font size to 12 scaled pixels. Also, we are using `EnvironmentColor(#base)` for obtaining the default background color according to the current theme, because the color will change according to the theme that is used in the image.
 
 
 ### Defining a presenter for the editor
@@ -327,7 +326,7 @@ SpPresenter << #CustomStyles
 	package: 'CodeOfSpec20Book'
 ```
 
-In the `initializePresenters` method we will first initialize the presenters, then set the styles for the presenters and finally initialize the layout.
+In the `initializePresenters` method we will first initialize the presenters and then set the styles for the presenters.
 
 ```
 CustomStyles >> initializePresenters
@@ -387,11 +386,11 @@ CustomStyles >> initializeWindow: aWindowPresenter
 
 	aWindowPresenter
 		title: 'Using styles';
-		initialExtent:600 @400
+		initialExtent: 600 @400
 ```
 
 
-Without setting the custom styles nor using our custom application in the presenter, we obtain Figure *@style7@*, assuming that the "Pharo Dark" theme is in effect:
+Without setting the custom styles nor using our custom application in the presenter, we obtain Figure *@style7@*, assuming that the "Pharo Light" theme is in effect:
 
 ![Styling.](figures/style7.png width=70&label=style7)
 
@@ -411,7 +410,7 @@ CustomStyles >> initializeStyles
 	text addStyle: 'smallFontSize'.
 	"Change the background color."
 	text addStyle: 'bgOpaque'.
-	"But a smaller width for the zoom buttons"
+	"Use a smaller width for the zoom buttons"
 	zoomInButton addStyle: 'icon'.
 	zoomOutButton addStyle: 'icon'.
 	codeFontButton addStyle: 'buttonStyle'.
@@ -442,7 +441,7 @@ Now, when we run `CustomStylesApplication new start` we will obtain Figure *@sty
 
 The only thing missing is to add the behavior of the buttons.
 
-For example, if we click on the zoom-in button we want to remove the `smallFontStyle` and add the `bigFontSize`. When we click on the text font button, we want to remove the style `codeFont` and add the `textFont` style. 
+For example, if we click on the zoom-in button we want to remove the `smallFontStyle` and add the `bigFontSize`. When we click on the text font button, we want to remove the style `codeFont` and add the `textFont` style.
 
 This is what we have to do in the `connectPresenters` method:
 
@@ -464,7 +463,7 @@ CustomStyles >> connectPresenters
 ```
 
 
-When we click on the the "zoom in" button, the size of the text changes as shown in Figure *@style9@*.
+When we click on the the zoom-in button, the size of the text changes as shown in Figure *@style9@*.
 
 ![Zoomed styled editor.](figures/style9.png width=50&label=style9)
 
