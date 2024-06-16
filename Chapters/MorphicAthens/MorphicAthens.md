@@ -129,9 +129,9 @@ We define a basic layout so that Spec knows where to place it.
 ```
 AthensHelloPresenter >> defaultLayout
 
-	^ SpBoxLayout newTopToBottom 
-		add: morphPresenter;
-		yourself
+	^ SpBoxLayout newTopToBottom
+			add: morphPresenter;
+			yourself
 ```
 
 In `initializePresenters` we wrap the morph in a `SpMorphPresenter`.
