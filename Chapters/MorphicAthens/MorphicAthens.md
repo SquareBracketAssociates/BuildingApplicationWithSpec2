@@ -173,7 +173,7 @@ This presenter wraps a `AthensPresenter` as follows:
 ```
 AthensExamplePresenter >> initializePresenters
 
-	paintPresenter := self instantiate: AthensPresenter.
+	paintPresenter := self instantiate: SpAthensPresenter.
 	paintPresenter surfaceExtent: 600@400.
 	paintPresenter drawBlock: [ :canvas | self render: canvas ]
 ```
