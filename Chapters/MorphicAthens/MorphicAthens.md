@@ -17,7 +17,7 @@ Ultimately, pictures on a computer are displayed on a screen with a specific dis
 
 Morphic is the way to do graphics with Pharo. However, most existing canvases are pixel based, and not vector based. This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc)
 
-Enter Athens, a vector-based graphic API. Under the hood, it can either use Balloon Canvas or the Cairo graphic library for the rasterization phase.
+Enter Athens, a vector-based graphic API. Under the hood, it uses the Cairo graphic library for the rasterization phase.
 
 When you integrate Athens with Spec, you'll use its rendering engine to create your picture. It's then transformed into a `Form` and displayed on the screen.
 
