@@ -1,6 +1,6 @@
 ## Integration of Athens in Spec
 
-This chapter has been originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components.
+This chapter was originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components.
 
 ### Introduction
 
@@ -15,21 +15,21 @@ Ultimately, pictures on a computer are displayed on a screen with a specific dis
 
 **Note.** You have the same concept when doing 3D programming with an API like OpenGL. You describe your scene with points, vertices, etc, and in the end, you rasterize your scene to display it on your screen.
 
-Morphic is the way to do graphics with Pharo. However, most existing canvases are pixel based, and not vector based. This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc)
+Morphic is the way to do graphics with Pharo. However, most existing canvases are pixel-based, and not vector-based. This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc).
 
 Enter Athens, a vector-based graphic API. Under the hood, it uses the Cairo graphic library for the rasterization phase.
 
-When you integrate Athens with Spec, you'll use its rendering engine to create your picture. It's then transformed into a `Form` and displayed on the screen.
+When you integrate Athens with Spec, you'll use its rendering engine to create your picture. It is transformed into a `Form` and displayed on the screen.
 
 ### Hello world in Athens
 
-We'll see how to use Athens directly integrated with Morphic. This is why we first start to create a `Morph` subclass. Figure *@figathens@* shows the display of such a morph. It will be the class we'll use after for all our experiments.
+We will see how to use Athens directly integrated with Morphic. This is why we create a `Morph` subclass. Figure *@athens@* shows the display of such a morph. It will be the class we will use for all our experiments.
 
-![AthensHello new openInWindow](figures/athens.png width=60&label=figathens)
+![AthensHello new openInWindow](figures/athens.png width=60&label=athens)
 
 
 
-First, we define a class, which inherits from `Morph`:
+First, we define a class which inherits from `Morph`:
 
 ```
 Morph << #AthensHello
@@ -37,7 +37,7 @@ Morph << #AthensHello
 	package: 'CodeOfSpec20Book'
 ```
 
-During the initialization phase, we create our Athens surface:
+During the initialization phase, we create an Athens surface:
 
 ```
 AthensHello >> initialize
@@ -55,7 +55,7 @@ AthensHello >> defaultExtent
 	^ 400@400
 ```
 
-The `drawOn:` method, mandatory in Morph subclasses, asks Athens to render its drawing and it will then display it in a Morphic canvas as a Form (a bitmap picture)
+The `drawOn:` method, mandatory in `Morph` subclasses, asks Athens to render its drawing and it will then display it in a Morphic canvas as a `Form` (a bitmap picture)
 
 ```
 AthensHello >> drawOn: aCanvas
@@ -65,7 +65,7 @@ AthensHello >> drawOn: aCanvas
 ```
 
 
-Our actual Athens code is located into the `renderAthens` method, and the result is stored in the `surface` instance variable.
+Our actual Athens code is located in the `renderAthens` method, and the result is stored in the `surface` instance variable.
 
 ```
 AthensHello >> renderAthens
@@ -82,20 +82,16 @@ AthensHello >> renderAthens
 		canvas drawString: 'Hello Athens in Pharo/Morphic' ]
 ```
 
-
-To test the code, let's add a helper method. This will add a button on the left of the method name in the method list of the browser. When you click on it, it will execute the content of the script instruction.
+Open the morph in a window with:
 
 ```
-AthensHello >> open
-
-	<script: 'self new openInWindow'>
+AthensHello new openInWindow
 ```
-
 
 
 ### Handling resizing
 
-You can already create the window, and see a nice gradient, with a greeting text. However, you will notice, if you resize your window, that the Athens content is not resized. To fix this, we'll need one last method.
+You can already create the window and see a nice gradient with a greeting text. However, you will notice that when resizing the window, the Athens content is not resized. To fix this, we need one extra method.
 
 ```
 AthensHello >> extent: aPoint
@@ -142,14 +138,18 @@ AthensHelloPresenter >> initializePresenters
 	morphPresenter morph: AthensHello new
 ```
 
-When we open the presenter it will display the morph: `AthensHelloPresenter new open`.
+When we open the presenter it displays the morph:
+
+```
+AthensHelloPresenter new open
+```
 
 
 ### Direct integration of Athens with Spec
 
-We can also get a direct integration without relying on a specific Morph creation.
+We can also achieve a direct integration without relying on a specific Morph creation.
 
-We first create a presenter named `AthensExamplePresenter`. This is the presenter that will support the actual rendering drawn using Athens.
+We first create a presenter named `AthensExamplePresenter`. This is the presenter that will support the actual rendering using Athens.
 
 
 ```
@@ -168,7 +168,7 @@ AthensExamplePresenter >> defaultLayout
 			yourself
 ```
 
-This presenter wraps a `AthensPresenter` as follows:
+This presenter wraps an `AthensPresenter` as follows:
 
 ```
 AthensExamplePresenter >> initializePresenters
@@ -179,9 +179,6 @@ AthensExamplePresenter >> initializePresenters
 ```
 
 It configures the `AthensPresenter` to draw with the `render:` message.
-
-
-We define the `render:` method:
 
 ```
 AthensExamplePresenter >> render: canvas
@@ -197,11 +194,9 @@ AthensExamplePresenter >> render: canvas
 	canvas drawShape: (0 @ 0 extent: canvas surface extent)
 ```
 
-We could decorate the window as with any presenters.
-
 Executing `AthensExamplePresenter new open` produces Figure *@athens2@*.
 
-![AthensExamplePresenter new open](figures/athens2.png width=60&label=athens2)
+![A Spec application with an Athens presenter.](figures/athens2.png width=60&label=athens2)
 
 This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture.
 
