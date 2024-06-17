@@ -50,10 +50,9 @@ Metacello new
 
 ### Acknowledgements
 
-Even though due to the lack of manpower the fundraising campaign was not used,
-the authors would like to express their warm gratitude to the following people for their financial support: Masashi Fujita, Roch-Alexandre Nominé, Eiichiro Ito, sumim, Hilaire Fernandes, Dominique Dartois, Philippe Mougin, Pavel Krivanek, Michael L. Davis, Ewan Dawson, Luc Fabresse, David Bajger, Jörg Frank, Petter Egesund, Pierre Bulens, Tomohiro Oda, Sebastian Heidbrink, Alexandre Bergel, Jonas Skučas, and Mark Schwenk.
+Even though due to the lack of manpower the fundraising campaign was not used, the authors would like to express their warm gratitude to the following people for their financial support: Masashi Fujita, Roch-Alexandre Nominé, Eiichiro Ito, sumim, Hilaire Fernandes, Dominique Dartois, Philippe Mougin, Pavel Krivanek, Michael L. Davis, Ewan Dawson, Luc Fabresse, David Bajger, Jörg Frank, Petter Egesund, Pierre Bulens, Tomohiro Oda, Sebastian Heidbrink, Alexandre Bergel, Jonas Skučas, and Mark Schwenk.
 
-We want to thank I. Thomas for her chapter on the inspector, S. Jaroshko for his code and idea about the traffic light chapter and R. De Villemeur for the chapter on Athens integration.
+We want to thank I. Thomas for her chapter on the inspector, and R. De Villemeur for the chapter on Athens integration.
 
 Finally, Stéphane Ducasse wants to thank Johan Fabry for his co-authoring of the first book on Spec 1.0. Without that first book, this one would not exist.
 

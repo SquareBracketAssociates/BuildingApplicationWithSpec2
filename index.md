@@ -8,8 +8,6 @@
 <!inputFile|path=Chapters/CaseStudyOne/CaseStudyOne.md!>
 %Reviewed by stef  - anchor
 
-<!inputFile|path=Chapters/TrafficLights/TrafficLights.md!>
-
 # Spec Essentials
 
 <!inputFile|path=Chapters/InANutshell/InANutshell.md!> 
