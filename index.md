@@ -38,6 +38,7 @@
 <!inputFile|path=Chapters/Transmissions/Transmission.md!>
 <!inputFile|path=Chapters/MorphicAthens/MorphicAthens.md!>
 
+<!inputFile|path=Chapters/Inspector/Inspector.md!>
 
 # Working with Commands
 
@@ -46,8 +47,7 @@
 <!inputFile|path=Chapters/Commander2/Commander.md!>
 %Reviewed by stef - anchor
 
-# Other
-<!inputFile|path=Chapters/Inspector/Inspector.md!>
+
 %Reviewed by stef - anchor
 
 %<!inputFile|path=Chapters/Tips/Tips.md!>
