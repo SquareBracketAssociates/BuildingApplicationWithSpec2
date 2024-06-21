@@ -25,7 +25,7 @@ When you integrate Athens with Spec, you'll use its rendering engine to create y
 
 We will see how to use Athens directly integrated with Morphic. This is why we create a `Morph` subclass. Figure *@athens@* shows the display of such a morph. It will be the class we will use for all our experiments.
 
-![AthensHello new openInWindow](figures/athens.png width=60&label=athens)
+![AthensHello new openInWindow. %width=60&label=athens](figures/athens.png)
 
 
 
@@ -196,7 +196,7 @@ AthensExamplePresenter >> render: canvas
 
 Executing `AthensExamplePresenter new open` produces Figure *@athens2@*.
 
-![A Spec application with an Athens presenter.](figures/athens2.png width=60&label=athens2)
+![A Spec application with an Athens presenter. % width=60&label=athens2](figures/athens2.png)
 
 This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture.
 

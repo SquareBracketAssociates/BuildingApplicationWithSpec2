@@ -50,6 +50,8 @@
 <!inputFile|path=Chapters/Inspector/Inspector.md!>
 %Reviewed by stef - anchor
 
-<!inputFile|path=Chapters/Tips/Tips.md!>
-<!inputFile|path=Chapters/CaseStudyTwo/CaseStudyTwo.md!> 
+%<!inputFile|path=Chapters/Tips/Tips.md!>
+%<!inputFile|path=Chapters/CaseStudyTwo/CaseStudyTwo.md!> 
 %Reviewed by stef - anchor
+
+
