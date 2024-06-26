@@ -1,4 +1,4 @@
-## Menubar, Toolbar, Status bar and Context Menus
+## Menubar, Toolbar, Status Bar and Context Menus
 
 Often application windows have a menubar that includes all commands provided by the application. Application windows may also have a toolbar, with buttons for commands that are used frequently. Some applications only have a toolbar. Apart from supporting a menubar and toolbar, Spec supports a status bar at the bottom of a window. Some widgets are equipped with context menus, such as a text fields, tables, and lists. All these aspects are the subject of this chapter.
 
