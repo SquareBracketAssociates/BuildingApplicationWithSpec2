@@ -1,5 +1,5 @@
 ## Introduction
-@chaintroduction
+@chaintroductions
 
 Spec is a framework in Pharo for describing user interfaces. It allows for the construction of a wide variety of UIs; from small windows with a few buttons up to complex tools like a debugger. Indeed, multiple tools in Pharo are written in Spec, e.g., Iceberg the git manager, Change Sorter, Critics Browser, and the Pharo debugger.
 An important architectural decision is that Spec supports multiple backends (at the time of writing this book, GTK and Morphic are available).
@@ -14,13 +14,15 @@ To allow such reuse, Spec was influenced by VisualWorks' and Dolphin Smalltalk's
 
 In Spec 1.0, this role was filled by the class `ComposableModel` and now, in Spec 2.0, the class is called `SpPresenter`. A presenter manages the _logic UI and the link between widgets and domain objects_. Fundamentally, when writing Spec code,  developers do _not_ come into contact with UI widgets. Instead, they program a Presenter that holds the UI logic (interactions, layout, ...) and talks to domain objects. When the UI is opened, this presenter instantiates the appropriate widgets. This being said, for developers, this distinction is not apparent and it feels as if the widgets are being programmed directly.
 
-Spec is the standard GUI framework in Pharo and differs from Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists, etc. It cannot be used as a general drawing framework, but you can integrate a canvas inside a Spec component. For example, you can embed a Roassal visualization \(see Figure *@SpecRoassal@*\), or you can extend Spec itself with additional native components.
+Spec is the standard GUI framework in Pharo and differs from Pharo's other GUI frameworks such as Morphic. It is restricted in that it only allows one to build user interfaces for applications that have typical GUI widgets such as buttons, lists, etc. It cannot be used as a general drawing framework, but you can integrate a canvas inside a Spec component. 
+
+For example, you can embed a Roassal visualization (see Figure *@SpecRoassal@*), or you can extend Spec itself with additional native components.
 
 ![Roassal and Spec integration. %width=100&anchor=SpecRoassal](figures/roassalGTK.png)
 
-Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo@*.
+Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo@*. It shows that Spec can be used for the overall structure of the application and embed specific elements. 
 
-![An integration of Morphic Native Widgets and Spec %width=100&anchor=NovaStelo](figures/NovaStelo.png)
+![An integration of Morphic Native Widgets and Spec. %width=100&anchor=NovaStelo](figures/NovaStelo.png)
 
 ### Spec 2.0
 
