@@ -3,7 +3,7 @@
 
 We will construct a small but complete user interface. This will allow you to build basic user interfaces.
 
-After completing this chapter you should read Chapter *@cha_reuse@* about the reuse of Spec presenters, which is the key behind the power of Spec. With these two chapters, you should be able to construct Spec user interfaces as intended. You could use the rest of this book just as reference material, but nonetheless, we recommend you to at least give a brief look at the other chapters as well.
+After completing this chapter you may read Chapter *@cha_reuse@* about the reuse of Spec presenters, which is the key behind the power of Spec. With these two chapters, you should be able to construct Spec user interfaces as intended. You could use the rest of this book as reference material, but nonetheless, we recommend you to at least give a brief look at the other chapters as well.
 
 ### A customer satisfaction UI
 @seccustomersatisfaction

@@ -8,7 +8,7 @@ We will show many aspects of Spec that we will revisit in depth in the rest of t
 
 ### Application
 
-Spec20 introduces the concept of an application. An application is a small object responsible for keeping the state of your application. It manages, for example, the multiple windows that compose your application, and its backend (Morphic or GTK), and can hold properties shared by the presenters.
+Spec 2.0 introduces the concept of an application. An application is a small object responsible for keeping the state of your application. It manages, for example, the multiple windows that compose your application, and its backend (Morphic or GTK), and can hold properties shared by the presenters.
 
 We start with the definition of the example application class:
 
