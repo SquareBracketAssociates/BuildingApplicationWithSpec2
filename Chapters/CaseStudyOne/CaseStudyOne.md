@@ -8,7 +8,7 @@ We will show many aspects of Spec that we will revisit in depth in the rest of t
 
 ### Application
 
-Spec20 introduces the concept of an application. An application is a small object responsible for keeping the state of your application. It manages, for example, the multiple windows that compose your application, and its backend (Morphic or GTK), and can hold properties shared by the presenters.
+Spec 2.0 introduces the concept of an application. An application is a small object responsible for keeping the state of your application. It manages, for example, the multiple windows that compose your application, and its backend (Morphic or GTK), and can hold properties shared by the presenters.
 
 We start with the definition of the example application class:
 
@@ -290,7 +290,7 @@ ImdbFilmPresenter >> defaultLayout
 
 ![Using a non-homogenous grid layout. % width=50&anchor=FilmListPresenter2](figures/FilmList-04-OpenFilmPresenter-2.png)
 
-Now we set the window properties by adding the following new `initializeWindow:` method. See Figure *@FilmListPresenter3@*.
+Now we set the window properties by adding the following new `initializeWindow:` method. We get the situation shown in Figure *@FilmListPresenter3@*.
 
 ```
 ImdbFilmPresenter >> initializeWindow: aWindowPresenter
@@ -356,7 +356,7 @@ ImdbFilmListPresenter >> addFilm
 	self updatePresenter
 ```
 
-Now we can open the `FilmListPresenter` and click on the `Add film` button. When the film data has been entered and the `Save Film` button has been clicked, you will see that the FilmListPresenter is updated with the added film, as shown in Figure *@refreshed@*
+Now we can open the `FilmListPresenter` and click on the `Add film` button. When the film data has been entered and the `Save Film` button has been clicked, you will see that the FilmListPresenter is updated with the added film, as shown in Figure *@refreshed@*.
 
 ```
 app := ImdbApp new.
@@ -464,7 +464,7 @@ With `connectPresenters` in place, selecting an item in the list results in show
 
 A strong property of Spec is that we can write tests to describe the interaction and the logic of a UI. Tests are so powerful to help us create nice designs and make sure that we can spot errors, that we will show that writing tests for a UI is not complex.
 
-We define a subclass of `TestCase`.
+We define `ImdbFilmListPresenterTest` as a subclass of `TestCase`.
 
 ```
 TestCase << #ImdbFilmListPresenterTest
