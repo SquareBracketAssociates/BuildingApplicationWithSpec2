@@ -49,7 +49,7 @@ SpPresenter << #ColorChooser
 	package: 'CodeOfSpec20Book'
 ```
 
-`initializePresenters` initializes the subpresenters. `colorList` holds a list presenter with the colors. `colorBox` displays the chosen color in a `SpRoassalPresenter`. `colorDetails` holds a text presenter that shows information about the color. `lighterButton` and `darkerButton` are the buttons to make the current color lighter or darker.
+The method `initializePresenters` initializes the subpresenters. `colorList` holds a list presenter with the colors. `colorBox` displays the chosen color in a `SpRoassalPresenter`. `colorDetails` holds a text presenter that shows information about the color. `lighterButton` and `darkerButton` are the buttons to make the current color lighter or darker.
 
 ```
 ColorChooser >> initializePresenters

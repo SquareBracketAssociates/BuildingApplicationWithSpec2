@@ -20,7 +20,7 @@ However, simply instantiating a presenter using the message `new` and passing th
 
 There are two ways to address this situation in Spec and in particular, Spec offers a special presenter called `SpPresenterWithModel`. Let us explain how to take advantage of it.
 
-We will build the simplest example to show how to do it. We will implement a presenter that lists the method signatures of a class, first using a presenter and second using a presenter (subclass of `SpPresenterWithModel`) dedicated to handling a model.
+We will build the simplest example to show how to do it. We will implement a presenter that lists the method signatures of a class, first using a presenter inheriting from the default superclass (`SpPresenter`) and second using a presenter (subclass of `SpPresenterWithModel`) dedicated to handling a model.
 
 
 ### Example with SpPresenter
