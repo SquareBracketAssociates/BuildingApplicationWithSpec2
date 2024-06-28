@@ -37,8 +37,8 @@ In the method `initializePresenters`, we create the list and populate it with th
 WidgetClassListPresenter >> initializePresenters
 
 	list := self newList.
-	list items: (AbstractWidgetModel allSubclasses sorted: [:a :b | a name < b name ]).
-	self focusOrder add: list.
+	list items: (SpAbstractWidgetPresenter allSubclasses sorted: [:a :b | a name < b name ]).
+	self focusOrder add: list
 ```
 
 We also add a title for the window.
