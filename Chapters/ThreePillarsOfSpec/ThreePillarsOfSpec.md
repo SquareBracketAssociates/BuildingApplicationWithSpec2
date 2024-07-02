@@ -85,7 +85,7 @@ The following snippet shows that the change of model is not taken into account i
 | lister |
 lister := MethodLister on: Point.
 lister open.
-lister class: Rectangle
+lister setModel: Rectangle
 ```
 
 
