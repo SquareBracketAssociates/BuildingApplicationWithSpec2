@@ -8,9 +8,9 @@ Spec is the foundation of most tools in Pharo, such as the inspector, Spotter, t
 
 ### Spec architecture overview
 
-Figure *@coreextended@* presents the general architecture of Spec. Basically, Spec is built around 5 concepts that we will describe in subsequent sections. The most important concepts are Presenter, Layout, and Application.
+Figure *@coreextended@* presents the general architecture of Spec. Basically, Spec is built around 5 concepts that we will describe in subsequent sections. The most important concepts are _presenter_, _layout_, and _application_.
 
-A Presenter represents the UI element logic and it is also the connection with the domain. The Application is also a place to be in contact with domain objects but generally, it handles application-specific resources (icons, windows,…).
+A _presenter_ represents the UI element logic and it is also the connection with the domain. The Application is also a place to be in contact with domain objects but generally, it handles application-specific resources (icons, windows,…).
 
 Based on presenters and layouts, Spec builds the actual UI. Internally, it uses adapters that are specific to each widget and per backend. This way presenters are agnostic about backends and are reusable across them.
 
@@ -29,7 +29,7 @@ Spec core is composed of the following elements:
 - **Stylesheet and styles**. A stylesheet is composed of styles that describe visual properties such as fonts, colors, …
 
 
-![Presenter, Application, Layout and Style of Spec. % anchor=core&width=60](figures/core.pdf )
+![Presenter, Application, Layout, and Style of Spec. % anchor=core&width=60](figures/core.pdf )
 
 
 We detail each of the main elements.

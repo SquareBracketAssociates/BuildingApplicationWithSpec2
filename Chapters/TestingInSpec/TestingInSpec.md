@@ -70,7 +70,7 @@ ColorChooser >> initializePresenters
 	colorDetails := self newText
 ```
 
-`currentColor` is not initialized by `initializePresenters`. It is initialized in `setModelBeforeInitialization:` because a color can be given when creating a new `ColorChooser` instance.
+The instance variable `currentColor` is not initialized by `initializePresenters`. It is initialized in `setModelBeforeInitialization:` because a color can be given when creating a new `ColorChooser` instance.
 
 ```
 ColorChooser >> setModelBeforeInitialization: aColor
@@ -78,7 +78,7 @@ ColorChooser >> setModelBeforeInitialization: aColor
 	currentColor := aColor
 ```
 
-`defaultLayout` defines the layout with a left side and a right side. The left side is the color list. The right side consists of the color box, the two buttons, and the color details. Composition with horizontal and vertical `BoxLayout`s, together with a 5-pixel spacing, results in the window shown in Figure *@exampleapplication@*.
+The method `defaultLayout` defines the layout with a left side and a right side. The left side is the color list. The right side consists of the color box, the two buttons, and the color details. Composition with horizontal and vertical `BoxLayout`s, together with a 5-pixel spacing, results in the window shown in Figure *@exampleapplication@*.
 
 ```
 ColorChooser >> defaultLayout
@@ -102,7 +102,7 @@ ColorChooser >> defaultLayout
 		yourself
 ```
 
-`initializeWindow:` sets the title and the initial dimensions of the window.
+The method `initializeWindow:` sets the title and the initial dimensions of the window.
 
 ```
 ColorChooser >> initializeWindow: aWindowPresenter
@@ -120,7 +120,7 @@ ColorChooser >> connectPresenters
 	colorList whenSelectionChangedDo: [ :selection |
 		self updateColor: selection selectedItem ]
 ```
-`connectPresenters` delegates to `updateColor:` to update the color box and the color details. As you can see, `updateColor:` takes care of a possible `nil` value for `currentColor`.
+The method `connectPresenters` delegates to `updateColor:` to update the color box and the color details. As you can see, `updateColor:` takes care of a possible `nil` value for `currentColor`.
 
 ```
 ColorChooser >> updateColor: color
@@ -136,7 +136,7 @@ ColorChooser >> updateColor: color
 	colorDetails text: details
 ```
 
-`updateColor:` delegates the responsability of producing the text with color details to `detailsFor:`.
+The method `updateColor:` delegates the responsibility of producing the text with color details to `detailsFor:`.
 
 ```
 ColorChooser >> detailsFor: color
@@ -181,7 +181,7 @@ ColorChooser >> defaultColors
 		Color black }
 ```
 
-There are only two methods missing from the code above to complete the class implementation. `initializePresenters` sets actions for the buttons, which invoke the following two methods. These methods delegate to `updateColor:` to do the heavy lifting.
+There are only two methods missing from the code above to complete the class implementation. The method `initializePresenters` sets actions for the buttons, which invoke the following two methods. These methods delegate to the method `updateColor:` to do the heavy lifting.
 
 ```
 ColorChooser >> lighter
@@ -213,7 +213,7 @@ Let's see what happens when we provide a color with:
 
 In this case, yellow is given as the initial color that should be shown when the window opens. Note that `on:` has not been defined as a class method by `ColorChooser`. The class method is inherited from the superclass `SpAbstractPresenter`. The result is shown in Figure *@initializedapplication@*.
 
-![The ColorChooser opened on the color yellow.](figures/InitializedApplication.png width=70&label=initializedapplication)
+![The ColorChooser opened on the color yellow. % width=70&label=initializedapplication](figures/InitializedApplication.png)
 
 
 ### Tests
@@ -318,7 +318,7 @@ ColorChooser >> clickColorAtIndex: index
 
 #### Making the current color lighter
 
-Now it is time to describe the application behavior after clicking the 'Lighter' button.
+Now, it is time to describe the application behavior after clicking the 'Lighter' button.
 
 The test consists of four parts. First, the first color in the list is clicked. That results in an update of the color box and the color details. After a click on the button, the test verifies the changed state of the color box and the color details. Then it clicks the button a second time to describe that the current color can be made lighter over and over again. Finally, the test selects the seventh color in the list and verifies the expected state changes in the subpresenters.
 
@@ -406,7 +406,7 @@ ColorChooserTest >> testDarker
 		equals: '(Color r: 0.0 g: 0.0 b: 0.9198435972629521 alpha: 1.0)\\#0000EB' withCRs
 ```
 
-Again, this test requires an extra test support method.
+Again, this test requires an extra test support method. Note that such a method is not mandatory and could be replaced by a simple access to the button using an accessor. Using such a helper method factors the logic. 
 
 ```
 ColorChooser >> clickDarkerButton
@@ -467,7 +467,7 @@ ColorChooserApplicationTest >> testWindowRegistration
 	self assert: application windows size equals: 2
 ```
 
-`testWindowRegistration` describes the expected behaviour of our application. When opened windows are correctly registered, the application should have access to all the opened windows. The test opens two windows and verifies that the number of windows increases.
+The method `testWindowRegistration` describes the expected behavior of our application. When opened windows are correctly registered, the application should have access to all the opened windows. The test opens two windows and verifies that the number of windows increases.
 
 The test fails, because `ColorChooserApplication` does not exist yet. Let's define it:
 
@@ -477,7 +477,7 @@ SpApplication << #ColorChooserApplication
 	package: 'CodeOfSpec20Book'
 ```
 
-The test still fails. It fails in the second assert because the application does not register the open windows. Let's implement the `start` method to register the windows.
+The test still fails. It fails in the second assertion because the application does not register the open windows. Let's implement the `start` method to register the windows.
 
 ```
 ColorChooserApplication >> start
