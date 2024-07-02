@@ -258,7 +258,7 @@ tree roots: { Object };
 ```
 
 
-The following script shows the use of the message `selectPathByItems:scrollToSelection:`, which allows selecting elements by specifying a group of items and asking the tree to scroll to the selection. Figure *@figTreeselect@* shows the result.
+The following script shows the use of the message `selectPathByItems:scrollToSelection:`, which allows selecting elements by specifying a list of items (a path from the root to the selected item) and asking the tree to scroll to the selection. Figure *@figTreeselect@* shows the result.
 
 
 ```
@@ -273,7 +273,7 @@ SpTreePresenter new
 	selectPathByItems: pathToSpPresenter scrollToSelection: true
 ```
 
-![A tree with a selected item. % width=50&anchor=figTreeselect](figures/TreeSelectedItem.png)
+![A tree with a selected item and scrolling to display it. % width=50&anchor=figTreeselect](figures/TreeSelectedItem.png)
 
 ### Tables
 
