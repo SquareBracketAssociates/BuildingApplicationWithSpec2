@@ -48,7 +48,7 @@ As we have shown in previous chapters, to open a user interface you have to inst
 
 We have also seen the `openWithLayout:` method that takes a layout (instance of SpLayout subclasses) as an argument. Instead of using the default layout, the opened UI will use the layout passed as an argument.
 
-Below we show the two ways we can open a window for our `WindowExamplePresenter`. The code snippet opens two identical windows as shown in *@windowExample1@*.
+Below we show the two ways we can open a window for our `WindowExamplePresenter`. The code snippet opens two identical windows as shown in Figure *@windowExample1@*.
 
 ```
 | presenter |

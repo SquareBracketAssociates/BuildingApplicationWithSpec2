@@ -13,18 +13,7 @@ We give some basis before showing how to effectively use styles to enhance the l
 
 Styles in Spec work like CSS. They are stylesheets in which the properties for displaying a presenter are defined. Properties such as colors, width, height, font, and others. As a general principle, it is better to use styles instead of fixed constraints, because your application will be more responsive.
 
-For example, assume you want a button to have a specific width and height. You can achieve that by using constraints with the method `add:withConstraints:` or using styles. In both cases, the result will be as shown in Figure *@style2@*:
-
-![A window with a button.](figures/style2.png width=50&label=style2)
-
-But, if you change the size of the fonts of the Pharo image using Settings/Appearance/Standard Fonts/Huge, using fixed constraints, you will obtain the result shown in Figure *@style3@*. You will not be able to see the icons because the size is not recomputed correctly.
-
-![Badly scaled window.](figures/style3.png width=50&label=style3)
-
-When using styles, the size of the button will also scale as shown in Figure *@style4@*.
-
-![Nicely scaled window.](figures/style4.png width=50&label=style4)
-
+TODO Pay attention. A stylesheet does not cover all aspects of a widget.
 
 ### About stylesheets
 
@@ -90,51 +79,11 @@ styleSheet
   .dim [
    Draw { #color : Color{ #rgb: 708480675 } } ]
  ],
- .link [
-  Geometry { #hResizing: true } ],
- .button [
-  Geometry { #width: 100 },
-  .small [
-     Geometry { #width: 26 } ] ],
- .checkBox [
-  Geometry { #hResizing: true } ],
- .radioButton [
-  Geometry { #hResizing: true } ],
- .dropList [
-  Geometry { #width: 150, #hResizing: true } ],
- .list [
-  Geometry { #width: 150, #hResizing: true, #vResizing: true } ],
- .slider [
-  Geometry { #width: 150, #hResizing: true } ],
- .actionBar [
-  Container {
-   #borderColor: Color { #rgb: 0, #alpha: 0 },
-   #borderWidth: 2,
-   #padding: 5 },
-  Geometry { #width: 150, #height: 29, #hResizing: true, #vResizing: false } ],
- .menuBar [
-  Geometry { #width: 150, #hResizing: true } ],
- .actionButton [
-  Geometry { #width: 60, #hResizing: false },
-  .showIcon [ Geometry { #width: 25 } ]  ],
- .toolBar [
-  Geometry { #hResizing: true },
-  .icons [
-   Geometry { #height: 30 } ],
-  .iconsAndLabel [
-   Geometry { #height: 45 } ] ],
- .text [
-  Geometry { #height: 0 } ],
- .code [
-  Font { #name : "Source Code Pro", #size : 10 } ],
- .codePopover [
-  Draw { #color : #transparent },
-  .button [
-   Geometry { #width : 25 } ] ],
- .scrollbarPopoverLarge [
-  Geometry { #height: 350 } ] ]
+ …
 '
 ```
+
+The next one extends the default stylesheet.
 
 ```
 styleSheet

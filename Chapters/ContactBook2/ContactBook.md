@@ -304,7 +304,7 @@ We will also define the methods `isContactSelected` and `selectedContact` to kno
 ```
 ContactBookPresenter >> isContactSelected
 
-    ^ self table selectedItems isNotEmpty
+    ^ table selectedItems isNotEmpty
 ```
 
 
