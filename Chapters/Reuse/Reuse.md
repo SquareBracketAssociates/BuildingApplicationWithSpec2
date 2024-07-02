@@ -12,10 +12,10 @@ Said differently, in this chapter, you will learn how you can build a new UI by 
 ![ProtocolCodeBrowser: Browsing the public APIs of widgets. %width=80&anchor=figprotocolbrowser&label=figprotocolbrowser](figures/ProtocolBrowser.png )
 
 To show how Spec enables the composition and reuse of user interfaces, in this chapter we build the user interface shown in Figure *@figprotocolbrowser@* as a composition of four parts:
-1. The **WidgetClassListPresenter**: a widget containing a `SpListPresenter` specifically for displaying the subclasses of `SpAbstractWidgetPresenter`.
-1. The **ProtocolMethodListPresenter**: a widget composed of a `SpListPresenter` and a `SpLabelPresenter` for displaying methods of a protocol.
-1. The **ProtocolViewerPresenter**:  a composition of one `WidgetClassListPresenter` and two `ProtocolMethodListPresenter`. It allows browsing the methods of all subclasses of `SpAbstractWidgetPresenter`.
-1. The **ProtocolCodeBrowserPresenter**: reuses a `ProtocolViewerPresenter`, changes its layout, and adds a `SpTextPresenter` to see the source code of the methods.
+1. The **WidgetClassListPresenter**: This widget contains a `SpListPresenter` specifically for displaying the subclasses of `SpAbstractWidgetPresenter`.
+1. The **ProtocolMethodListPresenter**: This widget is composed of a `SpListPresenter` and a `SpLabelPresenter` for displaying methods of a protocol.
+1. The **ProtocolViewerPresenter**:  This widget is a composition of one `WidgetClassListPresenter` and two `ProtocolMethodListPresenter`. It allows browsing the methods of all subclasses of `SpAbstractWidgetPresenter`.
+1. The **ProtocolCodeBrowserPresenter**: This widget reuses a `ProtocolViewerPresenter`, changes its layout, and adds a `SpTextPresenter` to see the source code of the methods.
 
 
 ### Creating a basic UI to be reused as a widget
@@ -81,7 +81,7 @@ Now, whoever reuses this widget can parameterize it with a block that will be ex
 ### Combining two basic presenters into a reusable UI
 @sec_protocollist
 
-The UI we build next will show a list of all methods of a given protocol, and it combines two widgets: a list and a label. Considering reuse, there is no difference from the previous UI. This is because the reuse of a UI as a widget is **not impacted at all** by the number of widgets it contains (nor by their position). Large and complex UIs are reused in the same way as simple widgets.
+The UI we build next will show a list of all methods of a given protocol, and it combines two widgets: a list and a label. Considering reuse, there is no difference from the previous UI. This is because the reuse of a UI as a widget is _not impacted at all_ by the number of widgets it contains (nor by their position). Large and complex UIs are reused in the same way as simple widgets.
 
 ```
 SpPresenter << #ProtocolMethodListPresenter
