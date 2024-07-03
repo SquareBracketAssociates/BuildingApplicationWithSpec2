@@ -642,7 +642,6 @@ The instance variable `menuBar` is not defined yet, so let's do that first. We a
 ```
 SpPresenterWithModel << #MailClientPresenter
 	slots: { #account . #reader . #editedEmail . #menuBar };
-	tag: 'Chapter12';
 	package: 'CodeOfSpec20Book'
 ```
 
@@ -741,13 +740,19 @@ MailClientPresenter >> messageMenu
 				yourself ]
 ```
 
-While the first two menus included two commands, this menu includes several commands in two groups. With the `addGroup` message, we add the groups and we nest the menu items in the groups by sending `addItem:` to the groups. As you can see, the menu items have a name, a keyboard shortcut, and an action block. A few items have a block that defines whether they are enabled. The block argument of the `enabled:` message is evaluated each time the menu item is displayed, so that the menu item can be enabled or disabled dynamically.
+While the first two menus included two commands, this menu includes several commands in two groups. With the `addGroup` message, we add the groups and we nest the menu items in the groups by sending `addItem:` to the groups. As you can see, the menu items have a name, a keyboard shortcut, and an action block. A few items have a block that defines whether they are enabled. The block argument of the `enabled:` message is evaluated each time the menu item is displayed, so that the menu item can be enabled or disabled dynamically. Note that block arguments of the `enabled:` messages send the message `hasDraft`. We did not define the corresponding method yet, so let's do that now. The implementation is straightforward, as the mail client presenter keeps track of the edited email.
 
-Look at the shortcut. `$n meta` means that the character "n" can be pressed together with the meta key (Command on macOS, Control on Windows and Linux) to trigger the command.
+```
+MailClientPresenter >> hasDraft
+
+	^ editedEmail isNotNil
+```
+
+Look at the shortcuts in the `messageMenu` method. `$n meta` means that the character "n" can be pressed together with the meta key (Command on macOS, Control on Windows and Linux) to trigger the command.
 
 TODO: that does not work without extra configuration of the key binding!!!
 
-We keep the action blocks simple by sending a message. We have to implement them of course, so let's do that. Based on the models that we defined earlier in this chapter, the implementation of the actions is fairly straitforward.
+We keep the action blocks simple by sending a message. We have to implement them of course, so let's do that. Based on the models that we defined earlier in this chapter, the implementation of the actions is fairly straightforward.
 
 ```
 MailClientPresenter >> newMail
@@ -801,8 +806,140 @@ Figure *@MailClientWithMenuBar@* shows the window. The menubar includes the thre
 
 ### Adding a toolbar to a window
 
-TODO
+Some actions are so common that it is useful to have them one click away. That is where the toolbar comes in. A toolbar allows putting actions as buttons in the user interface.
 
+Not surprisingly, like the menubar, the toolbar is part of a window presenter. So we have to revisit the `initializeWindow:` method. A `SpWindowPresenter` instance understands the message `toolbar:` to set the toolbar.
+
+```
+MailClientPresenter >> initializeWindow: aWindowPresenter
+
+	aWindowPresenter
+		title: 'Mail';
+		initialExtent: 650@500;
+		menu: menuBar;
+		toolbar: toolBar
+```
+
+`toolbar` is an instance variable, so we have to elaborate the class definition:
+
+```
+SpPresenterWithModel << #MailClientPresenter
+	slots: { #account . #reader . #editedEmail . #menuBar . #toolBar };
+	package: 'CodeOfSpec20Book'
+```
+
+Similar to what we did for the menubar, we define a method `initializeToolBar` and use it in `initializePresenters`.
+
+```
+MailClientPresenter >> initializePresenters
+
+	account := MailAccountPresenter on: self model.
+	account contextMenu: [ self accountMenu ].
+	reader := MailReaderPresenter new.
+	self initializeMenuBar.
+	self initializeToolBar
+```
+
+```
+MailClientPresenter >> initializeToolBar
+
+	| newButton fetchButton |
+	newButton := self newToolbarButton
+		label: 'New';
+		icon: (self iconNamed: #smallNew);
+		help: 'New email';
+		action: [ self newMail ];
+		yourself.
+	saveButton := self newToolbarButton
+		label: 'Save';
+		icon: (self iconNamed: #smallSave);
+		help: 'Save email';
+		action: [ self saveMail ];
+		yourself.
+	sendButton := self newToolbarButton
+		label: 'Send';
+		icon: (self iconNamed: #smallExport);
+		help: 'Send email';
+		action: [ self sendMail ];
+		yourself.
+	fetchButton := self newToolbarButton
+		label: 'Fetch';
+		icon: (self iconNamed: #refresh);
+		help: 'Fetch emails from server';
+		action: [ self fetchMail ];
+		yourself.
+	toolBar := self newToolbar
+		addItem: newButton;
+		addItem: saveButton;
+		addItem: sendButton;
+		addItemRight: fetchButton;
+	yourself
+```
+
+This method defines four buttons, of which two are held in instance variables. Shortly, it will become clear why. Of course, we have to adapt the class definition again:
+
+```
+SpPresenterWithModel << #MailClientPresenter
+	slots: { #account . #reader . #editedEmail . #menuBar . #toolBar . #sendButton . #saveButton };
+	package: 'CodeOfSpec20Book'
+```
+
+The `initializeToolBar` method adds four buttons to the toolbar. A toolbar has two sections. One on the left and one on the right. With the message `addItem:` we add the first three buttons to the left section. With the message `addItemRight:` we add one button to the right section.
+
+Each button has a label, an icon, a help text, and an action. As we did in `initializeMenuBar`, we use simple action blocks that send a message to the mail client presenter. These are the same messages that we used in the action blocks of the menu items in the "Message" menu in the menubar. That means that we are done.
+
+Well, not really. The menu items had a block to determine whether they were enabled or disabled. That is not the case for toolbar buttons, because they are visible all the time. Therefore we have to manage enablement of the buttons explicitly. Every time the state of the mail client changes, we have to update the enablement of the toolbar buttons. We introduce a new method `updateToolBarButtons` to do that. Based on messages that were defined before, we can set the enablement state of the `saveButton` and the `sendButton`. That is why we defined both as instance variables. The two other buttons are always enabled, so it is not needed to hold them in instance variables.
+
+```
+MailClientPresenter >> updateToolBarButtons
+
+	| hasSelectedEmail |
+	hasSelectedEmail := self hasDraft or: [ account hasSelectedEmail].
+	saveButton enabled: hasSelectedEmail.
+	sendButton enabled: hasSelectedEmail
+```
+
+To finish the toolbar functionality, we have to send `updateToolBarButtons` in the appropriate places. Everywhere the state of the mail client presenter changes, we have to send the message. You may think we have to do that in many places, but we have implemented the presenter class in such a way, that there are only two places where it is required.
+
+First, `MailClientPresenter` inherits from `SpPresenterWithModel`, which means that every time the model of an instance changes, it sends `modelChanged`. So we can update the toolbar buttons in that method.
+
+```
+MailClientPresenter >> modelChanged
+
+	self updateToolBarButtons
+```
+
+Second, we have to set the initial state of the toolbar buttons when the mail client presenter is initialized. `connectPresenters` is a good place to update the toolbar buttons. We add an extra line to the method that we defined before.
+
+```
+MailClientPresenter >> connectPresenters
+
+	account whenSelectionChangedDo: [
+		| selectedEmail |
+		account hasSelectedEmail
+			ifTrue: [
+				selectedEmail := account selectedItem.
+				selectedEmail isDraft
+					ifTrue: [ editedEmail := selectedEmail].
+				reader updateLayoutForEmail: selectedEmail ]
+		ifFalse: [ reader updateLayoutForNoEmail ].
+		self updateToolBarButtons ]
+```
+
+As for the menubar, it required a lot of code to setup the toolbar and to wire everything, but we are ready. Let's open the window again.
+
+```
+(MailClientPresenter on: MailAccount new) open
+```
+
+
+Figure *@MailClientWithToolBar@* shows the window. It has a menubar and a toolbar. Three toolbar buttons are placed on the left side, and one button is placed at the right side. That corresponds to our configuration of the toolbar. The save button and the send button are greyed out because they are disabled.
+
+![The mail client with a toolbar. % width=60&label=MailClientWithToolBar](figures/MailClientWithToolBar.png)
+
+Let's create a new email by pressing the toolbar button labeled "New" and see how the enablement state of the toolbar buttons changes. Figure *@MailClientWithToolBarForEmail@* shows that all the buttons are enabled.
+
+![The mail client with a toolbar. % width=60&label=MailClientWithToolBarForEmail](figures/MailClientWithToolBarForEmail.png)
 
 ### Adding a status bar to a window
 
