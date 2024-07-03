@@ -626,7 +626,177 @@ That opens a window with a draft email. After selecting it, it looks as shown in
 
 With all the models and presenters in place, we can finally dive into the subject of this chapter. We start by adding a menubar with commands to manipulate emails.
 
-TODO
+A menubar is part of a window presenter. Therefore it is configured in the `initializeWindow:` method. A `SpWindowPresenter` instance understands the message `menu:` to set the menubar.
+
+```
+MailClientPresenter >> initializeWindow: aWindowPresenter
+
+	aWindowPresenter
+		title: 'Mail';
+		initialExtent: 650@500;
+		menu: menuBar
+```
+
+The instance variable `menuBar` is not defined yet, so let's do that first. We add it to the class definition.
+
+```
+SpPresenterWithModel << #MailClientPresenter
+	slots: { #account . #reader . #editedEmail . #menuBar };
+	tag: 'Chapter12';
+	package: 'CodeOfSpec20Book'
+```
+
+Then we have to bind it. We elaborate the `initializePresenters` method to initialize the `menuBar` instance. The method delegates that responsibility to the method `initializeMenuBar`.
+
+```
+MailClientPresenter >> initializePresenters
+
+	account := MailAccountPresenter on: self model.
+	reader := MailReaderPresenter new.
+	self initializeMenuBar
+```
+
+```
+MailClientPresenter >> initializeMenuBar
+
+	menuBar := self newMenuBar
+		addItem: [ :item |
+			item
+				name: 'Message';
+				subMenu: self messageMenu;
+				yourself ];
+		addItem: [ :item |
+			item
+				name: 'View';
+				subMenu: self viewMenu;
+				yourself ];
+		addItem: [ :item |
+			item
+				name: 'Format';
+				subMenu: self formatMenu;
+				yourself ];
+		yourself
+```
+
+`self newMenuBar` creates a new `SpMenuBarPresenter` instance. We add three items to it. These items are the main menu items of the menubar. We configure each one with their name and their submenu.
+
+In this chapter, we will implement the commands of the "Message" menu. The two other menus are included only to show you multiple menus in the menubar. Let's define the three methods for the three menus. We start with the menus that we will not implement. They are short.
+
+```
+MailClientPresenter >> viewMenu
+
+	^ self newMenu
+		addItem: [ :item | item name: 'Show CC field' ];
+		addItem: [ :item | item name: 'Show BCC field' ];
+		yourself
+```
+
+```
+MailClientPresenter >> formatMenu
+
+	^ self newMenu
+		addItem: [ :item | item name: 'Plain text' ];
+		addItem: [ :item | item name: 'Rich text' ];
+		yourself
+```
+
+We will implement all commands of the "Message" menu. That requires some code:
+
+```
+MailClientPresenter >> messageMenu
+
+	^ self newMenu
+		addGroup: [ :group |
+			group
+				addItem: [ :item |
+					item
+						name: 'New';
+						shortcut: $n meta;
+						action: [ self newMail ] ];
+				addItem: [ :item |
+					item
+						name: 'Save';
+						shortcut: $s meta;
+						enabled: [ self hasDraft ];
+						action: [ self saveMail ] ];
+				addItem: [ :item |
+					item
+						name: 'Delete';
+						shortcut: $d meta;
+						enabled: [ account hasSelectedEmail ];
+						action: [ self deleteMail ] ];
+				addItem: [ :item |
+					item
+						name: 'Send';
+						shortcut: $l meta;
+						enabled: [ self hasDraft ];
+						action: [ self sendMail ] ] ];
+		addGroup: [ :group |
+			group
+				addItem: [ :item |
+					item
+						name: 'Fetch';
+						shortcut: $f meta;
+						action: [ self fetchMail ] ];
+				yourself ]
+```
+
+While the first two menus included two commands, this menu includes several commands in two groups. With the `addGroup` message, we add the groups and we nest the menu items in the groups by sending `addItem:` to the groups. As you can see, the menu items have a name, a keyboard shortcut, and an action block. A few items have a block that defines whether they are enabled. The block argument of the `enabled:` message is evaluated each time the menu item is displayed, so that the menu item can be enabled or disabled dynamically.
+
+Look at the shortcut. `$n meta` means that the character "n" can be pressed together with the meta key (Command on macOS, Control on Windows and Linux) to trigger the command.
+
+TODO: that does not work without extra configuration of the key binding!!!
+
+We keep the action blocks simple by sending a message. We have to implement them of course, so let's do that. Based on the models that we defined earlier in this chapter, the implementation of the actions is fairly straitforward.
+
+```
+MailClientPresenter >> newMail
+
+	editedEmail := Email new.
+	editedEmail beDraft.
+	reader updateLayoutForEmail: editedEmail.
+	self modelChanged
+```
+
+```
+MailClientPresenter >> saveMail
+
+	account saveAsDraft: editedEmail.
+	editedEmail := nil.
+	self modelChanged
+```
+
+```
+MailClientPresenter >> deleteMail
+
+	account deleteMail.
+	self modelChanged
+```
+
+```
+MailClientPresenter >> sendMail
+
+	account sendMail: editedEmail.
+	editedEmail := nil.
+	self modelChanged
+```
+
+```
+MailClientPresenter >> fetchMail
+
+	account fetchMail.
+	self modelChanged
+```
+
+It is time to try it out. To see the menubar in action, let's open a window with:
+
+```
+(MailClientPresenter on: MailAccount new) open
+```
+
+Figure *@MailClientWithMenuBar@* shows the window. The menubar includes the three menus we defined. The figure shows the open "Message" menu. It has two groups of menu items, separated by a horizontal line. Two menu items are enabled. Three menu items are disabled because they are actions on an email but no email is selected.
+
+![The mail client with a menu opened from the menubar. % width=60&label=MailClientWithMenuBar](figures/MailClientWithMenuBar.png)
 
 
 ### Adding a toolbar to a window
