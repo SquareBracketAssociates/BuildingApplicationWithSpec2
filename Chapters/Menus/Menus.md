@@ -943,8 +943,124 @@ Let's create a new email by pressing the toolbar button labeled "New" and see ho
 
 ### Adding a status bar to a window
 
-TODO
+After adding a menubar and a toolbar, we will add a status bar. A status bar is useful to show short messages for some time, or until the next message appears. We will elaborate the mail client presenter to show messages to inform the user that actions have been performed.
 
+
+The status bar appears at the bottom of a window. As with the menubar and the toolbar, we add it in the method `initializeWindow:`.
+
+```
+MailClientPresenter >> initializeWindow: aWindowPresenter
+
+	aWindowPresenter
+		title: 'Mail';
+		initialExtent: 650@500;
+		menu: menuBar;
+		toolbar: toolBar;
+		statusBar: statusBar
+```
+
+`statusBar` is a new instance variable, which we add to the class definition of the presenter.
+
+```
+SpPresenterWithModel << #MailClientPresenter
+	slots: { #account . #reader . #editedEmail . #menuBar . #toolBar . #statusBar };
+	package: 'CodeOfSpec20Book'
+```
+
+As already done twice, we adapt the `initializePresenters` method. The message `newStatusBar` creates a new `SpStatusBarPresenter` instance.
+
+```
+MailClientPresenter >> initializePresenters
+
+	account := MailAccountPresenter on: self model.
+	account contextMenu: [ self accountMenu ].
+	reader := MailReaderPresenter new.
+	self initializeMenuBar.
+	self initializeToolBar.
+	statusBar := self newStatusBar
+```
+
+The status bar is no more than a container for a text message. We will adapt some action methods to put messages in the status bar. A `SpStatusBarPresenter` instance responds to `pushMessage:` and `popMessage:`. Let's start with the method `fetchMail`. We push a message "Mail fetched." to indicate that the fetch action was successful.
+
+```
+MailClientPresenter >> fetchMail
+
+	account fetchMail.
+	self modelChanged.
+	statusBar pushMessage: 'Mail fetched.'
+```
+
+Then we adapt the other action methods as well.
+
+```
+MailClientPresenter >> saveMail
+
+	account saveAsDraft: editedEmail.
+	editedEmail := nil.
+	self modelChanged.
+	statusBar pushMessage: 'Mail saved to drafts.'
+```
+
+```
+MailClientPresenter >> sendMail
+
+	account sendMail: editedEmail.
+	editedEmail := nil.
+	self modelChanged.
+	statusBar pushMessage: 'Mail sent.'
+```
+
+```
+MailClientPresenter >> deleteMail
+
+	account deleteMail.
+	self modelChanged.
+	statusBar pushMessage: 'Mail deleted.'
+```
+
+To finish the status bar functionality, we have to start with a clean status bar. Therefore we adapt the method `connectPresenters`, in which we already bring the toolbar button in their initial enablement state. We send the message `popMessage` to ensure that the status bar is empty.
+
+```
+MailClientPresenter >> connectPresenters
+
+	account whenSelectionChangedDo: [
+		| selectedEmail |
+		account hasSelectedEmail
+			ifTrue: [
+				selectedEmail := account selectedItem.
+				selectedEmail isDraft
+					ifTrue: [ editedEmail := selectedEmail].
+				reader updateLayoutForEmail: selectedEmail ]
+		ifFalse: [ reader updateLayoutForNoEmail ].
+		self updateToolBarButtons.
+		statusBar popMessage ]
+```
+
+Let's test the mail client presenter by opening it again.
+
+```
+(MailClientPresenter on: MailAccount new) open
+```
+
+We will test a full scenario.
+
+* After opening the window, press the "New" button and fill in the fields of the new email. Figure *@MailClientTest-1@* shows the initial state before we start manipulating the email.
+* When the fields are filled in, we save the email by pressing the save button. See Figure *@MailClientTest-2@*. The status bar shows "Mail saved to drafts." and we see the subject of the email nested under the "Draft" folder in the list on the left.
+* After selecting the email in the list and pressing the "Send" button, we see the situation in Figure *@MailClientTest-3@*. The email has moved from the "Draft" folder to the "Sent" folder, and the status bar shows "Mail sent.".
+* After pressing the "Fetch" button, the fetched email appears under the "Inbox" folder in the list. The status bar shows "Mail fetched.". See Figure *@MailClientTest-4@*.
+* After selecting the email in the "Inbox" and choosing "Delete" from the "Message" menu, the email is removed from the list, and the status bar shows "Mail deleted.". See Figure *@MailClientTest-5@*.
+
+![A new email. % width=60&label=MailClientTest-1](figures/MailClientTest-1.png)
+
+![The email has been saved. % width=60&label=MailClientTest-2](figures/MailClientTest-2.png)
+
+![The email has been sent. % width=60&label=MailClientTest-3](figures/MailClientTest-3.png)
+
+![Email has been fetched. % width=60&label=MailClientTest-4](figures/MailClientTest-4.png)
+
+![The email has been deleted. % width=60&label=MailClientTest-5](figures/MailClientTest-5.png)
+
+All actions that change the status bar have been tested.
 
 ### Adding a context menu to a presenter
 
