@@ -834,7 +834,6 @@ Similar to what we did for the menubar, we define a method `initializeToolBar` a
 MailClientPresenter >> initializePresenters
 
 	account := MailAccountPresenter on: self model.
-	account contextMenu: [ self accountMenu ].
 	reader := MailReaderPresenter new.
 	self initializeMenuBar.
 	self initializeToolBar
@@ -973,7 +972,6 @@ As already done twice, we adapt the `initializePresenters` method. The message `
 MailClientPresenter >> initializePresenters
 
 	account := MailAccountPresenter on: self model.
-	account contextMenu: [ self accountMenu ].
 	reader := MailReaderPresenter new.
 	self initializeMenuBar.
 	self initializeToolBar.
