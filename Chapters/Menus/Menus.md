@@ -1,8 +1,8 @@
 ## Menubar, Toolbar, Status Bar and Context Menus
 
-Often application windows have a menubar that includes all commands provided by the application. Application windows may also have a toolbar, with buttons for commands that are used frequently. Some applications only have a toolbar. Apart from supporting a menubar and toolbar, Spec supports a status bar at the bottom of a window. Some widgets are equipped with context menus, such as a text fields, tables, and lists. All these aspects are the subject of this chapter.
+Often application windows have a menubar that includes all commands provided by the application. Application windows may also have a toolbar, with buttons for commands that are used frequently. Some applications only have a toolbar. Apart from supporting a menubar and toolbar, Spec supports a status bar at the bottom of a window. Some widgets, such as a text fields, tables, and lists, are equipped with context menus. All these aspects are the subject of this chapter.
 
-We will build a small email client application. Apart from adding a menubar, a toolbar, a status bar, and a context menu, the example brings together a lot of what we have seen in the previos chapters. Figure *@MailClient@* shows the target application.
+We will build a small email client application. Apart from adding a menubar, a toolbar, a status bar, and a context menu, the example brings together a lot of what we have seen in the previous chapters. Figure *@MailClient@* shows the target application.
 
 ![The mail client. % width=60&label=MailClient](figures/MailClient.png)
 
@@ -27,7 +27,7 @@ Object << #Email
 	package: 'CodeOfSpec20Book'
 ```
 
-We will not include the accessors for `from`, `to`, `subject`, and `status` here. They are trivial.
+We will not include the accessors for `from`, `to`, `subject`, and `body` here. They are trivial.
 
 Note that there is a fifth instance variable called `status`. This instance variable will be used to keep track of the status of an email, either "received", "draft", or "sent". These statuses map onto the mail folders in the application, respectively "Inbox", "Draft", and "Sent". We define the following methods to change the status of an email. They will come in handy when we receive, create, or send emails.
 
@@ -98,7 +98,7 @@ Email >> content
 
 #### MailFolder
 
-The list on the right side of the window does not only displays emails. It also displays mail folders, which group emails according to their state. We will define the `MailFolder` model very simplisticly. It has a name and it holds emails.
+The tree on the left side of the window does not only displays emails. It also displays mail folders, which group emails according to their state. We will define the `MailFolder` model very simplisticly. It has a name and it holds emails.
 
 ```
 Object << #MailFolder
@@ -126,7 +126,7 @@ MailFolder class >> named: aString emails: aCollection
 		yourself
 ```
 
-This method needs these accessor methods:
+The method above needs these accessor methods:
 
 ```
 MailFolder >> emails: aCollection
@@ -219,7 +219,7 @@ Best regards.';
 	self changed
 ```
 
-This method creates a new email, and gives it the "received" status. Then it adds the email to the emails it already holds. Adding is done conditionallt because we do not want the same email appearing twice after fetching multiple times.
+This method creates a new email, and gives it the "received" status. Then it adds the email to the emails it already holds. Adding is done conditionally because we do not want the same email appearing twice after fetching multiple times.
 
 Note `self changed` at the end. It notifies dependents that a `MailAccount` instance changed in a general way. Again, we like to keep things simple. More specific change messages are possible, but we do not need them in this example application.
 
@@ -233,7 +233,7 @@ MailAccount >> saveAsDraft: anEmail
 	self changed
 ```
 
-Saving a method as draft is implemented as changing the status to "draft" and adding it to the emails, if it is not present yet. The conditional adding allows saving an email multiple times without adding it multiple times.
+Saving a method as draft is implemented as changing the status to "draft" and adding it to the emails, if it is not present yet. The conditional addition allows saving an email multiple times without adding it multiple times.
 
 The method to send an email is similar to the method to save an email:
 
@@ -258,12 +258,12 @@ That concludes our models. Now we can dig into the presenters.
 
 ### The presenters
 
-Many presenters are composed of smaller presenters. That is also the case here. We need a presenter to display an email. We also need a presenter to display the list of emails. When no email is selected in the list, we like to display an informational message. That is also a presenter. And the overall application, that ties everything together, is also a presenter. So we have four presenters:
+Many presenters are composed of smaller presenters. That is also the case here. We need a presenter to display an email. We also need a presenter to display the tree of emails. When no email is selected in the tree, we like to display an informational message. That is also a presenter. And the overall application, that ties everything together, is also a presenter. So we have four presenters:
 
 * `EmailPresenter` displays an `Email`, either editable or read-only. The fields are editable when the email is draft. The fields are read-only when the email is received or sent.
 * `NoEmailPresenter` displays an informative message to tell that no email has been selected.
 * `MailReaderPresenter` is responsible to show an email or the informational message. It uses the two presenters above to achieve that.
-* `MailAccountPresenter` displays the list of folders and emails.
+* `MailAccountPresenter` displays the tree of folders and emails.
 * `MailClientPresenter` is the main presenter. It combines a `MailAccountPresenter` and a `MailReaderPresenter` to implement the email client functionality.
 
 
@@ -358,7 +358,7 @@ beReadOnly
 
 #### The `NoEmailPresenter`
 
-This presenter will be used when there is no selection in the list of folders and emails. It is very simple, as it does not have any functionality.
+This presenter will be used when there is no selection in the tree of folders and emails. It is very simple, as it does not have any functionality.
 
 ```
 SpPresenter << #NoEmailPresenter
@@ -399,7 +399,7 @@ SpPresenter << #MailReaderPresenter
 	package: 'CodeOfSpec20Book'
 ```
 
-As you can see, there are two slots to hold instances of the two previous presenter classes. Note that the presenter class inherits from `SpPresenter`, not `SpPresenterWithModel`, which means that a `MailReaderPresenter` does not have a model. We assume that instances of `MailReaderPresenter` will be told to update themselves.
+As you can see, there are two instance variables to hold instances of the two previous presenter classes. Note that the presenter class inherits from `SpPresenter`, not `SpPresenterWithModel`, which means that a `MailReaderPresenter` does not have a model. We assume that instances of `MailReaderPresenter` will be told to update themselves.
 
 ```
 MailReaderPresenter >> initializePresenters
@@ -443,7 +443,9 @@ MailReaderPresenter >> updateLayoutForEmail: email
 
 	content model: email.
 	self layout: self emailLayout.
-	email isDraft ifTrue: [ content beEditable ] ifFalse: [ content beReadOnly ]
+	email isDraft
+		ifTrue: [ content beEditable ]
+		ifFalse: [ content beReadOnly ]
 ```
 
 ```
@@ -465,7 +467,7 @@ SpPresenterWithModel << #MailAccountPresenter
 	package: 'CodeOfSpec20Book'
 ```
 
-Note that the presenter class inherits from `SpPresenterWithModel` because it will hold a `MailAccount` instance, which holds the emails to show in the tree. `initializePresenters` defines the tree.
+Note that the presenter class inherits from `SpPresenterWithModel` because it will hold a `MailAccount` instance as its model, which holds the emails to show in the tree. `initializePresenters` defines the tree.
 
 ```
 MailAccountPresenter >> initializePresenters
@@ -494,7 +496,7 @@ MailAccountPresenter >> defaultLayout
 		yourself.
 ```
 
-By default, the tree is empty. When the model changes, the tree should be updated. Since `MailAccountPresenter` inherits from `SpPresenterWithModel`, we have this method at our disposal:
+By default, the tree is empty. When the model changes, the tree should be updated. Since `MailAccountPresenter` inherits from `SpPresenterWithModel`, we have the method `modelChanged` at our disposal.
 
 ```
 MailAccountPresenter >> modelChanged
@@ -508,9 +510,9 @@ MailAccountPresenter >> modelChanged
 		expandRoots
 ```
 
-The model is a `MailAccount` instance. The method filters the emails of that instance based on their status, and creates folders, each holding emails with the same status. The method sends `receivedEmails`, `draftEmails`, and `sentEmails`. The corresponding methds where defined when we defined the `MailAccount` class. The three folder become the roots of the tree, and the roots are expanded with the `expandRoots` message so that the user sees the whole tree.
+The model is a `MailAccount` instance. The method filters the emails of that instance based on their status, and creates folders, each holding emails with the same status. The method sends `receivedEmails`, `draftEmails`, and `sentEmails`. The corresponding methds where defined when we defined the `MailAccount` class. The three folders become the roots of the tree, and the roots are expanded with the `expandRoots` message so that the user sees the whole tree.
 
-When implementing a presenter with a list, or any widget that has a selection, it is always a good idea to define a method that allows reacting to selection changes. We will need the method later to connect the `MailAccountPresenter` to the `MailReader`.
+When implementing a presenter with a tree, or any widget that has a selection, it is always a good idea to define a method that allows reacting to selection changes. We will need the method later to connect the `MailAccountPresenter` to the `MailReader`.
 
 ```
 MailAccountPresenter >> whenSelectionChangedDo: aBlock
@@ -883,7 +885,7 @@ SpPresenterWithModel << #MailClientPresenter
 	package: 'CodeOfSpec20Book'
 ```
 
-The `initializeToolBar` method adds four buttons to the toolbar. A toolbar has two sections. One on the left and one on the right. With the message `addItem:` we add the first three buttons to the left section. With the message `addItemRight:` we add one button to the right section.
+The `initializeToolBar` method adds four buttons to the toolbar. A toolbar has two sections, one on the left and one on the right. With the message `addItem:` we add the first three buttons to the left section. With the message `addItemRight:` we add one button to the right section.
 
 Each button has a label, an icon, a help text, and an action. As we did in `initializeMenuBar`, we use simple action blocks that send a message to the mail client presenter. These are the same messages that we used in the action blocks of the menu items in the "Message" menu in the menubar. That means that we are done.
 
@@ -898,7 +900,7 @@ MailClientPresenter >> updateToolBarButtons
 	sendButton enabled: hasSelectedEmail
 ```
 
-To finish the toolbar functionality, we have to send `updateToolBarButtons` in the appropriate places. Everywhere the state of the mail client presenter changes, we have to send the message. You may think we have to do that in many places, but we have implemented the presenter class in such a way, that there are only two places where it is required.
+To finish the toolbar functionality, we have to send `updateToolBarButtons` in the appropriate places. Everywhere the state of the mail client presenter changes, we have to send the message. You may think we have to do that in many places, but we have implemented the presenter class in such a way that there are only two places where it is required.
 
 First, `MailClientPresenter` inherits from `SpPresenterWithModel`, which means that every time the model of an instance changes, it sends `modelChanged`. So we can update the toolbar buttons in that method.
 
@@ -908,7 +910,7 @@ MailClientPresenter >> modelChanged
 	self updateToolBarButtons
 ```
 
-Second, we have to set the initial state of the toolbar buttons when the mail client presenter is initialized. `connectPresenters` is a good place to update the toolbar buttons. We add an extra line to the method that we defined before.
+Second, we have to set the initial state of the toolbar buttons when the mail client presenter is initialized. `connectPresenters` is a good place to update the toolbar buttons. We add an extra line at the bottom of the method that we defined before.
 
 ```
 MailClientPresenter >> connectPresenters
@@ -934,11 +936,11 @@ As for the menubar, it required a lot of code to setup the toolbar and to wire e
 
 Figure *@MailClientWithToolBar@* shows the window. It has a menubar and a toolbar. Three toolbar buttons are placed on the left side, and one button is placed at the right side. That corresponds to our configuration of the toolbar. The save button and the send button are greyed out because they are disabled.
 
-![The mail client with a toolbar. % width=60&label=MailClientWithToolBar](figures/MailClientWithToolBar.png)
+![The mail client with disabled buttons in a toolbar. % width=60&label=MailClientWithToolBar](figures/MailClientWithToolBar.png)
 
 Let's create a new email by pressing the toolbar button labeled "New" and see how the enablement state of the toolbar buttons changes. Figure *@MailClientWithToolBarForEmail@* shows that all the buttons are enabled.
 
-![The mail client with a toolbar. % width=60&label=MailClientWithToolBarForEmail](figures/MailClientWithToolBarForEmail.png)
+![The mail client with enabled buttons in a toolbar. % width=60&label=MailClientWithToolBarForEmail](figures/MailClientWithToolBarForEmail.png)
 
 ### Adding a status bar to a window
 
@@ -1062,9 +1064,77 @@ All actions that change the status bar have been tested.
 
 ### Adding a context menu to a presenter
 
-TODO
+The final step to complete the mail client presenter is the addition of a context menu. We will add a context menu to the tree with the folders and emails. We will not add a big context menu. For demonstration purposes, we will restrict the menu to two menu items, one to delete an email and one to send an email.
 
+The tree includes folders and emails, so the desired menu items should be disabled when a folder is selected. They should also be disabled when no selection has been made. On top of that condition, the send command can only be applied to emails that are in the "Draft" folder because received and sent mails cannot be sent.
+
+Typically, a presenter adds a context menu to a subpresenter. Given that the tree of folders and emails is a subpresenter of the `MailAccountPresenter`, we would expect the `MailAccountPresenter` to install a context menu on the tree presenter. However, the `MailAccountPresenter` cannot decide what needs to be done for deleting or sending an email. What needs to be done is the responsibility of the `MailClientPresenter`, which defines the methods `deleteMail` and `sendMail`. Both methods do what they have to do to perform the action, and then send the `modelChanged` message and update the status bar.
+
+Therefore `MailClientPresenter` defines the menu.
+
+```
+MailClientPresenter >> accountMenu
+
+	^ self newMenu
+		addItem: [ :item |
+			item
+				name: 'Delete';
+				enabled: [ account hasSelectedEmail ];
+				action: [ self deleteMail ] ];
+		addItem: [ :item |
+			item
+				name: 'Send';
+				enabled: [ account hasSelectedEmail
+										and: [ account selectedItem isDraft] ];
+				action: [ self sendMail ] ];
+		yourself
+```
+
+The action blocks are simple, like the action blocks of the menu items in the menubar and the buttons in the toolbar. They send the action messages `deleteMail` and `sendMail` we have defined before.
+
+More interestingly are the `enabled:` blocks, which define the enablement of the menu items. Deleting an email is possible only when an email is selected. That is expressed by the `enabled:` block of the "Delete" menu item. As described in the introduction of this section, sending an email is possible only if the selected email is a draft email. That is exactly what the `enabled:` block for the "Send" menu item expresses.
+
+Note the name of the method. We use the name `accountMennu` because the context menu will be installed on the `MailAccountPresenter`. However, the context menu has to be installed on the tree presenter with the folders and the emails. Therefore `MailAccountPresenter` delegates to the tree presenter. Let's realise that in code. First, from within `initializePresenters` of `MailClientPresenter`, we send the `contextMenu:` message to install the context menu on the `MailAccountPresenter`.
+
+```
+MailClientPresenter >> initializePresenters
+
+	account := MailAccountPresenter on: self model.
+	account contextMenu: [ self accountMenu ].
+	reader := MailReaderPresenter new.
+	self initializeMenuBar.
+	self initializeToolBar.
+	statusBar := self newStatusBar
+```
+
+Then we implement the `contextMenu:` on `MailAccountPresenter`. It delegates to the tree presenter,
+
+```
+MailAccountPresenter >> contextMenu: aBlock
+
+	foldersAndEmails contextMenu: aBlock
+```
+
+That concludes the implementation. It is time to open the window again and try the new context menu.
+
+```
+(MailClientPresenter on: MailAccount new) open
+```
+
+When clicking the right-button mouse button, the context menu appears. Figure *@ContextMenuDisabled@* shows that the two menu items are disabled when a folder is selected
+
+![Context menu items are disabled. % width=60&label=ContextMenuDisabled](figures/ContextMenuDisabled.png)
+
+After fetching email and selecting the received email, the menu includes an enabled "Delete" menu item and a disabled "Send" menu item, as shown in Figiure *@ContextMenuSendDisabled@*.
+
+![Sending a received email is not allowed. % width=60&label=ContextMenuSendDisabled](figures/ContextMenuSendDisabled.png)
+
+As a final test, we create a new email, save it, and select it. It is a draft email, so it can be sent. That is what we see in the context menu in Figure *@ContextMenuEnabled@*. Both menu items are enabled.
+
+![Sending a draft email is allowed. % width=60&label=ContextMenuEnabled](figures/ContextMenuEnabled.png)
 
 ### Conclusion
 
-TODO
+This was a long chapter with an extensive example with multiple models and multiple presenters. We have described in detail how to add a menubar and a toolbar to a window. It required quite some code to define the menu items and the toolbar buttons. We have also described how messages can be shown in the status bar at the bottom of a window. At the end, we also described how to add a context menu to a tree presenter.
+
+An important aspect of menu items and toolbar buttons is their enablement based on the state of the presenter in a window. We have shown how to apply enablement, and we verified the behavior in several figures.
