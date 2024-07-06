@@ -6,7 +6,7 @@ We will build a small email client application. Apart from adding a menubar, a t
 
 ![The mail client. % width=60&label=MailClient](figures/MailClient.png)
 
-The example is elaborate, with a lot of classes and methods. We will implement the application bottom-up. We start with the models. Afterwards, we will implement the presenters that compose the application. Finally, we will add a menubar, a toolbar, a status bar, and a context menu. Let's dive in.
+The example is extensive, with a lot of classes and methods. We will implement the application bottom-up. We start with the models. Afterwards, we will implement the presenters that compose the application. Finally, we will add a menubar, a toolbar, a status bar, and a context menu. Let's dive in.
 
 
 ### The models
