@@ -311,7 +311,7 @@ ProtocolViewerPresenter >> defaultLayout
 		add: #events;
 		yourself
 ```
-
+![ProtocolViewerPresenter in vertical mode. % width=50&anchor=figProtocolViewerVertical](figures/ProtocolViewerVertical.png)
 
 
 As previously, the result can be seen by executing the following snippet of code. The result is shown in Figure *@figProtocolViewerVertical@*.
@@ -322,7 +322,7 @@ ProtocolViewerPresenter new open
 
 This user interface is functional. Clicking on a class will show the methods of the 'api' and the 'api-events' protocols of that class.
 
-![ProtocolViewerPresenter in vertical mode. % width=50&anchor=figProtocolViewerVertical](figures/ProtocolViewerVertical.png)
+
 
 
 ### Having different layouts

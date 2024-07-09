@@ -20,9 +20,11 @@ For example, you can embed a Roassal visualization (see Figure *@SpecRoassal@*),
 
 ![Roassal and Spec integration. %width=100&anchor=SpecRoassal](figures/roassalGTK.png)
 
-Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo@*. It shows that Spec can be used for the overall structure of the application and embed specific elements. 
+Another example of integration is the NovaStelo project of Prof. E. Ito as shown in Figure *@NovaStelo@*. It shows that Spec can be used for the overall structure of the application and embed specific elements. Figure *@MySudoku@* is the screenshot developed from a community member named Walehead.
 
 ![An integration of Morphic Native Widgets and Spec. %width=100&anchor=NovaStelo](figures/NovaStelo.png)
+
+![A suduko. %width=80&anchor=MySudoku](figures/MySudoku.jpeg)
 
 ### Spec 2.0
 
