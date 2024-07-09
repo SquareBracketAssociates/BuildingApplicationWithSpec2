@@ -24,7 +24,7 @@ Another example of integration is the NovaStelo project of Prof. E. Ito as shown
 
 ![An integration of Morphic Native Widgets and Spec. %width=100&anchor=NovaStelo](figures/NovaStelo.png)
 
-![A suduko. %width=80&anchor=MySudoku](figures/MySudoku.jpeg)
+![A suduko. %width=70&anchor=MySudoku](figures/MySudoku.jpeg)
 
 ### Spec 2.0
 
