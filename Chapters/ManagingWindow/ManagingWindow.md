@@ -154,7 +154,7 @@ dialog
 
 #### Action with Window
 
-`withWindowDo:` makes sure that the presenter that scheduled the window still exists or is in a state that makes sense.
+The message `withWindowDo:` makes sure that the presenter that scheduled the window still exists or is in a state that makes sense.
 
 ```
 withWindowDo: [ :window | window title: 'MyTitle' ]
@@ -277,7 +277,7 @@ After opening the window with the code snippet above, and after choosing 'About'
 
 ### Getting values from a dialog window
 
-Sending the message `openDialog` to a presenter will return the dialog window itself so you can easily ask it `isOk`. When `isOk` answers `true`, the dialog is in a state to provide the data it has collected from the user.
+Sending the message `openDialog` to a presenter will return the dialog window itself so that you can easily send it the message `isOk`. When `isOk` answers `true`, the dialog is in a state to provide the data it has collected from the user.
 
 Let's look at an example. We will open a dialog to select some colors.
 
