@@ -28,7 +28,7 @@ Object << #Email
 	package: 'CodeOfSpec20Book'
 ```
 
-We will not include the accessors for `from`, `to`, `subject`, and `body` here. They are trivial.
+We do not include the accessors for `from`, `to`, `subject`, and `body` here. They are trivial.
 
 Note that there is a fifth instance variable called `status`. This instance variable will be used to keep track of the status of an email, either "received", "draft", or "sent". These statuses map onto the mail folders in the application, respectively "Inbox", "Draft", and "Sent". We define the following methods to change the status of an email. They will come in handy when we receive, create, or send emails.
 
