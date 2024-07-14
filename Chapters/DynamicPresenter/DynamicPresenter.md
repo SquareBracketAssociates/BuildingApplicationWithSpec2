@@ -353,6 +353,14 @@ Voilà! We have a new minimal version version of the System Browser with a read-
 
 ![Our little browser in edit mode. % width=60&anchor=layout10](figures/layout10.png)
 
+### Layout recalculation
+
+Pay attention to layout recalculation because it can have a performance penalty.
+
+Consider a presenter having a layout with many subpresenters, and let's assume that the subpresenters have layouts with subpresenters too. Layouts allow adding and removing presenters. Those operations do not come for free. Every change to a layout triggers a recalculation because any addition or removal impacts how the presenters in the layout are displayed on the screen. So when a presenter changes multiple individual presenters of a layout, multiple recalculations may happen.
+
+It is preferable to perform layout changes in one go. When building an initial layout, it is better to build the nested layouts bottom-up and to set the overall layout once. When updating an existing layout, it is better to build the new layout completely and set it, instead of chirurgically adding and/or removing presenters.
+
 ### Conclusion
 
 With Spec we can build applications ranging from very simple to very sophisticated. The dynamic layouts allow changing layouts on the fly. Layouts can be configured in multiple ways, so have a look at their classes and the available examples. Spec has lots of presenters that are ready to be used. Start digging into the code to see which presenters are available, and to learn their API.
