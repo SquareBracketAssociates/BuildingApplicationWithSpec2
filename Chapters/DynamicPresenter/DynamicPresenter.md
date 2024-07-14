@@ -3,7 +3,7 @@
 
 Contrary to Spec 1.0, in Spec 2.0 all the layouts are dynamic. It means that you can change the displayed elements on the fly. It is a radical improvement from Spec 1.0 where most of the layouts were static and building dynamic widgets was cumbersome.
 
-In this chapter, we will show that presenters can be dynamically composed using layouts. We will show a little interactive session. Then we will build a little browser with dynamic aspects.
+In this chapter, we  show that presenters can be dynamically composed using layouts. We show a little interactive session. Then we build a little browser with dynamic aspects.
 
 ### Layouts as simple as objects
 
@@ -14,7 +14,7 @@ presenter := SpPresenter new.
 presenter application: SpApplication new.
 ```
 
-For this presenter, we will use the `SpPanedLayout` which can receive two presenters \(or layouts\) and place them in one half of the window. If you want to see all the available layouts in Spec, you can check the package `Spec2-Layout`.
+For this presenter, we use the `SpPanedLayout` which can receive two presenters \(or layouts\) and place them in one half of the window. If you want to see all the available layouts in Spec, you can check the package `Spec2-Layout`.
 
 ```
 presenter layout: SpPanedLayout newTopToBottom.
@@ -82,7 +82,7 @@ SpPresenter << #DynamicButtons
 	package: 'CodeOfSpec20Book'
 ```
 
-In `initializePresenters`, we add a button. When we click on it, it adds a new button to the layout. We also want a button that will remove the last button that was added, if any. Finally, we add a read-only text presenter that cannot be removed.
+In the method `initializePresenters`, we add a button. When we click on it, it adds a new button to the layout. We also want a button that will remove the last button that was added, if any. Finally, we add a read-only text presenter that cannot be removed.
 
 ```
 DynamicButtons >> initializePresenters
@@ -124,7 +124,7 @@ DynamicButtons >> addToLayout
 	self layout add: newButton expand: false
 ```
 
-For removing a button from the layout, we will first check if there is a button that we can remove. If yes, we will just remove the last button. Then, if there are no more buttons left to remove, we will disable the remove button.
+For removing a button from the layout, we  first check if there is a button that we can remove. If yes, we just remove the last button. Then, if there are no more buttons left to remove, we disable the remove button.
 
 ```
 DynamicButtons >> removeFromLayout
@@ -199,10 +199,10 @@ MyMiniBrowser >> initializePresenters
 For the methods, we want to use a filtering list, so that we can search for method selectors. Also, we want to display only the selector of the method and sort the methods in an ascending way.
 
 ```
-	methodList := self newFilteringList display: [ :method |
-		method selector ].
-	methodList listPresenter sortingBlock:
-		[ :method | method selector ] ascending.
+	methodList := self newFilteringList 
+			display: [ :method | method selector ].
+	methodList listPresenter 
+		sortingBlock: [ :method | method selector ] ascending.
 ```
 
 
@@ -234,10 +234,10 @@ MyMiniBrowser >> initializePresenters
 		children: [ :each | each subclasses ];
 		displayIcon: [ :each | self iconNamed: each systemIconName ];
 		yourself.
-	methodList := self newFilteringList display: [ :method |
-		method selector ].
-	methodList listPresenter sortingBlock:
-		[ :method | method selector ] ascending.
+	methodList := self newFilteringList 
+		display: [ :method | method selector ].
+	methodList listPresenter 
+		sortingBlock: [ :method | method selector ] ascending.
 	button := self newButton
 		label: 'Edit';
 		icon: (self iconNamed: #smallConfiguration);
@@ -257,11 +257,11 @@ MyMiniBrowser new open
 
 ### Placing elements visually
 
-We initialized our presenters, but we did not indicate how they need to be displayed.
+We initialized our presenters, but we did not indicate how they needed to be displayed.
 
-We want the upper part of the layout to have the classes and the methods shown in a horizontal way, like in the System Browser. To achieve that, we will create another left-to-right layout, with a spacing of 10 pixels between the classes and the methods.
+We want the upper part of the layout to have the classes and the methods shown horizontally, like in the System Browser. To achieve that, we will create another left-to-right layout, with a spacing of 10 pixels between the classes and the methods.
 
-We will add that layout to our main layout, which is a top-to-bottom layout. We add the code and the button under the classes and the methods. We do not want the code to expand. In addition, we want a separation of 5 pixels for this layout.
+We add that layout to our main layout, which is a top-to-bottom layout. We add the code and the button under the classes and the methods. We do not want the code to expand. In addition, we want a separation of 5 pixels for this layout.
 
 ```
 MyMiniBrowser >> defaultLayout
