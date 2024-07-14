@@ -12,7 +12,7 @@ Contrary to Spec 1.0, where layouts were only defined at the class level, in Spe
 - Define the `defaultLayout` method on the instance side
 - Use the message `layout:` in your `initializePresenters` method to set an instance of layout in the current presenter.
 
-`defaultLayout` returns a layout and `layout:` sets a layout, for example, an instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
+The message `defaultLayout` returns a layout and `layout:` sets a layout, for example, an instance of `SpBoxLayout` or `SpPanedLayout`. These two methods are the preferred way to define layouts.
 
 Note that the possibility of defining a class-side accessor e.g. `defaultLayout` remains for those who prefer it.
 
@@ -125,7 +125,7 @@ These are the vertical layout options:
 * vAlignCenter
 * vAlignEnd
 
-Let's see how this works in a small example. We will create a presenter with 9 subpresenters, which we will call "tiles", layed out in 3 rows with 3 columns. Each subpresenter displays two label presenters with labels 'One' and 'Two'. The presenter class defines nine instance variables. The names refer to the position of the content inside each tile.
+Let's see how this works in a small example. We will create a presenter with 9 subpresenters, which we call "tiles", laid out in 3 rows with 3 columns. Each subpresenter displays two label presenters with the labels 'One' and 'Two'. The presenter class defines nine instance variables. The names refer to the position of the content inside each tile.
 
 ```
 SpPresenter << #AlignmentExample
@@ -184,7 +184,7 @@ AlignmentExample >> newTile: alignmentBlock
 		yourself
 ```
 
-`newTile:` uses two other helper methods:
+The method `newTile:` uses two other helper methods:
 
 ```
 AlignmentExample >> newLabelOne
@@ -565,7 +565,7 @@ SpPresenter << #OverlayLayoutExample
 	package: 'CodeOfSpec20Book'
 ```
 
-`initializePresenters` creates the button and the indicator. The latter is a `SpRoassalPresenter`. We use a helper method to answer the shape that should be shown.
+The method `initializePresenters` creates the button and the indicator. The latter is a `SpRoassalPresenter`. We use a helper method to answer the shape that should be shown.
 
 ```
 OverlayLayoutExample >> initializePresenters
