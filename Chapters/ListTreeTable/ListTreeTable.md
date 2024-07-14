@@ -47,7 +47,7 @@ SpListPresenter new
 
 ### Decorating elements
 
-We can configure the way items are displayed in a more finer-grained way. The following example illustrates it. We can control the icon associated with the item using the message `displayIcon:`, and the item color using the message `displayColor:`. The format (bold, italic, underline) can the controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:`. See Figure *@figSimpleListDecorated@*.
+We can configure the way items are displayed in a more fine-grained way. The following example illustrates it. We can control the icon associated with the item using the message `displayIcon:`, and the item color using the message `displayColor:`. The format (bold, italic, underline) can be controlled by the corresponding messages `displayItalic:`, `displayBold:` and `displayUnderline:`. See Figure *@figSimpleListDecorated@*.
 
 
 
@@ -304,7 +304,7 @@ SpTablePresenter new
 
 Add `SpIndexTableColumn title: 'My index'` to the previous table to see the index column in action.
 
-
+![A simple table with two columns that can be sorted. % width=50&anchor=figTableSorting](figures/TableSorting.png)
 
 ### Sorting headers
 
@@ -326,8 +326,8 @@ SpTablePresenter new
 	open
 ```
 
-![A simple table with two columns that can be sorted. % width=50&anchor=figTableSorting](figures/TableSorting.png)
 
+![A table with an editable column. % width=50&anchor=figEditableTable](figures/EditableTable.png)
 
 ### Editable tables
 
@@ -358,9 +358,9 @@ SpTablePresenter new
 	open
 ```
 
-![A table with an editable column. % width=50&anchor=figEditableTable](figures/EditableTable.png)
 
 
+![A tree table with two columns: the first one is a composed column with an icon and a string. %width=50&anchor=figTreeTable](figures/TreeTable.png)
 ### Tree tables
 
 Spec offers a way to have a tree with extra columns. The class `SpTreeTablePresenter` encapsulates this behavior. Note that the first column is interpreted as a tree.
@@ -389,9 +389,11 @@ SpTreeTablePresenter new
 	open
 ```
 
-![A tree table with two columns: the first one is a composed column with an icon and a string. %width=50&anchor=figTreeTable](figures/TreeTable.png )
+
 
 Sending the messages `width:` and `beExpandable` to the `SpCompositeTableColumn` instance fixes the size of the column.
+
+![A tree table with two columns. % width=50&anchor=figTreeTableSilly](figures/TreeTableSilly.png)
 
 ```
 SpCompositeTableColumn new
@@ -425,8 +427,8 @@ SpTreeTablePresenter new
 	open
 ```
 
-![A tree table with two columns. % width=50&anchor=figTreeTableSilly](figures/TreeTableSilly.png)
+
 
 ### Conclusion
 
-In this chapter, we presented important containers: lists, component lists, and table presenters.
+In this chapter, we presented important containers: list, component list, and table presenters.
