@@ -69,7 +69,7 @@ dialog := presenter openDialog
 ```
 
 
-The answer of sending `openDialog`, assigned to the `dialog` variable above, is an instance of the `SpDialogWindowPresenter` class (a subclass of `SpWindowPresenter`).
+The answer of sending `openDialog`, assigned to the `dialog` variable above, is an instance of the `SpDialogWindowPresenter` class (a subclass of `SpWindowPresenter`). Figure *@windowDialog@* shows the dialog.
 
 ![A rather simple dialog on WindowExamplePresenter. %width=50&anchor=windowDialog](figures/WindowExamplePresenterDialog)
 
@@ -375,7 +375,76 @@ initializeDialogWindow: aDialogWindowPresenter
 			presenter close ]
 ```
 
-Override this method to define how your presenter will behave when it is open in a dialog window
+Override this method to define how your presenter will behave when it is open in a dialog window.
+
+
+### Setting keyboard focus
+
+Some widgets can take keyboard focus. All text editing widgets come to mind, but lists can also take keyboard focus. Buttons too. In principle, when a presenter responds to keyboard events, it is able to take keyboard focus.
+
+Widgets indicate that they have keyboard focus, typically by displaying a lightblue border around them. Figure *@windowExample1@* shows that the plus button on the left has the keyboard focus. A widget takes keyboard focus when the user clicks the widget with the mouse, or by pressing the tab key.
+
+By pressing the tab key, the user makes the keyboard focus move forward from widget to widget according to the keyboard focus order of the widgets. By pressing shift-tab, the focus moves backward according to the focus order. By default, the focus order is the same as the order in which widgets are added to a user interface. Sometimes that order is not the desired order. In that case, the focus order has to be configured explicitly. A presenter can do that in the method `initializePresenters` by sending `focusOrder:` or by adding presenters to the answer of sending `focusOrder`. Let's try that in the `WindowExamplePresenter`.
+
+```
+WindowExamplePresenter >> initializePresenters
+
+	plusButton := self newButton.
+	minusButton := self newButton.
+	plusButton label: '+'.
+	minusButton label: '-'.
+	self focusOrder
+		add: minusButton;
+		add: plusButton
+```
+
+Figure *@WindowExampleKeyboardFocus@* shows the result after opening the window. The minus button has the keyboard focus.
+
+![Reversed keyboard focus order. %width=50&anchor=WindowExampleKeyboardFocus](figures/WindowExampleKeyboardFocus.png)
+
+
+### Acting on window opening
+
+Some state of presenters or their subpresenters can only be set after the window has been opened. That is the case when setting the state is delegated to the backend widgets. Those widgets are only available when the window is open. In Chapter *@cha_menus@*, we will see that keyboard bindings for menu items in the menubar can only be assigned after opening the window. Here we will describe another use case, related to the previous section.
+
+While defining the keyboard focus order does not require the window to be open, setting the initially focussed presenter does. Setting the initially focussed presenter is needed when the default keyboard focus order is not appropriate. That typically happens when using nested presenters that define a focus order, either implicitly or explicitly.
+
+To demonstrate this, we will revert the method `initializePresenters` of `WindowExamplePresenter` from the previous section, and we will adapt `initializeWindow:`.
+
+```
+WindowExamplePresenter >> initializePresenters
+
+	plusButton := self newButton.
+	minusButton := self newButton.
+	plusButton label: '+'.
+	minusButton label: '-'
+```
+
+To set the initial keyboard focus on the minus button, we send `takeKeyboardFocus` to the presenter in the `whenOpenedDo:` block, which will be evaluated after opening the window.
+
+```
+WindowExamplePresenter >> initializeWindow: aWindowPresenter
+
+	aWindowPresenter whenOpenedDo: [ minusButton takeKeyboardFocus ]
+```
+
+After opening the window, we see the keyboard focus on the minus button, as shown in *@WindowExampleKeyboardFocus@*.
+
+We can go one step further. When opening an instance of `WindowExamplePresenter` in a dialog with `WindowExamplePresenter new openDialog`, the plus button has the keyboard focus because it is the first presenter in the default keyboard focus order. See Figure *@windowDialog@*.
+
+In case of a dialog, the initial keyboard focus on the plus button may not be desired. Probably it is more logical to put the keyboard focus on the Ok button of the dialog, so that the user can press the Enter key or the Space key to confirm the dialog immediately if no other interaction with the dialog is necessary. Let's do that. Instead of changing the method `initializeWindow:`, we change the method `initializeDialogWindow:`.
+
+```
+WindowExamplePresenter >> initializeDialogWindow: aDialogWindowPresenter
+
+	super initializeDialogWindow: aDialogWindowPresenter.
+	aDialogWindowPresenter whenOpenedDo: [ aDialogWindowPresenter defaultButton takeKeyboardFocus ]
+```
+
+`aDialogWindowPresenter`, which is bound to an instance of `SpDialogWindowPresenter`, understands the message `defaultButton`, which answers the Ok button. We send the message `takeKeyboardFocus` to the button. After opening the dialog with `WindowExamplePresenter new openDialog`, we see a dialog as shown in Figure *@DialogWithFocusOnOkButton@*, with the keyboard focus on the Ok button.
+
+![Keyboard focus on the Ok button of the dialog. %width=50&anchor=DialogWithFocusOnOkButton](figures/DialogWithFocusOnOkButton.png)
+
 
 ### Conclusion
 
