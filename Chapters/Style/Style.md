@@ -387,7 +387,6 @@ Without setting the custom styles nor using our custom application in the presen
 
 ### Initializing styles
 
-
 We do not want the black background color for the text presenter. We would like to have a sort of multi-line label. We want the zoom buttons to be smaller as they only have icons. We want to have the option to change the size and font of the text inside the text presenter. Finally, we want to change the color of the label, change its height, and make it a little bit bigger.
 
 ```
@@ -435,7 +434,7 @@ For example, if we click on the zoom-in button we want to remove the `smallFontS
 This is what we have to do in the `connectPresenters` method:
 
 ```
-CustomStyles >> connectPresenters
+CustomStylesEditor >> connectPresenters
 
 	zoomInButton action: [
 		text removeStyle: 'smallFontSize'.
@@ -463,4 +462,4 @@ When we click the "Text font" button, the font of the text changes as shown in F
 
 ### Conclusion
 
-Using styles in Spec is a nice features. It makes it easier to have a consistent design as we can add the same style to several presenters. If we want to change some style, we only edit the stylesheet. We can dynamically change how a presenter looks.
+Using styles in Spec is a nice feature. It makes it easier to have a consistent design as we can add the same style to several presenters. If we want to change some style, we only edit the stylesheet. We can dynamically change how a presenter looks.
