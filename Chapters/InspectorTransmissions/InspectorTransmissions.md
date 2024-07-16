@@ -1,4 +1,4 @@
-## Tranmissions inside the Inspector
+## Transmissions inside the Inspector
 
 
 In this chapter, we will explain what is a transmission, a transformation and how to have custom transmissions in the Pharo Inspector. We will show how transmissions are used in the inspector with a soccer database analysis tool that you can find at [https://github.com/akevalion/Futbol/](https://github.com/akevalion/Futbol/). We used this application because we needed a real domain to navigate within the inspector and to show some non-trivial situations where you want to abstract over the domain to get a smooth navigation flow.

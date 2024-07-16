@@ -33,11 +33,18 @@
 <!inputFile|path=Chapters/DynamicPresenter/DynamicPresenter.md!>
 %Reviewed by stef - anchor
 
-<!inputFile|path=Chapters/Menus/Menus.md!>
-<!inputFile|path=Chapters/Style/Style.md!>
-<!inputFile|path=Chapters/Transmissions/Transmission.md!>
-<!inputFile|path=Chapters/MorphicAthens/MorphicAthens.md!>
+<!inputFile|path=Chapters/Menus/MailApp.md!>
 
+<!inputFile|path=Chapters/Menus/Menus.md!>
+
+<!inputFile|path=Chapters/Style/Style.md!>
+
+
+<!inputFile|path=Chapters/Transmissions/Transmission.md!>
+
+<!inputFile|path=Chapters/AthensRoassal/AthensRoassal.md!>
+
+<!inputFile|path=Chapters/InspectorTransmissions/InspectorTransmissions.md!>
 <!inputFile|path=Chapters/Inspector/Inspector.md!>
 
 # Working with Commands

@@ -1,65 +1,6 @@
 ## Customizing your Inspector
 
-status: should do another pass
-status: spellchecked
-
-
 An Inspector is a tool that is used to look at and interact with objects. In Pharo, inspecting an object means opening this tool and interacting with your object. It is a key tool when developing in Pharo. It allows one to navigate the object structure, look at the state of the variables, change their value, or send messages. An inspector can show other information and you can extend it to display the information that is best suited for you. This is what we will see in this chapter.
-
-
-### A first look at the inspector
-
-You can inspect the result of an execution by selecting the code and using the shortcut `Cmd/ctrl + i` or `right-click + "Do & inspect it"`. This will execute the code and open an inspector on the result.
-
-By inspecting `1/3` we get the inspector shown in Figure *@InspectorWithRawTab@*.
-
-![An inspector with the Raw tab selected. % width=60&anchor=InspectorWithRawTab](figures/InspectorRawTab.png)
-
-![Inspector areas. % width=60&anchor=InspectorWithThreeAreas](figures/InspectorRawTabAreas.png)
-
-There are three areas in an inspector. They are highlighted in Figure *@InspectorWithThreeAreas@*.
-
-1. This text starts with the **class** of the inspected object. Here we have an instance of Fraction.
-2. This is the raw view on the object. It shows the internal state of the object. Here the fraction has a `numerator` instance variable holding the value 1, and a `denominator` instance variable holding the value 3.
-3. The last area is the evaluator. In this area, you can write expressions and evaluate them like you would in the playground. In an evaluator, `self` refers to the inspected object. This object can be seen in the raw view above the evaluator showing the value of the `self` variable.
-
-The raw view on the object is a tree list. By clicking the small grey triangle on the left side, you can unfold the state of the object held by the instance variable. By clicking on an instance variable, you open a new inspector pane.
-
-This is recursive: if you click on more variables, more panes will open. By default, only the last two panes are visible at any time. You can use the small rectangles at the bottom of the window to navigate between panes.
-
-%Figure *@InspectorNavigation@* is a small demonstration.
-
-KDH: adding a GIF file does not work. We need an alternative or remove this part
-
-%![Navigating in the inspector](figures/InspectorPaneNavigation.gif %anchor=InspectorNavigation&width=40)
-
-### The inspector toolbar
-
-Each inspector has the toolbar shown in Figure *@InspectorToolbar@*:
-
-![Toolbar.](figures/InspectorToolbar.png width=40&label=InspectorToolbar)
-
-- The **triangle button** is related to object-centric debugging. It allows putting breakpoints on state access (read and/or write) of a specific object.
-- The **circling arrows** button allows refreshing the current view of the object. Fields of an object are not updated live, so if the object is modified from elsewhere, the new values will only show after this button is used.
-- The **green glasses** button opens another inspector window on the current object.
-- The **last button** allows opening a browser on the class of the inspected object. It can be used to check for available methods to use in the evaluator.
-
-
-### The Breakpoints tab: managing breakpoints
-
-KDH: this section was/is missing.
-
-The following animation shows how to put a breakpoint on writing an instance variable, the breakpoints listing on the current object, and how to deactivate one.
-
-KDH: adding a GIF file does not work. We need an alternative or remove this part
-
-%![Breakpoints](figures/InspectorBreakpoints.gif width=60&label=InspectorBreakpoints)
-
-### The Meta tab: class hierarchy and searching methods
-
-The `Meta` tab is the last one that is available for most objects. See Figure *@InspectorMetaTab@*. On the left, it shows the hierarchy of the current object's class. On the right, it shows the available methods. Clicking on parent classes in the hierarchy will show methods implemented in this class on the right. Selecting a method will display its source code at the bottom of the tab.
-
-![Meta tab. % width=60&anchor=InspectorMetaTab](figures/InspectorMetaTab.png)
 
 ### Creating custom tabs
 

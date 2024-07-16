@@ -1,7 +1,7 @@
 ## Styling applications
 @cha_style
 
-In this chapter, we will describe how to use custom styles in Spec applications. First we present styles and then we will build a little editor like the one displayed hereafter.
+In this chapter, we describe how to use custom styles in Spec applications. First we present styles and then we build a little editor like the one displayed hereafter.
 
 We will show that an application in Spec manages styles and lets you adapt the look of a presenter as shown in Figure *@style1@*.
 
