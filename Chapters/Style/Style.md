@@ -383,7 +383,7 @@ CustomStyleEditor >> initializeWindow: aWindowPresenter
 
 Without setting the custom styles nor using our custom application in the presenter, we obtain Figure *@style7@*, assuming that the "Pharo Light" theme is in effect:
 
-![Styling the application.%width=70&anchor=style7](figures/style7.png)
+![The raw (default style) application.%width=70&anchor=style7](figures/style7.png)
 
 ### Initializing styles
 
@@ -429,9 +429,7 @@ Now, when we run `CustomStylesApplication new start` we will obtain Figure *@sty
 
 ### Wiring buttons
 
-
-The only thing missing is to add the behavior of the buttons.
-
+The only missing thing is to add the behavior of the buttons.
 For example, if we click on the zoom-in button we want to remove the `smallFontStyle` and add the `bigFontSize`. When we click on the text font button, we want to remove the style `codeFont` and add the `textFont` style.
 
 This is what we have to do in the `connectPresenters` method:
@@ -465,4 +463,4 @@ When we click the "Text font" button, the font of the text changes as shown in F
 
 ### Conclusion
 
-Using styles in Spec is great. It makes it easier to have a consistent design as we can add the same style to several presenters. If we want to change some style, we only edit the stylesheet. Also, the styles automatically scale if we change the font size of all the images. These are the main reasons why in Spec we have the notion of an application. We can dynamically change how a presenter looks.
+Using styles in Spec is a nice features. It makes it easier to have a consistent design as we can add the same style to several presenters. If we want to change some style, we only edit the stylesheet. We can dynamically change how a presenter looks.
