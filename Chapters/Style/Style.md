@@ -1,38 +1,88 @@
 ## Styling applications
 @cha_style
 
-In this chapter, we describe how to use custom styles in Spec applications. First we present styles and then we build a little editor like the one displayed hereafter.
+In this chapter, we describe how to use declare and use styles in Spec applications. First we present stylesheets and styles and then we build a little editor like the one displayed in Figure *@style1@*. This will illustrates how Spec manages styles and lets you adapt the look of a presenter. There are two ways to express stylesheets: one for Morphic expressed using an extended version of STON, and CSS for GTK. In this chapter we focus on the Morphic one for Pharo 12. We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
 
-We will show that an application in Spec manages styles and lets you adapt the look of a presenter as shown in Figure *@style1@*.
+![Building a little styling editor. % width=70&label=style1](figures/style8.png)
 
-![Building a little styling editor.](figures/style8.png width=70&label=style1)
 
-We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
+
+### In a nutshell
+
+
+#### An application stylesheet
+
+In Spec, an application has a stylesheet that can be set using the message `styleSheet:`. Each application can then refine its stylesheet.
+
+```
+app styleSheet: styleSheet.
+```
+
+#### Declaring styles
+
+For Pharo widget (as opposed to GTK ones) a stylesheet is defined as a special version of STON strings that should be parsed and turned into style elements. The following snippet creates a stylesheet where all the font are bold, and three drawing styles `.red`, `.bgGray`, and `.blue` are defined. 
+
+```
+(SpStyleVariableSTONReader fromString:
+'.application [
+     Font { #bold: true },
+    .red [ Draw { #color: #red } ],
+    .bgGray [ Draw { #backgroundColor: #E2E2E2 } ],
+    .blue [ Draw { #color: #blue } ]
+]' ).
+```
+
+#### Applying styles
+
+Each presenter can apply a defined stylesheet using the messages `addStyle:` and `removeStyle:`.
+The following example changes the color and background color of the text by applying the red and bgGray style.
+ 
+```
+```
+label := presenter newLabel.
+label label: 'I am a label'.
+label addStyle: 'red'.
+label addStyle: 'bgGray'.
+```
+
 
 ### How do styles work?
 
 Styles in Spec work like CSS. They are stylesheets in which the properties for displaying a presenter are defined. Properties such as colors, width, height, font, and others. As a general principle, it is better to use styles instead of fixed constraints, because your application will be more responsive.
 
-TODO Pay attention. A stylesheet does not cover all aspects of a widget.
+A stylesheet does not cover all aspects of a widget and you may have need that are not covered in the version of Spec. When moving to Toplo widgets Spec will revisit its style support and it will improve the coverage.
 
-### About stylesheets
 
-Spec first collects the style for the presenter, then collects the styles for its
+### Stylesheets
+
+
+#### Root level
+Spec collects the style for a presenter, then collects the styles for its
  subpresenters. 'application' is the default root level.
 
-A defined stylesheet always has a root element and this root element
-has to be called `'.application'`.
+A defined stylesheet always has a root element and this root element has to be called `'.application'`.
+The following stylesheet declares that the font for the application (i.e., all the presenters if not redefined in another style) are 10 pixels and Source Sans Pro.
 
-Each style follows a cascading style, starting from `.application` like
+```
+.application [
+ Font { #name: "Source Sans Pro", #size: 10 },
+ ...
+ ```
+
+#### Subpresenter
+Each style follows a cascading style, starting from `.application`.
+The following snippet defines three styles
+
 ```
 .application.label.header
 .application.link
 .application.checkBox
 ```
 
-There are two ways to express stylesheets: one for Morphic expressed using an extended version of STON, and CSS for GTK.
+
 
 ### STON notation
+
 
 Morphic styles can be declared using STON. STON is a textual object notation. It is described in a dedicated chapter in the _Enterprise Pharo_ book available at [https://books.pharo.org](https://books.pharo.org).
 
