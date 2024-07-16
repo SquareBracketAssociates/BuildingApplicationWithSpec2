@@ -248,7 +248,7 @@ presenter open
 ```
 
 
-![The stylesheet had been applied to the label. %width=50&label=style5](figures/style5.png)
+![The stylesheet had been applied to the label. %width=50&anchor=style5](figures/style5.png)
 
 ### Dynamically applying styles
 
@@ -261,7 +261,7 @@ label addStyle: 'blue'.
 ```
 
 
-![After changing the style. % width=50&label=style6 ](figures/style6.png)
+![After changing the style. % width=50&anchor=style6](figures/style6.png)
 
 
 ### A specifically styled application
@@ -383,7 +383,7 @@ CustomStyleEditor >> initializeWindow: aWindowPresenter
 
 Without setting the custom styles nor using our custom application in the presenter, we obtain Figure *@style7@*, assuming that the "Pharo Light" theme is in effect:
 
-![Styling the application.%width=70&label=style7](figures/style7.png)
+![Styling the application.%width=70&anchor=style7](figures/style7.png)
 
 ### Initializing styles
 
@@ -411,7 +411,7 @@ CustomStyleEditor >> initializeStyles
 ```
 
 
-![Styled editor. %width=60&label=style8](figures/style8.png)
+![Styled editor. %width=60&anchor=style8](figures/style8.png)
 
 Finally, we have to override the `start` method in the application. We are going to set the application of the presenter and run the presenter from the application.
 
@@ -456,24 +456,11 @@ CustomStyles >> connectPresenters
 
 When we click on the the zoom-in button, the size of the text changes as shown in Figure *@style9@*.
 
-![Zoomed styled editor.](figures/style9.png width=50&label=style9)
+![Zoomed styled editor. %width=50&anchor=style9](figures/style9.png )
 
 When we click the "Text font" button, the font of the text changes as shown in Figure *@style10@*.
 
-![Styled editor with other font.](figures/style10.png width=50&label=style10)
-
-
-
-
-
-### Spec implementation details
-
-You can ask an adapter for its style name using the message `styleName`
-
-```
- SpMorphicLabelAdapter styleName
- > Label
-```
+![Styled editor with other font. %width=50&anchor=style10](figures/style10.png )
 
 
 ### Conclusion
