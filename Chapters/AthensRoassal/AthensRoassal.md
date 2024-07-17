@@ -1,27 +1,141 @@
 ## Using Athens and Roassal in Spec
 
-This chapter was originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components.
+A part of this chapter was originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components. This chapter shows how you can use Athens (a Cairo back-end) to draw using a low-level API on a canvas inside a Spec presenter. It then shows how you can use Roassal (a visualization engine) within a Spec presenter. 
 
 ### Introduction
 
-There are two different computer graphics: vector and raster graphics. Raster graphics represent images as a collection of pixels. Vector graphics is the use of geometric primitives such as points, lines, curves, or polygons to represent images. These primitives are created using mathematical equations.
+There are two different computer graphics: vector and raster graphics. Raster graphics represent images as a collection of pixels. Vector graphics uses geometric primitives such as points, lines, curves, or polygons to represent images. These primitives are created using mathematical equations.
 
 Both types of computer graphics have advantages and disadvantages. The advantages of vector graphics over raster are:
 - smaller size,
 - ability to zoom indefinitely,
 - moving, scaling, filling, and rotating do not degrade the quality of an image.
 
-Ultimately, pictures on a computer are displayed on a screen with a specific display dimension. However, while raster graphic doesn't scale very well when the resolution differs too much from the picture resolution, vector graphics are rasterized to fit the display they will appear on. Rasterization is the technique of taking an image described in a vector graphics format and transforming it into a set of pixels for output on a screen.
+Ultimately, pictures on a computer are displayed on a screen with a specific display dimension. However, while raster graphics doesn't scale very well when the resolution differs too much from the picture resolution, vector graphics are rasterized to fit the display they will appear on. Rasterization is taking an image described in a vector graphics format and transforming it into a set of pixels for output on a screen.
 
-**Note.** You have the same concept when doing 3D programming with an API like OpenGL. You describe your scene with points, vertices, etc, and in the end, you rasterize your scene to display it on your screen.
+Morphic (with Form as its raster ) is the way to do graphics with Pharo. 
 
-Morphic is the way to do graphics with Pharo. However, most existing canvases are pixel-based, and not vector-based. This can be an issue with current IT ecosystems, where the resolution can differ from machine to machine (desktop, tablet, phones, etc).
-
-Enter Athens, a vector-based graphic API. Under the hood, it uses the Cairo graphic library for the rasterization phase.
+Most graphics in Pharo are raster graphics: Form the low-level abstraction is used by Morphic. 
+Pharo, however, offers a vector graphics alternative. For this it uses and exposes Cairo to the user.
+Two APIs are available: the older one, called Athens, is protected more the developers from possible mistakes.
+Alexandrie is a new and more low-level API and optimized API. It is the foundation for Bloc the replacement of Morphic. 
 
 When you integrate Athens with Spec, you'll use its rendering engine to create your picture. It is transformed into a `Form` and displayed on the screen.
 
-### Hello world in Athens
+
+### Direct integration of Athens with Spec
+
+We first create a presenter named `AthensExamplePresenter`. This is the presenter that will support the actual rendering using Athens.
+
+
+```
+SpPresenter << #AthensExamplePresenter
+	slots: { #athensPresenter };
+	package: 'CodeOfSpec20Book'
+```
+
+We define a simple layout to place the `athensPresenter`.
+
+```
+AthensExamplePresenter >> defaultLayout
+
+	^ SpBoxLayout newTopToBottom
+			add: athensPresenter;
+			yourself
+```
+
+This presenter wraps an `AthensPresenter` as follows:
+
+```
+AthensExamplePresenter >> initializePresenters
+
+	athensPresenter := self instantiate: SpAthensPresenter.
+	athensPresenter surfaceExtent: 600@400.
+	athensPresenter drawBlock: [ :canvas | self render: canvas ]
+```
+
+It configures the `AthensPresenter` to draw with the `render:` message.
+
+```
+AthensExamplePresenter >> render: canvas
+
+	canvas
+		setPaint:
+			(canvas surface
+				createLinearGradient: {
+					0 -> Color white.
+					1 -> Color black }
+				start: 0@0
+				stop: canvas surface extent).
+	canvas drawShape: (0 @ 0 extent: canvas surface extent)
+```
+
+Executing `AthensExamplePresenter new open` produces Figure *@athens2@*.
+
+![A Spec application with an Athens presenter. % width=60&label=athens2](figures/athens2.png)
+
+This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture.
+
+
+
+
+
+### Roassal Spec integration
+
+In this section, we describe how you can define a Spec presenter that let you draw Roassal visualisations. 
+
+Imagine that you want to draw using Roassal some shapes. Here we draw two boxes. But you can also draw paths and other graphical element. 
+
+```
+| c blueBox redBox |
+c := RSCanvas new.
+blueBox := RSBox new
+	size: 80;
+	color: #blue.
+redBox := RSBox new
+	          size: 80;	
+	          color: #red.
+c
+	add: blueBox;
+	add: redBox.
+blueBox translateBy: 40 @ 20.
+c
+```
+
+
+#### Using `SpRoassalInspectorPresenter`. 
+Building a Roassal supporting Spec presenter is as simple as creating an instance of `SpRoassalInspectorPresenter` and passing it the canvas on which we draw the Roassal visualization. 
+
+![A Spec application with an Athens presenter. % width=60&label=roassalSpec](figures/roassalTwoBoxes.png)
+
+This is what the following expression is doing `SpRoassalInspectorPresenter new canvas: c; open`
+
+Executing the following snippet should open a Spec window with a presenter inside as shown in Figure *@roassalSpec@*.
+
+
+```
+| c blueBox redBox |
+c := RSCanvas new.
+blueBox := RSBox new
+	size: 80;
+	color: #blue.
+redBox := RSBox new
+	          size: 80;	
+	          color: #red.
+c
+	add: blueBox;
+	add: redBox.
+blueBox translateBy: 40 @ 20.
+
+SpRoassalInspectorPresenter new canvas: c; open
+```
+
+
+
+
+
+
+### Hello world in Athens via Morphic
 
 We will see how to use Athens directly integrated with Morphic. This is why we create a `Morph` subclass. Figure *@athens@* shows the display of such a morph. It will be the class we will use for all our experiments.
 
@@ -91,7 +205,7 @@ AthensHello new openInWindow
 
 ### Handling resizing
 
-You can already create the window and see a nice gradient with a greeting text. However, you will notice that when resizing the window, the Athens content is not resized. To fix this, we need one extra method.
+You can create the window and see a nice gradient with a greeting text. You will notice, however, that when resizing the window, the Athens content is not resized. To fix this, we need one extra method.
 
 ```
 AthensHello >> extent: aPoint
@@ -106,7 +220,7 @@ AthensHello >> extent: aPoint
 ```
 
 
-Congratulations, you have now created your first morphic window where content is rendered using Athens.
+Congratulations, you have now created your first morphic window whose contents is rendered using Athens.
 
 
 ### Using the morph with Spec
@@ -145,60 +259,7 @@ AthensHelloPresenter new open
 ```
 
 
-### Direct integration of Athens with Spec
 
-We can also achieve a direct integration without relying on a specific Morph creation.
-
-We first create a presenter named `AthensExamplePresenter`. This is the presenter that will support the actual rendering using Athens.
-
-
-```
-SpPresenter << #AthensExamplePresenter
-	slots: { #paintPresenter };
-	package: 'CodeOfSpec20Book'
-```
-
-We define a simple layout to place the `paintPresenter`.
-
-```
-AthensExamplePresenter >> defaultLayout
-
-	^ SpBoxLayout newTopToBottom
-			add: paintPresenter;
-			yourself
-```
-
-This presenter wraps an `AthensPresenter` as follows:
-
-```
-AthensExamplePresenter >> initializePresenters
-
-	paintPresenter := self instantiate: SpAthensPresenter.
-	paintPresenter surfaceExtent: 600@400.
-	paintPresenter drawBlock: [ :canvas | self render: canvas ]
-```
-
-It configures the `AthensPresenter` to draw with the `render:` message.
-
-```
-AthensExamplePresenter >> render: canvas
-
-	canvas
-		setPaint:
-			(canvas surface
-				createLinearGradient: {
-					0 -> Color white.
-					1 -> Color black }
-				start: 0@0
-				stop: canvas surface extent).
-	canvas drawShape: (0 @ 0 extent: canvas surface extent)
-```
-
-Executing `AthensExamplePresenter new open` produces Figure *@athens2@*.
-
-![A Spec application with an Athens presenter. % width=60&label=athens2](figures/athens2.png)
-
-This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture.
 
 ### Conclusion
 
