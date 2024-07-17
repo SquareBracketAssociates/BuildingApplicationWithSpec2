@@ -13,12 +13,10 @@ Both types of computer graphics have advantages and disadvantages. The advantage
 
 Ultimately, pictures on a computer are displayed on a screen with a specific display dimension. However, while raster graphics doesn't scale very well when the resolution differs too much from the picture resolution, vector graphics are rasterized to fit the display they will appear on. Rasterization is taking an image described in a vector graphics format and transforming it into a set of pixels for output on a screen.
 
-Morphic (with Form as its raster ) is the way to do graphics with Pharo. 
-
-Most graphics in Pharo are raster graphics: Form the low-level abstraction is used by Morphic. 
-Pharo, however, offers a vector graphics alternative. For this it uses and exposes Cairo to the user.
-Two APIs are available: the older one, called Athens, is protected more the developers from possible mistakes.
-Alexandrie is a new and more low-level API and optimized API. It is the foundation for Bloc the replacement of Morphic. 
+Morphic is using a raster approach. It converts the canvas contents into a pixel based structure (the class `Form`). Most graphics in Pharo are raster graphics: `Form` the low-level abstraction is used by Morphic.  Pharo, however, offers a vector graphics alternative. For this, it uses and exposes Cairo to the user.
+Two APIs are available: 
+- the older one, called Athens, is protecting more the developers from possible mistakes.
+- Alexandrie is a new and more low-level API. It has been more aggressively optimized. It is the foundation for Bloc the replacement of Morphic. 
 
 When you integrate Athens with Spec, you'll use its rendering engine to create your picture. It is transformed into a `Form` and displayed on the screen.
 
@@ -44,7 +42,7 @@ AthensExamplePresenter >> defaultLayout
 			yourself
 ```
 
-This presenter wraps an `AthensPresenter` as follows:
+This presenter creates and configures an `SpAthensPresenter` instance as follows:
 
 ```
 AthensExamplePresenter >> initializePresenters
@@ -55,30 +53,32 @@ AthensExamplePresenter >> initializePresenters
 ```
 
 It configures the `AthensPresenter` to draw with the `render:` message.
+The `render:` method is a typical sequence of instructions to configure the canvas. 
 
 ```
 AthensExamplePresenter >> render: canvas
-
-	canvas
-		setPaint:
-			(canvas surface
-				createLinearGradient: {
-					0 -> Color white.
-					1 -> Color black }
-				start: 0@0
-				stop: canvas surface extent).
-	canvas drawShape: (0 @ 0 extent: canvas surface extent)
+	| surface font |
+	surface := canvas surface.
+	font := LogicalFont familyName: 'Source Sans Pro' pointSize: 10.
+	surface clear.
+	canvas 
+		setPaint: ((LinearGradientPaint from: 0@0  to: surface extent) 
+		colorRamp: {  0 -> Color white. 1 -> Color black }).
+	canvas drawShape: (0@0 extent: surface extent).
+	canvas setFont: font.
+	canvas setPaint: Color pink.
+	canvas 
+		pathTransform translateX: 20 Y: 20 + (font getPreciseAscent); 
+		scaleBy: 2; 
+		rotateByDegrees: 25.
+	canvas drawString: 'Hello Athens in Pharo/Morphic'
 ```
 
-Executing `AthensExamplePresenter new open` produces Figure *@athens2@*.
+Executing `AthensExamplePresenter new open` produces Figure *@athens3@*.
 
-![A Spec application with an Athens presenter. % width=60&label=athens2](figures/athens2.png)
+![A Spec presenter using an `SpAthensPresenter`. % width=60&label=athens3](figures/athens.png)
 
-This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture.
-
-
-
-
+This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture. The same approach lets you use Alexandrie.
 
 ### Roassal Spec integration
 
@@ -131,17 +131,10 @@ SpRoassalInspectorPresenter new canvas: c; open
 ```
 
 
-
-
-
-
 ### Hello world in Athens via Morphic
+The Pharo is working actively to replace Morphic by Bloc. Still we believe that the following approach is worth documenting. 
 
-We will see how to use Athens directly integrated with Morphic. This is why we create a `Morph` subclass. Figure *@athens@* shows the display of such a morph. It will be the class we will use for all our experiments.
-
-![AthensHello new openInWindow. %width=60&label=athens](figures/athens.png)
-
-
+We show now how to use Athens directly integrated with Morphic. This is why we create a `Morph` subclass. The expression `AthensHello new openInWindow` will display the same contents as the one of Figure *@athens3@*.
 
 First, we define a class which inherits from `Morph`:
 
@@ -219,7 +212,6 @@ AthensHello >> extent: aPoint
 	self changed
 ```
 
-
 Congratulations, you have now created your first morphic window whose contents is rendered using Athens.
 
 
@@ -263,4 +255,4 @@ AthensHelloPresenter new open
 
 ### Conclusion
 
-This chapter illustrated clearly that Spec can take advantage of canvas-related operations such as those proposed by Athens to open the door to specific visuals.
+This chapter illustrated clearly that Spec can take advantage of canvas-related operations such as those proposed by Athens or Roassal to open the door to specific visuals.
