@@ -46,7 +46,7 @@ Let us explain a bit the method definition
 
 Notice that our new tab is in the second position. This is because in `Collection<<inspectionItems:` (the method defining the Items tab) the order parameter is 0.
 
-### Adding a tab with a table and conditions on when to display it
+### A tab with a table
 
 Let's create a new tab that will display a table if the collection contains only numbers. It will show each number and the result of multiplying that number with 2.
 
@@ -100,7 +100,7 @@ OrderedCollection << containsOnlyNumbers
 These two methods ensure that the tab is only displayed when there are only numbers in the collection.
 
 
-### Adding a raw view of a specific element of the collection and removing the evaluator
+### Adding a raw view of a specific element of the collection 
 
 Sometimes you may want to provide addition tab but without any interpretation about the contents. This is what we call a raw view. For this we have to return an instance of 
 `StRawInspectionPresenter`.
@@ -123,7 +123,10 @@ OrderedCollection << inspectionMaxValueContext: aContext
 
 ![Inspect max value tab. %width=60&anchor=InspectorMaxValueTab](figures/InspectorExpansionMax.png)
 
-However as we can see in Figure *@InspectorMaxValueTab@*, the `self` in the evaluator does not match the `self` in the max value, which is confusing. So we will hide the evaluator.
+
+### Removing the evaluator
+
+As we can see in Figure *@InspectorMaxValueTab@*, the `self` in the evaluator does not match the `self` in the max value, which is confusing. So we will hide the evaluator.
 
 ```
 OrderedCollection << inspectionMaxValueContext: aContext
