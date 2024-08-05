@@ -131,6 +131,19 @@ SpRoassalInspectorPresenter new canvas: c; open
 ```
 
 
+
+### SpRoassalPresenter
+
+Spec proposes a presenter dedicated to Roassal visualizations. 
+Such a presenter is called `SpRoassalPresenter` and you can use it using the `newRoassal` message in an `initializePresenter` method.
+
+The main API of `SpRoassalPresenter` are the method `canvas` and `script`.
+You can interact with a Roassal canvas normally and the result gets displayed in the Roassal presenter.
+
+
+
+
+
 ### Hello world in Athens via Morphic
 The Pharo is working actively to replace Morphic by Bloc. Still we believe that the following approach is worth documenting. 
 
