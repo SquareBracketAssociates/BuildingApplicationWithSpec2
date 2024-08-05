@@ -93,8 +93,8 @@ blueBox := RSBox new
 	size: 80;
 	color: #blue.
 redBox := RSBox new
-	          size: 80;	
-	          color: #red.
+	size: 80;	
+	color: #red.
 c
 	add: blueBox;
 	add: redBox.
@@ -120,8 +120,8 @@ blueBox := RSBox new
 	size: 80;
 	color: #blue.
 redBox := RSBox new
-	          size: 80;	
-	          color: #red.
+	 size: 80;	
+	 color: #red.
 c
 	add: blueBox;
 	add: redBox.
