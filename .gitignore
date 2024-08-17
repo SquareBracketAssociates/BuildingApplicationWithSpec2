@@ -9,3 +9,4 @@
 /pharo-vm/
 /build/
 _result
+*.synctex.*
