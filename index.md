@@ -33,7 +33,7 @@
 <!inputFile|path=Chapters/DynamicPresenter/DynamicPresenter.md!>
 %Reviewed by stef - anchor
 
-<!inputFile|path=Chapters/Menus/MailApp.md!>
+<!inputFile|path=Chapters/MailApp/MailApp.md!>
 
 <!inputFile|path=Chapters/Menus/Menus.md!>
 
@@ -60,5 +60,3 @@
 %<!inputFile|path=Chapters/Tips/Tips.md!>
 %<!inputFile|path=Chapters/CaseStudyTwo/CaseStudyTwo.md!> 
 %Reviewed by stef - anchor
-
-
