@@ -37,10 +37,9 @@
 
 <!inputFile|path=Chapters/Menus/Menus.md!>
 
-<!inputFile|path=Chapters/Style/Style.md!>
-
-
 <!inputFile|path=Chapters/Transmissions/Transmission.md!>
+
+<!inputFile|path=Chapters/Style/Style.md!>
 
 <!inputFile|path=Chapters/AthensRoassal/AthensRoassal.md!>
 
