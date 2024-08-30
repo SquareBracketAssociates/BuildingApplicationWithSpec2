@@ -305,22 +305,22 @@ MailClientPresenter >> modelChanged
 	self updateToolBarButtons
 ```
 
-Second, we have to set the initial state of the toolbar buttons when the mail client presenter is initialized. `connectPresenters` is a good place to update the toolbar buttons. We add an extra line at the bottom of the method that we defined before.
+Second, we have to set the initial state of the toolbar buttons when the mail client presenter is initialized. The method `folderOrEmailSelectionChanged`, invoked by the method `connectPresenters`, is a good place to update the toolbar buttons. We add an extra line at the bottom of the method that we defined before.
 
 ```
-MailClientPresenter >> connectPresenters
+MailClientPresenter >> folderOrEmailSelectionChanged
 
-	account whenSelectionChangedDo: [
-		| selectedEmail |
-		editedEmail := nil.
-		account hasSelectedEmail
-			ifTrue: [
-				selectedEmail := account selectedItem.
-				selectedEmail isDraft
-					ifTrue: [ editedEmail := selectedEmail].
-				reader updateLayoutForEmail: selectedEmail ]
-			ifFalse: [ reader updateLayoutForNoEmail ].
-		self updateToolBarButtons ]
+	| selectedEmail |
+	editedEmail := nil.
+	account hasSelectedEmail
+		ifTrue: [
+			selectedEmail := account selectedItem.
+			selectedEmail isDraft
+				ifTrue: [ editedEmail := selectedEmail].
+			reader updateLayoutForEmail: selectedEmail ]
+		ifFalse: [ reader updateLayoutForNoEmail ]
+	self updateToolBarButtons.
+	statusBar popMessage
 ```
 
 As for the menubar, it required a lot of code to setup the toolbar and to wire everything, but we are ready. Let's open the window again.
@@ -474,18 +474,18 @@ Therefore `MailClientPresenter` defines the menu.
 MailClientPresenter >> accountMenu
 
 	^ self newMenu
-		addItem: [ :item |
-			item
-				name: 'Delete';
-				enabled: [ account hasSelectedEmail ];
-				action: [ self deleteMail ] ];
-		addItem: [ :item |
-			item
-				name: 'Send';
-				enabled: [ account hasSelectedEmail
-										and: [ account selectedItem isDraft] ];
-				action: [ self sendMail ] ];
-		yourself
+			addItem: [ :item |
+				item
+					name: 'Delete';
+					enabled: [ account hasSelectedEmail ];
+					action: [ self deleteMail ] ];
+			addItem: [ :item |
+				item
+					name: 'Send';
+					enabled: [ account hasSelectedEmail
+											and: [ account selectedItem isDraft] ];
+					action: [ self sendMail ] ];
+			yourself
 ```
 
 The action blocks are simple, like the action blocks of the menu items in the menubar and the buttons in the toolbar. They send the action messages `deleteMail` and `sendMail` we have defined before.

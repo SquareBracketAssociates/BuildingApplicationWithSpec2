@@ -571,21 +571,28 @@ MailClientPresenter >> defaultLayout
 			yourself
 ```
 
-Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We use several messages that we defined earlier.
+Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods. The first one delegates to the second.
 
 ```
 MailClientPresenter >> connectPresenters
 
-	account whenSelectionChangedDo: [
-		| selectedEmail |
-		editedEmail := nil.
-		account hasSelectedEmail
-			ifTrue: [
-				selectedEmail := account selectedItem.
-				selectedEmail isDraft
-					ifTrue: [ editedEmail := selectedEmail].
-				reader updateLayoutForEmail: selectedEmail ]
-			ifFalse: [ reader updateLayoutForNoEmail ] ]
+	account whenSelectionChangedDo: [ self folderOrEmailSelectionChanged ]
+```
+
+In the second method, we use several messages that we defined earlier.
+
+```
+MailClientPresenter >> folderOrEmailSelectionChanged
+
+	| selectedEmail |
+	editedEmail := nil.
+	account hasSelectedEmail
+		ifTrue: [
+			selectedEmail := account selectedItem.
+			selectedEmail isDraft
+				ifTrue: [ editedEmail := selectedEmail].
+			reader updateLayoutForEmail: selectedEmail ]
+		ifFalse: [ reader updateLayoutForNoEmail ]
 ```
 
 The method states that the content of the `MailReaderPresenter` held by `reader` depends on the selection in the tree. If an email is selected, the reader shows its fields. If there is no selection, or a folder is selected, the reader shows the informational message. When a draft email is selected, we put it in the `editedMail` instance variable, which will be handy when we start performing actions on the selected email.
