@@ -597,26 +597,29 @@ MailClientPresenter >> defaultLayout
 			yourself
 ```
 
-Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods. The first one delegates to the second.
+Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods. `connectPresenters` sends the selected tree item to the `reader` and then it sends `updateAfterSelectionChangedTo:` to allow for post selection actions.
 
 ```
 MailClientPresenter >> connectPresenters
 
-	account whenSelectionChangedDo: [ self folderOrEmailSelectionChanged ]
+	account whenSelectionChangedDo: [ :selection |
+		| selectedFolderOrEmail |
+		selectedFolderOrEmail := selection selectedItem.
+		reader read: selectedFolderOrEmail.
+		self updateAfterSelectionChangedTo: selectedFolderOrEmail ]
 ```
 
 In the second method, we use several messages that we defined earlier.
 
 ```
-MailClientPresenter >> folderOrEmailSelectionChanged
+MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 
-	| selectedFolderOrEmail |
-	selectedFolderOrEmail := account selectedItem.
-	reader read: selectedFolderOrEmail.
 	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
 		ifTrue: [ selectedFolderOrEmail ]
 		ifFalse: [ nil ]
 ```
+
+This method keeps track of the email if it is a draft email, so that the presenter has it handy when needed. The method invokes the method below to determine whether the tree selection is a draft email.
 
 ```MailClientPresenter >> isDraftEmail: folderOrEmailOrNil
 

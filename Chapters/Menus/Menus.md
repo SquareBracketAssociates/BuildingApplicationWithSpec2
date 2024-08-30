@@ -305,17 +305,12 @@ MailClientPresenter >> modelChanged
 	self updateToolBarButtons
 ```
 
-Second, we have to set the initial state of the toolbar buttons when the mail client presenter is initialized. The method `folderOrEmailSelectionChanged`, invoked by the method `connectPresenters`, is a good place to update the toolbar buttons. We add an extra line at the bottom of the method that we defined before.
+Second, we have to set the initial state of the toolbar buttons when the mail client presenter is initialized. The method `updateAfterSelectionChangedTo:`, invoked by the method `connectPresenters`, is a good place to update the toolbar buttons. We add an extra line at the bottom of the method that we defined before.
 
 ```
-MailClientPresenter >> folderOrEmailSelectionChanged
+MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 
-	| selectedFolderOrEmail |
-	selectedFolderOrEmail := account selectedItem.
-	reader read: selectedFolderOrEmail.
-	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
-		ifTrue: [ selectedFolderOrEmail ]
-		ifFalse: [ nil ]
+	super updateAfterSelectionChangedTo: selectedFolderOrEmail.
 	self updateToolBarButtons
 ```
 
@@ -411,17 +406,12 @@ MailClientPresenter >> deleteMail
 	statusBar pushMessage: 'Mail deleted.'
 ```
 
-To finish the status bar functionality, we have to start with a clean status bar. Therefore we adapt the method `folderOrEmailSelectionChanged` again, in which we already bring the toolbar buttons in their initial enablement state. We send the message `popMessage` to ensure that the status bar is empty.
+To finish the status bar functionality, we have to start with a clean status bar. Therefore we adapt the method `updateAfterSelectionChangedTo:` again, in which we already bring the toolbar buttons in their initial enablement state. We send the message `popMessage` to ensure that the status bar is empty.
 
 ```
-MailClientPresenter >> folderOrEmailSelectionChanged
+MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 
-	| selectedFolderOrEmail |
-	selectedFolderOrEmail := account selectedItem.
-	reader read: selectedFolderOrEmail.
-	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
-		ifTrue: [ selectedFolderOrEmail ]
-		ifFalse: [ nil ]
+	super updateAfterSelectionChangedTo: selectedFolderOrEmail.
 	self updateToolBarButtons.
 	statusBar popMessage
 ```
