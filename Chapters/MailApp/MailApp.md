@@ -407,27 +407,27 @@ MailReaderPresenter >> initializePresenters
 	noContent := NoEmailPresenter new
 ```
 
-The presenter has two states. Either there is a model (an `Email`), or either there isn't. We have a layout for each state. When there is a model, we will use the `emailLayout`:
+The presenter has two states. Either there is an `Email`, or either there isn't. We have a layout for each state. When there is an email, we will use the `emailLayout`:
 
 ```
 MailReaderPresenter >> emailLayout
 
 	^ SpBoxLayout newLeftToRight
-		add: content;
-		yourself
+			add: content;
+			yourself
 ```
 
-When there is no model, we will use the `noEmailLayout`:
+When there is no email, we will use the `noEmailLayout`:
 
 ```
 MailReaderPresenter >> noEmailLayout
 
 	^ SpBoxLayout newLeftToRight
-		add: noContent;
-		yourself
+			add: noContent;
+			yourself
 ```
 
-By default, we assume there is no model. After all, there is no method that initializes the model. So the `defaultLayout` is the `noEmailLayout`.
+By default, we assume there is no email. After all, there is no method that initializes the email. So the `defaultLayout` is the `noEmailLayout`.
 
 ```
 MailReaderPresenter >> defaultLayout
@@ -435,7 +435,17 @@ MailReaderPresenter >> defaultLayout
 	^ self noEmailLayout
 ```
 
-As mentioned before, we assume that instances of `MailReaderPresenter` will be told to update themselves. There are two messages to tell them.
+As mentioned before, we assume that instances of `MailReaderPresenter` will be told to update themselves. `read:` is the message to tell them.
+
+```
+MailReaderPresenter >> read: email
+
+	email
+		ifNil: [ self updateLayoutForNoEmail ]
+		ifNotNil: [ self updateLayoutForEmail: email ]
+```
+
+`read:` delegates to the methods that do the actual work.
 
 ```
 MailReaderPresenter >> updateLayoutForEmail: email
@@ -585,14 +595,13 @@ In the second method, we use several messages that we defined earlier.
 MailClientPresenter >> folderOrEmailSelectionChanged
 
 	| selectedEmail |
-	editedEmail := nil.
-	account hasSelectedEmail
-		ifTrue: [
-			selectedEmail := account selectedItem.
-			selectedEmail isDraft
-				ifTrue: [ editedEmail := selectedEmail].
-			reader updateLayoutForEmail: selectedEmail ]
-		ifFalse: [ reader updateLayoutForNoEmail ]
+	selectedEmail := account hasSelectedEmail
+		ifTrue: [ account selectedItem ]
+		ifFalse: [ nil ].
+	reader read: selectedEmail.
+	editedEmail := (selectedEmail isNotNil and: [ selectedEmail isDraft ])
+		ifTrue: [ selectedEmail ]
+		ifFalse: [ nil ]
 ```
 
 The method states that the content of the `MailReaderPresenter` held by `reader` depends on the selection in the tree. If an email is selected, the reader shows its fields. If there is no selection, or a folder is selected, the reader shows the informational message. When a draft email is selected, we put it in the `editedMail` instance variable, which will be handy when we start performing actions on the selected email.

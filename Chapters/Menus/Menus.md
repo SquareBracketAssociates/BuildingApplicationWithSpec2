@@ -311,14 +311,13 @@ Second, we have to set the initial state of the toolbar buttons when the mail cl
 MailClientPresenter >> folderOrEmailSelectionChanged
 
 	| selectedEmail |
-	editedEmail := nil.
-	account hasSelectedEmail
-		ifTrue: [
-			selectedEmail := account selectedItem.
-			selectedEmail isDraft
-				ifTrue: [ editedEmail := selectedEmail].
-			reader updateLayoutForEmail: selectedEmail ]
-		ifFalse: [ reader updateLayoutForNoEmail ]
+	selectedEmail := account hasSelectedEmail
+		ifTrue: [ account selectedItem ]
+		ifFalse: [ nil ].
+	reader read: selectedEmail.
+	editedEmail := (selectedEmail isNotNil and: [ selectedEmail isDraft ])
+		ifTrue: [ selectedEmail ]
+		ifFalse: [ nil ].
 	self updateToolBarButtons.
 	statusBar popMessage
 ```
