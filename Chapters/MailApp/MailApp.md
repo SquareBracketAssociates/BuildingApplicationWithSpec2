@@ -313,12 +313,12 @@ EmailPresenter >> defaultLayout
 		add: subject expand: false;
 		yourself.
 	^ SpBoxLayout newTopToBottom
-		spacing: 10;
-		add: fromLine expand: false;
-		add: toLine expand: false;
-		add: subjectLine expand: false;
-		add: body;
-		yourself
+			spacing: 10;
+			add: fromLine expand: false;
+			add: toLine expand: false;
+			add: subjectLine expand: false;
+			add: body;
+			yourself
 ```
 
 The `from`, `to`, and `subject` fields and their associated labels have their own layout. Note that `body` does not have an associated label. It is clear from the context that the field holds the body of an email. The overall layout is a vertical box layout with 10 pixels white space between the fields.
@@ -501,8 +501,8 @@ The layout is a simple box layout with the tree presenter:
 MailAccountPresenter >> defaultLayout
 
 	^ SpBoxLayout newTopToBottom
-		add: foldersAndEmails;
-		yourself.
+			add: foldersAndEmails;
+			yourself.
 ```
 
 By default, the tree is empty. When the model changes, the tree should be updated. Since `MailAccountPresenter` inherits from `SpPresenterWithModel`, we have the method `modelChanged` at our disposal.
