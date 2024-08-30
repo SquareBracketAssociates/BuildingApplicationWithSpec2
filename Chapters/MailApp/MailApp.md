@@ -578,13 +578,14 @@ MailClientPresenter >> connectPresenters
 
 	account whenSelectionChangedDo: [
 		| selectedEmail |
+		editedEmail := nil.
 		account hasSelectedEmail
 			ifTrue: [
 				selectedEmail := account selectedItem.
 				selectedEmail isDraft
 					ifTrue: [ editedEmail := selectedEmail].
 				reader updateLayoutForEmail: selectedEmail ]
-		ifFalse: [ reader updateLayoutForNoEmail ] ]
+			ifFalse: [ reader updateLayoutForNoEmail ] ]
 ```
 
 The method states that the content of the `MailReaderPresenter` held by `reader` depends on the selection in the tree. If an email is selected, the reader shows its fields. If there is no selection, or a folder is selected, the reader shows the informational message. When a draft email is selected, we put it in the `editedMail` instance variable, which will be handy when we start performing actions on the selected email.
