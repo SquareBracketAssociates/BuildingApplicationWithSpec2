@@ -312,13 +312,14 @@ MailClientPresenter >> connectPresenters
 
 	account whenSelectionChangedDo: [
 		| selectedEmail |
+		editedEmail := nil.
 		account hasSelectedEmail
 			ifTrue: [
 				selectedEmail := account selectedItem.
 				selectedEmail isDraft
 					ifTrue: [ editedEmail := selectedEmail].
 				reader updateLayoutForEmail: selectedEmail ]
-		ifFalse: [ reader updateLayoutForNoEmail ].
+			ifFalse: [ reader updateLayoutForNoEmail ].
 		self updateToolBarButtons ]
 ```
 
@@ -421,13 +422,14 @@ MailClientPresenter >> connectPresenters
 
 	account whenSelectionChangedDo: [
 		| selectedEmail |
+		editedEmail := nil.
 		account hasSelectedEmail
 			ifTrue: [
 				selectedEmail := account selectedItem.
 				selectedEmail isDraft
 					ifTrue: [ editedEmail := selectedEmail].
 				reader updateLayoutForEmail: selectedEmail ]
-		ifFalse: [ reader updateLayoutForNoEmail ].
+			ifFalse: [ reader updateLayoutForNoEmail ].
 		self updateToolBarButtons.
 		statusBar popMessage ]
 ```
