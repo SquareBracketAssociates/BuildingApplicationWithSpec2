@@ -490,7 +490,7 @@ MailAccountPresenter >> initializePresenters
 
 Let's disect the method.
 
-* By default, the tree has no roots.Later we will set as roots the draft, inbox, and sent elements (see method `modelChanged` below).
+* By default, the tree has no roots. Later we will set as roots the draft, inbox, and sent elements (see method `modelChanged` below).
 * The tree presenter uses the `display:` block to fetch a string representation of each tree node. In the block, we send `displayName` that we defined on the model classes `Email` and `Folder`.
 * The tree presenter uses the `children` block to fetch the children of a tree node. Folders have children, Emails do not. In the block, we send `content`. Remember that a `Folder` instance will answer its emails, and an `Email` instance answers an empty array, which means that emails are the leaves of the tree.
 * We send `expandRoots` to expand the whole tree.
