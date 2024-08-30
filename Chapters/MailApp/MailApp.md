@@ -517,8 +517,8 @@ The layout is a simple box layout with the tree presenter:
 MailAccountPresenter >> defaultLayout
 
 	^ SpBoxLayout newTopToBottom
-			add: foldersAndEmails;
-			yourself.
+				add: foldersAndEmails;
+				yourself
 ```
 
 By default, the tree is empty. When the model changes, the tree should be updated. Since `MailAccountPresenter` inherits from `SpPresenterWithModel`, we have the method `modelChanged` at our disposal.
