@@ -610,14 +610,17 @@ In the second method, we use several messages that we defined earlier.
 ```
 MailClientPresenter >> folderOrEmailSelectionChanged
 
-	| selectedEmail |
-	selectedEmail := account hasSelectedEmail
-		ifTrue: [ account selectedItem ]
-		ifFalse: [ nil ].
-	reader read: selectedEmail.
-	editedEmail := (selectedEmail isNotNil and: [ selectedEmail isDraft ])
-		ifTrue: [ selectedEmail ]
+	| selectedFolderOrEmail |
+	selectedFolderOrEmail := account selectedItem.
+	reader read: selectedFolderOrEmail.
+	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
+		ifTrue: [ selectedFolderOrEmail ]
 		ifFalse: [ nil ]
+```
+
+```MailClientPresenter >> isDraftEmail: folderOrEmailOrNil
+
+	^ folderOrEmailOrNil isNotNil and: [ folderOrEmailOrNil isEmail and: [ folderOrEmailOrNil isDraft ] ]
 ```
 
 The method states that the content of the `MailReaderPresenter` held by `reader` depends on the selection in the tree. If an email is selected, the reader shows its fields. If there is no selection, or a folder is selected, the reader shows the informational message. When a draft email is selected, we put it in the `editedMail` instance variable, which will be handy when we start performing actions on the selected email.

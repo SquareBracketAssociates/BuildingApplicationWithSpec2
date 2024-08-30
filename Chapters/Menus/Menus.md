@@ -310,16 +310,13 @@ Second, we have to set the initial state of the toolbar buttons when the mail cl
 ```
 MailClientPresenter >> folderOrEmailSelectionChanged
 
-	| selectedEmail |
-	selectedEmail := account hasSelectedEmail
-		ifTrue: [ account selectedItem ]
-		ifFalse: [ nil ].
-	reader read: selectedEmail.
-	editedEmail := (selectedEmail isNotNil and: [ selectedEmail isDraft ])
-		ifTrue: [ selectedEmail ]
-		ifFalse: [ nil ].
-	self updateToolBarButtons.
-	statusBar popMessage
+	| selectedFolderOrEmail |
+	selectedFolderOrEmail := account selectedItem.
+	reader read: selectedFolderOrEmail.
+	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
+		ifTrue: [ selectedFolderOrEmail ]
+		ifFalse: [ nil ]
+	self updateToolBarButtons
 ```
 
 As for the menubar, it required a lot of code to setup the toolbar and to wire everything, but we are ready. Let's open the window again.
@@ -414,23 +411,19 @@ MailClientPresenter >> deleteMail
 	statusBar pushMessage: 'Mail deleted.'
 ```
 
-To finish the status bar functionality, we have to start with a clean status bar. Therefore we adapt the method `connectPresenters`, in which we already bring the toolbar button in their initial enablement state. We send the message `popMessage` to ensure that the status bar is empty.
+To finish the status bar functionality, we have to start with a clean status bar. Therefore we adapt the method `folderOrEmailSelectionChanged` again, in which we already bring the toolbar buttons in their initial enablement state. We send the message `popMessage` to ensure that the status bar is empty.
 
 ```
-MailClientPresenter >> connectPresenters
+MailClientPresenter >> folderOrEmailSelectionChanged
 
-	account whenSelectionChangedDo: [
-		| selectedEmail |
-		editedEmail := nil.
-		account hasSelectedEmail
-			ifTrue: [
-				selectedEmail := account selectedItem.
-				selectedEmail isDraft
-					ifTrue: [ editedEmail := selectedEmail].
-				reader updateLayoutForEmail: selectedEmail ]
-			ifFalse: [ reader updateLayoutForNoEmail ].
-		self updateToolBarButtons.
-		statusBar popMessage ]
+	| selectedFolderOrEmail |
+	selectedFolderOrEmail := account selectedItem.
+	reader read: selectedFolderOrEmail.
+	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
+		ifTrue: [ selectedFolderOrEmail ]
+		ifFalse: [ nil ]
+	self updateToolBarButtons.
+	statusBar popMessage
 ```
 
 Let's test the mail client presenter by opening it again.
