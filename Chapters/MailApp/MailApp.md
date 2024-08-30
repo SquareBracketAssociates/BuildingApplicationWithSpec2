@@ -155,6 +155,22 @@ MailFolder >> content
 
 From this implementation, you can see that a `MailFolder` is just a named container object for emails, which can be used to structure the display of emails in a tree presenter.
 
+#### Distinguishing emails and folders
+
+In our target application, folders and emails are shown in a tree. A selection in the tree can be a folder or an email. If a presenter has to act differently based on the type of the selection, it needs a way to distinguish folders and emails. To keep things simple, we will introduce two methods on the model classes that we have defined so far.
+
+```
+Email >> isEmail
+
+	^ true
+```
+
+```
+Folder >> isEmail
+
+	^ false
+```
+
 
 #### MailAccount
 
