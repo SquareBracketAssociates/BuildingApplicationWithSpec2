@@ -289,10 +289,10 @@ Well, not really. The menu items had a block to determine whether they were enab
 ```
 MailClientPresenter >> updateToolBarButtons
 
-	| hasSelectedEmail |
-	hasSelectedEmail := self hasDraft or: [ account hasSelectedEmail].
-	saveButton enabled: hasSelectedEmail.
-	sendButton enabled: hasSelectedEmail
+	| hasSelectedDraft |
+	hasSelectedDraft := self hasDraft.
+	saveButton enabled: hasSelectedDraft.
+	sendButton enabled: hasSelectedDraft
 ```
 
 To finish the toolbar functionality, we have to send `updateToolBarButtons` in the appropriate places. Everywhere the state of the mail client presenter changes, we have to send the message. You may think we have to do that in many places, but we have implemented the presenter class in such a way that there are only two places where it is required.
