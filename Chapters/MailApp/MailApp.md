@@ -565,10 +565,10 @@ We use a paned layout, with 40% of the space allocated to the `MailAccountPresen
 MailClientPresenter >> defaultLayout
 
 	^ SpPanedLayout newLeftToRight
-		positionOfSlider: 40 percent;
-		add: account;
-		add: reader;
-		yourself
+			positionOfSlider: 40 percent;
+			add: account;
+			add: reader;
+			yourself
 ```
 
 Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We use several messages that we defined earlier.
