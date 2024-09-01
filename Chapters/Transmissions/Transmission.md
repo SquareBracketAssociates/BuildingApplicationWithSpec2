@@ -218,11 +218,75 @@ After selecting a point, we see the window as shown in Figure *@OverviewDetail1-
 
 ### Available ports
 
-TODO: we only described a very simple, albeit often used, use case with 2 kinds of ports. There are more ports. Briefly describe them here.
+We described a very simple, albeit often used, use case with two kinds of ports where a selected object is input for some presenter. The output port of a `SpListPresenter` is an instance of `SpSelectionPort`. The input port of a `SpTextPresenter` is a `SpTextPort` instance. Instances of `SpSelectionPort` are applicable for the output ports of presenters that implement a selection mechanism. Instances of `SpTextPort` are applicable for the input ports of presenters that display or edit text (see the `SpAbstractTextPresenter` class hierarchy). All the presenter classes that implement widgets have their particular output port and input port classes. That is why there are different classes of ports. Their common superclass is `SpAbstractPort`, with two direct subclasses `SpInputPort` and `SpOutputPort`.
+
+### Ports and nesting presenters
+
+When you implement your own presenters, they will use subpresenters that can be connected with transmissions. But what happens when you reuse your presenters in other presenters? The simple answer is: you will also use transmissions to connect them.
+
+To make your presenters suitable for use with transmissions, the presenter classes have to define the output and input ports, and they have to implement the methods `defaultOutputPort` and `defaultInputPort`. Depending on the behavior of a presenter, the presenter class implements one or both methods. When defining the ports, you can use one of the available port classes. If you do not find a suitable port class for your presenters, you can define your own.
+
+In some cases, it is not necessary to define new ports. Instead, delegation can be used to reuse a port of a subpresenter. We will see an example of delegation in the next section.
 
 ### A complex example
 
-TODO: transmissions in the Mail application.
+In this section, we will revisit the small email client application from Chapter *@cha_mailapp@*.
+
+Let's start with the presenter class `MailClientPresenter`. It had this method:
+
+```
+MailClientPresenter >> connectPresenters
+
+	account whenSelectionChangedDo: [ :selection |
+		| selectedFolderOrEmail |
+		selectedFolderOrEmail := selection selectedItem.
+		reader read: selectedFolderOrEmail.
+		self updateAfterSelectionChangedTo: selectedFolderOrEmail ]
+```
+
+We adapt it to use a transmission:
+
+```
+MailClientPresenter >> connectPresenters
+
+	account
+		transmitTo: reader
+		postTransmission: [ :destination :origin :selectedFolderOrEmail |
+			self updateAfterSelectionChangedTo: selectedFolderOrEmail ]
+```
+
+We send the message `transmitTo:postTransmission:` to express that the selection made in the `account` presenter (an instance of `MailAccountPresenter`) should be transmitted to the `reader` presenter (an instance of `MailReaderPresenter`), and that there is a post transmission action.
+
+Although the method `connectPresenters` expresses the desired transmission behavior very succinctly, it does not work without additional changes. After all, we did not yet define the output port of the `account` presenter and the input port of the `reader` presenter.
+
+For the `account` presenter, we can simply delegate `defaultOutputPort`, because the default output port of the `SpTreePresenter` that holds the folders and the emails, is a `SpSelectionPort`. It will provide the selected folder or email.
+
+```
+MailAccountPresenter >> defaultOutputPort
+
+	^ foldersAndEmails defaultOutputPort
+```
+
+The definition of the input port of the `reader` presenter is a bit more complex. A `MailReaderPresenter` instance expects to receive a `Folder` or an `Email` instance. That is what was expressed by `reader read: selectedFolderOrEmail` in the original implementation of `MailClientPresenter >> connectPresenters`. The folder or email is in fact the model of a `MailReaderPresenter`, but we did not provide it by sending `setModel:`, but by sending `read:`. We used `read:` because conceptually it made sense in the context of a `MailReaderPresenter`.
+
+There is no input port class that knows the `read:` protocol, so we have two options. Either we implement a new input port class, or either we use `SpModelPort`. We choose the latter because we prefer reusing existing classes. But that means that we will have to implement `setModel:` on the `MailReaderPresenter` class because `SpModelPort` sends `setModel:` to give the transmitted object to the destination presenter. We can simply delegate to `read:` to make the presenter compatible with the protocol expected by `SpModelPort`.
+
+```
+MailReaderPresenter >> defaultInputPort
+
+	^ SpModelPort newPresenter: self
+```
+
+```
+MailReaderPresenter >> setModel: email
+
+	self read: email
+```
+
+That concludes the changes to introduce a transmission at the level of the `MailClientPresenter`. When opening the mail client with `(MailClientPresenter on: MailAccount new) open`, the mail application behaves as before, but now it uses a transmission.
+
+TODO: transmission inside the MailReaderPresenter.
+
 
 ### Conclusion
 
@@ -230,4 +294,4 @@ TODO: this is some text from the original chapter.
 
 Input ports define the transmission destination points of a presenter. They handle an incoming transmission and transmit them properly to the target presenter.
 
-An output port defines origin actions \(and the possible data associated to such action\) to transmit to a destination \(input\) port. It also defines the transformations to apply to the output data before giving them to the input port. 
+An output port defines origin actions \(and the possible data associated to such action\) to transmit to a destination \(input\) port. It also defines the transformations to apply to the output data before giving them to the input port.
