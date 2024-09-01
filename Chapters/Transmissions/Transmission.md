@@ -1,14 +1,20 @@
 ## Using transmissions and ports
 
-Transmissions are a more compact way to connect presenters than events as shown in earlier chapters.
+This chapter introduces transmissions, which are a more compact way to connect presenters than events as shown in earlier chapters. With some examples, the different aspects of transmissions will be explained.
 
 ### What are transmissions?
 
 Transmissions are a uniform way to connect presenters, thinking about the “flow” of data more than the way data is displayed.
 
-Each presenter defines **output ports** (ports to send data) and **input ports** (ports to receive data). Each presenter has at least one default input port and one default output port.
+Each presenter defines **output ports**, which are ports to send data, and **input ports**, which are ports to receive data.
 
-A transmission connects a presenter’s output port with a presenter’s input port.
+When no interaction with a presenter is possible, it will not have an output port (`SpLabelPresenter` for example). Some presenters have no input port (`SpMenuPresenter` for example). Unless you define output ports and input ports for your presenters, they do not have any ports.
+
+When a presenter has output and input ports, it defines which ports are the default output port and the default input port.
+
+There are different classes of ports. If you do not find a suitable port class for your presenters, you can define your own.
+
+A transmission connects a presenter’s output port with another presenter’s input port. When using transmissions, instead of thinking about events and how to act on them, you think about how data flows from one presenter's output port to another presenter's input port. The event handling is taken care of by the output ports.
 
 ### Simple example
 
@@ -20,7 +26,7 @@ SpPresenter << #OverviewDetailPresenter
 	package: 'CodeOfSpec20Book'
 ```
 
-To keep the example simple, we polulate the list with some `Point` instances.
+We polulate the list with some `Point` instances.
 
 ```
 OverviewDetailPresenter >> initializePresenters
