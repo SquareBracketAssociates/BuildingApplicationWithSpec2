@@ -189,7 +189,7 @@ As we will see in Chapter *@cha_commander@*, toolbars can be automatically creat
 ### An application manages icons
 
 What we can see from the definition of the method `initializeWindow:` is that an application manages icons with the message `iconNamed:`. Indeed, a presenter defines the `iconNamed:` message as a delegation to its application.
-In addition, your application can define its own icon set using the message `iconManager:`.
+In addition, your application can define its own icon set using the message `iconProvider:`.
 
 ### FilmPresenter
 
