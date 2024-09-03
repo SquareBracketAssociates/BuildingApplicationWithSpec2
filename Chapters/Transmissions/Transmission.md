@@ -285,13 +285,33 @@ MailReaderPresenter >> setModel: email
 
 That concludes the changes to introduce a transmission at the level of the `MailClientPresenter`. When opening the mail client with `(MailClientPresenter on: MailAccount new) open`, the mail application behaves as before, but now it uses a transmission.
 
-TODO: transmission inside the MailReaderPresenter.
+There is another presenter where we can use transmissions: the `EmailPresenter`. It's original `connectPresenters` method was implemented as follows.
+
+```
+EmailPresenter >> connectPresenters
+
+	from whenTextChangedDo: [ :text | self model from: text ].
+	to whenTextChangedDo: [ :text | self model to: text ].
+	subject whenTextChangedDo: [ :text | self model subject: text ].
+	body whenTextChangedDo: [ :text | self model body: text ]
+```
+
+Although the change to use transmissions is superficial, the same behavior can be achieved with:
+
+```
+EmailPresenter >> connectPresenters
+
+	from transmitDo: [ :text | self model from: text ].
+	to transmitDo: [ :text | self model to: text ].
+	subject transmitDo: [ :text | self model subject: text ].
+	body transmitDo: [ :text | self model body: text ]
+```
+
+The messages `transmitDo:` is used because we like a side effect on the model. No input ports are involved in the transmissions.
 
 
 ### Conclusion
 
-TODO: this is some text from the original chapter.
+This chapter introduced transmissions and ports, and illustrated the concepts with two examples.
 
-Input ports define the transmission destination points of a presenter. They handle an incoming transmission and transmit them properly to the target presenter.
-
-An output port defines origin actions \(and the possible data associated to such action\) to transmit to a destination \(input\) port. It also defines the transformations to apply to the output data before giving them to the input port.
+Output ports define origins of data, and the transformations to apply to the data before transmitting it to an input port. Input ports define destinations of data. Transmissions connect output ports with input ports to define the flow of data between presenters.
