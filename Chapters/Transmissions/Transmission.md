@@ -174,7 +174,7 @@ OverviewDetailPresenter >> connectPresenters
 
 ### Acting after a transmission
 
-Sometimes, after a transmission happens, a presenter needs to modify something given the new status of a subpresenter. Example are preselecting something, or updating the state of toolbar buttons. That is where post transmission actions come in. The messages that we have seen so far, have variations with an extra keyword argument `postTransmission:`.
+Sometimes, after a transmission happens, a presenter needs to modify something given the new status of a subpresenter. Examples are preselecting something, and updating the state of toolbar buttons. That is where post transmission actions come in. The messages that we have seen so far, have variations with an extra keyword argument `postTransmission:`.
 
 Let's elaborate the simple example for the last time. Suppose we like to select the text after it has been set. In the traditional way, in the method `connectPresenters`, we would send `selectAll` to the text presenter:
 
@@ -222,7 +222,7 @@ We described a very simple, albeit often used, use case with two kinds of ports 
 
 ### Ports and nesting presenters
 
-When you implement your own presenters, they will use subpresenters that can be connected with transmissions. But what happens when you reuse your presenters in other presenters? The simple answer is: you will also use transmissions to connect them.
+When you implement your own presenters, they will use subpresenters that can be connected with transmissions. But what happens when you reuse your presenters in other presenters? The answer is simple: you will also use transmissions to connect them.
 
 To make your presenters suitable for use with transmissions, the presenter classes have to define the output and input ports, and they have to implement the methods `defaultOutputPort` and `defaultInputPort`. Depending on the behavior of a presenter, the presenter class implements one or both methods. When defining the ports, you can use one of the available port classes. If you do not find a suitable port class for your presenters, you can define your own.
 
