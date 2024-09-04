@@ -20,36 +20,60 @@ The class modeling a contact is defined as follows.
 
 ```
 Object << #Contact
-    slots: {#name . #phone};
-    package: 'ContactBook'
+	slots: {#name . #phone};
+	package: 'CodeOfSpec20Book'
 ```
 
 
-It just defines a `printOn:` method and a couple of accessors (not shown in the text).
+It just defines a `printOn:` method and some accessors.
 
 ```
 Contact >> printOn: aStream
 
-        super printOn: aStream.
-        aStream nextPut: $(.
-        aStream nextPutAll: name.
-        aStream nextPut: $).
+	super printOn: aStream.
+	aStream nextPut: $(.
+	aStream nextPutAll: name.
+	aStream nextPut: $)
+```
+
+```
+Contact >> name
+
+	^ name
+```
+
+```
+Contact >> name: aString
+
+	name := aString
+```
+
+```
+Contact >> phone
+
+	^ phone
+```
+
+```
+Contact >> phone: aString
+
+	phone := aString
 ```
 
 ```
 Contact >> hasMatchingText: aString
 
-    ^ name includesSubstring: aString caseSensitive: false
+	^ name includesSubstring: aString caseSensitive: false
 ```
 
 
 ```
 Contact class >> name: aNameString phone: aPhoneString
 
-    ^ self new
-        name: aNameString;
-        phone: aPhoneString;
-        yourself
+	^ self new
+		name: aNameString;
+		phone: aPhoneString;
+		yourself
 ```
 
 
@@ -59,15 +83,15 @@ Now we define the class modeling the contact book. As for the contact class, it 
 
 ```
 Object << #ContactBook
-    slots: { #contacts };
-    package: 'ContactBook'
+	slots: { #contacts };
+	package: 'CodeOfSpec20Book'
 ```
 
 ```
 ContactBook >> initialize
 
-    super initialize.
-    contacts := OrderedCollection new
+	super initialize.
+	contacts := OrderedCollection new
 ```
 
 We add the possibility to add and remove a contact
@@ -75,21 +99,21 @@ We add the possibility to add and remove a contact
 ```
 ContactBook >> addContact: aContact
 
-    contacts add: aContact
+	contacts add: aContact
 ```
 
 
 ```
 ContactBook >> removeContact: aContact
 
-    contacts remove: aContact
+	contacts remove: aContact
 ```
 
 
 ```
 ContactBook >> addContact: newContact after: contactAfter
 
-    contacts add: newContact after: contactAfter
+	contacts add: newContact after: contactAfter
 ```
 
 
@@ -98,7 +122,7 @@ We add a simple testing method in case one wants to write some tests (which we u
 ```
 ContactBook >> includesContact: aContact
 
-    ^ contacts includes: aContact
+	^ contacts includes: aContact
 ```
 
 
@@ -107,10 +131,10 @@ And now we add a method to create a contact and add it to the contact book.
 ```
 ContactBook >> add: contactName phone: phone
 
-    | contact |
-    contact := Contact new name: contactName; phone: phone.
-    self addContact: contact.
-    ^ contact
+	| contact |
+	contact := Contact name: contactName phone: phone.
+	self addContact: contact.
+	^ contact
 ```
 
 
@@ -119,21 +143,21 @@ Finally, some facilities to query the contact book.
 ```
 ContactBook >> findContactsWithText: aText
 
-    ^ contacts select: [ :e | e hasMatchingText: aText ]
+	^ contacts select: [ :each | each hasMatchingText: aText ]
 ```
 
 
 ```
 ContactBook >> size
 
-    ^ contacts size
+	^ contacts size
 ```
 
 
 ```
 ContactBook >> contents
 
-    ^ contacts
+	^ contacts
 ```
 
 #### Pre-filling up the contact book
@@ -146,12 +170,12 @@ We define a class instance variable `coworkers` and define a class method access
 ```
 ContactBook class >> coworkers
 
-    ^coworkers ifNil: [
-        coworkers := self new
-            add: 'Stef' phone: '112 378';
-            add: 'Pavel' phone: '898 678';
-            add: 'Marcus' phone: '444 888';
-            yourself]
+	^ coworkers ifNil: [
+		coworkers := self new
+			add: 'Stef' phone: '112 378';
+			add: 'Pavel' phone: '898 678';
+			add: 'Marcus' phone: '444 888';
+			yourself ]
 ```
 
 
@@ -161,8 +185,8 @@ The `<script>` pragma tells the system browser to add a small button to execute 
 ```
 ContactBook class >> reset
 
-    <script>
-    coworkers := nil
+	<script>
+	coworkers := nil
 ```
 
 
@@ -178,33 +202,10 @@ We define the class `ContactBookPresenter`. It holds a reference to a contact bo
 
 ```
 SpPresenter << #ContactBookPresenter
-    slots: { #table . #contactBook};
-    package: 'ContactBook'
+	slots: { #table . #contactBook };
+	tag: 'Chapter18';
+	package: 'CodeOfSpec20Book'
 ```
-
-
-We define an accessor for the contact book and the table.
-
-```
-ContactBookPresenter >> contactBook
-
-    ^ contactBook
-```
-
-
-```
-ContactBookPresenter >> table: anObject
-
-    table := anObject
-```
-
-
-```
-ContactBookPresenter >> table
-
-    ^ table
-```
-
 
 #### Initializing the model
 
@@ -214,8 +215,8 @@ We specialize the method `setModelBeforeInitialization:` that is invoked by the 
 ```
 ContactBookPresenter >> setModelBeforeInitialization: aContactBook
 
-    super setModelBeforeInitialization: aContactBook.
-    contactBook := aContactBook
+	super setModelBeforeInitialization: aContactBook.
+	contactBook := aContactBook
 ```
 
 
@@ -225,7 +226,9 @@ ContactBookPresenter >> setModelBeforeInitialization: aContactBook
 ```
 ContactBookPresenter >> defaultLayout
 
-    ^ SpBoxLayout newVertical add: #table; yourself
+	^ SpBoxLayout newVertical
+		add: #table;
+		yourself
 ```
 
 
@@ -237,28 +240,32 @@ We initialize the table to display two columns for the name and the phone. The r
 ```
 ContactBookPresenter >> initializePresenters
 
-    table := self newTable.
-    table
-        addColumn: (StringTableColumn title: 'Name' evaluated: #name);
-        addColumn: (StringTableColumn title: 'Phone' evaluated: #phone).
-    table items: contactBook contents.
+	table := self newTable
+		addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (SpStringTableColumn title: 'Phone' evaluated: #phone);
+		items: contactBook contents;
+		yourself
 ```
 
 
-Now we can open the UI by executing the snippet `(ContactBookPresenter on: ContactBook coworkers) open`.
+Now we can open the UI by executing the snippet
+
+```
+(ContactBookPresenter on: ContactBook coworkers) open
+```
 
 We define a class method to be able to easily re-execute the setup.
 
 ```
 ContactBookPresenter class >> coworkersExample
 
-    <example>
-    ^ (self on: ContactBook coworkers) open
+	<example>
+	(self on: ContactBook coworkers) open
 ```
 
-You should obtain the GUI as shown in Figure *@firstMenuToolbar@*.
+You should obtain the GUI as shown in Figure *@firstVersion@*.
 
-![First version of the GUI without menus and toolbar. % width=60&anchor=firstMenuToolbar](figures/firstVersion.png)
+![First version of the GUI. % width=60&anchor=firstVersion](figures/firstVersion.png)
 
 #### Interacting with user
 
@@ -267,19 +274,17 @@ We now implement the method that will open a window to ask the user to create a 
 
 ```
 ContactBookPresenter >> newContact
-    | rawData split |
-    rawData := self
-        request: 'Enter new contact name and phone (split by comma)'
-        initialAnswer: ''
-        title: 'Create new contact'.
-    split := rawData splitOn: $,.
-    (split size = 2 and: [ split allSatisfy: [ :each | each isNotEmpty ]])
-        ifFalse: [ SpInvalidUserInput signal: 'Please enter contact name and phone (split by comma)'  ].
 
-    ^ Contact new
-        name: split first;
-        phone: split second;
-        yourself
+	| rawData split |
+	 rawData := self
+		request: 'Enter new contact name and phone (split by comma)'
+		initialAnswer: ''
+		title: 'Create new contact'.
+	split := rawData splitOn: $,.
+	(split size = 2 and: [ split allSatisfy: [ :each | each isNotEmpty ]])
+		ifFalse: [ SpInvalidUserInputError signal: 'Please enter contact name and phone (split by comma)' ].
+
+	^ Contact name: split first phone: split second
 ```
 
 
@@ -287,7 +292,7 @@ To test it, we can get access to the presenter with
 
 ```
 (ContactBookPresenter on: ContactBook coworkers)
-    open presenter inspect
+	open presenter inspect
 ```
 
 
@@ -304,14 +309,14 @@ We will also define the methods `isContactSelected` and `selectedContact` to kno
 ```
 ContactBookPresenter >> isContactSelected
 
-    ^ table selectedItems isNotEmpty
+	^ table selectedItems isNotEmpty
 ```
 
 
 ```
 ContactBookPresenter >> selectedContact
 
-    ^ table selection selectedItem
+	^ table selection selectedItem
 ```
 
 
