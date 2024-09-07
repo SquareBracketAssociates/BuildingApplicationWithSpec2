@@ -63,28 +63,36 @@ MailClientPresenter >> initializeMenuBar
 		yourself
 ```
 
-`self newMenuBar` creates a new `SpMenuBarPresenter` instance. We add three items to it. These items are the main menu items of the menubar. We configure each one with their name and their submenu.
+The expression `self newMenuBar` creates a new `SpMenuBarPresenter` instance. We add three items to it. These items are the main menu items of the menubar. We configure each one with their name and their submenu.
 
-In this chapter, we will implement the commands of the "Message" menu. The two other menus are included only to show you multiple menus in the menubar. Let's define the three methods for the three menus. We start with the menus that we will not implement. They are short.
+### Implementing message menu commands
+
+In this chapter, we will implement the commands of the "Message" menu. 
+
+
+The two other menus, "View" and "Format"  are included only to show you multiple menus in the menubar. 
+But the method `viewMenu` and  `formatMenu` are basically empty and doing nothing besides creating empty menus. 
+We start with the menus that we will not implement. They are short.
 
 ```
 MailClientPresenter >> viewMenu
-
+	"Empty placeholder Not defined in this chapter"
 	^ self newMenu
-		addItem: [ :item | item name: 'Show CC field' ];
-		addItem: [ :item | item name: 'Show BCC field' ];
-		yourself
+			addItem: [ :item | item name: 'Show CC field' ];
+			addItem: [ :item | item name: 'Show BCC field' ];
+			yourself
 ```
 
 ```
 MailClientPresenter >> formatMenu
-
+	"Empty placeHolder. Not defined in this chapter"
 	^ self newMenu
-		addItem: [ :item | item name: 'Plain text' ];
-		addItem: [ :item | item name: 'Rich text' ];
-		yourself
+			addItem: [ :item | item name: 'Plain text' ];
+			addItem: [ :item | item name: 'Rich text' ];
+			yourself
 ```
 
+Now we are ready to focus on the "Message" menu commands. 
 We will implement all commands of the "Message" menu. That requires some code:
 
 ```
@@ -126,7 +134,7 @@ MailClientPresenter >> messageMenu
 				yourself ]
 ```
 
-While the first two menus included two commands, this menu includes several commands in two groups. With the `addGroup` message, we add the groups and we nest the menu items in the groups by sending `addItem:` to the groups. As you can see, the menu items have a name, a keyboard shortcut, and an action block. A few items have a block that defines whether they are enabled. The block argument of the `enabled:` message is evaluated each time the menu item is displayed, so that the menu item can be enabled or disabled dynamically. Note that block arguments of the `enabled:` messages send the message `hasDraft`. We did not define the corresponding method yet, so let's do that now. The implementation is straightforward, as the mail client presenter keeps track of the edited email.
+While the first two menus included two commands, this menu includes several commands in two groups. With the `addGroup` message, we add the groups and we nest the menu items in the groups by sending the message `addItem:` to the groups. As you can see, the menu items have a name, a keyboard shortcut, and an action block. A few items have a block that defines whether they are enabled. The block argument of the `enabled:` message is evaluated each time the menu item is displayed, so that the menu item can be enabled or disabled dynamically. Note that block arguments of the `enabled:` messages send the message `hasDraft`. We did not define the corresponding method yet, so let's do that now. The implementation is straightforward, as the mail client presenter keeps track of the edited email.
 
 ```
 MailClientPresenter >> hasDraft
