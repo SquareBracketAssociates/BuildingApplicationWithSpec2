@@ -288,7 +288,7 @@ ContactBookPresenter >> newContact
 ```
 
 
-To test it, we can get access to the presenter with
+To test it, we can get access to the presenter with:
 
 ```
 (ContactBookPresenter on: ContactBook coworkers)
@@ -296,9 +296,9 @@ To test it, we can get access to the presenter with
 ```
 
 
-and you can send the `newContact` message to open the GUI shown in Figure *@inspector@*.
+and you can send `self newContact` message to open the dialog shown in Figure *@inspector@*.
 
-![Playing inside the inspector. % width=80&anchor=inspector](figures/inspector.png)
+![Playing inside the inspector. % width=100&anchor=inspector](figures/inspector.png)
 
 
 #### Some extra methods
