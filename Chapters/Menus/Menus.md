@@ -10,7 +10,7 @@ We will elaborate the email client application we built in Chapter *@cha_mailapp
 
 ### Adding a menubar to a window
 
-With all the models and presenters in place as described in the previous chapter, we can dive into the subject of this chapter. We start by adding a menubar with commands to manipulate emails.
+With all the models and presenters in place as described in the previous chapter, we can dive into the subject of this chapter -- remember that all the code is available as explained in Chapter *@chaintroductions@*. We start by adding a menubar with commands to manipulate emails.
 
 A menubar is part of a window presenter. Therefore it is configured in the `initializeWindow:` method. A `SpWindowPresenter` instance understands the message `menu:` to set the menubar.
 

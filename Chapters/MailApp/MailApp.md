@@ -1,4 +1,4 @@
-## Wrapping up: A Mail Application
+## A Concrete Case: A Mail Application
 @cha_mailapp
 
 We will build a small email client application that we will elaborate on and adapt in subsequent chapters. This small app brings together in real concrete ways much of what we have seen in the previous chapters. Figure *@MailClient@* shows the target application.
@@ -10,7 +10,7 @@ The example is extensive, with a lot of classes and methods. We will implement t
 
 ### The models
 
-To build the mail client, we need three models (see Figure @*emailmodels*@):
+To build the mail client, we need three models (see Figure *@emailmodels@*):
 
 * `Email` represents an email.
 * `MailFolder` represents a folder that holds emails, like "Inbox", "Draft", and "Sent".
