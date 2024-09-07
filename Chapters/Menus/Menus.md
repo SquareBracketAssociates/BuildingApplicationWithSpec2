@@ -3,9 +3,9 @@
 
 Often application windows have a menubar that includes all commands provided by the application. Application windows may also have a toolbar, with buttons for commands that are used frequently. Some applications only have a toolbar. Apart from supporting a menubar and toolbar, Spec supports a status bar at the bottom of a window. Some widgets, such as text fields, tables, and lists, are equipped with context menus. All these aspects are the subject of this chapter.
 
-We will elaborate the email client application we built in Chapter *@cha_mailapp@*. We will add a menubar, a toolbar, a status bar, and a context menu. Figure *@MailClientWithDecorations@* shows the result that we like to achieve.
+We will improve the email client application we built in Chapter *@cha_mailapp@*. We will add a menubar, a toolbar, a status bar, and a context menu. Figure *@MailClientWithDecorations@* shows the result that we like to achieve.
 
-![The mail client. % width=60&label=MailClientWithDecorations](figures/MailClientWithDecorations.png)
+![The mail client with toolbar. % width=60&label=MailClientWithDecorations](figures/MailClientWithDecorations.png)
 
 
 ### Adding a menubar to a window

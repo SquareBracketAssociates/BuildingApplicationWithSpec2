@@ -35,7 +35,7 @@ Pharo's objective is to use Spec to build all its own GUIs. This ensures strong 
 Using Spec 2.0 provides backend independence and logic reuse.
 This means that a UI written in Spec will be rendered on backends other than GTK and Morphic. As new backends become available, all applications written in Spec will be able to use them.
 
-While this book uses previous Spec documentation as a foundation, the text has been almost completely rewritten with an aim toward higher quality. We hope that it will be of use to developers who write UIs in Pharo.
+While this book uses previous Spec documentation as a foundation, the text has been almost completely rewritten to achieve higher quality. It covers recent features. We hope that it will be useful to developers who write UIs in Pharo.
 
 !!note This book focuses on Pharo 12. Earlier versions of Pharo come equipped with different versions of Spec, which may cause some code samples from this book to break. Nevertheless, the fundamental principles of UI development in Spec are the same.
 
@@ -58,6 +58,8 @@ Even though due to the lack of manpower the fundraising campaign was not used, t
 
 We want to thank I. Thomas for her chapter on the inspector, and R. De Villemeur for the chapter on Athens integration.
 
-Finally, Stéphane Ducasse wants to thank Johan Fabry for his co-authoring of the first book on Spec 1.0. Without that first book, this one would not exist.
+Finally, Stéphane Ducasse wants to thank Johan Fabry for his co-authoring of the first book on Spec 1.0. Without that first book, this one would not exist. He wants to thank Koen who happily jumped as a co-author and tremendously improved the book. Thanks again Koen it was a fun journey. 
 
+We want to thank ESUG and the Pharo Association for sponsoring this book. It was a real multiple year effort.
+ 
 If you supported us and you are not on this list, please contact us or do a pull request.
