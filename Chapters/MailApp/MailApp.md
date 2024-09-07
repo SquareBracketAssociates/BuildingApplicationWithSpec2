@@ -485,7 +485,7 @@ MailReaderPresenter >> updateLayoutForNoEmail
 These methods simply switch the layout. Note that the first one tells the `EmailPresenter` to be editable or read-only based on the draft status of an `Email`.
 
 
-#### The `MailAccountPresenter`
+### The `MailAccountPresenter`
 
 Now we define a crucial part of the functionality of the mail client application. The `MailAccountPresenter` holds a tree of folders and emails.
 
@@ -495,7 +495,7 @@ SpPresenterWithModel << #MailAccountPresenter
 	package: 'CodeOfSpec20Book'
 ```
 
-Note that the presenter class inherits from `SpPresenterWithModel` because it will hold a `MailAccount` instance as its model, which holds the emails to show in the tree. `initializePresenters` defines the tree.
+Note that the presenter class inherits from `SpPresenterWithModel` because it will hold a `MailAccount` instance as its model, which holds the emails to show in the tree. The method `initializePresenters` defines the tree.
 
 ```
 MailAccountPresenter >> initializePresenters
@@ -507,12 +507,12 @@ MailAccountPresenter >> initializePresenters
 		expandRoots
 ```
 
-Let's disect the method.
+Let's dissect the method.
 
 * By default, the tree has no roots. Later we will set as roots the draft, inbox, and sent elements (see method `modelChanged` below).
-* The tree presenter uses the `display:` block to fetch a string representation of each tree node. In the block, we send `displayName` that we defined on the model classes `Email` and `Folder`.
+* The tree presenter uses the `display:` block to fetch a string representation of each tree node. In the block, we send the message `displayName` that we defined on the model classes `Email` and `Folder`.
 * The tree presenter uses the `children` block to fetch the children of a tree node. Folders have children, Emails do not. In the block, we send `content`. Remember that a `Folder` instance will answer its emails, and an `Email` instance answers an empty array, which means that emails are the leaves of the tree.
-* We send `expandRoots` to expand the whole tree.
+* We send the message `expandRoots` to expand the whole tree.
 
 The layout is a simple box layout with the tree presenter:
 
@@ -524,7 +524,7 @@ MailAccountPresenter >> defaultLayout
 				yourself
 ```
 
-By default, the tree is empty. When the model changes, the tree should be updated. Since `MailAccountPresenter` inherits from `SpPresenterWithModel`, we have the method `modelChanged` at our disposal.
+By default, the tree is empty. When the model changes, the tree should be updated. Since the class `MailAccountPresenter` inherits from the class `SpPresenterWithModel`, we have the method `modelChanged` at our disposal.
 
 ```
 MailAccountPresenter >> modelChanged
@@ -569,7 +569,7 @@ Apart from making selections, the `MailAccountPresenter` does not provide any fu
 We are almost there. One presenter to go.
 
 
-#### The `MailClientPresenter`
+### The `MailClientPresenter`
 
 This presenter combines all the presenters that we have introduced so far. We start with an initial version of the presenter class. In subsequent sections, we will elaborate on the class.
 
@@ -600,7 +600,10 @@ MailClientPresenter >> defaultLayout
 			yourself
 ```
 
-Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods. `connectPresenters` sends the selected tree item to the `reader` and then it sends `updateAfterSelectionChangedTo:` to allow for post selection actions.
+Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods:
+
+- The method `connectPresenters` sends the selected tree item to the `reader` and then it sends 
+- The method `updateAfterSelectionChangedTo:` to allow for post selection actions.
 
 ```
 MailClientPresenter >> connectPresenters
@@ -622,7 +625,7 @@ MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 		ifFalse: [ nil ]
 ```
 
-This method keeps track of the email if it is a draft email, so that the presenter has it handy when needed. The method invokes the method below to determine whether the tree selection is a draft email.
+The method `updateAfterSelectionChangedTo:` keeps track of the email if it is a draft email, so that the presenter has it handy when needed. The method invokes the method `isDraftEmail:` (defined below) to determine whether the tree selection is a draft email.
 
 ```MailClientPresenter >> isDraftEmail: folderOrEmailOrNil
 
@@ -640,6 +643,8 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 		title: 'Mail';
 		initialExtent: 650@500
 ```
+
+### First full application
 
 After typing all the code, it is time to open the mail client.
 
