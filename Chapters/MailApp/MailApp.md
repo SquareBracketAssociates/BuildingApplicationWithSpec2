@@ -1,11 +1,11 @@
 ## A Mail Application
 @cha_mailapp
 
-We will build a small email client application that we will elaborate and adapt in subsequent chapters. The example brings together much of what we have seen in the previous chapters. Figure *@MailClient@* shows the target application.
+We will build a small email client application that we will elaborate on and adapt in subsequent chapters. This small app brings together in real concrete ways much of what we have seen in the previous chapters. Figure *@MailClient@* shows the target application.
 
 ![The mail client. % width=60&label=MailClient](figures/MailClient.png)
 
-The example is extensive, with a lot of classes and methods. We will implement the application bottom-up. We start with the models. Afterwards, we will implement the presenters that compose the application. Let's dive in.
+The example is extensive, with a lot of classes and methods. We will implement the application bottom-up. We start with the models. Afterward, we will implement the presenters that compose the application. Let's dive in.
 
 
 ### The models
@@ -16,7 +16,9 @@ To build the mail client, we need three models:
 * `MailFolder` represents a folder that holds emails, like "Inbox", "Draft", and "Sent".
 * `MailAccount` represents a mail account. It holds all the emails.
 
-#### Email
+
+
+### Email
 
 In Figure *@MailClient@*, we see that the application shows four fields for an email. "From" holds sender. "To" holds the addressee. "Subject" holds the subject of an email. The nameless text field at the bottom-right holds the body of an email. Let's define an `Email` class to cover these fields.
 
@@ -95,7 +97,7 @@ Email >> content
 	^ Array new
 ```
 
-#### MailFolder
+### MailFolder
 
 The tree on the left side of the window does not only displays emails. It also displays mail folders, which group emails according to their state. We will define the `MailFolder` model very simplisticly. It has a name and it holds emails.
 
@@ -172,7 +174,7 @@ Folder >> isEmail
 ```
 
 
-#### MailAccount
+### MailAccount
 
 A `MailAccount` holds all emails, so the definition of the class is simple:
 
@@ -282,7 +284,7 @@ Many presenters are composed of smaller presenters. That is also the case here. 
 * `MailClientPresenter` is the main presenter. It combines a `MailAccountPresenter` and a `MailReaderPresenter` to implement the email client functionality.
 
 
-#### The `EmailPresenter`
+### The `EmailPresenter`
 
 This presenter is fairly easy. It is a view on an `Email`. Therefore it defines instance variables for all aspects of an `Email`, except the `status`.
 
@@ -362,7 +364,7 @@ EmailPresenter >> beEditable
 ```
 
 ```
-beReadOnly
+EmailPresenter >> beReadOnly
 
 	from editable: false.
 	to editable: false.
@@ -371,7 +373,7 @@ beReadOnly
 ```
 
 
-#### The `NoEmailPresenter`
+### The `NoEmailPresenter`
 
 This presenter will be used when there is no selection in the tree of folders and emails. It is very simple, as it does not have any functionality.
 
@@ -404,9 +406,10 @@ NoEmailPresenter >> defaultLayout
 That's all there is to it.
 
 
-#### The `MailReaderPresenter`
+### The `MailReaderPresenter`
 
 It is time to combine the two previous presenters. That is the responsibility of the `MailReaderPresenter`.
+This illustrates that we can change dynamically layouts to display different subpresenters.
 
 ```
 SpPresenter << #MailReaderPresenter
