@@ -144,6 +144,9 @@ MailClientPresenter >> hasDraft
 
 Look at the shortcuts in the `messageMenu` method. `$n meta` means that the character "n" can be pressed together with the meta key (Command on macOS, Control on Windows and Linux) to trigger the command.
 
+
+### Installing shortcuts
+
 Adding shortcuts to menu items does not automatically install them. Keyboard shortcuts have to be installed after the window has been opened. Therefore we have to adapt the `initializeWindow:` method with the `whenOpenedDo:` message, so that the keyboard shortcuts can be installed after opening the window. `SpMenuPresenter`, which is the superclass of `SpMenuBarPresenter`, implements the method `addKeybindingsTo:`, which comes in handy here.
 
 ```
@@ -155,6 +158,9 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 		menu: menuBar;
 		whenOpenedDo: [ menuBar addKeybindingsTo: aWindowPresenter ]
 ```
+
+
+### Defining actions
 
 We keep the action blocks simple by sending a message. We have to implement them of course, so let's do that. Based on the models that we defined earlier in this chapter, the implementation of the actions is fairly straightforward.
 
