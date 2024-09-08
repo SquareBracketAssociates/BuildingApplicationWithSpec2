@@ -58,8 +58,8 @@ Even though due to the lack of manpower the fundraising campaign was not used, t
 
 We want to thank I. Thomas for her chapter on the inspector, and R. De Villemeur for the chapter on Athens integration.
 
-Finally, Stéphane Ducasse wants to thank Johan Fabry for his co-authoring of the first book on Spec 1.0. Without that first book, this one would not exist. He wants to thank Koen who happily jumped as a co-author and tremendously improved the book. Thanks again Koen it was a fun journey. 
+Finally, Stéphane Ducasse wants to thank Johan Fabry for his co-authoring of the first book on Spec 1.0. Without that first book, this one would not exist. He wants to thank Koen who happily jumped in as a co-author and tremendously improved the book. Thanks again Koen. It was a fun journey.
 
 We want to thank ESUG and the Pharo Association for sponsoring this book. It was a real multiple year effort.
- 
+
 If you supported us and you are not on this list, please contact us or do a pull request.
