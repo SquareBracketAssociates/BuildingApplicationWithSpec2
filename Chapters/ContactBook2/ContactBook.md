@@ -3,7 +3,7 @@
 
 In this chapter, we develop a simple model for a contact book. Then we define a user interface. This example will be used later in the book as an example to explain concepts such as commands, applications, and windows.
 
-Now it is more of a replay of the concepts previously mentioned. We start by implementing classes modeling the domain and then we will add a basic graphical user interface to obtain a little application as shown in Figure *@overview@*.
+It is more of a replay of the concepts previously mentioned. We start by implementing classes modeling the domain and then we will add a basic graphical user interface to obtain a little application as shown in Figure *@overview@*.
 
 
 ![A rudimentary contact book application. % width=60&anchor=overview](figures/withmenuExtension.png)
@@ -79,7 +79,7 @@ Contact class >> name: aNameString phone: aPhoneString
 
 #### ContactBook
 
-Now we define the class modeling the contact book. As for the contact class, it is simple and quite straightforward.
+Now we define the class modeling the contact book. As for the contact class, it is straightforward.
 
 ```
 Object << #ContactBook
@@ -165,22 +165,22 @@ ContactBook >> contents
 
 Since we want to have some contacts and we want to keep them without resorting to a database or file, we set some class instance variables.
 
-We define a class instance variable `coworkers` and define a class method accessor as follows:
+We define a class instance variable `coworkers` and define a class accessor method as follows:
 
 ```
 ContactBook class >> coworkers
 
 	^ coworkers ifNil: [
-		coworkers := self new
-			add: 'Stef' phone: '112 378';
-			add: 'Pavel' phone: '898 678';
-			add: 'Marcus' phone: '444 888';
-			yourself ]
+			coworkers := self new
+				add: 'Stef' phone: '112 378';
+				add: 'Pavel' phone: '898 678';
+				add: 'Marcus' phone: '444 888';
+				yourself ]
 ```
 
 
-We add one method to be able to reset them if necessary.
-The `<script>` pragma tells the system browser to add a small button to execute `reset` method easily.
+We add one method to reset the coworkers if necessary.
+The `<script>` pragma tells the system browser to add a small button to execute the `reset` method easily.
 
 ```
 ContactBook class >> reset
@@ -227,8 +227,8 @@ ContactBookPresenter >> setModelBeforeInitialization: aContactBook
 ContactBookPresenter >> defaultLayout
 
 	^ SpBoxLayout newVertical
-		add: #table;
-		yourself
+			add: #table;
+			yourself
 ```
 
 
@@ -288,7 +288,7 @@ ContactBookPresenter >> newContact
 ```
 
 
-To test it, we can get access to the presenter with:
+To test it, you can get access to the presenter with:
 
 ```
 (ContactBookPresenter on: ContactBook coworkers)
