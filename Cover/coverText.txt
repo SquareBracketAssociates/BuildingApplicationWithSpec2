@@ -1,0 +1,8 @@
+Spec is the default UI building framework for Pharo. With Spec developers focus on presenter interaction and layout. Presenters are responsible for defining and controling the interaction of their sub-elements as well as domain objects. 
+
+With Spec, existing presenters or even complete UI’s are reused and configured to form a new UI.
+This book shows the basics of Spec and how it enables reuse of UIs. It focuses on Spec2.0 features such as new widget layouts, dynamic widget building and more advanced features such as transmissions or commands.
+
+A tutorial gets you started in less than 20 minutes.
+
+
