@@ -64,19 +64,19 @@ how do you have a CmUICommandGroup ? That's abstract... you should have a CmComm
 in anycase, if this is the first case, then you do:
 
 
-myGroup asSpecGroup asMenuPresenter
+myGroup asSpecGroup
 
 and if is the second (most likely)
 you just do
 
-myGroup asMenuPresenter
+myGroup
 
 Esteban Lorenzano — 12/06/2022 9:36 PM
 also, status of presenters are not updated all the time
 to get that, you need to pass the context menu as a block, not as a direct instance, e.g. :
 
 myPresenter
-  contextMenu; [ myGroup asMenuPresenter ];
+  actions: myGroup;
   yourself
 
 Yes, I have a SpecCommandGroup but I just got lost in this class hierarchy
