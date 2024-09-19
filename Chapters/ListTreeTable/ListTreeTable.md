@@ -239,7 +239,7 @@ The message `expandPath:` shows that we can expand a specific item by a path.
 
 ![A tree with a menu. %width=45&anchor=figTreemenu](figures/TreeWithMenu.png)
 
-The following script shows how to use a context menu, you can add, remove and replace menus, but it's dynamic nature is also present in the api, by seinding blocks to messages like `name:`, `actionEnabled:` and `actionVisible:`.
+The following script shows how to use a context menu, you can add, remove and replace menus, but it's dynamic nature is also present in the api, by seinding blocks to messages like `dynamicName:`, `actionEnabled:` and `actionVisible:`.
 
 ```
 | tree |
@@ -248,9 +248,9 @@ tree roots: { Object };
 	children: [ :aClass | aClass subclasses ];
 	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 	display: [ :aClass | aClass name ];
-	actionsWith: [ :aGroup | 
-		aGroup addActionWith: [ :action | 
-			action name: [ tree selectedItem asString ] ] ];
+	actionsWith: [ :group | group 
+		addActionWith: [ :action | action 
+			dynamicName: [ tree selectedItem asString ] ] ];
 	open
 ```
 
