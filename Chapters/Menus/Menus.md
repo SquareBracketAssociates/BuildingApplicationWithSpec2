@@ -328,7 +328,7 @@ MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 	self updateToolBarButtons
 ```
 
-As for the menubar, it required a lot of code to setup the toolbar and to wire everything, but we are ready. Let's open the window again.
+As for the menubar, it required a lot of code to setup the toolbar and wire everything, but we are ready. Let's open the window again.
 
 ```
 (MailClientPresenter on: MailAccount new) open
@@ -348,7 +348,7 @@ Let's create a new email by pressing the toolbar button labeled "New" and see ho
 After adding a menubar and a toolbar, we will add a status bar. A status bar is useful to show short messages for some time, or until the next message appears. We will elaborate the mail client presenter to show messages to inform the user that actions have been performed.
 
 
-The status bar appears at the bottom of a window. As with the menubar and the toolbar, we add it in the method `initializeWindow:`.
+The status bar appears at the bottom of the window. As with the menubar and the toolbar, we add it in the method `initializeWindow:`.
 
 ```
 MailClientPresenter >> initializeWindow: aWindowPresenter
@@ -420,7 +420,7 @@ MailClientPresenter >> deleteMail
 	statusBar pushMessage: 'Mail deleted.'
 ```
 
-To finish the status bar functionality, we have to start with a clean status bar. Therefore we adapt the method `updateAfterSelectionChangedTo:` again, in which we already bring the toolbar buttons in their initial enablement state. We send the message `popMessage` to ensure that the status bar is empty.
+To finish the status bar functionality, we start with a clean status bar. Therefore we adapt the method `updateAfterSelectionChangedTo:` again, in which we already bring the toolbar buttons in their initial enablement state. We send the message `popMessage` to ensure that the status bar is empty.
 
 ```
 MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
@@ -529,6 +529,6 @@ As a final test, we create a new email, save it, and select it. It is a draft em
 
 ### Conclusion
 
-We have described in detail how to add a menubar and a toolbar to a window. It required quite some code to define the menu items and the toolbar buttons. We have also described how messages can be shown in the status bar at the bottom of a window. At the end, we also described how to add a context menu to a tree presenter.
+We have described how to add a menubar and a toolbar to a window. It required quite some code to define the menu items and the toolbar buttons. We have also described how messages can be shown in the status bar at the bottom of a window. At the end, we also described how to add a context menu to a tree presenter.
 
 An important aspect of menu items and toolbar buttons is their enablement based on the state of the presenter in a window. We have shown how to apply enablement, and we verified the behavior in several figures.

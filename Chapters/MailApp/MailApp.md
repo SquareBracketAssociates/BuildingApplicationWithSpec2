@@ -446,7 +446,7 @@ MailReaderPresenter >> noEmailLayout
 			yourself
 ```
 
-By default, we assume there is no email. After all, there is no method that initializes the email. So the `defaultLayout` is the `noEmailLayout`.
+By default, we assume there is no email. After all, no method initializes the email. So the `defaultLayout` is the `noEmailLayout`.
 
 ```
 MailReaderPresenter >> defaultLayout

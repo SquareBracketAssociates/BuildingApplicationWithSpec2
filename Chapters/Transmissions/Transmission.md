@@ -26,7 +26,7 @@ SpPresenter << #OverviewDetailPresenter
 	package: 'CodeOfSpec20Book'
 ```
 
-We polulate the list with some `Point` instances.
+We populate the list with some `Point` instances.
 
 ```
 OverviewDetailPresenter >> initializePresenters
@@ -37,7 +37,7 @@ OverviewDetailPresenter >> initializePresenters
 	detail := self newText
 ```
 
-The `defaultLayout` method is straightforward. It defined a horizontal box layout.
+The `defaultLayout` method is straightforward. It defines a horizontal box layout.
 
 ```
 OverviewDetailPresenter >> defaultLayout
@@ -108,7 +108,7 @@ OverviewDetailPresenter >> connectPresenters
 		transform: [ :selectedPoint | selectedPoint asString ]
 ```
 
-Now the behavour of the presenter is error-free.
+Now the behavior of the presenter is error-free.
 
 Suppose that we do not like to merely show the selected point in the text, but that we like to show the distance of the selected point to the origin of the coordinate system. In the traditional way, the method `connectPresenters` would look like this:
 
@@ -158,7 +158,7 @@ OverviewDetailPresenter >> connectPresenters
 		selectedPoint crTrace ]
 ```
 
-With transmissions, we can achieve the same behaviour as follows:
+With transmissions, we can achieve the same behavior as follows:
 
 ```
 OverviewDetailPresenter >> connectPresenters
@@ -191,7 +191,7 @@ OverviewDetailPresenter >> connectPresenters
 		selectedPoint crTrace ]
 ```
 
-With transmissions, we would add an extra `postTransmission:` keyword to the message that we used before. The extra argument is a block that takes upto three arguments. The first argument, often called `destination`, is the presenter of the input port. The second argument, often called `origin`, is the presenter of the output port. The third argument is the transmitted object, without transformation applied to it. In our example, we only need access to the destination argument. That is why there is only one argument in the `postTransmission:` block.
+With transmissions, we would add an extra `postTransmission:` keyword to the message that we used before. The extra argument is a block that takes up to three arguments. The first argument, often called `destination`, is the presenter of the input port. The second argument, often called `origin`, is the presenter of the output port. The third argument is the transmitted object, without transformation applied to it. In our example, we only need access to the destination argument. That is why there is only one argument in the `postTransmission:` block.
 
 ```
 OverviewDetailPresenter >> connectPresenters
@@ -230,7 +230,7 @@ In some cases, it is not necessary to define new ports. Instead, delegation can 
 
 ### A complex example
 
-In this section, we will revisit the small email client application from Chapter *@cha_mailapp@*.
+In this section, we  revisit the small email client application from Chapter *@cha_mailapp@*.
 
 Let's start with the presenter class `MailClientPresenter`. It had this method:
 
@@ -285,7 +285,7 @@ MailReaderPresenter >> setModel: email
 
 That concludes the changes to introduce a transmission at the level of the `MailClientPresenter`. When opening the mail client with `(MailClientPresenter on: MailAccount new) open`, the mail application behaves as before, but now it uses a transmission.
 
-There is another presenter where we can use transmissions: the `EmailPresenter`. It's original `connectPresenters` method was implemented as follows.
+There is another presenter where we can use transmissions: the `EmailPresenter`. Its original `connectPresenters` method was implemented as follows.
 
 ```
 EmailPresenter >> connectPresenters
@@ -314,4 +314,4 @@ The messages `transmitDo:` is used because we like a side effect on the model. N
 
 This chapter introduced transmissions and ports, and illustrated the concepts with two examples.
 
-Output ports define origins of data, and the transformations to apply to the data before transmitting it to an input port. Input ports define destinations of data. Transmissions connect output ports with input ports to define the flow of data between presenters.
+Output ports define the origins of data, and the transformations to apply to the data before transmitting it to an input port. Input ports define destinations of data. Transmissions connect output ports with input ports to define the flow of data between presenters.
