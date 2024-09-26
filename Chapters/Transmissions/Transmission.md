@@ -50,7 +50,8 @@ OverviewDetailPresenter >> defaultLayout
 
 ![A very simple overview–detail presenter. % width=60&anchor=OverviewDetail-base](figures/OverviewDetail-base.png)
 
-Here comes the most interesting method. `connectPresenters` connects the list to the text. We start simple. When a point is selected in the list, we simply show it in the text.
+Here comes the most interesting method. The method `connectPresenters` connects the list to the text. We start simple. 
+When a point is selected in the list, we simply show it in the text.
 
 ```
 OverviewDetailPresenter >> connectPresenters
@@ -138,7 +139,7 @@ OverviewDetailPresenter >> connectPresenters
 
 After opening, we see the window as shown in Figure *@OverviewDetail-transformed@*.
 
-![The overview–detail presenter with transformation. % width=60&anchor=OverviewDetail-transformed](figures/OverviewDetail-transformed.png)
+![The overview–detail presenter with a transformation. % width=60&anchor=OverviewDetail-transformed](figures/OverviewDetail-transformed.png)
 
 ### Acting on a transmission without input port
 
