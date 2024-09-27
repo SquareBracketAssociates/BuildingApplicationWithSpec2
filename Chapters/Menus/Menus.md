@@ -147,7 +147,7 @@ Look at the shortcuts in the `messageMenu` method. `$n meta` means that the char
 
 ### Installing shortcuts
 
-Adding shortcuts to menu items does not automatically install them. Keyboard shortcuts have to be installed after the window has been opened. Therefore we have to adapt the `initializeWindow:` method with the `whenOpenedDo:` message, so that the keyboard shortcuts can be installed after opening the window. `SpMenuPresenter`, which is the superclass of `SpMenuBarPresenter`, implements the method `addKeybindingsTo:`, which comes in handy here.
+Adding shortcuts to menu items does not automatically install them. Keyboard shortcuts have to be installed after the window has been opened. Therefore we have to adapt the `initializeWindow:` method with the `whenOpenedDo:` message, so that the keyboard shortcuts can be installed after opening the window. `SpMenuPresenter`, which is the superclass of `SpMenuBarPresenter`, implements the method `addKeyBindingsTo:`, which comes in handy here.
 
 ```
 MailClientPresenter >> initializeWindow: aWindowPresenter
@@ -155,8 +155,11 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter
 		title: 'Mail';
 		initialExtent: 650@500;
-		menu: menuBar;
-		whenOpenedDo: [ menuBar addKeybindingsTo: aWindowPresenter ]
+		menu: menuBar.
+
+	"this will copy the menubar shortcuts from menuBar to the window presenter, 
+	 to allow the window to answer to them" 
+	menuBar addKeyBindingsTo: aWindowPresenter
 ```
 
 
@@ -227,8 +230,9 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 		title: 'Mail';
 		initialExtent: 650@500;
 		menu: menuBar;
-		whenOpenedDo: [ menuBar addKeybindingsTo: aWindowPresenter ];
-		toolbar: toolBar
+		toolbar: toolBar.
+
+	menuBar addKeyBindingsTo: aWindowPresenter
 ```
 
 `toolbar` is an instance variable, so we have to elaborate the class definition:
@@ -357,9 +361,10 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 		title: 'Mail';
 		initialExtent: 650@500;
 		menu: menuBar;
-		whenOpenedDo: [ menuBar addKeybindingsTo: aWindowPresenter ];
 		toolbar: toolBar;
-		statusBar: statusBar
+		statusBar: statusBar.
+
+	menuBar addKeyBindingsTo: aWindowPresenter
 ```
 
 `statusBar` is a new instance variable, which we add to the class definition of the presenter.
@@ -458,55 +463,60 @@ All actions that change the status bar have been tested.
 
 ### Adding a context menu to a presenter
 
-The final step to complete the mail client presenter is the addition of a context menu. We will add a context menu to the tree with the folders and emails. We will not add a big context menu. For demonstration purposes, we will restrict the menu to two menu items, one to delete an email and one to send an email.
+The final step to complete the mail client presenter is the addition of a context menu. We will add a context menu to the tree with the folders and emails. We will not add a big context menu. For demonstration purposes, we will restrict the menu to two items, one to delete an email and one to send an email.
 
 The tree includes folders and emails, so the desired menu items should be disabled when a folder is selected. They should also be disabled when no selection has been made. On top of that condition, the send command can only be applied to emails that are in the "Draft" folder because received and sent mails cannot be sent.
 
 Typically, a presenter adds a context menu to a subpresenter. Given that the tree of folders and emails is a subpresenter of the `MailAccountPresenter`, we would expect the `MailAccountPresenter` to install a context menu on the tree presenter. However, the `MailAccountPresenter` cannot decide what needs to be done for deleting or sending an email. What needs to be done is the responsibility of the `MailClientPresenter`, which defines the methods `deleteMail` and `sendMail`. Both methods do what they have to do to perform the action, and then send the `modelChanged` message and update the status bar.
 
-Therefore `MailClientPresenter` defines the menu.
+Therefore `MailClientPresenter` defines the context menu for the subpresenter, creating an *action grouop*.
 
 ```
-MailClientPresenter >> accountMenu
+MailClientPresenter >> mailAccountActions
 
-	^ self newMenu
-			addItem: [ :item |
-				item
-					name: 'Delete';
-					enabled: [ account hasSelectedEmail ];
-					action: [ self deleteMail ] ];
-			addItem: [ :item |
-				item
-					name: 'Send';
-					enabled: [ account hasSelectedEmail
-											and: [ account selectedItem isDraft] ];
-					action: [ self sendMail ] ];
-			yourself
+	^ SpActionGroup new
+		addActionWith: [ :item |
+			item
+				name: 'Delete';
+				actionEnabled: [ account hasSelectedEmail ];
+				action: [ self deleteMail ] ];
+		addActionWith: [ :item |
+			item
+				name: 'Send';
+				actionEnabled: [ 
+					account hasSelectedEmail
+						and: [ account selectedItem isDraft] ];
+				action: [ self sendMail ] ];
+		yourself
 ```
+
+Action groups and Actions are used to add behavior to a subpresenter, behavior that will act as a context menu or a key binding, dependending on the definition. Here we defined two actions that will be exposed as a context menu.
+
+For each added action, you can see some messages sent to configure it. 
 
 The action blocks are simple, like the action blocks of the menu items in the menubar and the buttons in the toolbar. They send the action messages `deleteMail` and `sendMail` we have defined before.
 
-More interestingly are the `enabled:` blocks, which define the enablement of the menu items. Deleting an email is possible only when an email is selected. That is expressed by the `enabled:` block of the "Delete" menu item. As described in the introduction of this section, sending an email is possible only if the selected email is a draft email. That is exactly what the `enabled:` block for the "Send" menu item expresses.
+More interestingly are the `actionEnabled:` blocks, which define the enablement of the menu items. Deleting an email is possible only when an email is selected. That is expressed by the `actionEnabled:` block of the "Delete" menu item. As described in the introduction of this section, sending an email is possible only if the selected email is a draft email. That is exactly what the `actionEnabled:` block for the "Send" menu item expresses.
 
-Note the name of the method. We use the name `accountMennu` because the context menu will be installed on the `MailAccountPresenter`. However, the context menu has to be installed on the tree presenter with the folders and the emails. Therefore `MailAccountPresenter` delegates to the tree presenter. Let's realise that in code. First, from within `initializePresenters` of `MailClientPresenter`, we send the `contextMenu:` message to install the context menu on the `MailAccountPresenter`.
+Note the name of the method. We use the name `mailAccountActions` because the context menu will be installed on the `MailAccountPresenter`. However, the context menu has to be installed on the tree presenter with the folders and the emails. Therefore `MailAccountPresenter` delegates to the tree presenter. Let's realise that in code. First, from within `initializePresenters` of `MailClientPresenter`, we send the `actions:` message to install the context menu on the `MailAccountPresenter`.
 
 ```
 MailClientPresenter >> initializePresenters
 
 	account := MailAccountPresenter on: self model.
-	account contextMenu: [ self accountMenu ].
+	account actions: self mailAccountActions.
 	reader := MailReaderPresenter new.
 	self initializeMenuBar.
 	self initializeToolBar.
 	statusBar := self newStatusBar
 ```
 
-Then we implement the `contextMenu:` on `MailAccountPresenter`. It delegates to the tree presenter,
+Then we implement the `actions:` on `MailAccountPresenter`. It delegates to the tree presenter,
 
 ```
-MailAccountPresenter >> contextMenu: aBlock
+MailAccountPresenter >> actions: aBlock
 
-	foldersAndEmails contextMenu: aBlock
+	foldersAndEmails actions: aBlock
 ```
 
 That concludes the implementation. It is time to open the window again and try the new context menu.

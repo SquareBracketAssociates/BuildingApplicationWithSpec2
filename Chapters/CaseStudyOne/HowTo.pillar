@@ -67,13 +67,7 @@ initializePresenters
 !! Menu
 
 
-contextMenu: [ ]
-	si dynamic
-	
-
-self newMenu
-	addItem
-on group per default
+aPresenter actions: anActionGroup
 
 
 !! Style

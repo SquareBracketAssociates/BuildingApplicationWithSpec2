@@ -205,7 +205,7 @@ ContactBookPresenter >> initializePresenters
     table
         addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
         addColumn: (SpStringTableColumn title: 'Phone' evaluated: #phone).
-    table contextMenu: [ self rootCommandsGroup beRoot asMenuPresenter ].
+    table actions: self rootCommandsGroup.
     table items: contactBook contacts.
 ```
 
@@ -281,7 +281,7 @@ ContactBookPresenter >> initializePresenters
     table
         addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
         addColumn: (SpStringTableColumn title: 'Phone' evaluated: #phone).
-    table contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ].
+    table actions: self rootCommandsGroup / 'Context Menu'.
     table items: contactBook contacts
 ```
 
@@ -527,7 +527,7 @@ ContactBookPresenter >> initializePresenters
     table
         addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
         addColumn: (SpStringTableColumn title: 'Phone' evaluated: #phone).
-    table contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ].
+    table actions: self rootCommandsGroup / 'Context Menu'.
     table items: contactBook contents.
     menuBar := (self rootCommandsGroup / 'MenuBar') asMenuBarPresenter.
 ```

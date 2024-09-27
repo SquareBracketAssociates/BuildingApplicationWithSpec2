@@ -439,7 +439,7 @@ TodoListPresenter >> initializePresenters
                 title: 'Title'
                 evaluated: [ :task | task title ]);
         yourself.
-    todoListPresenter contextMenu: self todoListContextMenu.
+    todoListPresenter actions: self todoListActions.
 
     addButton := self newButton
         label: 'Add task';
@@ -449,25 +449,26 @@ TodoListPresenter >> initializePresenters
 
 What is added now? 
  
-- `contextMenu: self todoListContextMenu` sets the context menu to what is defined in the method `todoListContextMenu`. Let us study right now.
+- `actions: self todoListActions` sets the context menu to what is defined in the method `todoListActions`. Let us study right now.
 
 
 ```Smalltalk
-TodoListPresenter >> todoListContextMenu
+TodoListPresenter >> todoListActions
 
-    ^ self newMenu 
-        addItem: [ :item | item 
-                    name: 'Edit...'; 
-                    action: [ self editSelectedTask ] ];
-        addItem: [ :item | item 
-                    name: 'delete'; 
-                    action: [ self deleteSelectedTask ] ]
+    ^ SpGroupAction new
+        addItemWith: [ :item | item 
+            name: 'Edit...'; 
+            action: [ self editSelectedTask ] ];
+        addItemWith: [ :item | item 
+            name: 'delete'; 
+            action: [ self deleteSelectedTask ] ];
+        yourself
 ```
 
-This method creates a menu to be displayed when pressing right-click on the table. Let's see what it contains: 
+This method creates aa action group that will be used to the presenter as a context menu to be displayed when pressing right-click on the table. Let's see what it contains: 
 
-- `self newMenu` as all other _factory methods_, this creates a menu presenter to be attached to another presenter.
-- `addItem: [ :item | ... ]` add an item, with a `name:` and an associated `action:`
+- `SpGroupAction new` this creates an action group to contain the actions that will be attached to another presenter.
+- `addItemWith: [ :item | ... ]` add an item, with a `name:` and an associated `action:`
 
 And now let's define the actions
 
