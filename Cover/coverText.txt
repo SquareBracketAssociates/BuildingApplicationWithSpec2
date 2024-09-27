@@ -2,12 +2,12 @@
 Spec is the default UI building framework for Pharo. With Spec, developers focus on presenter interaction and layout. Presenters are responsible for defining the interaction logic of application. They **control** the interaction of their sub-elements and connect with domain objects.
 
 With Spec, existing presenters or even complete **UIs** are reused and configured to form new UIs.
-Spec is widget frameworks (GTK, Morphic, Toplo) agnostic make Desktop applications simple to build. 
+Spec is widget framework (GTK, Morphic, Toplo) agnostic. It makes desktop applications simple to build. 
 
 This book shows the basics of Spec and how it enables reuse of UIs. Then it presents **Spec 2.0** features such as new widget layouts, dynamic widget building and more advanced features such as transmissions **and** commands.
 
 The book contains: 
-	- Deep explanations of various Spec 2.0 facets
+	- Deep explanations of various Spec 2.0 facets.
 	- A tutorial gets you started in less than 20 minutes.
-	- A minimal yet functional email client
+	- A minimal yet functional email client.
 
