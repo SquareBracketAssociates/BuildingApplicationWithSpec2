@@ -155,8 +155,8 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 	aWindowPresenter
 		title: 'Mail';
 		initialExtent: 650@500;
-		menu: menuBar;
-		whenOpenedDo: [ menuBar addKeybindingsTo: aWindowPresenter ]
+		menu: menuBar.
+		menuBar addKeybindingsTo: aWindowPresenter
 ```
 
 
@@ -227,8 +227,8 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 		title: 'Mail';
 		initialExtent: 650@500;
 		menu: menuBar;
-		whenOpenedDo: [ menuBar addKeybindingsTo: aWindowPresenter ];
-		toolbar: toolBar
+		toolbar: toolBar.
+		menuBar addKeybindingsTo: aWindowPresenter
 ```
 
 `toolbar` is an instance variable, so we have to elaborate the class definition:
@@ -357,9 +357,9 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 		title: 'Mail';
 		initialExtent: 650@500;
 		menu: menuBar;
-		whenOpenedDo: [ menuBar addKeybindingsTo: aWindowPresenter ];
 		toolbar: toolBar;
-		statusBar: statusBar
+		statusBar: statusBar..
+		menuBar addKeybindingsTo: aWindowPresenter
 ```
 
 `statusBar` is a new instance variable, which we add to the class definition of the presenter.
