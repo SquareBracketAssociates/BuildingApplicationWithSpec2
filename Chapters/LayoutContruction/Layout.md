@@ -82,7 +82,7 @@ The full message to add presenters is: `add:expand:fill:padding:`
 - `padding:` argument  - extra space in pixels to put between this child and its neighbors, over and above the global amount specified by the `spacing` property. If a child is a widget at one of the reference ends of the box, then padding pixels are also put between the child and the reference edge of the box.
 
 
-To illustrate this API a bit, we add another button to the presenter and change the `defaultLayout` method as follows. The result is shown in Fig *@ThreeButtons@*. We want to stress, however, that it is better not to use a fixed height or padding.
+To illustrate this API a bit, we change the `defaultLayout` method as follows. The result is shown in Fig *@TwoButtonsTopToBottom@*. We want to stress, however, that it is better not to use a fixed height or padding.
 
 ```
 TwoButtons >> defaultLayout
@@ -92,24 +92,16 @@ TwoButtons >> defaultLayout
 		add: button1 expand: false fill: true padding: 5;
 		add: button2 withConstraints: [ :constraints |
 			constraints height: 80; padding: 5 ];
-		addLast: button3 expand: false fill: true padding: 5;
 		yourself
 ```
 
 
-![Three buttons placed from top to bottom playing with padding and fill options.](figures/ThreeButtons.png width=50&label=ThreeButtons)
+![Two buttons placed from top to bottom playing with padding and fill options.](figures/TwoButtonsTopToBottom.png width=50&label=TwoButtonsTopToBottom)
 
 The annotations in the figure indicate the padding in red, the height of `button2` in blue, and the spacing in green. Note that the padding of `button2` is included in the height of the button.
 
 The `defaultLayout` method sends the message `withConstraints: [ :constraints | constraints height: 80; padding: 5 ]`. This message allows setting constraints when the often used messages `add:`, `add:expand:`, and `add:expand:fill:padding:` do not cover your particular use case. The `constraints` argument of the block is an instance of the `SpBoxConstraints` class.
 
-The `defaultLayout` method adds button `button3` to the box layout with `addLast:expand:fill:padding:`. For every method starting with `add:`, the `SpBoxLayout` class provides a similar method starting with `addLast:`.
-
-A box layout has two parts: a "start" and an "end". Messages starting with `add:`, add subpresenters to the "start". Messages starting with `addLast:`, add subpresenters to the "end". As you can see in Figure *@ThreeButtons@*, there is a large gap between `button2` and `button3`. For vertical box layouts, the "start" part of a box layout aligns to the top side of the box. The "end" part aligns to the bottom side of the box. The gap between the "start" and the "end" is all the excess space not used by the subpresenters.
-
-In this example with three buttons, the usefulness of the "start" and "end" parts is not very clear. But it is very handy for button bars with buttons on the left side and on the right side, such as in the Repositories browser of Iceberg, as you can see in Figure *@Repositories@*. The bar has one button on the left side and two buttons on the right side.
-
-![Buttons on the left side and on the right side. % width=60&anchor=Repositories](figures/Repositories.png)
 
 ### Box layout alignment
 
@@ -272,6 +264,86 @@ AlignmentExample >> newTile: alignmentBlock
 Figure *@AlignmentExampleWithHorizontalTiles@* shows the result of opening the window again. Now the labels are positioned horizontally.
 
 ![Nine tiles with the labels in a vertical box layout.%width=60&anchor=AlignmentExampleWithHorizontalTiles](figures/AlignmentExampleWithHorizontalTiles.png )
+
+
+### Advanced layout
+
+Now that we know how to align nested presenters, let's have a look at a common use case. Suppose we like to arrange three buttons in a row of which two are positioned on the left side of the window, and one is positioned on the right side. That setup is very handy for button bars with buttons on the left side and on the right side, such as in the Repositories browser of Iceberg, as you can see in Figure *@Repositories@*. The bar has one button on the left side and two buttons on the right side.
+
+![Buttons on the left side and on the right side. % width=60&anchor=Repositories](figures/Repositories.png)
+
+Let's create a new presenter class called `ButtonBar`:
+
+```
+SpPresenter << #ButtonBar
+	slots: { #button1 . #button2 . #button3 };
+	package: 'CodeOfSpec20Book'
+```
+
+We initialize the three buttons:
+
+```
+ButtonBar >> initializePresenters
+
+	button1 := self newButton.
+	button2 := self newButton.
+	button3 := self newButton.
+	button1 label: '1'.
+	button2 label: '2'.
+	button3 label: '3'
+```
+
+We use a layout that has two sublayouts, one for two buttons on the left, and one for the third button on the right. We apply a 15 pixel spacing between the buttons on the left.
+
+```
+ButtonBar >> defaultLayout
+
+	| left right |
+	left := SpBoxLayout newLeftToRight
+		spacing: 15;
+		add: button1 expand: false;
+		add: button2 expand: false;
+		yourself.
+	right := SpBoxLayout newLeftToRight
+		add: button3 expand: false;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		add: left;
+		add: right;
+		yourself
+```
+
+When opening this presenter with `ButtonBar new open`, we see the window shown in Figure *@ThreeButtonsLeftAndRightWithoutAlignment@*.
+
+![Three buttons split in a left and a right section.%width=60&anchor=ThreeButtonsLeftAndRightWithoutAlignment](figures/ThreeButtonsLeftAndRightWithoutAlignment.png)
+
+The layout is not exactly what we had in mind. The third button is not positioned on the right side. That is where the alignment from the pevious section comes in. Let's change the `defaultLayout` method to align the button with the end of the right box layout. We add the message `hAlignEnd`:
+
+
+```
+ButtonBar >> defaultLayout
+
+	| left right |
+	left := SpBoxLayout newLeftToRight
+		spacing: 15;
+		add: button1 expand: false;
+		add: button2 expand: false;
+		yourself.
+	right := SpBoxLayout newLeftToRight
+		hAlignEnd;
+		add: button3 expand: false;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		add: left;
+		add: right;
+		yourself
+```
+
+When we open the presenter again, we see the window shown in Figure *@ThreeButtonsLeftAndRightWithAlignment@*. That is the layout we had in mind.
+
+![Three buttons with the third button aligned at the end.%width=60&anchor=ThreeButtonsLeftAndRightWithAlignment](figures/ThreeButtonsLeftAndRightWithAlignment.png)
+
+This example shows that advanced layout requires nesting layouts to achieve the desired result.
 
 ### Example setup for layout reuse
 
