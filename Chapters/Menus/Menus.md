@@ -92,8 +92,7 @@ MailClientPresenter >> formatMenu
 			yourself
 ```
 
-Now we are ready to focus on the "Message" menu commands. 
-We will implement all commands of the "Message" menu. That requires some code:
+Now we are ready to focus on the "Message" menu commands. We will implement all commands of the "Message" menu. That requires some code:
 
 ```
 MailClientPresenter >> messageMenu
@@ -116,7 +115,7 @@ MailClientPresenter >> messageMenu
 					item
 						name: 'Delete';
 						shortcut: $d meta;
-						enabled: [ account hasSelectedEmail ];
+						enabled: [ self hasSelectedEmail ];
 						action: [ self deleteMail ] ];
 				addItem: [ :item |
 					item
@@ -134,12 +133,18 @@ MailClientPresenter >> messageMenu
 				yourself ]
 ```
 
-While the first two menus included two commands, this menu includes several commands in two groups. With the `addGroup` message, we add the groups and we nest the menu items in the groups by sending the message `addItem:` to the groups. As you can see, the menu items have a name, a keyboard shortcut, and an action block. A few items have a block that defines whether they are enabled. The block argument of the `enabled:` message is evaluated each time the menu item is displayed, so that the menu item can be enabled or disabled dynamically. Note that block arguments of the `enabled:` messages send the message `hasDraft`. We did not define the corresponding method yet, so let's do that now. The implementation is straightforward, as the mail client presenter keeps track of the edited email.
+While the first two menus included two commands, this menu includes several commands in two groups. With the `addGroup` message, we add the groups and we nest the menu items in the groups by sending the message `addItem:` to the groups. As you can see, the menu items have a name, a keyboard shortcut, and an action block. A few items have a block that defines whether they are enabled. The block argument of the `enabled:` message is evaluated each time the menu item is displayed, so that the menu item can be enabled or disabled dynamically. Note that block arguments of the `enabled:` messages send the messages `hasDraft` and `hasSelectedEmail`. We did not define the corresponding methods yet, so let's do that now. The implementations are straightforward.
 
 ```
 MailClientPresenter >> hasDraft
 
 	^ editedEmail isNotNil
+```
+
+```
+MailClientPresenter >> hasSelectedEmail
+
+	^ account hasSelectedEmail
 ```
 
 Look at the shortcuts in the `messageMenu` method. `$n meta` means that the character "n" can be pressed together with the meta key (Command on macOS, Control on Windows and Linux) to trigger the command.
@@ -473,12 +478,12 @@ MailClientPresenter >> accountMenu
 			addItem: [ :item |
 				item
 					name: 'Delete';
-					enabled: [ account hasSelectedEmail ];
+					enabled: [ self hasSelectedEmail ];
 					action: [ self deleteMail ] ];
 			addItem: [ :item |
 				item
 					name: 'Send';
-					enabled: [ account hasSelectedEmail
+					enabled: [ self hasSelectedEmail
 											and: [ account selectedItem isDraft] ];
 					action: [ self sendMail ] ];
 			yourself
