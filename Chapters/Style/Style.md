@@ -69,7 +69,7 @@ A stylesheet always has a root element and this root element has to be called `.
 
 #### Subpresenter
 
-Each style follows a cascading style, starting from `.application`. The following snippet defines three styles.
+Each style follows a cascading style, starting from `.application`. Here are three styles:
 
 ```
 .application.label.header
@@ -365,7 +365,25 @@ Suppose that we like to see a different background color for the fields if the e
 
 We can add and remove styles at runtime when the state of the application changes. Let's do that for the styles of the fields.
 
-`EmailPresenter` instances have a `model`. When it changes, the presenter is notified via the `modelChanged` method. The original implemementation was:
+First, we adapt the method `styleSheet` of our application class to add new styles. We add the style `.draftMail`  with a nested style `.field` that specifies a pink background color. The nesting expresses that the `.field` style applies in the context of the `.draftMail` style.
+
+```
+MailClientApplication >> styleSheet
+
+	| customStyleSheet |
+	customStyleSheet := SpStyleVariableSTONReader fromString:
+		'.application [
+			.fieldLabel [ Font { #size: 12 }, Draw { #color: #blue } ],
+			.field [ Draw { #backgroundColor: #lightYellow } ],
+			.draftMail [
+				.field [ Draw { #backgroundColor: #pink } ]
+				],
+			.bodyField [ Container { #borderWidth: 1, #borderColor: #black } ]
+		]'.
+	^ super styleSheet , customStyleSheet
+```
+
+The next step is to apply the new style. `EmailPresenter` instances have a `model`. When it changes, the presenter is notified via the `modelChanged` method. The original implemementation was:
 
 ```
 EmailPresenter >> modelChanged
