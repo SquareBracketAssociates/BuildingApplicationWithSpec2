@@ -16,7 +16,7 @@ There are different classes of ports. If you do not find a suitable port class f
 
 A transmission connects a presenter’s output port with another presenter’s input port. When using transmissions, instead of thinking about events and how to act on them, you think about how data flows from one presenter's output port to another presenter's input port. The event handling is taken care of by the output ports.
 
-### Simple example
+### A simple example
 
 Let's take a look at a very simple example. Consider a presenter that shows an overview–detail relationship. We define a class `OverviewDetailPresenter` with two instance variables to hold a `SpListPresenter` and a `SpTextPresenter`.
 
@@ -50,8 +50,7 @@ OverviewDetailPresenter >> defaultLayout
 
 ![A very simple overview–detail presenter. % width=60&anchor=OverviewDetail-base](figures/OverviewDetail-base.png)
 
-Here comes the most interesting method. The method `connectPresenters` connects the list to the text. We start simple. 
-When a point is selected in the list, we simply show it in the text.
+Here comes the most interesting method. The method `connectPresenters` connects the list to the text. We start simple with a logic that uses events and not transmissions. When a point is selected in the list, we simply show it in the text. 
 
 ```
 OverviewDetailPresenter >> connectPresenters
@@ -229,7 +228,7 @@ To make your presenters suitable for use with transmissions, the presenter class
 
 In some cases, it is not necessary to define new ports. Instead, delegation can be used to reuse a port of a subpresenter. We will see an example of delegation in the next section.
 
-### A complex example
+### A more advanced example
 
 In this section, we  revisit the small email client application from Chapter *@cha_mailapp@*.
 
@@ -285,6 +284,9 @@ MailReaderPresenter >> setModel: email
 ```
 
 That concludes the changes to introduce a transmission at the level of the `MailClientPresenter`. When opening the mail client with `(MailClientPresenter on: MailAccount new) open`, the mail application behaves as before, but now it uses a transmission.
+
+
+### Another variation 
 
 There is another presenter where we can use transmissions: the `EmailPresenter`. Its original `connectPresenters` method was implemented as follows.
 
