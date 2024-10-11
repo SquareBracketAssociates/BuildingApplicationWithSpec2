@@ -13,7 +13,7 @@ To explain the concepts, we will revisit the Mail Application that we introduced
 
 Commander models application actions as first-class objects following the Command design pattern. With Commander, you can express commands and use them to generate menus and toolbars, but also to script applications from the command line.
 
-Every action is implemented as a separate command class \(subclass of `CmCommand`\) with an `execute` method and the state required for execution.
+Every action is implemented as a separate command class (subclass of `CmCommand`) with an `execute` method and the state required for execution.
 
 ![A simple command and its hierarchy.%width=35&anchor=first](figures/BasicCommand.pdf )
 
@@ -79,6 +79,8 @@ NewMailCommand >> execute
 ```
 
 In general, `execute` methods are simple, because they do not have enough knowledge about the state of the application to know what to do. Therefore they often delegate to the application.
+
+As a general design advice, do not define application logic in a command. A command is just a representant of this behavior.
 
 #### SaveMailCommand
 
@@ -294,6 +296,8 @@ MailClientPresenter class >> buildAccountMenuWith: presenter
 			yourself
 ```
 
+### Using fillWith:
+
 In Chapter *@cha_mailapp@*, we defined the method `MailClientPresenter >> accountMenu` to return the context menu for the `MailAccountPresenter`. When using commands, we implement it differently. We create a new menu and fill it with the commands defined in the method above. A presenter has access to the root of the command tree through the message `rootCommandsGroup`. Subtrees can be accessed by sending the `/` message. By using commands, building up the context menu is almost trivial:
 
 
@@ -369,10 +373,11 @@ FetchMailCommand >> asSpecCommand
 
 Remember that commands are created using the message `forSpec`. This message takes care of the calling `asSpecCommand`.
 
+![With a menubar. %width=60&anchor=WithMenuBar](figures/WithMenuBar.png)
 
 ### Managing a menubar
 
-Commander also supports menubar creation. The logic is the same as for contextual menus: we define a group and register it under a given root, and we tell the presenter to use this group as a menubar.
+Commander also supports menubar creation as shown in Figure *@WithMenuBar@*. The logic is the same as for contextual menus: we define a group and register it under a given root, and we tell the presenter to use this group as a menubar.
 
 First, we have to define the menubar. We extend the method we defined before:
 
@@ -442,7 +447,7 @@ MailClientPresenter >> initializeMenuBar
 
 Figure *@WithMenuBar@* shows the result of adding the menubar based on commands.
 
-![With a menubar. %width=60&anchor=WithMenuBar](figures/WithMenuBar.png)
+
 
 
 ### Introducing groups
@@ -488,6 +493,9 @@ Building menus is nice, but sometimes we need to add a menu to an existing one. 
 
 
 Imagine that we want to add new functionality to the Mail Application and that this behavior is packaged in another package, for instance  `CodeOfSpec20Book-Extensions`. As an example, we will add the ability to create new mails from a template. To reduce the additional code for such functionality, we will keep things simple. It is not our intention to introduce a full-fledged templating system. We will restrict the feature to a template for the body of a mail.
+
+
+#### Defining a new command
 
 First, we will define a new command and second, we will show how we can extend the existing menubar with an extra menu. Adding menu items to existing menus and adding toolbar buttons to an existing toolbar can be done in a similar way.
 
@@ -537,6 +545,8 @@ NewMailTemplateCommand >> newFromTemplate: aString
 	reader updateLayoutForEmail: editedEmail.
 	self modelChanged
 ```
+
+### Declaring extension
 
 The last missing piece is the declaration of the extension of the commands with the pragma `<extensionCommands>` on the class side of the `MailClientPresenter` class as follows:
 
@@ -616,7 +626,7 @@ This is very similar to how we defined the commands for the menus. Here we add t
 The next step is to fill the toolbar with these commands. To achieve that, we can change the method that we implemented before:
 
 ```
-initializeToolBar
+MailClientPresenter >> initializeToolBar
 
 	toolBar := self newToolbar.
 	toolBar fillWith: self rootCommandsGroup / 'ToolBar'
