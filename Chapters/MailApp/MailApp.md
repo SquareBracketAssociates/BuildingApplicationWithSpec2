@@ -602,7 +602,7 @@ MailClientPresenter >> defaultLayout
 
 Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods: `connectPresenters` and `updateAfterSelectionChangedTo:`
 
-- The method `connectPresenters` sends the selected tree item to the `reader` and use the following method.
+- The method `connectPresenters` sends the selected tree item to the `reader` and uses the following method.
 - The method `updateAfterSelectionChangedTo:` to allow for post selection actions.
 
 ```

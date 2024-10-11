@@ -80,7 +80,7 @@ NewMailCommand >> execute
 
 In general, `execute` methods are simple, because they do not have enough knowledge about the state of the application to know what to do. Therefore they often delegate to the application.
 
-As a general design advice, do not define application logic in a command. A command is just a representant of this behavior.
+As a general design advice, do not define application logic in a command. A command is just a representative of this behavior.
 
 #### SaveMailCommand
 

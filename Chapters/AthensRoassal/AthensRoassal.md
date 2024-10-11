@@ -1,6 +1,6 @@
 ## Using Athens and Roassal in Spec
 
-A part of this chapter was originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components. This chapter shows how you can use Athens (a canvas using Cairo as back-end) to draw using a low-level API on a canvas inside a Spec presenter. It then shows how you can use Roassal (a visualization engine) within a Spec presenter. Finally we show how you can integrate into a Spec component a Morph that draws into a Athens canvas. 
+A part of this chapter was originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components. This chapter shows how you can use Athens (a canvas using Cairo as backend) to draw using a low-level API on a canvas inside a Spec presenter. It then shows how you can use Roassal (a visualization engine) within a Spec presenter. Finally we show how you can integrate into a Spec component a Morph that draws into a Athens canvas.
 
 ### Introduction
 
