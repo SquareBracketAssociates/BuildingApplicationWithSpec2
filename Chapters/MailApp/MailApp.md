@@ -107,13 +107,14 @@ Object << #MailFolder
 	package: 'CodeOfSpec20Book'
 ```
 
-At initialization time, a `MailFolder` does not have any emails, and its name is `nil`.
+At initialization time, a `MailFolder` does not have any emails, and its name is `New folder`.
 
 ```
 MailFolder >> initialize
 
 	super initialize.
-	emails := OrderedCollection new
+	emails := OrderedCollection new.
+	name := 'New folder'
 ```
 
 That defines the default state of a `MailFolder` instance, but an instance creation method is handy:
