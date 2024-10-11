@@ -107,6 +107,8 @@ Object << #MailFolder
 	package: 'CodeOfSpec20Book'
 ```
 
+SD: why nil?
+
 At initialization time, a `MailFolder` does not have any emails, and its name is `nil`.
 
 ```
@@ -262,7 +264,7 @@ MailAccount >> send: anEmail
 	self changed
 ```
 
-Finally, an email can be deleted. The implementation is simple. Remove the email from the account and let dependent know.
+Finally, an email can be deleted. The implementation is simple. Remove the email from the account and let dependents know.
 
 ```
 MailAccount >> delete: anEmail
@@ -464,7 +466,7 @@ MailReaderPresenter >> read: email
 		ifNotNil: [ self updateLayoutForEmail: email ]
 ```
 
-`read:` delegates to the methods that do the actual work.
+The method `read:` delegates to the methods that do the actual work.
 
 ```
 MailReaderPresenter >> updateLayoutForEmail: email
@@ -600,9 +602,9 @@ MailClientPresenter >> defaultLayout
 			yourself
 ```
 
-Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods:
+Let's connect the two presenters so that a selection in the tree on the left results in showing details of the selection on the right. We introduce two methods: `connectPresenters` and `updateAfterSelectionChangedTo:`
 
-- The method `connectPresenters` sends the selected tree item to the `reader` and then it sends 
+- The method `connectPresenters` sends the selected tree item to the `reader` and use the following method.
 - The method `updateAfterSelectionChangedTo:` to allow for post selection actions.
 
 ```
@@ -615,7 +617,7 @@ MailClientPresenter >> connectPresenters
 		self updateAfterSelectionChangedTo: selectedFolderOrEmail ]
 ```
 
-In the second method, we use several messages that we defined earlier.
+In the second method `updateAfterSelectionChangedTo:`, we use several messages that we defined earlier.
 
 ```
 MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
@@ -624,6 +626,8 @@ MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 		ifTrue: [ selectedFolderOrEmail ]
 		ifFalse: [ nil ]
 ```
+
+![The basic mail client. % width=60&label=BasicClient](figures/BasicClient.png)
 
 The method `updateAfterSelectionChangedTo:` keeps track of the email if it is a draft email, so that the presenter has it handy when needed. The method invokes the method `isDraftEmail:` (defined below) to determine whether the tree selection is a draft email.
 
@@ -634,7 +638,7 @@ The method `updateAfterSelectionChangedTo:` keeps track of the email if it is a 
 
 The method states that the content of the `MailReaderPresenter` held by `reader` depends on the selection in the tree. If an email is selected, the reader shows its fields. If there is no selection, or a folder is selected, the reader shows the informational message. When a draft email is selected, we put it in the `editedMail` instance variable, which will be handy when we start performing actions on the selected email.
 
-Let's also define this method, so that the window has a title and it is big enough for reading emails easily.
+Let's also define the method `initializeWindow`, so that the window has a title and it is big enough for reading emails easily.
 
 ```
 MailClientPresenter >> initializeWindow: aWindowPresenter
@@ -654,7 +658,7 @@ After typing all the code, it is time to open the mail client.
 
 Figure *@BasicClient@* shows the result. There is nothing much to see. Only three empty folders. Selecting one will still show the informational message on the right.
 
-![The basic mail client. % width=60&label=BasicClient](figures/BasicClient.png)
+
 
 We can do better. Let's add a draft email with the `saveAsDraft:` message that we defined in `MailAccount`.
 
