@@ -107,8 +107,6 @@ Object << #MailFolder
 	package: 'CodeOfSpec20Book'
 ```
 
-SD: why nil?
-
 At initialization time, a `MailFolder` does not have any emails, and its name is `nil`.
 
 ```

@@ -4,7 +4,7 @@
 
 Commander was a library originally developed by Denis Kudriashov. Commander 2.0 is the second iteration of that library. It was designed and developed by Julien Delplanque and Stéphane Ducasse. Note that Commander 2.0 is not compatible with Commander but it is really easy to migrate from Commander to Commander 2.0. We describe Commander 2.0 in the context of Spec. From now on, when we mention Commander we refer to Commander 2.0.
 
-To explain the concepts, we will revisit the Mail Application that we introduced in Chapter *@cha_mailapp@* and extended in Chapter *@cha_menus@*.
+To explain the concepts, we will revisit the Mail Application that we introduced in Chapter *@cha_mailapp@* and extended in Chapter *@cha_menus@*. You can load the code as explained in the first chapter of this book.
 
 
 
@@ -15,7 +15,7 @@ Commander models application actions as first-class objects following the Comman
 
 Every action is implemented as a separate command class \(subclass of `CmCommand`\) with an `execute` method and the state required for execution.
 
-![A simple command and its hierarchy.](figures/BasicCommand.pdf width=35&label=first)
+![A simple command and its hierarchy.%width=35&anchor=first](figures/BasicCommand.pdf )
 
 We will show later that for a UI framework, we need more information such as an icon and shortcut description. In addition, we will present how commands can be decorated with extra functionality in an extensible way.
 
@@ -313,7 +313,7 @@ When reopening the interface with:
 
 you should see the menu items as shown in Figure *@ContextMenu@*. As we will show later, we could even replace a menu item with another one, changing its name, or icon in place.
 
-![Two menu items with the mouse pointing at the second item.](figures/ContextMenu.png width=60&label=ContextMenu)
+![Two menu items with the mouse pointing at the second item. %width=60&anchor=ContextMenu](figures/ContextMenu.png)
 
 
 ### Managing icons and shortcuts
@@ -442,7 +442,7 @@ MailClientPresenter >> initializeMenuBar
 
 Figure *@WithMenuBar@* shows the result of adding the menubar based on commands.
 
-![With a menubar.](figures/WithMenuBar.png width=60&label=WithMenuBar)
+![With a menubar. %width=60&anchor=WithMenuBar](figures/WithMenuBar.png)
 
 
 ### Introducing groups
@@ -474,11 +474,11 @@ We already used groups for the different menus in the menubar. In this method, w
 
 An important message is `beDisplayedAsGroup`. It indicates that in a menu, the new group should be separated from the other menu items, instead of being added as a menu item with a nested menu. Figure *@WithNestedMenu@* shows what the menu would look like if `beDisplayedAsGroup` is not sent. In situations where nested menus are desired, that would be fine, but giving the group a nice name would be preferable, as "Unnamed group" is the default name.
 
-![Nested menu with the mouse pointing at its name.](figures/WithNestedMenu.png width=60&label=WithNestedMenu)
+![Nested menu with the mouse pointing at its name.%width=60&anchor=WithNestedMenu](figures/WithNestedMenu.png)
 
 In our case, we do not want a nested menu. We want a separate section in the menu. With the implementation of `MailClientPresenter class >> #buildMessageMenuWith:` above, we see a menu as shown in Figure *@MenuWithGroup@*. As in Chapter *@cha_menus@*, now there are two groups of commands, separated by a line.
 
-![Menu with a separate group.](figures/MenuWithGroup.png width=60&label=MenuWithGroup)
+![Menu with a separate group. %width=60&anchor=MenuWithGroup](figures/MenuWithGroup.png)
 
 
 ### Extending menus
@@ -575,9 +575,9 @@ MailClientPresenter class >> buildTemplateMenuWith: presenter
 
 It is time to open the Mail Application again. Figure *@WithMenuBarExtension@* shows the result with the "Templates" menu open. After selecting "Invitation" from the "Templates" menu, the new mail appears in the UI, as shown in Figure *@WithTemplate@*.
 
-![With menubar extension.](figures/WithMenuBarExtension.png width=60&label=WithMenuBarExtension)
+![With menubar extension.%width=60&anchor=WithMenuBarExtension](figures/WithMenuBarExtension.png )
 
-![After creating a new mail from a template.](figures/WithTemplate.png width=60&label=WithTemplate)
+![After creating a new mail from a template. %width=60&anchor=WithTemplate](figures/WithTemplate.png)
 
 
 ### Managing a toolbar
@@ -626,7 +626,7 @@ As you can see, we use the same pattern as `MailClientPresenter >> accountMenu` 
 
 When we open the `MailClientPresenter` again, we see the toolbar as shown in Figure *@WithInitialToolBar@*. All the toolbar buttons are positioned at the left side of the toolbar. That is different from the toolbar shown in Figure *@MailClientWithToolBar@* in Chapter *@cha_menus@*, where the button to fetch mail is positioned at the right side of the toolbar.
 
-![With a toolbar.](figures/WithInitialToolBar.png width=60&label=WithInitialToolBar)
+![With a toolbar. %width=60&anchor=WithInitialToolBar](figures/WithInitialToolBar.png )
 
 To position the button to fetch mail on the right side, we need an additional change in `FetchMailCommand >> asSpecCommand`. We send `beDisplayedOnRightSide`.
 
@@ -642,7 +642,7 @@ FetchMailCommand >> asSpecCommand
 
 When we open the presenter again, we see a toolbar as shown in Figure *@WithToolBar@*. The button to fetch mail is positioned on the right side.
 
-![With a toolbar.](figures/WithToolBar.png width=60&label=WithToolBar)
+![With a toolbar. %width=60&anchor=WithToolBar](figures/WithToolBar.png)
 
 #### Toolbar button enablement
 
