@@ -2,8 +2,7 @@
 
 This chapter was originally written by Iona Thomas and we thank her for letting us use this material.
 
-The Inspector is our favorite tool to look at and interact with objects. In Pharo, inspecting an object means opening this tool and interacting with your object. It is a key tool when developing in Pharo. It allows one to navigate the object structure, look at the state of the variables, change their value, or send messages. 
-
+The Inspector is our favorite tool to look at and interact with objects. In Pharo, inspecting an object means opening this tool and interacting with your object. It is a key tool when developing in Pharo. It allows one to navigate the object structure, look at the state of the variables, change their value, or send messages. The inspector as most tools of the Pharo IDE is a tool written in Spec.
 In addition you can extend the Inspector to show information that is best suited for you. This is what we will see in this chapter.
 
 
@@ -139,10 +138,12 @@ By reinspecting the same collection we see the inspector in Figure *@InspectorWi
 
 ![Removing the evaluator. % width=60&anchor=InspectorWithoutEvaluator](figures/InspectorExpansionMaxWithoutWvaluator.png)
 
+![Histogram tab.  %width=60&anchor=histogram](figures/InspectorExpansionHistogram.png)
+
 ### Adding Roassal charts
 
 Roassal allows one to define visualizations. Such visualizations can also be added to the Inspector tabs.  
-The library includes some common graphs like a histogram. Let's add a histogram of the values if there are only numbers in the collection. Roassal visualizations can be embedded in a presenter by sending the `asPresenter` message to an instance of `RSBuilder`. In the code below, `RSHistogramPlot` is a subclass of `RSBuilder`.
+The library includes some common graphs like a histogram. Let's add a histogram of the values if there are only numbers in the collection. Roassal visualizations can be embedded in a presenter by sending the `asPresenter` message to an instance of `RSBuilder`. In the code below, `RSHistogramPlot` is a subclass of `RSBuilder`. You can also use a `SpRoassalPresenter` or `SPRoassalInspectorPresenter`.
 
 ```
 OrderedCollection << inspectionIntegerHistogram
@@ -163,7 +164,7 @@ OrderedCollection << inspectionIntegerHistogramContext: aContext
 
 By inspecting `{ 1 . 1 . 3 . 2 . 5 . 2. 2 . 1. 9. 3 . 2. 2. 5 . 7 . 7 . 8  } asOrderedCollection` we see the inspector shown in Figure *@histogram@*.
 
-![Histogram tab.  %width=60&anchor=histogram](figures/InspectorExpansionHistogram.png)
+
 
 
 ### Conclusion

@@ -137,13 +137,47 @@ SpRoassalInspectorPresenter new canvas: c; open
 
 Spec proposes a presenter dedicated to Roassal visualizations. 
 Such a presenter is called `SpRoassalPresenter` and you can use it using the `newRoassal` message in an `initializePresenter` method.
+Here is how the `SpColorPicker` uses it. 
 
-The main API of `SpRoassalPresenter` are the method `canvas` and `script`.
+```
+SpColorPicker >> defaultLayout
+
+	| sp sp2 |
+	sp := self newRoassal.
+	sp2 := self newPresenter.
+	sp2 layout: SpBoxLayout newTopToBottom.
+	sp canvas color: Color black translucent.
+	
+	^ SpBoxLayout newTopToBottom
+		add: colorMap height: 150;
+		add: colorSlider height: 25;
+		add: alphaSlider height: 25;
+		add: colorCodePresenter expand: false;
+		add: sp2 height: 10;
+		add: sp height: 1;
+		add: paletteChooser;
+		spacing: 1;
+		yourself.
+```
+
+The main API of `SpRoassalPresenter` are the method `canvas` and `script` as shown in the following test.
 You can interact with a Roassal canvas normally and the result gets displayed in the Roassal presenter.
 
 
+```
+testBasic
+	| spec value window |
+	self isValid ifFalse: [ ^ self ].
+	spec := SpRoassalPresenter new.
+	window := spec asWindow open.
+	value := 0.
 
-
+	spec script: [ :view | view addShape: RSBox new. value := value + 1 ].
+	self assert: value equals: 1.
+	spec script: [ :view | view addShape: RSBox new. value := 0 ].
+	self assert: value equals: 0.
+	window close
+```
 
 ### Hello world in Athens via Morphic objects
 
