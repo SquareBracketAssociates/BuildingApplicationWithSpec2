@@ -5,7 +5,7 @@ Often application windows have a menubar that includes all commands provided by 
 
 We will improve the email client application we built in Chapter *@cha_mailapp@*. We will add a menubar, a toolbar, a status bar, and a context menu. Figure *@MailClientWithDecorations@* shows the result that we like to achieve.
 
-![The mail client with toolbar. % width=60&label=MailClientWithDecorations](figures/MailClientWithDecorations.png)
+![The mail client with toolbar. % width=60&anchor=MailClientWithDecorations](figures/MailClientWithDecorations.png)
 
 
 ### Adding a menubar to a window
@@ -216,12 +216,12 @@ It is time to try it out. To see the menubar in action, let's open a window with
 
 Figure *@MailClientWithMenuBar@* shows the window. The menubar includes the three menus we defined. The figure shows the open "Message" menu. It has two groups of menu items, separated by a horizontal line. Two menu items are enabled. Three menu items are disabled because they are actions on an email but no email is selected.
 
-![The mail client with a menu opened from the menubar. % width=60&label=MailClientWithMenuBar](figures/MailClientWithMenuBar.png)
+![The mail client with a menu opened from the menubar. % width=60&anchor=MailClientWithMenuBar](figures/MailClientWithMenuBar.png)
 
 
 ### Adding a toolbar to a window
 
-Some actions are so common that it is useful to have them one click away. That is where the toolbar comes in. A toolbar allows putting actions as buttons in the user interface.
+Some actions are so common that it is useful to have them one click away. That is where the toolbar comes in. A toolbar allows putting actions as buttons in the user interface (See Figure *@MailClientWithToolBar@*).
 
 Not surprisingly, like the menubar, the toolbar is part of a window presenter. So we have to revisit the `initializeWindow:` method. A `SpWindowPresenter` instance understands the message `toolbar:` to set the toolbar.
 
@@ -299,6 +299,8 @@ SpPresenterWithModel << #MailClientPresenter
 	package: 'CodeOfSpec20Book'
 ```
 
+![The mail client with disabled buttons in a toolbar. % width=60&anchor=MailClientWithToolBar](figures/MailClientWithToolBar.png)
+
 The `initializeToolBar` method adds four buttons to the toolbar. A toolbar has two sections, one on the left and one on the right. With the message `addItem:` we add the first three buttons to the left section. With the message `addItemRight:` we add one button to the right section.
 
 Each button has a label, an icon, a help text, and an action. As we did in `initializeMenuBar`, we use simple action blocks that send a message to the mail client presenter. These are the same messages that we used in the action blocks of the menu items in the "Message" menu in the menubar. That means that we are done.
@@ -342,11 +344,11 @@ As for the menubar, it required a lot of code to setup the toolbar and wire ever
 
 Figure *@MailClientWithToolBar@* shows the window. It has a menubar and a toolbar. Three toolbar buttons are placed on the left side, and one button is placed at the right side. That corresponds to our configuration of the toolbar. The save button and the send button are greyed out because they are disabled.
 
-![The mail client with disabled buttons in a toolbar. % width=60&label=MailClientWithToolBar](figures/MailClientWithToolBar.png)
+
 
 Let's create a new email by pressing the toolbar button labeled "New" and see how the enablement state of the toolbar buttons changes. Figure *@MailClientWithToolBarForEmail@* shows that all the buttons are enabled.
 
-![The mail client with enabled buttons in a toolbar. % width=60&label=MailClientWithToolBarForEmail](figures/MailClientWithToolBarForEmail.png)
+![The mail client with enabled buttons in a toolbar. % width=60&anchor=MailClientWithToolBarForEmail](figures/MailClientWithToolBarForEmail.png)
 
 ### Adding a status bar to a window
 
@@ -449,15 +451,15 @@ We will test a full scenario.
 * After pressing the "Fetch" button, the fetched email appears under the "Inbox" folder in the list. The status bar shows "Mail fetched.". See Figure *@MailClientTest-4@*.
 * After selecting the email in the "Inbox" and choosing "Delete" from the "Message" menu, the email is removed from the list, and the status bar shows "Mail deleted.". See Figure *@MailClientTest-5@*.
 
-![A new email. % width=60&label=MailClientTest-1](figures/MailClientTest-1.png)
+![A new email. % width=60&anchor=MailClientTest-1](figures/MailClientTest-1.png)
 
-![The email has been saved. % width=60&label=MailClientTest-2](figures/MailClientTest-2.png)
+![The email has been saved. % width=60&anchor=MailClientTest-2](figures/MailClientTest-2.png)
 
-![The email has been sent. % width=60&label=MailClientTest-3](figures/MailClientTest-3.png)
+![The email has been sent. % width=60&anchor=MailClientTest-3](figures/MailClientTest-3.png)
 
-![Email has been fetched. % width=60&label=MailClientTest-4](figures/MailClientTest-4.png)
+![Email has been fetched. % width=60&anchor=MailClientTest-4](figures/MailClientTest-4.png)
 
-![The email has been deleted. % width=60&label=MailClientTest-5](figures/MailClientTest-5.png)
+![The email has been deleted. % width=60&anchor=MailClientTest-5](figures/MailClientTest-5.png)
 
 All actions that change the status bar have been tested.
 
@@ -522,15 +524,15 @@ That concludes the implementation. It is time to open the window again and try t
 
 When clicking the right-button mouse button, the context menu appears. Figure *@ContextMenuDisabled@* shows that the two menu items are disabled when a folder is selected
 
-![Context menu items are disabled. % width=60&label=ContextMenuDisabled](figures/ContextMenuDisabled.png)
+![Context menu items are disabled. % width=60&anchor=ContextMenuDisabled](figures/ContextMenuDisabled.png)
 
 After fetching email and selecting the received email, the menu includes an enabled "Delete" menu item and a disabled "Send" menu item, as shown in Figiure *@ContextMenuSendDisabled@*.
 
-![Sending a received email is not allowed. % width=60&label=ContextMenuSendDisabled](figures/ContextMenuSendDisabled.png)
+![Sending a received email is not allowed. % width=60&anchor=ContextMenuSendDisabled](figures/ContextMenuSendDisabled.png)
 
 As a final test, we create a new email, save it, and select it. It is a draft email, so it can be sent. That is what we see in the context menu in Figure *@ContextMenuEnabled@*. Both menu items are enabled.
 
-![Sending a draft email is allowed. % width=60&label=ContextMenuEnabled](figures/ContextMenuEnabled.png)
+![Sending a draft email is allowed. % width=60&anchor=ContextMenuEnabled](figures/ContextMenuEnabled.png)
 
 ### Conclusion
 

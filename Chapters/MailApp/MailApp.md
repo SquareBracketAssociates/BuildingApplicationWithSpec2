@@ -3,7 +3,7 @@
 
 We will build a small email client application that we will elaborate on and adapt in subsequent chapters. This small app brings together in real concrete ways much of what we have seen in the previous chapters. Figure *@MailClient@* shows the target application.
 
-![The mail client. % width=60&label=MailClient](figures/MailClient.png)
+![The mail client. % width=60&anchor=MailClient](figures/MailClient.png)
 
 The example is extensive, with a lot of classes and methods. We will implement the application bottom-up. We start with the models. Afterward, we will implement the presenters that compose the application. Let's dive in.
 
@@ -627,7 +627,7 @@ MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 		ifFalse: [ nil ]
 ```
 
-![The basic mail client. % width=60&label=BasicClient](figures/BasicClient.png)
+![The basic mail client. % width=60&anchor=BasicClient](figures/BasicClient.png)
 
 The method `updateAfterSelectionChangedTo:` keeps track of the email if it is a draft email, so that the presenter has it handy when needed. The method invokes the method `isDraftEmail:` (defined below) to determine whether the tree selection is a draft email.
 
@@ -671,7 +671,7 @@ account saveAsDraft: email.
 
 That opens a window with a draft email. After selecting it, the window looks as shown in Figure *@BasicClientWithDraftEmail@*.
 
-![The basic mail client with a draft email. % width=60&label=BasicClientWithDraftEmail](figures/BasicClientWithDraftEmail.png)
+![The basic mail client with a draft email. % width=60&anchor=BasicClientWithDraftEmail](figures/BasicClientWithDraftEmail.png)
 
 ### Conclusion
 
