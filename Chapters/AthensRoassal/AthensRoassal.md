@@ -1,6 +1,6 @@
 ## Using Athens and Roassal in Spec
 
-A part of this chapter was originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components. This chapter shows how you can use Athens (a Cairo back-end) to draw using a low-level API on a canvas inside a Spec presenter. It then shows how you can use Roassal (a visualization engine) within a Spec presenter. 
+A part of this chapter was originally written by Renaud de Villemeur. We thank him for his contribution. It shows how you can integrate vector graphic drawing within Spec components. This chapter shows how you can use Athens (a canvas using Cairo as back-end) to draw using a low-level API on a canvas inside a Spec presenter. It then shows how you can use Roassal (a visualization engine) within a Spec presenter. Finally we show how you can integrate into a Spec component a Morph that draws into a Athens canvas. 
 
 ### Introduction
 
@@ -78,11 +78,12 @@ Executing `AthensExamplePresenter new open` produces Figure *@athens3@*.
 
 ![A Spec presenter using an `SpAthensPresenter`. % width=60&label=athens3](figures/athens.png)
 
-This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture. The same approach lets you use Alexandrie.
+This example is simple because we did not cover the rendering that may have to be invalidated if something changes, but it shows the key aspect of the architecture. You can do the same using the Alexandrie new canvas based on Cairo. 
+Notice that here we directly draw on the canvas without manipulating Morphic objects. This is what we will do in a following section. 
 
 ### Roassal Spec integration
 
-In this section, we describe how you can define a Spec presenter that let you draw Roassal visualisations. 
+In this section, we describe how you can define a Spec presenter that lets you draw Roassal visualisations. 
 
 Imagine that you want to draw using Roassal some shapes. Here we draw two boxes. But you can also draw paths and other graphical element. 
 
@@ -144,10 +145,12 @@ You can interact with a Roassal canvas normally and the result gets displayed in
 
 
 
-### Hello world in Athens via Morphic
-The Pharo is working actively to replace Morphic by Bloc. Still we believe that the following approach is worth documenting. 
+### Hello world in Athens via Morphic objects
 
-We show now how to use Athens directly integrated with Morphic. This is why we create a `Morph` subclass. The expression `AthensHello new openInWindow` will display the same contents as the one of Figure *@athens3@*.
+The Pharo development team is actively working to replace Morphic by Bloc a new graphical stack. 
+Still we believe that the following approach is worth documenting. We show how we can define a Morph that draws inside a athens canvas and how such a morph can be rendered inside a Spec component.
+
+We show how to use Athens directly integrated with Morphic. This is why we create a `Morph` subclass. The expression `AthensHello new openInWindow` will display the same contents as the one of Figure *@athens3@*.
 
 First, we define a class which inherits from `Morph`:
 
@@ -175,7 +178,7 @@ AthensHello >> defaultExtent
 	^ 400@400
 ```
 
-The `drawOn:` method, mandatory in `Morph` subclasses, asks Athens to render its drawing and it will then display it in a Morphic canvas as a `Form` (a bitmap picture)
+The `drawOn:` method, mandatory in `Morph` subclasses, asks Athens to render its drawing and it will then display it in a Morphic canvas as a `Form` (a bitmap picture).
 
 ```
 AthensHello >> drawOn: aCanvas
@@ -226,11 +229,12 @@ AthensHello >> extent: aPoint
 ```
 
 Congratulations, you have now created your first morphic window whose contents is rendered using Athens.
+Now we show how to integrate this morph object into a Spec presenter.
 
 
 ### Using the morph with Spec
 
-Now that we have a morph, we can use it in a presenter as follows.
+Now that we have a morph, we can use it in a presenter, instance of the class `SpMorphPresenter`, as follows.
 
 ```
 SpPresenter << #AthensHelloPresenter
