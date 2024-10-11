@@ -305,7 +305,9 @@ The `initializeToolBar` method adds four buttons to the toolbar. A toolbar has t
 
 Each button has a label, an icon, a help text, and an action. As we did in `initializeMenuBar`, we use simple action blocks that send a message to the mail client presenter. These are the same messages that we used in the action blocks of the menu items in the "Message" menu in the menubar. That means that we are done.
 
-Well, not really. The menu items had a block to determine whether they were enabled or disabled. That is not the case for toolbar buttons, because they are visible all the time. Therefore we have to manage enablement of the buttons explicitly. Every time the state of the mail client changes, we have to update the enablement of the toolbar buttons. We introduce a new method `updateToolBarButtons` to do that. Based on messages that were defined before, we can set the enablement state of the `saveButton` and the `sendButton`. That is why we defined both as instance variables. The two other buttons are always enabled, so it is not needed to hold them in instance variables.
+
+### Supporting enablement
+We said we were done but well, not really. The menu items had a block to determine whether they were enabled or disabled. That is not the case for toolbar buttons, because they are visible all the time. Therefore we have to manage enablement of the buttons explicitly. Every time the state of the mail client changes, we have to update the enablement of the toolbar buttons. We introduce a new method `updateToolBarButtons` to do that. Based on messages that were defined before, we can set the enablement state of the `saveButton` and the `sendButton`. That is why we defined both as instance variables. The two other buttons are always enabled, so it is not needed to hold them in instance variables.
 
 ```
 MailClientPresenter >> updateToolBarButtons
@@ -352,8 +354,11 @@ Let's create a new email by pressing the toolbar button labeled "New" and see ho
 
 ### Adding a status bar to a window
 
-After adding a menubar and a toolbar, we will add a status bar. A status bar is useful to show short messages for some time, or until the next message appears. We will elaborate the mail client presenter to show messages to inform the user that actions have been performed.
+After adding a menubar and a toolbar, we will add a status bar (see Figures *@MailClientTest-2@* and *@MailClientTest-3@*). A status bar is useful to show short messages for some time, or until the next message appears. We will elaborate the mail client presenter to show messages to inform the user that actions have been performed.
 
+![The email has been saved. % width=60&anchor=MailClientTest-2](figures/MailClientTest-2.png)
+
+![The email has been sent. % width=60&anchor=MailClientTest-3](figures/MailClientTest-3.png)
 
 The status bar appears at the bottom of the window. As with the menubar and the toolbar, we add it in the method `initializeWindow:`.
 
@@ -365,7 +370,7 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 		initialExtent: 650@500;
 		menu: menuBar;
 		toolbar: toolBar;
-		statusBar: statusBar..
+		statusBar: statusBar.
 		menuBar addKeybindingsTo: aWindowPresenter
 ```
 
@@ -453,10 +458,6 @@ We will test a full scenario.
 
 ![A new email. % width=60&anchor=MailClientTest-1](figures/MailClientTest-1.png)
 
-![The email has been saved. % width=60&anchor=MailClientTest-2](figures/MailClientTest-2.png)
-
-![The email has been sent. % width=60&anchor=MailClientTest-3](figures/MailClientTest-3.png)
-
 ![Email has been fetched. % width=60&anchor=MailClientTest-4](figures/MailClientTest-4.png)
 
 ![The email has been deleted. % width=60&anchor=MailClientTest-5](figures/MailClientTest-5.png)
@@ -493,6 +494,9 @@ MailClientPresenter >> accountMenu
 
 The action blocks are simple, like the action blocks of the menu items in the menubar and the buttons in the toolbar. They send the action messages `deleteMail` and `sendMail` we have defined before.
 
+
+### Enabling blocks.
+
 More interestingly are the `enabled:` blocks, which define the enablement of the menu items. Deleting an email is possible only when an email is selected. That is expressed by the `enabled:` block of the "Delete" menu item. As described in the introduction of this section, sending an email is possible only if the selected email is a draft email. That is exactly what the `enabled:` block for the "Send" menu item expresses.
 
 Note the name of the method. We use the name `accountMennu` because the context menu will be installed on the `MailAccountPresenter`. However, the context menu has to be installed on the tree presenter with the folders and the emails. Therefore `MailAccountPresenter` delegates to the tree presenter. Let's realise that in code. First, from within `initializePresenters` of `MailClientPresenter`, we send the `contextMenu:` message to install the context menu on the `MailAccountPresenter`.
@@ -526,7 +530,7 @@ When clicking the right-button mouse button, the context menu appears. Figure *@
 
 ![Context menu items are disabled. % width=60&anchor=ContextMenuDisabled](figures/ContextMenuDisabled.png)
 
-After fetching email and selecting the received email, the menu includes an enabled "Delete" menu item and a disabled "Send" menu item, as shown in Figiure *@ContextMenuSendDisabled@*.
+After fetching email and selecting the received email, the menu includes an enabled "Delete" menu item and a disabled "Send" menu item, as shown in Figure *@ContextMenuSendDisabled@*.
 
 ![Sending a received email is not allowed. % width=60&anchor=ContextMenuSendDisabled](figures/ContextMenuSendDisabled.png)
 
@@ -538,4 +542,4 @@ As a final test, we create a new email, save it, and select it. It is a draft em
 
 We have described how to add a menubar and a toolbar to a window. It required quite some code to define the menu items and the toolbar buttons. We have also described how messages can be shown in the status bar at the bottom of a window. At the end, we also described how to add a context menu to a tree presenter.
 
-An important aspect of menu items and toolbar buttons is their enablement based on the state of the presenter in a window. We have shown how to apply enablement, and we verified the behavior in several figures.
+An important aspect of menu items and toolbar buttons is their enablement based on the state of the presenter in a window. We have shown how to apply enablement, and we illustrated the behavior in several figures.
