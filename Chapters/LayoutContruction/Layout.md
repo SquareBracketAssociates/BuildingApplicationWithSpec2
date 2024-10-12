@@ -117,7 +117,10 @@ These are the vertical layout options:
 * vAlignCenter
 * vAlignEnd
 
-Let's see how this works in a small example. We will create a presenter with 9 subpresenters, which we call "tiles", laid out in 3 rows with 3 columns. Each subpresenter displays two label presenters with the labels 'One' and 'Two'. The presenter class defines nine instance variables. The names refer to the position of the content inside each tile.
+![Nine tiles with different alignment options. %width=60&anchor=AlignmentExampleWithVerticalTiles](figures/AlignmentExampleWithVerticalTiles.png)
+
+
+Let's see how this works in a small example as shown in Figure *@AlignmentExampleWithVerticalTiles@*. We will create a presenter with 9 subpresenters, which we call "tiles", laid out in 3 rows with 3 columns. Each subpresenter displays two label presenters with the labels 'One' and 'Two'. The presenter class defines nine instance variables. The names refer to the position of the content inside each tile.
 
 ```
 SpPresenter << #AlignmentExample
@@ -242,7 +245,7 @@ AlignmentExample new open
 
 The result is shown in Figure *@AlignmentExampleWithVerticalTiles@*. Each tile displays the label presenters at another location. The label presenters are positioned vertically.
 
-![Nine tiles with different alignment options. %width=60&anchor=AlignmentExampleWithVerticalTiles](figures/AlignmentExampleWithVerticalTiles.png)
+
 
 Let's see what happens when we put the label presenters in a horizontal box layout.
 
