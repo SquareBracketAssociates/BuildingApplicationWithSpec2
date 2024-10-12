@@ -109,7 +109,8 @@ list1
 
 list2 := SpListPresenter new.
 list2 dropEnabled: true;
-	wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ];
+	wantsDrop: [ :transfer | transfer passenger 
+		allSatisfy: [:each | each isString ]];
 	acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ].
 
 SpPresenter new
@@ -123,7 +124,7 @@ SpPresenter new
 The following script illustrates the API.
 - `dragEnabled:` configures the receiver to allow dragging of its items.
 - `dropEnabled:` configures the receiver to accept dropped items.
-- `wantsDrop: [ :transfer | transfer passenger allSatisfy: #isString ]`. With the message `wantsDrop:` we can specify a predicate to accept a dropped elements.
+- `wantsDrop: [ :transfer | transfer passenger allSatisfy: [:each | each isString ]`. With the message `wantsDrop:` we can specify a predicate to accept dropped elements.
 - `acceptDrop: [ :transfer | list2 items: list2 items , transfer passenger ]`. The message `acceptDrop:` specifies the treatment performed once the dropped items are accepted.
 
 ### Activation clicks
