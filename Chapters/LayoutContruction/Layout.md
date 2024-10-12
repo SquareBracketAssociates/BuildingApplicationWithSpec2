@@ -245,7 +245,7 @@ AlignmentExample new open
 
 The result is shown in Figure *@AlignmentExampleWithVerticalTiles@*. Each tile displays the label presenters at another location. The label presenters are positioned vertically.
 
-
+### Alignment in horizontal box layout
 
 Let's see what happens when we put the label presenters in a horizontal box layout.
 
@@ -269,7 +269,7 @@ Figure *@AlignmentExampleWithHorizontalTiles@* shows the result of opening the w
 ![Nine tiles with the labels in a vertical box layout.%width=60&anchor=AlignmentExampleWithHorizontalTiles](figures/AlignmentExampleWithHorizontalTiles.png )
 
 
-### Advanced layout
+### A more advanced layout
 
 Now that we know how to align nested presenters, let's have a look at a common use case. Suppose we like to arrange three buttons in a row of which two are positioned on the left side of the window, and one is positioned on the right side. That setup is very handy for button bars with buttons on the left side and on the right side, such as in the Repositories browser of Iceberg, as you can see in Figure *@Repositories@*. The bar has one button on the left side and two buttons on the right side.
 
@@ -452,7 +452,7 @@ ButtonAndListH >> defaultLayout
 ```
 
 
-This `ButtonAndListH` class results in a SuperWidget window as shown in Figure *@ButtonAndListH@*. It reuses the `TwoButtons` widget and places all three widgets in a horizontal order because the `TwoButtons` widget uses the `buttonRow` layout method by default.
+This `ButtonAndListH` class results in a SuperWidget window as shown in Figure *@ButtonAndListH@*. It reuses the `TwoButtons` presenter and places all three presenters in a horizontal order because the `TwoButtons` presenter  uses the `buttonRow` layout method by default.
 
 ![Buttons placed horizontally.% width=50&anchor=ButtonAndListH](figures/ButtonAndListH.png)
 
@@ -474,7 +474,7 @@ ButtonAndListV >> initializePresenters
 ![Buttons placed vertically. % width=50&anchor=ButtonAndListV](figures/ButtonAndListV.png)
 
 
-#### Alternative to declare subcomponent layout choice
+### Alternative to declare subcomponent layout choice
 
 The alternative is to define a new method `defaultLayout` and to use the `add:layout:` message. We define a different presenter.
 
@@ -505,7 +505,7 @@ That opens the window shown in Figure *@ButtonAndListV2@*.
 
 ![Buttons and list placed vertically. % width=50&anchor=ButtonAndListV2](figures/ButtonAndListV2.png)
 
-#### Dynamically changing a layout
+### Dynamically changing a layout
 
 It is possible to change the layout of a presenter dynamically, for example from an inspector. Open the presenter with:
 
@@ -523,8 +523,8 @@ Then select the 'buttons' instance variable in the inspector and do `self beRow`
 ### Grid layout (SpGridLayout)
 
 The class `SpGridLayout` arranges subpresenters in a grid according to certain layout properties such as:
-- A position is mandatory (`columnNumber@rowNumber`)
-- A span can be added if desired (`columnExtension@rowExtension`)
+- A position that is mandatory (`columnNumber@rowNumber`) and
+- A span that can be added if desired (`columnExtension@rowExtension`)
 
 The following example opens a window with a grid layout with several widgets, as shown in Figure *@GridExample@*.
 
@@ -587,7 +587,7 @@ GridExample >> defaultLayout
 
 ### Paned layout (SpPanedLayout)
 
-A paned layout is like a box layout, but restricted to two children, which are the "panes". It places children in a vertical or horizontal fashion and adds a splitter in between, that the user can drag to resize the panes. `positionOfSlider:` indicates the original position of the splitter. It can be nil (then it defaults to 50\%), or it can be a percentage (e.g. 70 percent), a `Float` (e.g. 0.7), or a `Fraction` (e.g. 7/10).
+A paned layout is like a box layout, but restricted to two children, which are the "panes". It places children in a vertical or horizontal fashion and adds a splitter in between, that the user can drag to resize the panes. The message `positionOfSlider:` indicates the original position of the splitter. It can be nil (then it defaults to 50\%), or it can be a percentage (e.g. 70 percent), a `Float` (e.g. 0.7), or a `Fraction` (e.g. 7/10). We prefer simplicity and use floats because there are cheap and simple.
 
 Let's look at this simple example:
 
@@ -612,7 +612,7 @@ PanedLayoutExample >> initializePresenters
 PanedLayoutExample >> defaultLayout
 
 	^ SpPanedLayout newLeftToRight
-		positionOfSlider: 70 percent;
+		positionOfSlider: 0.7;
 		add: #leftList;
 		add: #rightList;
 		yourself
@@ -632,13 +632,15 @@ Figure *@PanedLayoutExample@* shows the result. The left list takes 70\% of the 
 
 An overlay layout allows overlaying one presenter by other presenters.
 
-As an example, we will create a presenter that shows a button labeled 'Inbox', with a red indicator overlayed in the top-right corner. A use case could be indicating that there are unread messages in the inbox.
+As an example, we will create a presenter that shows a button labeled 'Inbox', with a red indicator overlayed in the top-right corner (See Figure *@OverlayLayoutExample@*). A use case could be indicating that there are unread messages in the inbox.
 
 ```
 SpPresenter << #OverlayLayoutExample
 	slots: { #button . #indicator };
 	package: 'CodeOfSpec20Book'
 ```
+
+![An overlay layout with a button and a Roassal box. %width=50&anchor=OverlayLayoutExample](figures/OverlayLayoutExample.png)
 
 The method `initializePresenters` creates the button and the indicator. The latter is a `SpRoassalPresenter`. We use a helper method to answer the shape that should be shown.
 
@@ -678,7 +680,8 @@ OverlayLayoutExample >> defaultLayout
 			yourself
 ```
 
-The `defaultLayout` method sends `buttonLayout` to fetch the overlay layout for the button and the indicator. The `child` is the presenter that we want to overlay with the indicator. It is possible to add multiple overlays. In this example, we have only one, which is defined by `indicatorLayout`. Note that `addOverlay:withConstraints:` is used to configure where the overlay presenter should be displayed. We choose to display it in the top-right corner, by sending `vAlignStart` (top) and `hAlignEnd` (right).
+The `defaultLayout` method sends the message `buttonLayout` to fetch the overlay layout for the button and the indicator.
+Let us define the method `buttonLayout` as follows: 
 
 ```
 OverlayLayoutExample >> buttonLayout
@@ -691,7 +694,9 @@ OverlayLayoutExample >> buttonLayout
 			yourself
 ```
 
-The `indicatorLayout` method defines the layout for the indicator. To apply a vertical and a horizontal padding, we have to wrap a vertical box layout with a horizontal box layout. We could have wrapped a horizontal box layout with a vertical box layout to achieve the same result. We apply a padding of 2 pixels so that the indicator does not overlap the border of the button.
+ The `child` is the presenter that we want to overlay with the indicator. It is possible to add multiple overlays. In this example, we have only one, which is defined by `indicatorLayout`. Note that `addOverlay:withConstraints:` is used to configure where the overlay presenter should be displayed. We display it in the top-right corner, by sending `vAlignStart` (top) and `hAlignEnd` (right).
+
+Now we define the method as follows:
 
 ```
 OverlayLayoutExample >> indicatorLayout
@@ -707,6 +712,10 @@ OverlayLayoutExample >> indicatorLayout
 			yourself
 ```
 
+The `indicatorLayout` method defines the layout for the indicator. To apply a vertical and a horizontal padding, we have to wrap a vertical box layout with a horizontal box layout. We could have wrapped a horizontal box layout with a vertical box layout to achieve the same result. We apply a padding of 2 pixels so that the indicator does not overlap the border of the button.
+
+
+
 With all these methods in place, we can open the presenter.
 
 ```
@@ -715,7 +724,7 @@ OverlayLayoutExample new open.
 
 That opens the window shown in Figure *@OverlayLayoutExample@*.
 
-![An overlay layout with a button and a Roassal box. %width=50&anchor=OverlayLayoutExample](figures/OverlayLayoutExample.png)
+
 
 ### Conclusion
 
