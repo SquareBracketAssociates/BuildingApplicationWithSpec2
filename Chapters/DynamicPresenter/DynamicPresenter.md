@@ -31,8 +31,9 @@ Now, without closing the window, we can dynamically edit the layout of the main 
 
 ```
 button1 := presenter newButton.
-presenter layout add: button1.
 button1 label: 'I am a button'.
+presenter layout add: button1.
+
 ```
 
 
@@ -43,8 +44,8 @@ Now we can add another button. There is no need to close and reopen the window. 
 
 ```
 button2 := presenter newButton.
-presenter layout add: button2.
 button2 label: 'I am another button'.
+presenter layout add: button2.
 ```
 
 
@@ -70,9 +71,10 @@ presenter layout remove: button2.
 
 What you see here is that all the changes happen simply by creating a new instance of a given layout and sending messages to it.  It means that programs can define complex logic for the dynamic behavior of a presenter.
 
-### Creating a presenter that dynamically adds buttons with random numbers
+### Dynamic button adder
 
-We will create a presenter in which we will add and remove buttons dynamically. We will create a new class called `DynamicButtons`.
+Now we will create a presenter that dynamically adds buttons with random numbers: we will add and remove buttons dynamically (as shown in Figures *@layout6@* and *@layout7@*). 
+Let us get started. We create a new class called `DynamicButtons`.
 
 ![A presenter that dynamically adds buttons. % width=40&anchor=layout6](figures/layout6.png)
 
@@ -107,6 +109,8 @@ DynamicButtons >> initializePresenters
 		beNotEditable
 ```
 
+### Defining add/remove buttons
+
 Now we have to implement the methods `addToLayout` and `removeFromLayout` used in the action blocks of the buttons. Those methods, as their names indicate, add and remove presenters dynamically.
 
 Let's start with the `addToLayout` method. We will add a new button to the layout. The label of the new button is a random number. We enable the remove button so that the newly added button can be removed.
@@ -116,7 +120,7 @@ DynamicButtons >> addToLayout
 
 	| randomButtonName newButton |
 	removeButton enable.
-	randomButtonName := 'Random number: ', (Random new nextInteger: 1000) asString.
+	randomButtonName := 'Random number: ', 1000 atRandom asString.
 	newButton := self newButton
 		label: randomButtonName;
 		icon: (self iconNamed: #smallObjects);
