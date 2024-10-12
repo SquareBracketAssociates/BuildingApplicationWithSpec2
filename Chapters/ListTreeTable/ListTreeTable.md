@@ -173,7 +173,7 @@ Often lists are used to select items. This is what the class `SpFilteringSelecta
 
 ![A selectable filtering list with a filter at the top. % width=50&anchor=figSelectable](figures/SelectableList.png)
 
-The following script produces this situation.
+The following script illustrates such a selectable list with filter.
 
 ```
 (SpFilteringSelectableListPresenter new
@@ -224,7 +224,7 @@ SpComponentListPresenter new
 
 Spec offers also trees. The following script shows how to list all the classes of Pharo using inheritance as shown by Figure *@figTreeExpanded@*.
 
-![A Tree. % width=45&anchor=figTreeExpanded](figures/TreeExpanded.png)
+![A Tree presenter showing the inheritance hierarchy of the class `Exception`. % width=45&anchor=figTreeExpanded](figures/TreeExpanded.png)
 
 ```
 SpTreePresenter new
