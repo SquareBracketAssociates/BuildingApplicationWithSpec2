@@ -486,7 +486,7 @@ presenter openWithLayout: (SpBoxLayout newLeftToRight
 	yourself)
 ```
 
-Or you can send `layout` to the presenter and open the window afterwards.
+Or you can send the message `layout:` to the presenter to specify a layout and open the window afterwards.
 
 ```
 presenter := ProtocolViewerPresenter new.
