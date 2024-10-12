@@ -362,7 +362,7 @@ Any presenter can be placed in a dialog window by specializing the method `SpAbs
 
 
 ```
-initializeDialogWindow: aDialogWindowPresenter
+WindowExamplePresenter >> initializeDialogWindow: aDialogWindowPresenter
 	"Used to initialize the model in the case of the use into a dialog window.
 	 Override this to set buttons other than the default (Ok, Cancel)."
 
