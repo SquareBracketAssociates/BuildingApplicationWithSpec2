@@ -256,7 +256,7 @@ Opening the presenter with the code below, opens the window shown in Figure *@la
 MyMiniBrowser new open
 ```
 
-![A little browser in read-only mode. %width=60&anchor=layout9](figures/layout9.png)
+![A little browser in read-only mode. %width=50&anchor=layout9](figures/layout9.png)
 
 
 ### Placing elements visually
@@ -357,7 +357,7 @@ Voilà! We have a new minimal version version of the System Browser with a read-
 
 ![Our little browser in edit mode. % width=60&anchor=layout10](figures/layout10.png)
 
-### Layout recalculation
+### About layout recalculation
 
 Pay attention to layout recalculation because it can have a performance penalty.
 
