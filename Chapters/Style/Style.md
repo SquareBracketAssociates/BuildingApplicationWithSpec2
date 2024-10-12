@@ -5,7 +5,7 @@ In this chapter, we describe how to declare and use styles in Spec applications.
 
 First, we present stylesheets and styles and then we apply styles to the Mail Application we introduced in Chapter *@cha_mailapp@*. We will illustrate how Spec manages styles and how you can adapt the look of a presenter.
 
-There are two ways to express stylesheets: one for Morphic expressed using an extended version of STON, and CSS for GTK. In this chapter we focus on the Morphic stylesheets for Pharo 12. We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
+There are two ways to express stylesheets: one for Morphic expressed using an extended version of STON, and CSS for GTK. In this chapter, we focus on the Morphic stylesheets for Pharo 12. We give some basis before showing how to effectively use styles to enhance the look and feel of an application.
 
 
 
@@ -90,7 +90,9 @@ Geometry { #hResizing: true }
 Draw { #color:  Color { #red: 1, #green: 0, #blue: 0, #alpha: 1}}
 Draw { #color: #blue}
 Font { #name: "Lucida Grande", #size: 10, #bold: true }
-Container { #borderColor: Color { #rgb: 0, #alpha: 0 }, #borderWidth: 2, #padding: 5 }
+Container { #borderColor: Color { #rgb: 0, #alpha: 0 }, 
+		#borderWidth: 2, 
+		#padding: 5 }
 ```
 
 You can define your style globally at the level of your application, and apply it to a specific presenter with the message `addStyle:`.
@@ -173,16 +175,20 @@ Here we define two styles: `lightGreen` and `lightBlue` that can be applied to a
 
 ### Environment variables
 
-We can also use environment variables to get the values of the predefined colors and fonts of the current UI theme. For example, we can create two styles for changing the font of the text of a presenter:
+We can also use environment variables to get the values of the predefined colors and fonts of the current UI theme. For example, we can create two styles for changing the font of the text and one for the background color of a presenter:
 
 ```
 '.application [
 	.codeFont [ Font { #name: EnvironmentFont(#code) } ],
-	.textFont [ Font { #name: EnvironmentFont(#default) } ]
+	.textFont [ Font { #name: EnvironmentFont(#default) } ],
+	.bg [ Draw { #color: EnvironmentColor(#background) } ]'
 ]'
 ```
 
-### Top level changes
+Check the subclasses of `SpStyleEnvironmentVariable`.
+
+
+### Top-level changes
 
 We can change the styles for all the presenters. For instance, we can display all the text in bold by default with this style:
 
@@ -195,7 +201,8 @@ We can change the styles for all the presenters. For instance, we can display al
 
 ### Defining an application and its style
 
-Suppose we like to style the Mail Application we introduced in Chapter *@cha_mailapp@* and extended in Chapter *@cha_menus@*. Let's say that we like the labels in the mail editing part of the UI to use a bigger font and a blue color. Futhermore, let's say that we like to use a light yellow background for fields, and that we want a black border around the field to edit the body of a mail. That brings us to this stylesheet:
+Suppose we like to style the Mail Application we introduced in Chapter *@cha_mailapp@* and extend in Chapter *@cha_menus@*. 
+Let's say that we like the labels in the mail editing part of the UI to use a bigger font and a blue color. Furthermore, let's say that we like to use a light yellow background for fields and that we want a black border around the field to edit the body of a mail. That brings us to this stylesheet:
 
 ```
 '.application [
@@ -205,9 +212,10 @@ Suppose we like to style the Mail Application we introduced in Chapter *@cha_mai
 	]'
 ```
 
-The style `.fieldLabel` defines a 12 pixel blue font. The style `.field` defines a light yellow background color. The style `.bodyField` defines a black 1 pixel border.
+The style `.fieldLabel` defines a 12-pixel blue font. The style `.field` defines a light yellow background color. The style `.bodyField` defines a black 1-pixel border.
 
-To use styles, we need to associate the main presenter with an application. One way of achieving that would this way:
+To use styles, we need to associate the main presenter with an application. 
+One way of achieving that would be this way:
 
 ```
 | mailClient application styleSheet |
@@ -297,7 +305,7 @@ EmailPresenter >> defaultLayout
 		yourself
 ```
 
-To style the fields, we have to make some changes. The implementation above is based on the method `add:expand:` which, out of convenience, allows the first argument to be a string, e.g. `add: 'From:' expand: false`. We cannot style a string. We can only style presenters, so we have to create the label presenters ourselves. Then we can add the required styles to the three label presenters by sending `addStyle: 'fieldLabel'`. Note that the definition of the style uses `.fieldLabel`. When sending `addStyle:`, the leading period is omitted.
+To style the fields, we have to make some changes. The implementation above is based on the method `add:expand:` which, out of convenience, allows the first argument to be a string, e.g. `add: 'From:' expand: false`. We cannot style a string. We can only style presenters, so we have to create the label presenters ourselves. Then we can add the required styles to the three label presenters by sending `addStyle: 'fieldLabel'`. Note that the definition of the style uses `.fieldLabel`. When sending the message `addStyle:`, the leading period is omitted in the argument string representing the style.
 
 ```
 EmailPresenter >> defaultLayout
@@ -383,7 +391,7 @@ MailClientApplication >> styleSheet
 	^ super styleSheet , customStyleSheet
 ```
 
-The next step is to apply the new style. `EmailPresenter` instances have a `model`. When it changes, the presenter is notified via the `modelChanged` method. The original implemementation was:
+The next step is to apply the new style. `EmailPresenter` instances have a `model`. When it changes, the presenter is notified via the `modelChanged` method. The original implementation was:
 
 ```
 EmailPresenter >> modelChanged
