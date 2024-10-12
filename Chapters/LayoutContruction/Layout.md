@@ -117,8 +117,10 @@ These are the vertical layout options:
 * vAlignCenter
 * vAlignEnd
 
-![Nine tiles with different alignment options. %width=60&anchor=AlignmentExampleWithVerticalTiles](figures/AlignmentExampleWithVerticalTiles.png)
 
+### Box alignment example
+
+![Nine tiles with different alignment options. %width=60&anchor=AlignmentExampleWithVerticalTiles](figures/AlignmentExampleWithVerticalTiles.png)
 
 Let's see how this works in a small example as shown in Figure *@AlignmentExampleWithVerticalTiles@*. We will create a presenter with 9 subpresenters, which we call "tiles", laid out in 3 rows with 3 columns. Each subpresenter displays two label presenters with the labels 'One' and 'Two'. The presenter class defines nine instance variables. The names refer to the position of the content inside each tile.
 
@@ -245,6 +247,8 @@ AlignmentExample new open
 
 The result is shown in Figure *@AlignmentExampleWithVerticalTiles@*. Each tile displays the label presenters at another location. The label presenters are positioned vertically.
 
+![Nine tiles with the labels in a vertical box layout.%width=60&anchor=AlignmentExampleWithHorizontalTiles](figures/AlignmentExampleWithHorizontalTiles.png )
+
 ### Alignment in horizontal box layout
 
 Let's see what happens when we put the label presenters in a horizontal box layout.
@@ -266,7 +270,7 @@ AlignmentExample >> newTile: alignmentBlock
 
 Figure *@AlignmentExampleWithHorizontalTiles@* shows the result of opening the window again. Now the labels are positioned horizontally.
 
-![Nine tiles with the labels in a vertical box layout.%width=60&anchor=AlignmentExampleWithHorizontalTiles](figures/AlignmentExampleWithHorizontalTiles.png )
+
 
 
 ### A more advanced layout
@@ -526,6 +530,9 @@ The class `SpGridLayout` arranges subpresenters in a grid according to certain l
 - A position that is mandatory (`columnNumber@rowNumber`) and
 - A span that can be added if desired (`columnExtension@rowExtension`)
 
+
+![A simple grid for a small form. % width=60&anchor=GridExample](figures/GridExample.png)
+
 The following example opens a window with a grid layout with several widgets, as shown in Figure *@GridExample@*.
 
 ```
@@ -563,7 +570,7 @@ GridExample >> defaultLayout
 
 The layout defines a grid with three columns. The prompt 'Please enter your name and your suggestions.' spans the three columns. The labels of the two fields are put in the first column. The fields span the second and the third column. The button is put in the second column. The second field is a multi-line text field. That is why it is higher than the first field, which is a single-line text field.
 
-![A simple grid for a small form. % width=60&anchor=GridExample](figures/GridExample.png)
+
 
 Here is a list of options:
 - `columnHomogeneous`: Whether presenters in a column will have the same size.
@@ -696,7 +703,7 @@ OverlayLayoutExample >> buttonLayout
 
  The `child` is the presenter that we want to overlay with the indicator. It is possible to add multiple overlays. In this example, we have only one, which is defined by `indicatorLayout`. Note that `addOverlay:withConstraints:` is used to configure where the overlay presenter should be displayed. We display it in the top-right corner, by sending `vAlignStart` (top) and `hAlignEnd` (right).
 
-Now we define the method as follows:
+Now we define the method `indicatorLayout` as follows:
 
 ```
 OverlayLayoutExample >> indicatorLayout
