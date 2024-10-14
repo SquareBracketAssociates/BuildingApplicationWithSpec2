@@ -33,7 +33,6 @@ Now, without closing the window, we can dynamically edit the layout of the main 
 button1 := presenter newButton.
 button1 label: 'I am a button'.
 presenter layout add: button1.
-
 ```
 
 
