@@ -16,4 +16,5 @@ I do not get how they get this 44.55
 Especially since their computer said that the binding for 258 pages should be 1.74 cm (which looks more reasonable to me.
 
 	
-	
+
+To produce the PDF use export Canvas it will chop the pictures that is outside. 
