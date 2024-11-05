@@ -260,7 +260,7 @@ MailClientCommand << ShowBccFieldCommand
 ```
 
 ```
-ShowCcFieldShowBccFieldCommandommand >> initialize
+ShowBccFieldCommand >> initialize
 
 	super initialize.
 	self
