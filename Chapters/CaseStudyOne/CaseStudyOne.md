@@ -724,7 +724,7 @@ In Spec, an application defines a stylesheet (or a set of them). A stylesheet de
 An application comes with a default configuration and a default stylesheet. If you do not need to style your application, there is no need to define them. In our example, we would like to define a `header` style to customize some labels. In Spec every presenter understands the message `addStyle:` that adds a tag (a CSS class) to the receiver.
 
 
-To do so, you need to declare a stylesheet in a configuration. The configuration itself needs to be declared in your application. We will define a new presenter for the label and tag it with a specific CCS class using the message `addStyle:`. Our CCS class will be named `'customLabel'`.
+To do so, you need to declare a stylesheet in a configuration. The configuration itself needs to be declared in your application. We will define a new presenter for the label and tag it with a specific CSS class using the message `addStyle:`. Our CSS class will be named `'customLabel'`.
 
 First, we create the specific configuration for our application.
 
