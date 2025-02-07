@@ -1,4 +1,4 @@
-##The dual aspects of presenters: Domain and interaction model
+## The dual aspects of presenters: Domain and interaction model
 @cha_fundamentals_of_spec
 
 A presenter has a dual role in Spec. On the one hand, it acts as the glue between domain objects and widgets, and on the other hand, it implements the user interface logic by connecting subpresenters together.
@@ -34,7 +34,7 @@ First, we create a new presenter class.
 ```
 SpPresenter << #MethodLister
 	slots: { #sourceClass . #list};
-	package: 'Spec2Book'
+	package: 'CodeOfSpec20Book'
 ```
 
 We define a list presenter and populate it.
@@ -104,7 +104,7 @@ Let us revisit our little example. First, we inherit from `SpPresenterWithModel`
 ```
 SpPresenterWithModel << #MethodListerWithModel
 	slots: { #list };
-	package: 'Spec2Book'
+	package: 'CodeOfSpec20Book'
 ```
 
 Second, we define `initializePresenters`.
@@ -152,7 +152,7 @@ So the code above should be:
 
 ```
 | lister app |
-app := SpApplication new
+app := SpApplication new.
 lister := MethodListerWithModel newApplication: app.
 ```
 
