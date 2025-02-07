@@ -1,4 +1,0 @@
-I have more than 35 years of experience in software development. I have been using object-oriented technology since my studies. I did research on object-oriented languages and tools for object-oriented languages. I have applied object-oriented technology in many projects at several companies. Smalltalk is my favourite programming language for expressing ideas quickly and easily.
-
-Since early 2023, I have been a dedicated contributor to the Pharo ecosystem. I write about my adventures in Pharo on my blog “all: objects all: theTime” (https://all-objects-all-the-time.st). My taste for development tools implies I have a sweet spot for user interfaces.
-

@@ -425,7 +425,6 @@ To set the initial keyboard focus on the minus button, we send `takeKeyboardFocu
 ```
 WindowExamplePresenter >> initializeWindow: aWindowPresenter
 
-	super initializeWindow: aWindowPresenter.
 	aWindowPresenter whenOpenedDo: [ minusButton takeKeyboardFocus ]
 ```
 
@@ -446,64 +445,6 @@ WindowExamplePresenter >> initializeDialogWindow: aDialogWindowPresenter
 
 ![Keyboard focus on the Ok button of the dialog. %width=50&anchor=DialogWithFocusOnOkButton](figures/DialogWithFocusOnOkButton.png)
 
-
-### Window API configuration
-
-With Pharo 13, Spec implementation and clients got a deep cleanup of the API. 
-We present here the key aspects.
-
-#### Window hook methods
-
-The hook methods `windowTitle` and `windowIcon` are the public API for specify the title and the icon of a window. 
-A typical specialization is the following
-
-The method `windowIcon` can by default delegate to the application for icon management. Indeed icons are more a UI concern than a logic one. 
-
-```
-MyPresenter >> windowIcon
-	^ self iconNamed: #testRunner
-```
-
-The method `windowTitle` can be defined as follows: 
-
-
-```
-MyPresenter >> windowTitle
-	^ 'My Presenter'
-```
-
-If your presenter is based on a model, this is typically the place where the title can be delegated to the model.
-```	
-MyPresenter >> windowTitle
-	^ self model informationString	
-```
-
-Using these two hook methods reduce the complexity of `initializeWindow:` - such methods are often not needed anymore. 
-
-### Remembered resized extent
-
-From Pharo 13, Spec provides better UX. It lets the possibility to remember the last resized extent. 
-For this to work Spec users should follow the pattern:
-
-- First when a presenter defines an `initializeWindow:` method, it must perform a supercall. A new rule is introduced to support developers.
-
-```
-MyPresenter >> initializeWindow: aWindowPresenter
-	
-	super initializeWindow: aWindowPresenter.
-	...
-```
-
-- Second, the developer should define a class side method `defaultPreferredExtent`
-
-```
-MyPresenter classc>> defaultPreferredExtent
-	^ 500@800
-```
-
-- Third, the method `preferredExtent` should not be overridden.
-
-- Fourth, do not set the initialExtent of the presenter in the `initializeWindow`, use the method `defaultPreferredExtent`.
 
 ### Conclusion
 
