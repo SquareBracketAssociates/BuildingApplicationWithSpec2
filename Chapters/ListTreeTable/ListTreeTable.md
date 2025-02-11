@@ -52,13 +52,15 @@ We can configure the way items are displayed in a more fine-grained way. The fol
 
 
 ```
-SpListPresenter new
+| presenter |
+presenter := SpListPresenter new.
+presenter
 	items: Collection withAllSubclasses;
 	displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 	displayColor: [ :aClass |
 		(aClass name endsWith: 'Set')
 			ifTrue: [ Color green ]
-			ifFalse: [ self theme textColor ] ];
+			ifFalse: [ presenter theme textColor ] ];
 	displayItalic: [ :aClass | aClass isAbstract ];
 	displayBold: [ :aClass | aClass hasSubclasses ];
 	displayUnderline: [ :aClass | aClass numberOfMethods > 10 ];
