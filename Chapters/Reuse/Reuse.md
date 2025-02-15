@@ -123,7 +123,7 @@ ProtocolMethodListPresenter >> defaultLayout
 			yourself
 ```
 
-This UI can be seen by executing `ProtocolMethodList new open`. As shown in Figure *@figprotocollist@* the list is empty and the result is not really nice. This is normal because we did not set any items. We should also place the elements better.
+This UI can be seen by executing `ProtocolMethodListPresenter new open`. As shown in Figure *@figprotocollist@* the list is empty and the result is not really nice. This is normal because we did not set any items. We should also place the elements better.
 
 ![ProtocolMethodListPresenter with bad layout. % width=50&anchor=figprotocollist](figures/ProtocolList.png)
 
@@ -364,7 +364,7 @@ Now we can decide to open the viewer with different layouts using the message `o
 ```
 ProtocolViewerPresenter class >> exampleHorizontal
 
-    | inst |
+    | instance |
     instance := self new.
     instance openWithLayout: instance horizontalLayout
 ```
@@ -514,7 +514,7 @@ In this chapter, we have seen several definitions of methods in the public confi
 
 For methods that simply delegate to the internal widgets, the question is whether it makes sense to define these as methods in the 'api' protocols at all. Fundamentally this is a design decision to be made by the programmer. Not having such methods makes the implementation of the presenter more lightweight but comes at the cost of less clear intent and of breaking encapsulation.
 
-For the former cost, we have seen an example in the protocol method list of Section *@sec_protocollist@*. The presence of the three methods defined there communicates to the user that we care about what to do when a class, 'api' or 'api-events' list item has been changed. Fundamentally the same also holds for the other examples in this chapter: each method in an 'api' protocol communicates an intent to the reuser: this is how we expect that this presenter will be configured. Without such declared methods, it is less clear to the reuser what can be done to effectively reuse a presenter.
+For the former cost, we have seen an example in the protocol viewer of Section *@sec_protocolviewer@*. The presence of the three methods defined there communicates to the user that we care about what to do when a class, 'api' or 'api-events' list item has been changed. Fundamentally the same also holds for the other examples in this chapter: each method in an 'api' protocol communicates an intent to the reuser: this is how we expect that this presenter will be configured. Without such declared methods, it is less clear to the reuser what can be done to effectively reuse a presenter.
 
 For the latter cost, expecting reusers of the widget to directly send messages to internal objects (in instance variables) means breaking encapsulation. As a consequence, we are no longer free to change the internals of the UI, e.g., by renaming the instance variables to a better name or changing the kind of widget used. Such changes may break reusers of the presenter and hence severely limit how we can evolve this presenter in the future. It is safer to define a public API and ensure in future versions of the presenter that the functionality of this API remains the same.
 
