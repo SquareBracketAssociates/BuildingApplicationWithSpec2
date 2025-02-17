@@ -247,7 +247,7 @@ AlignmentExample new open
 
 The result is shown in Figure *@AlignmentExampleWithVerticalTiles@*. Each tile displays the label presenters at another location. The label presenters are positioned vertically.
 
-![Nine tiles with the labels in a vertical box layout.%width=60&anchor=AlignmentExampleWithHorizontalTiles](figures/AlignmentExampleWithHorizontalTiles.png )
+![Nine tiles with the labels in a horizontal box layout.%width=60&anchor=AlignmentExampleWithHorizontalTiles](figures/AlignmentExampleWithHorizontalTiles.png )
 
 ### Alignment in horizontal box layout
 
