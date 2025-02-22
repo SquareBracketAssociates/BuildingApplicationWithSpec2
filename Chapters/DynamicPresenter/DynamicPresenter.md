@@ -249,14 +249,6 @@ MyMiniBrowser >> initializePresenters
 	code beNotEditable
 ```
 
-Opening the presenter with the code below, opens the window shown in Figure *@layout9@*.
-
-```
-MyMiniBrowser new open
-```
-
-![A little browser in read-only mode. %width=50&anchor=layout9](figures/layout9.png)
-
 
 ### Placing elements visually
 
@@ -282,6 +274,14 @@ MyMiniBrowser >> defaultLayout
 		add: button expand: false;
 		yourself
 ```
+
+Opening the presenter with the code below, opens the window shown in Figure *@layout9@*.
+
+```
+MyMiniBrowser new open
+```
+
+![A little browser in read-only mode. %width=50&anchor=layout9](figures/layout9.png)
 
 
 ### Connecting the flow
