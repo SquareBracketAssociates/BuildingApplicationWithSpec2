@@ -366,7 +366,9 @@ Second, we have to set the initial state of the toolbar buttons when the mail cl
 ```
 MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 
-	super updateAfterSelectionChangedTo: selectedFolderOrEmail.
+	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
+		ifTrue: [ selectedFolderOrEmail ]
+		ifFalse: [ nil ].
 	self updateToolBarButtons
 ```
 
@@ -470,7 +472,9 @@ To finish the status bar functionality, we start with a clean status bar. Theref
 ```
 MailClientPresenter >> updateAfterSelectionChangedTo: selectedFolderOrEmail
 
-	super updateAfterSelectionChangedTo: selectedFolderOrEmail.
+	editedEmail := (self isDraftEmail: selectedFolderOrEmail)
+		ifTrue: [ selectedFolderOrEmail ]
+		ifFalse: [ nil ].
 	self updateToolBarButtons.
 	statusBar popMessage
 ```
