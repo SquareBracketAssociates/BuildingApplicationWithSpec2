@@ -152,7 +152,7 @@ Look at the shortcuts in the `messageMenu` method. `$n meta` means that the char
 
 ### Installing shortcuts
 
-Adding shortcuts to menu items does not automatically install them. Keyboard shortcuts have to be installed after the window has been opened. Therefore we have to adapt the `initializeWindow:` method with the `whenOpenedDo:` message, so that the keyboard shortcuts can be installed after opening the window. `SpMenuPresenter`, which is the superclass of `SpMenuBarPresenter`, implements the method `addKeybindingsTo:`, which comes in handy here.
+Adding shortcuts to menu items does not automatically install them. Keyboard shortcuts have to be installed explicitly. We adapt the `initializeWindow:` method to achieve that. `SpMenuPresenter`, which is the superclass of `SpMenuBarPresenter`, implements the method `addKeybindingsTo:`, which comes in handy here.
 
 ```
 MailClientPresenter >> initializeWindow: aWindowPresenter
