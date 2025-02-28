@@ -173,7 +173,6 @@ We keep the action blocks simple by sending a message. We have to implement them
 MailClientPresenter >> newMail
 
 	editedEmail := Email new.
-	editedEmail beDraft.
 	reader updateLayoutForEmail: editedEmail.
 	self modelChanged
 ```
