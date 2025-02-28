@@ -207,6 +207,40 @@ MailClientPresenter >> fetchMail
 	self modelChanged
 ```
 
+The last four methods above send messages to `account`, which is bound to a `MailAccountPresenter`. The corresponding methods were not implemented yet, so we do it now.
+
+```
+MailAccountPresenter >> saveAsDraft: draftEmail
+
+	self model saveAsDraft: draftEmail.
+	self modelChanged
+```
+
+```
+MailAccountPresenter >> deleteMail
+
+	| pathIndexes folder email |
+	pathIndexes := foldersAndEmails selection selectedPath.
+	folder := foldersAndEmails itemAtPath: (pathIndexes copyFrom: 1 to: 1).
+	email := foldersAndEmails itemAtPath: pathIndexes.
+	self model delete: email.
+	self modelChanged
+```
+
+```
+MailAccountPresenter >> sendMail: draftEmail
+
+	self model send: draftEmail.
+	self modelChanged
+```
+
+```
+MailAccountPresenter >> fetchMail
+
+	self model fetchMail.
+	self modelChanged
+```
+
 It is time to try it out. To see the menubar in action, let's open a window with:
 
 ```
