@@ -353,6 +353,17 @@ EmailPresenter >> connectPresenters
 	body whenTextChangedDo: [ :text | self model body: text ]
 ```
 
+`EmailPresenter` inherits from `SpPresenterWithModel`, which means that we have to state in the `modelChanged` method what should happen when the model changes. We set the text of the four fields.
+
+```
+EmailPresenter >> modelChanged
+
+	from text: (self model from ifNil: [ '' ]).
+	to text: (self model to ifNil: [ '' ]).
+	subject text: (self model subject ifNil: [ '' ]).
+	body text: (self model body ifNil: [ '' ])
+```
+
 For convenience later on, we define two extra methods to make the fields editable or read-only.
 
 ```
