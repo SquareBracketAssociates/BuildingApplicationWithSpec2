@@ -413,7 +413,7 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 
 ```
 SpPresenterWithModel << #MailClientPresenter
-	slots: { #account . #reader . #editedEmail . #menuBar . #toolBar . #statusBar };
+	slots: { #account . #reader . #editedEmail . #menuBar . #toolBar . #sendButton . #saveButton . #statusBar };
 	package: 'CodeOfSpec20Book'
 ```
 
