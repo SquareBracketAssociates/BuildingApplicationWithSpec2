@@ -167,7 +167,7 @@ MailClientPresenter >> initializeWindow: aWindowPresenter
 
 ### Defining actions
 
-We keep the action blocks simple by sending a message. We have to implement them of course, so let's do that. Based on the models that we defined earlier in this chapter, the implementation of the actions is fairly straightforward.
+We keep the action blocks simple by sending a message. We have to implement them of course, so let's do that. Based on the models that we defined in the previous chapter, the implementation of the actions is fairly straightforward.
 
 ```
 MailClientPresenter >> newMail
