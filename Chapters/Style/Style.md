@@ -110,7 +110,7 @@ styleSheet
 		Font { #name: "Source Sans Pro", #size: 10 },
 		Geometry { #height: 25 },
 		.label [
-			Geometry { #hResizing: true },
+			Geometry { #hResizing: true } ],
 		.headerError [Draw { #color:  Color{ #red: 1, #green: 0, #blue: 0, #alpha: 1}}  ],
 		.headerSuccess [Draw { #color: Color{ #red: 0, #green: 1, #blue: 0, #alpha: 1}}  ],
 		.header [
@@ -157,7 +157,7 @@ These subclasses define the 5 types of properties that exist.
 - Text: `SpTextStyle` - It controls the properties of the `SpTextInputFieldPresenter`.
 - Geometry: `SpGeometryStyle` - It defines sizes, like width, height, minimum height, etc.
 
-If you want to be sure that you browse the adequate class, just send the message `stonName` to the class. It will return the string used in the STON notation. For example, `SpDrawStyle stonName` returns `Draw`.
+If you want to be sure that you browse the adequate class, just send the message `stonName` to the class. It will return the symbol used in the STON notation. For example, `SpDrawStyle stonName` returns `#Draw`.
 
 #### Example
 
@@ -231,7 +231,7 @@ styleSheet := SpStyle defaultStyleSheet,
 		.bodyField [ Container { #borderWidth: 1, #borderColor: #black } ]
 	]').
 
-app styleSheet: SpStyle defaultStyleSheet , styleSheet.
+application styleSheet: SpStyle defaultStyleSheet , styleSheet.
 ```
 
 But this way of working requires creating the stylesheet outside the context of the Mail Application. Instead, we will introduce a new application class and we override the method `styleSheet`.
