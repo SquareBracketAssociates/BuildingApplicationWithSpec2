@@ -127,7 +127,7 @@ DynamicButtons >> addToLayout
 	self layout add: newButton expand: false
 ```
 
-For removing a button from the layout, we  first check if there is a button that we can remove. If yes, we just remove the last button. Then, if there are no more buttons left to remove, we disable the remove button.
+We just remove the last button. Then, if there are no more buttons left to remove, we disable the remove button.
 
 ```
 DynamicButtons >> removeFromLayout
