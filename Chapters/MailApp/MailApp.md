@@ -469,11 +469,11 @@ MailReaderPresenter >> defaultLayout
 As mentioned before, we assume that instances of `MailReaderPresenter` will be told to update themselves. `read:` is the message to tell them.
 
 ```
-MailReaderPresenter >> read: email
+MailReaderPresenter >> read: folderOrEmail
 
-	email
-		ifNil: [ self updateLayoutForNoEmail ]
-		ifNotNil: [ self updateLayoutForEmail: email ]
+	(folderOrEmail isNotNil and: [ folderOrEmail isEmail ])
+		ifTrue: [ self updateLayoutForEmail: folderOrEmail ]
+		ifFalse: [ self updateLayoutForNoEmail ]
 ```
 
 The method `read:` delegates to the methods that do the actual work.
