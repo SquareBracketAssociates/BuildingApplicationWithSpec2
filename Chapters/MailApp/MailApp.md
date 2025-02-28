@@ -251,7 +251,7 @@ MailAccount >> saveAsDraft: anEmail
 	self changed
 ```
 
-Saving a method as draft is implemented as changing the status to "draft" and adding it to the emails, if it is not present yet. The conditional addition allows saving an email multiple times without adding it multiple times.
+Saving a email as draft is implemented as changing the status to "draft" and adding it to the emails, if it is not present yet. The conditional addition allows saving an email multiple times without adding it multiple times.
 
 The method to send an email is similar to the method to save an email:
 
