@@ -117,7 +117,7 @@ OrderedCollection << inspectionMaxValue
 ```
 OrderedCollection << inspectionMaxValueContext: aContext
 
-  ^ aContext active: self containsOnlyIntegers
+  ^ aContext active: self containsOnlyNumbers
 ```
 
 ![Inspect max value tab. %width=60&anchor=InspectorMaxValueTab](figures/InspectorExpansionMax.png)
@@ -131,7 +131,7 @@ As we can see in Figure *@InspectorMaxValueTab@*, the `self` in the evaluator do
 OrderedCollection << inspectionMaxValueContext: aContext
 
   aContext withoutEvaluator.
-  ^ aContext active: self containsOnlyIntegers
+  ^ aContext active: self containsOnlyNumbers
 ```
 
 By reinspecting the same collection we see the inspector in Figure *@InspectorWithoutEvaluator@*.
@@ -158,7 +158,7 @@ OrderedCollection << inspectionIntegerHistogram
 ```
 OrderedCollection << inspectionIntegerHistogramContext: aContext
 
-  aContext active: self containsOnlyIntegers.
+  aContext active: self containsOnlyNumbers.
   aContext withoutEvaluator.
 ```
 
