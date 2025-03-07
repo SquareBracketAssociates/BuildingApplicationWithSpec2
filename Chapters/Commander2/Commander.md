@@ -198,7 +198,7 @@ FetchMailCommand >> execute
 
 ### Adding placeholder commands
 
-We also define placeholder commands for functionality that was not implemented by the Mail application in Chapter *@cha_mailapp@*. We will not implement them here either. We only provide a name and a description, which are required for the UI.
+We also define placeholder commands for functionality that was not implemented by the Mail application in Chapter *@cha_menus@*. We will not implement them here either. We only provide a name and a description, which are required for the UI.
 
 #### FormatPlainTextCommand
 
@@ -298,7 +298,7 @@ MailClientPresenter class >> buildAccountMenuWith: presenter
 
 ### Using fillWith:
 
-In Chapter *@cha_mailapp@*, we defined the method `MailClientPresenter >> accountMenu` to return the context menu for the `MailAccountPresenter`. When using commands, we implement it differently. We create a new menu and fill it with the commands defined in the method above. A presenter has access to the root of the command tree through the message `rootCommandsGroup`. Subtrees can be accessed by sending the `/` message. By using commands, building up the context menu is almost trivial:
+In Chapter *@cha_menus@*, we defined the method `MailClientPresenter >> accountMenu` to return the context menu for the `MailAccountPresenter`. When using commands, we implement it differently. We create a new menu and fill it with the commands defined in the method above. A presenter has access to the root of the command tree through the message `rootCommandsGroup`. Subtrees can be accessed by sending the `/` message. By using commands, building up the context menu is almost trivial:
 
 
 ```
@@ -537,10 +537,9 @@ NewMailTemplateCommand >> execute
 The implementation above requires the addition of an extension method to the `MailClientPresenter` class. The method below resides in the package "CodeOfSpec20Book-Extensions". The implementation of the method is similar to `MailClientPresenter >> newMail`. The only difference is setting the given template by sending the `body:` message to the new mail.
 
 ```
-NewMailTemplateCommand >> newFromTemplate: aString
+MailClientPresenter >> newFromTemplate: aString
 
 	editedEmail := Email new.
-	editedEmail beDraft.
 	editedEmail body: aString.
 	reader updateLayoutForEmail: editedEmail.
 	self modelChanged
