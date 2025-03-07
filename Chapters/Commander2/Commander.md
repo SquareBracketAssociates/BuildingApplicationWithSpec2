@@ -507,7 +507,7 @@ MailClientCommand << #NewMailTemplateCommand
 
 Note that we put the new command class in an extension package, while all the code so far resides in package "CodeOfSpec20Book".
 
-One could imagine having template values for all attributes of a mail. As mentioned before, we keep thing simple. Only the body is a template. That is why there is only one instance variable. We will need a write accessor method to set the body template, so let's define it.
+One could imagine having template values for all attributes of a mail. As mentioned before, we keep things simple. Only the body is a template. That is why there is only one instance variable. We will need a write accessor method to set the body template, so let's define it.
 
 ```
 NewMailTemplateCommand >> bodyTemplate: aString
