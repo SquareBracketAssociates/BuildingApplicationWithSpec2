@@ -85,7 +85,7 @@ As a general design advice, do not define application logic in a command. A comm
 #### SaveMailCommand
 
 ```
-MailClientCommand << SaveMailCommand
+MailClientCommand << #SaveMailCommand
 	slots: {};
 	package: 'CodeOfSpec20Book'
 ```
@@ -118,7 +118,7 @@ In the previous command class, we did not implement `NewMailCommand >> canBeExec
 #### SendMailCommand
 
 ```
-MailClientCommand << SendMailCommand
+MailClientCommand << #SendMailCommand
 	slots: {};
 	package: 'CodeOfSpec20Book'
 ```
@@ -147,7 +147,7 @@ SendMailCommand >> canBeExecuted
 #### DeleteMailCommand
 
 ```
-MailClientCommand << DeleteMailCommand
+MailClientCommand << #DeleteMailCommand
 	slots: {};
 	package: 'CodeOfSpec20Book'
 ```
@@ -176,7 +176,7 @@ DeleteMailCommand >> canBeExecuted
 #### FetchMailCommand
 
 ```
-MailClientCommand << FetchMailCommand
+MailClientCommand << #FetchMailCommand
 	slots: {};
 	package: 'CodeOfSpec20Book'
 ```
@@ -436,7 +436,7 @@ MailClientPresenter >> buildFormatMenuWith: presenter
 		yourself
 ```
 
-Now that the command tree for the menubar is defined, we can use it. In Chapter *@cha_mailapp@*, we defined `MailClientPresenter >> #initializeMenuBar`. We can replace it by:
+Now that the command tree for the menubar is defined, we can use it. In Chapter *@cha_mailapp@*, we defined `MailClientPresenter >> initializeMenuBar`. We can replace it by:
 
 ```
 MailClientPresenter >> initializeMenuBar
@@ -456,7 +456,7 @@ As you can see in Figure *@WithMenuBar@*, the first menu in the menubar shows a 
 
 We can achieve the same grouping with commands. Commands can be managed in groups and such groups can be turned into corresponding menu item sections.
 
-Let's make the required changes to the method `MailClientPresenter class >> #buildMessageMenuWith:` that we introduced before.
+Let's make the required changes to the method `MailClientPresenter class >> buildMessageMenuWith:` that we introduced before.
 
 ```
 MailClientPresenter class >> buildMessageMenuWith: presenter
@@ -481,7 +481,7 @@ An important message is `beDisplayedAsGroup`. It indicates that in a menu, the n
 
 ![Nested menu with the mouse pointing at its name.%width=60&anchor=WithNestedMenu](figures/WithNestedMenu.png)
 
-In our case, we do not want a nested menu. We want a separate section in the menu. With the implementation of `MailClientPresenter class >> #buildMessageMenuWith:` above, we see a menu as shown in Figure *@MenuWithGroup@*. As in Chapter *@cha_menus@*, now there are two groups of commands, separated by a line.
+In our case, we do not want a nested menu. We want a separate section in the menu. With the implementation of `MailClientPresenter class >> buildMessageMenuWith:` above, we see a menu as shown in Figure *@MenuWithGroup@*. As in Chapter *@cha_menus@*, now there are two groups of commands, separated by a line.
 
 ![Menu with a separate group. %width=60&anchor=MenuWithGroup](figures/MenuWithGroup.png)
 
