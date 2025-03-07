@@ -198,7 +198,7 @@ FetchMailCommand >> execute
 
 ### Adding placeholder commands
 
-We also define placeholder commands for functionality that was not implemented by the Mail application in Chapter *@cha_mailapp@*. We will not implement them here either. We only provide a name and a description, which are required for the UI.
+We also define placeholder commands for menu item actions that were not implemented by the Mail application in Chapter *@cha_menus@*. We will not implement them here either. We only provide a name and a description, which are required for the UI.
 
 #### FormatPlainTextCommand
 
