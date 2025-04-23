@@ -157,7 +157,7 @@ dialog
 The message `withWindowDo:` makes sure that the presenter that scheduled the window still exists or is in a state that makes sense.
 
 ```
-withWindowDo: [ :window | window title: 'MyTitle' ]
+presenter withWindowDo: [ :window | window title: 'MyTitle' ]
 ```
 
 
