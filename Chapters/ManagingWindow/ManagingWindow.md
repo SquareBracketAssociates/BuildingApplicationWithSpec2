@@ -71,7 +71,7 @@ dialog := presenter openDialog
 
 The answer of sending `openDialog`, assigned to the `dialog` variable above, is an instance of the `SpDialogWindowPresenter` class (a subclass of `SpWindowPresenter`). Figure *@windowDialog@* shows the dialog.
 
-![A rather simple dialog on WindowExamplePresenter. %width=50&anchor=windowDialog](figures/WindowExamplePresenterDialog)
+![A rather simple dialog on WindowExamplePresenter. %width=50&anchor=windowDialog](figures/WindowExamplePresenterDialog.png)
 
 
 The `SpDialogWindowPresenter` instance can be configured in multiple ways. To execute code when the user clicks on a button, send it the `okAction:` or `cancelAction:` message with a zero-argument block.
